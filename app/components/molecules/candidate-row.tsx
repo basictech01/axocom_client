@@ -57,8 +57,7 @@ export const CandidateRow: React.FC<CandidateRowProps> = ({
             </TableCell>
 
             <TableCell
-                className={`text-xs font-bold ${criminalCases === "No" ? "text-gray-400" : "text-red-500"
-                    }`}
+                className="text-xs font-bold text-gray-400"
             >
                 {criminalCases}
             </TableCell>

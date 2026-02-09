@@ -1,4 +1,4 @@
-// different query variations can be added here 
+// different query variations can be added here
 import { gql, type TypedDocumentNode } from "@apollo/client";
 import type { CandidatesData } from "../types";
 
@@ -33,4 +33,4 @@ export const GET_CANDIDATES_FULL: TypedDocumentNode<CandidatesData> = gql`
   }
 `;
 
-// add variation of the query to get the candidates with the full data / half data 
+// add variation of the query to get the candidates with the full data / half data

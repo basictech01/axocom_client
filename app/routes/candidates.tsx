@@ -1,17 +1,20 @@
-import { candidatesLoader, useCandidates } from "~/features/candidates/hooks";
+//template ui only for checking the data
+//final ui will be decided after
 
-export const loader = candidatesLoader;
+import { useCandidates } from "~/features/candidates/hooks";
+
+
 
 export default function CandidatesPage() {
-    const { data, error } = useCandidates();
-
+    const { data, error, loading } = useCandidates();
+    console.log(data);
     if (error) return <div>Something went wrong.</div>;
-
+    if (loading) return <div>Loading...</div>;
     return (
         <div>
             <h1>Candidates</h1>
             <ul>
-                {data.candidates.map((c) => (
+                {data?.candidates.map((c) => (
                     <li key={c.id}>
                         {c.name} – {c.party}
                         <br />

@@ -25,7 +25,7 @@ export interface Candidate {
     source_of_income: JSON;
     contracts: JSON;
     social_profiles: JSON
-    created_at: Date;
+    created_at: string;
 
 }
 

@@ -31,15 +31,13 @@ export const Indicator: React.FC<IndicatorProps> = ({
     valueColorClassName,
     className,
 }) => {
-    const derivedColor =
-        valueColorClassName ??
-        (value.toLowerCase().includes("critical") ? "text-red-500" : "text-blue-600");
+    const colorClass = valueColorClassName ?? "text-blue-600";
 
     return (
         <div className={`space-y-2 ${className ?? ""}`}>
             <div className="flex justify-between text-sm">
                 <span className="font-semibold text-gray-700">{label}</span>
-                <span className={`font-bold ${derivedColor}`}>{value}</span>
+                <span className={`font-bold ${colorClass}`}>{value}</span>
             </div>
 
             <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden">
