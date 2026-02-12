@@ -12,21 +12,56 @@ import { Indicator } from "~/components/ui/indicator";
 import { SmallPartyCard } from "~/components/ui/small-party-card";
 import { CandidateSummaryCard } from "~/components/molecules/candidate-summary-card";
 import { CandidateRow } from "~/components/molecules/candidate-row";
-import {
-    useConstituencyFilters,
-    useConstituencyOverview,
-    useConstituencyCharts,
-    useConstituencyIndicators,
-    useConstituencyCandidates,
-} from "~/features/constituency/hooks";
+import { useConstituencyOverview } from "~/features/constituency/hooks/useConstituencyOverview";
+import { useConstituencyIndicators } from "~/features/constituency/hooks/useConstituencyIndicators";
+import { useElectionFilter } from "~/features/constituency/hooks/useElectionFilter";
+import { useNavigation } from "~/hooks/useNavigation";
+import { useConstituencyCharts } from "~/features/constituency/hooks/useConstituencyCharts";
+import { useEffect, useState } from "react";
+import { useConstituencyCandidates } from "~/features/constituency/hooks/useConstituencyCandidates";
 
 export default function ConstituencyPage() {
-    const filters = useConstituencyFilters();
-    const { navItems, titleSection, stats } = useConstituencyOverview();
-    const { turnoutChart, genderChart } = useConstituencyCharts();
-    const { indicators, historicalControl, incumbent } = useConstituencyIndicators();
-    const { candidates, totalCandidates } = useConstituencyCandidates();
+    const [showAllCandidates, setShowAllCandidates] = useState(false);
 
+    const filters = useElectionFilter();
+    const { navItems } = useNavigation();
+    const { titleSection, stats } = useConstituencyOverview(filters.detailData);
+    const { turnoutChart, genderChart, loadTrend } = useConstituencyCharts(
+        filters.detailData,
+        filters.selectedConstituencyId
+    );
+    const { candidates, totalCandidates, loadCandidates, rawCandidatesData } = useConstituencyCandidates();
+    const { indicators, historicalControl, incumbent, loadResults } = useConstituencyIndicators(
+        rawCandidatesData
+    );
+
+    const visibleCandidates = showAllCandidates
+        ? candidates
+        : candidates.slice(0, 5);
+
+    useEffect(() => {
+        if (filters.selectedConstituencyId && filters.detailData) {
+            loadTrend(filters.selectedConstituencyId);
+        }
+    }, [filters.detailData]);
+
+    useEffect(() => {
+        if (filters.selectedConstituencyId && filters.detailData) {
+            loadTrend(filters.selectedConstituencyId);
+            loadCandidates(
+                filters.selectedConstituencyId,
+                Number(filters.electionYear)
+            );
+        }
+    }, [filters.detailData]);
+
+    useEffect(() => {
+        if (filters.selectedConstituencyId && filters.detailData) {
+            loadTrend(filters.selectedConstituencyId);
+            loadCandidates(filters.selectedConstituencyId, Number(filters.electionYear));
+            loadResults(filters.selectedConstituencyId, Number(filters.electionYear));
+        }
+    }, [filters.detailData]);
     return (
         <div className="min-h-screen bg-[#f6f6f8] text-[#111318] font-sans selection:bg-blue-100">
             <AppBar
@@ -45,6 +80,8 @@ export default function ConstituencyPage() {
                     constituency={filters.constituency}
                     onConstituencyChange={filters.onConstituencyChange}
                     onUpdateView={filters.onUpdateView}
+                    constituencyOptions={filters.constituencyOptions}
+                    onConstituencySelect={filters.onConstituencySelect}
                 />
 
                 {/* Title Section */}
@@ -141,14 +178,10 @@ export default function ConstituencyPage() {
                 <Card className="border-none shadow-sm overflow-hidden">
                     <div className="p-6 flex flex-col md:flex-row justify-between border-b border-gray-100 gap-4">
                         <div>
-                            <h3 className="font-bold text-base">{titleSection.electionYear} Election Candidates</h3>
+                            <h3 className="font-bold text-base">{titleSection.title} Election Candidates</h3>
                             <p className="text-xs text-gray-400 font-medium mt-0.5">
                                 Official list of candidates running for the current election
                             </p>
-                        </div>
-                        <div className="flex gap-2">
-                            <Button variant="outline" size="xs" className="text-[10px] font-bold h-7">Filter</Button>
-                            <Button variant="outline" size="xs" className="text-[10px] font-bold h-7">Sort</Button>
                         </div>
                     </div>
                     <Table>
@@ -163,7 +196,7 @@ export default function ConstituencyPage() {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {candidates.map((c) => (
+                            {visibleCandidates.map((c) => (
                                 <CandidateRow
                                     key={c.id}
                                     name={c.name}
@@ -177,11 +210,23 @@ export default function ConstituencyPage() {
                             ))}
                         </TableBody>
                     </Table>
-                    <div className="p-4 flex justify-center border-t border-gray-50">
-                        <Button variant="ghost" size="sm" className="text-blue-600 font-bold text-xs gap-2 hover:bg-blue-50">
-                            View all {totalCandidates} candidates <ArrowRight size={14} />
-                        </Button>
-                    </div>
+                    {totalCandidates > 5 && (
+                        <div className="p-4 flex justify-center border-t border-gray-50">
+                            <Button
+                                variant="ghost"
+                                size="sm"
+                                className="text-blue-600 font-bold text-xs gap-2 hover:bg-blue-50"
+                                type="button"
+                                onClick={() => setShowAllCandidates(true)}
+                                disabled={showAllCandidates}
+                            >
+                                {showAllCandidates
+                                    ? `Showing all ${totalCandidates} candidates`
+                                    : `View all ${totalCandidates} candidates`}
+                                {!showAllCandidates && <ArrowRight size={14} />}
+                            </Button>
+                        </div>
+                    )}
                 </Card>
             </main>
         </div>

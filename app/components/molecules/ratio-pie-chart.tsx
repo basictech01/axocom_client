@@ -53,7 +53,7 @@ export const DonutPieChart: React.FC<DonutPieChartProps> = ({
             </CardHeader>
 
             <CardContent className="flex flex-col items-center">
-                <div className="relative size-40 flex items-center justify-center">
+                <div className="relative size-56 flex items-center justify-center">
                     <ResponsiveContainer width="100%" height="100%">
                         <PieChart>
                             <Pie
@@ -87,7 +87,7 @@ export const DonutPieChart: React.FC<DonutPieChartProps> = ({
                     {(centerValue || centerLabel) && (
                         <div className="absolute text-center">
                             {centerValue && (
-                                <div className="text-2xl font-black">{centerValue}</div>
+                                <div className="text-xl font-black">{centerValue}</div>
                             )}
                             {centerLabel && (
                                 <div className="text-[9px] font-bold text-gray-400 leading-tight">
