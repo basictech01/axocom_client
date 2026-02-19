@@ -1,28 +1,12 @@
 import { TrendingUp, Info, WalletCards } from "lucide-react"
 import { FinCard } from "~/components/ui/candidate-profile/fin-card"
-
-interface FinancialSummaryProps {
-    assets: {
-        value: string
-        sub?: string
-        subColor?: string
-    }
-    liabilities: {
-        value: string
-        sub?: string
-        subColor?: string
-    }
-    netWorth: {
-        value: string
-        affidavitLabel?: string
-    }
-}
+import type { FinancialSummaryData } from "~/features/candidates/types"
 
 export function FinancialSummary({
     assets,
     liabilities,
     netWorth,
-}: FinancialSummaryProps) {
+}: FinancialSummaryData) {
     return (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <FinCard

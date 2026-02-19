@@ -1,22 +1,5 @@
 import { useMemo } from "react";
-import type { RawCandidate } from "../types";
-
-interface FinancialSummaryData {
-    assets: {
-        value: string;
-        sub?: string;
-        subColor?: string;
-    };
-    liabilities: {
-        value: string;
-        sub?: string;
-        subColor?: string;
-    };
-    netWorth: {
-        value: string;
-        affidavitLabel?: string;
-    };
-}
+import type { FinancialSummaryData, RawCandidate } from "../types";
 
 /**
  * Formats currency amount to Indian format (Cr for crores, L for lakhs)

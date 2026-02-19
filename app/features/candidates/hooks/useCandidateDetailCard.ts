@@ -1,31 +1,6 @@
 import { useMemo } from "react"
-import type { RawCandidate } from "../types"
+import type { CandidateProfileVM, IdentityVM, MetaDetail, RawCandidate } from "../types"
 
-interface IdentityVM {
-    name: string
-    image: string
-    party: string
-    location: string
-    age: number
-    criminalCases: number
-    netWorth: string
-    itrCompliant: boolean
-    socialLinks: {
-        twitter?: string
-        facebook?: string
-        instagram?: string
-    }
-}
-
-interface MetaDetail {
-    label: string
-    value: string
-}
-
-interface CandidateProfileVM {
-    identity: IdentityVM
-    metaDetails: MetaDetail[]
-}
 
 export function useCandidateProfile(
     candidate: RawCandidate | null | undefined
