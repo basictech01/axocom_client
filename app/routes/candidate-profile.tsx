@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Sidebar } from '~/components/molecules/sidebar';
 import { useNavigation } from '~/hooks/useNavigation';
 import { useParams } from 'react-router';
+import { YearSegmentControl } from '~/components/ui/candidate-profile/year-segment-control';
 import { useCandidatesProfile } from '~/features/candidates/hooks/useCandidatesProfile';
 import { CandidateProfileCard } from '~/components/molecules/candidate-profile/candidate-profile-card';
 import { useCandidateProfile } from '~/features/candidates/hooks/useCandidateDetailCard';
@@ -15,28 +16,37 @@ import { useCandidateLiabilities } from '~/features/candidates/hooks/useCandidat
 import { useCandidateImmovableAssets } from '~/features/candidates/hooks/useCandidateImmovableAsset';
 import { useCandidateCriminalCases } from '~/features/candidates/hooks/useCandidateCriminalCases';
 import { cn } from '~/lib/utils';
-// import { useCandidateEducation } from '~/features/candidates/hooks/useCandidateEducation';
+import { useEducationHistory } from '~/features/candidates/hooks/useEducationHistory';
+import { useCandidateTimeline } from '~/features/candidates/hooks/useCandidateTimeline';
+import { useNetworthCharts } from '~/features/candidates/hooks/useNetworthCharts';
+import { Card } from '~/components/ui/card';
+import { BarChartBar } from '~/components/ui/bar-chart-bar';
 // MAIN PAGE COMPONENT 
 export default function CandidateProfile() {
     const { navItems, onNavChange } = useNavigation();
     const [sidebarOpen, setSidebarOpen] = useState(true);
 
     const { id } = useParams<{ id: string }>();
-    const { candidate, loading, loadCandidate } = useCandidatesProfile();
+    const { candidate } = useCandidatesProfile(Number(id));
     const { identity, metaDetails } = useCandidateProfile(candidate);
-    // const { education } = useCandidateEducation(candidate);
-    const financialSummaryData = useFinancialSummary(candidate);
-    const { rows: panItrRows, columns: panItrColumns } = usePanItrTable(candidate);
-    const { rows: movableRows, columns: movableCols } = useCandidateMovableAssets(candidate);
-    const { rows: immovableRows, columns: immovableCols } = useCandidateImmovableAssets(candidate);
-    const { rows: liabilitiesRows, columns: liabilitiesCols } = useCandidateLiabilities(candidate);
-    const criminalSections = useCandidateCriminalCases(candidate);
+    const educationHistoryItems = useEducationHistory(candidate);
 
-    useEffect(() => {
-        if (id) {
-            loadCandidate(Number(id));
-        }
-    }, [id, loadCandidate]);
+    const {
+        entries,
+        availableYears,
+        selectedYear,
+        setSelectedYear,
+        selectedEntry,
+    } = useCandidateTimeline(Number(id));
+
+    const financialSummaryData = useFinancialSummary(selectedEntry);
+    const { rows: panItrRows, columns: panItrColumns } = usePanItrTable(selectedEntry);
+    const { rows: movableRows, columns: movableCols } = useCandidateMovableAssets(selectedEntry);
+    const { rows: immovableRows, columns: immovableCols } = useCandidateImmovableAssets(selectedEntry);
+    const { rows: liabilitiesRows, columns: liabilitiesCols } = useCandidateLiabilities(selectedEntry);
+    const criminalSections = useCandidateCriminalCases(selectedEntry);
+
+    const { bars, maxNetWorth } = useNetworthCharts(entries);
 
     return (
         <div className="min-h-screen bg-[#F7F9FC] text-slate-900 font-sans">
@@ -58,28 +68,21 @@ export default function CandidateProfile() {
                         identity={identity}
                         metaDetails={metaDetails}
                     />
-                    {/* replace with the education history data from the candidate profile using a hook */}
-                    <EducationHistoryCard
-                        items={[
-                            { degree: "M.A. Political Science", institution: "Banaras Hindu University (BHU), Varanasi", year: "1994" },
-                            { degree: "B.A. (Hons) Pol. Science", institution: "Banaras Hindu University (BHU), Varanasi", year: "1992" },
-                            { degree: "Senior Secondary (Class XII)", institution: "U.P. Board Allahabad", year: "1989" },
-                            { degree: "Secondary (Class X)", institution: "U.P. Board Allahabad", year: "1987" },
-                        ]}
-                    />
 
-                    {/* Timeline Tabs */}
-                    {/* will be implemented once the timeline data is available in the backend 
-                    need to fetch the available years from the candidate profile
-                    and available data for each year
-                    along with a hook to fetch the data for each year*/}
-                    <div className="flex items-center justify-center">
-                        <div className="inline-flex p-1 bg-slate-200/50 rounded-lg border border-slate-200">
-                            <button className="px-8 py-1.5 text-xs font-bold rounded-md transition-all text-slate-500 hover:text-slate-800">2014</button>
-                            <button className="px-8 py-1.5 text-xs font-bold rounded-md transition-all text-slate-500 hover:text-slate-800">2019</button>
-                            <button className="px-8 py-1.5 text-xs font-bold rounded-md transition-all bg-white text-blue-600 shadow-sm ring-1 ring-slate-200">2024</button>
-                        </div>
-                    </div>
+                    {educationHistoryItems.length > 0 && (
+                        <EducationHistoryCard
+                            items={educationHistoryItems}
+                        />
+                    )}
+
+                    {/* Timeline Tabs — only shows years that exist */}
+                    {availableYears.length > 0 && (
+                        <YearSegmentControl
+                            years={availableYears}
+                            selectedYear={selectedYear}
+                            onYearChange={setSelectedYear}
+                        />
+                    )}
 
 
                     {/* Financial Summary */}
@@ -92,26 +95,37 @@ export default function CandidateProfile() {
                     {/* PAN & ITR */}
                     <DataTableCard
                         title="PAN & ITR Disclosures"
-                        subtitle="Election Cycle: 2024"
+                        subtitle={`Election Cycle: ${selectedYear}`}
                         columns={panItrColumns}
                         rows={panItrRows}
                     />
 
-                    {/* Chart will be implemented once the net worth growth trajectory data is available in the backend*/}
-                    {/* <Card className="p-6">
-                                <h3 className="text-sm font-black text-slate-900 uppercase tracking-tight mb-8">Net Worth Growth Trajectory (2014-2024)</h3>
-                                <div className="relative h-64 flex items-end justify-between px-10">
-                                    <div className="absolute inset-0 flex flex-col justify-between py-2 pointer-events-none">
-                                        <div className="border-t border-slate-100 w-full" />
-                                        <div className="border-t border-slate-100 w-full" />
-                                        <div className="border-t border-slate-100 w-full" />
-                                        <div className="border-t border-slate-100 w-full" />
-                                    </div>
-                                    <BarChartBar val="₹1.1 Cr" year="2014" h="h-32" bg="bg-blue-600/40" text="text-slate-500" />
-                                    <BarChartBar val="₹1.8 Cr" year="2019" h="h-48" bg="bg-blue-600/60" text="text-slate-500" />
-                                    <BarChartBar val="₹2.5 Cr" year="2024" h="h-60" bg="bg-blue-600" text="text-blue-600" />
+                    {bars.length > 0 && (
+                        <Card className="p-6">
+                            <h3 className="text-sm font-black text-slate-900 uppercase tracking-tight mb-8">
+                                Net Worth Growth Trajectory
+                            </h3>
+                            <div className="relative h-64 flex items-end justify-between px-10 gap-4">
+                                <div className="absolute inset-0 flex flex-col justify-between py-2 pointer-events-none">
+                                    <div className="border-t border-slate-100 w-full" />
+                                    <div className="border-t border-slate-100 w-full" />
+                                    <div className="border-t border-slate-100 w-full" />
+                                    <div className="border-t border-slate-100 w-full" />
                                 </div>
-                            </Card> */}
+                                {bars.map((bar, i) => (
+                                    <BarChartBar
+                                        key={bar.year}
+                                        value={bar.netWorth}
+                                        label={String(bar.year)}
+                                        maxValue={maxNetWorth}
+                                        height={160}
+                                        barColor={i === bars.length - 1 ? "bg-blue-600" : "bg-blue-600/60"}
+                                        textColor={i === bars.length - 1 ? "text-blue-600" : "text-slate-500"}
+                                    />
+                                ))}
+                            </div>
+                        </Card>
+                    )}
 
 
                     {/* Detailed Wealth Breakdown */}

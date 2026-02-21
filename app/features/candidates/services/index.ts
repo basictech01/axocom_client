@@ -1,6 +1,6 @@
 // different query variations can be added here
 import { gql, type TypedDocumentNode } from "@apollo/client";
-import type { CandidateData, CandidatesData } from "../types";
+import type { CandidateData, CandidateElectionsData, CandidatesData } from "../types";
 
 export const GET_CANDIDATES_FULL: TypedDocumentNode<CandidatesData> = gql`
   query GetCandidates {
@@ -33,8 +33,7 @@ export const GET_CANDIDATES_FULL: TypedDocumentNode<CandidatesData> = gql`
     }
   }
 `;
-// Add this query after GET_CANDIDATES_FULL
-// add caste here
+
 export const GET_CANDIDATE_BY_ID: TypedDocumentNode<
   CandidateData,
   { id: number }
@@ -42,8 +41,8 @@ export const GET_CANDIDATE_BY_ID: TypedDocumentNode<
   query GetCandidateById($id: Int!) {
     candidate(id: $id) {
       id
-      neta_id
       name
+      caste
       so_do_wo
       age
       candidate_image
@@ -52,20 +51,35 @@ export const GET_CANDIDATE_BY_ID: TypedDocumentNode<
       name_enrolled_as_voter_in
       self_profession
       spouse_profession
-      criminal_cases
+      education_category
+      education_history
+      university_name
+      source_of_income
+      contracts
+      social_profiles
+      created_at
+    }
+  }
+`;
+
+export const GET_CANDIDATE_ELECTIONS: TypedDocumentNode<
+  CandidateElectionsData,
+  { candidate_id: number }
+> = gql`
+  query GetCandidateElections($candidate_id: Int!) {
+    candidate_elections(candidate_id: $candidate_id) {
+      id
+      year
       assets
       liabilities
-      education_category
-      university_name
+      criminal_cases
       pan_itr
       details_of_criminal_cases
       details_of_movable_assets
       details_of_immovable_assets
       details_of_liabilities
-      source_of_income
-      contracts
-      social_profiles
-      created_at
+      votes_polled
+      candidate_id
     }
   }
 `;

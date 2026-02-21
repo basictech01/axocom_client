@@ -1,10 +1,10 @@
 // Raw candidate as it comes from the API
 // if needed zod schema can be added here after discussion
-// add caste here
+// Static candidate — from candidates table
 export interface RawCandidate {
     id: number
-    neta_id: number
     name: string
+    caste?: string | null
     so_do_wo?: string | null
     age?: number | null
     candidate_image?: string | null
@@ -13,21 +13,36 @@ export interface RawCandidate {
     name_enrolled_as_voter_in?: string | null
     self_profession?: string | null
     spouse_profession?: string | null
-    criminal_cases?: number | null
-    assets?: number | null
-    liabilities?: number | null
+    education_history?: Record<string, any> | null
     education_category?: string | null
     university_name?: string | null
-    pan_itr?: Record<string, any> | null
-    details_of_movable_assets?: Record<string, string>[] | null
-    details_of_immovable_assets?: Record<string, string>[] | null
-    details_of_liabilities?: Record<string, string>[] | null
-    details_of_criminal_cases?: Record<string, string>[] | null
+    source_of_income?: Record<string, any> | null
+    contracts?: Record<string, any> | null
     social_profiles?: {
         twitter?: string
         facebook?: string
         instagram?: string
     } | null
+}
+
+// Year-specific data — from election_candidate table
+export interface ElectionCandidateEntry {
+    id: number
+    year: number
+    assets: number
+    liabilities: number
+    criminal_cases: number
+    pan_itr?: Record<string, any> | null
+    details_of_criminal_cases?: Record<string, string>[] | null
+    details_of_movable_assets?: Record<string, string>[] | null
+    details_of_immovable_assets?: Record<string, string>[] | null
+    details_of_liabilities?: Record<string, string>[] | null
+    votes_polled: number
+    candidate_id: number
+}
+
+export interface CandidateElectionsData {
+    candidate_elections: ElectionCandidateEntry[]
 }
 
 export interface CandidatesData {
@@ -44,9 +59,6 @@ export interface IdentityVM {
     party: string
     location: string
     age: number
-    criminalCases: number
-    netWorth: string
-    itrCompliant: boolean
     socialLinks: {
         twitter?: string
         facebook?: string

@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { CheckCircle2, Info } from "lucide-react";
-import type { RawCandidate } from "../types";
+import type { ElectionCandidateEntry } from "../types";
 import type { ColumnDef } from "~/components/molecules/data-table-card";
 
 export type PanItrRow = {
@@ -60,28 +60,25 @@ const PAN_ITR_COLUMNS: ColumnDef<PanItrRow>[] = [
   },
 ];
 
-export function usePanItrTable(candidate: RawCandidate | null) {
+export function usePanItrTable(entry: ElectionCandidateEntry | null) {
   const rows = useMemo(() => {
-    if (!candidate?.pan_itr) return [];
+    if (!entry?.pan_itr) return [];
 
-    const entries = candidate.pan_itr as unknown as Array<{
+    const entries = entry.pan_itr as unknown as Array<{
       pan_given: string;
       relation_type: string;
       financial_year: string;
       total_income_shown_in_itr: string;
     }>;
 
-    return entries.map((entry) => ({
-      relationLabel: RELATION_LABELS[entry.relation_type] ?? entry.relation_type,
-      panStatus: entry.pan_given === "Y" ? "Provided" : "Not Provided",
-      panProvided: entry.pan_given === "Y",
-      financialYear: entry.financial_year === "None" ? "N/A" : entry.financial_year,
-      totalIncome: parseLatestIncome(entry.total_income_shown_in_itr),
+    return entries.map((e) => ({
+      relationLabel: RELATION_LABELS[e.relation_type] ?? e.relation_type,
+      panStatus: e.pan_given === "Y" ? "Provided" : "Not Provided",
+      panProvided: e.pan_given === "Y",
+      financialYear: e.financial_year === "None" ? "N/A" : e.financial_year,
+      totalIncome: parseLatestIncome(e.total_income_shown_in_itr),
     }));
-  }, [candidate]);
+  }, [entry]);
 
-  return {
-    rows,
-    columns: PAN_ITR_COLUMNS,
-  };
+  return { rows, columns: PAN_ITR_COLUMNS };
 }

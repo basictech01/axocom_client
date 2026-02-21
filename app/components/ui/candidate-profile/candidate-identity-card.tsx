@@ -6,36 +6,17 @@ import {
     FacebookIcon,
     InstagramIcon,
 } from "~/components/ui/social-icons"
+import type { IdentityVM } from "~/features/candidates/types"
 
-interface CandidateIdentityProps {
-    name: string
-    image: string
-    party: string
-    partyColor?: string
-    location: string
-    age: number
-    criminalCases: number
-    netWorth: string
-    itrCompliant: boolean
-    socialLinks?: {
-        twitter?: string
-        facebook?: string
-        instagram?: string
-    }
-}
 
 export function CandidateIdentityCard({
     name,
     image,
     party,
-    partyColor = "bg-orange-100 text-orange-700",
     location,
     age,
-    criminalCases,
-    netWorth,
-    itrCompliant,
     socialLinks,
-}: CandidateIdentityProps) {
+}: IdentityVM) {
     return (
         <div className="p-6 flex flex-col gap-6">
             <div className="flex gap-6">
@@ -48,9 +29,7 @@ export function CandidateIdentityCard({
                         <h2 className="text-2xl font-black text-slate-900 tracking-tight">
                             {name}
                         </h2>
-                        <span
-                            className={`rounded px-2 py-0.5 text-[10px] font-bold ${partyColor}`}
-                        >
+                        <span className="rounded-md bg-slate-100 px-3 py-1.5 text-sm font-semibold text-slate-800 tracking-wide">
                             {party}
                         </span>
                     </div>
@@ -88,7 +67,11 @@ export function CandidateIdentityCard({
                 </div>
             </div>
 
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap items-center gap-2">
+
+            </div>
+
+            {/* <div className="flex flex-wrap gap-2">
                 <Badge variant="red" icon={<Gavel size={12} />}>
                     {criminalCases} CRIMINAL CASES
                 </Badge>
@@ -102,7 +85,7 @@ export function CandidateIdentityCard({
                         ITR COMPLIANT
                     </Badge>
                 )}
-            </div>
+            </div> */}
         </div>
     )
 }

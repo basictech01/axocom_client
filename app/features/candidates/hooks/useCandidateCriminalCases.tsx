@@ -1,6 +1,6 @@
 
 import { useMemo } from "react";
-import type { RawCandidate } from "../types";
+import type { ElectionCandidateEntry } from "../types";
 import type { ColumnDef } from "~/components/molecules/data-table-card";
 
 type RawCaseRow = Record<string, string>;
@@ -95,10 +95,10 @@ function buildCaseColumns(
 }
 
 export function useCandidateCriminalCases(
-  candidate: RawCandidate | null
+  entry: ElectionCandidateEntry | null
 ): CriminalCaseSection[] {
   return useMemo(() => {
-    const rawData = candidate?.details_of_criminal_cases as
+    const rawData = entry?.details_of_criminal_cases as
       | RawCaseRow[]
       | null
       | undefined;
@@ -131,5 +131,5 @@ export function useCandidateCriminalCases(
     }
 
     return sections;
-  }, [candidate]);
+  }, [entry]);
 }

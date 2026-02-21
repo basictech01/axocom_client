@@ -14,32 +14,11 @@ export function useCandidateProfile(
                     party: "",
                     location: "",
                     age: 0,
-                    criminalCases: 0,
-                    netWorth: "₹0",
-                    itrCompliant: false,
                     socialLinks: {},
                 },
                 metaDetails: [],
             }
         }
-
-        const formatCurrency = (amount: number) => {
-            if (!amount) return "₹0"
-
-            if (amount >= 1_00_00_000) {
-                return `₹${(amount / 1_00_00_000).toFixed(2)} Cr`
-            }
-
-            if (amount >= 1_00_000) {
-                return `₹${(amount / 1_00_000).toFixed(2)} L`
-            }
-
-            return `₹${amount.toLocaleString("en-IN")}`
-        }
-
-        const assets = candidate.assets ?? 0
-        const liabilities = candidate.liabilities ?? 0
-        const netWorthValue = assets - liabilities
 
         const identity: IdentityVM = {
             name: candidate.name ?? "",
@@ -51,11 +30,6 @@ export function useCandidateProfile(
             party: candidate.party ?? "",
             location: candidate.assembly_constituency ?? "",
             age: candidate.age ?? 0,
-            criminalCases: candidate.criminal_cases ?? 0,
-            netWorth: formatCurrency(netWorthValue),
-            itrCompliant:
-                candidate.pan_itr ?
-                    Object.keys(candidate.pan_itr).length > 0 : false,
             socialLinks: candidate.social_profiles ?? {},
         }
 
