@@ -1,72 +1,19 @@
 import { useState } from "react";
-import { Users, MapPin, Flag, CalendarDays, Vote, Building2, TrendingUp, TrendingDown } from "lucide-react";
+import { TrendingUp, TrendingDown } from "lucide-react";
 import { Sidebar } from "~/components/molecules/sidebar";
 import { StatCard } from "~/components/molecules/stat-card";
 import { DonutPieChart } from "~/components/molecules/ratio-pie-chart";
 import { VotesBarList } from "~/components/molecules/elections/votes-bar-list";
 import { AgeBarChart } from "~/components/molecules/elections/age-bar-chart";
+import { ElectionFilterBar } from "~/components/molecules/elections/election-filter";
 import { TurnoutList } from "~/components/molecules/elections/turnout-list";
 import { ElectionTable } from "~/components/molecules/elections/election-table";
 import { Badge } from "~/components/ui/badge";
 import { useNavigation } from "~/hooks/useNavigation";
 import { cn } from "~/lib/utils";
+import { useElectionStats } from "~/features/elections/hooks/useElectionStats";
+import { useElectionFilter } from "~/features/elections/hooks/useElectionFilter";
 
-//  Static Data
-
-const STAT_CARDS = [
-    {
-        label: "Total Electorate",
-        value: "94.5 Cr",
-        icon: <Users size={16} />,
-        color: "blue" as const,
-        sub: "Registered voters nationwide",
-        trend: "+2.1%",
-    },
-    {
-        label: "Active Nominations",
-        value: "8,054",
-        icon: <Flag size={16} />,
-        color: "purple" as const,
-        sub: "Across 543 constituencies",
-        active: true,
-    },
-    {
-        label: "Parliamentary Seats",
-        value: "543",
-        icon: <Building2 size={16} />,
-        color: "teal" as const,
-        sub: "Lok Sabha constituencies",
-    },
-    {
-        label: "Registered Parties",
-        value: "673",
-        icon: <MapPin size={16} />,
-        color: "orange" as const,
-        sub: "National + state parties",
-    },
-    {
-        label: "Polling Cycle",
-        value: "45 Days",
-        icon: <CalendarDays size={16} />,
-        color: "green" as const,
-        sub: "7 phases of voting",
-    },
-    {
-        label: "Votes Cast",
-        value: "64.2 Cr",
-        icon: <Vote size={16} />,
-        color: "blue" as const,
-        sub: "67.9% turnout",
-        trend: "+1.4%",
-    },
-    {
-        label: "Total Stations",
-        value: "10.5 L",
-        icon: <Building2 size={16} />,
-        color: "purple" as const,
-        sub: "Polling booths deployed",
-    },
-];
 
 const GENDER_DATA = [
     { name: "Male", value: 52.3, color: "#2563eb" },
@@ -170,6 +117,11 @@ const STATUS_STYLE: Record<CandidateRow["status"], string> = {
 export default function ElectionPage() {
     const [sidebarOpen, setSidebarOpen] = useState(true);
     const { navItems, onNavChange } = useNavigation();
+    const {
+        selectedState, onStateChange, stateOptions,
+        selectedYear, onYearChange, yearOptions,
+    } = useElectionFilter();
+    const { statCards } = useElectionStats(selectedState, selectedYear);
 
     return (
         <div className="min-h-screen bg-[#f6f6f8] text-[#111318] font-sans selection:bg-blue-100">
@@ -190,18 +142,29 @@ export default function ElectionPage() {
                 <div className="max-w-[1400px] mx-auto p-6 space-y-8">
 
                     {/* ── Header ── */}
-                    <div>
-                        <h2 className="text-2xl font-black tracking-tight">
-                            Election Performance Dashboard
-                        </h2>
-                        <p className="text-sm text-gray-400 font-medium mt-1">
-                            Real-time enterprise analytics for the 2024 General Elections
-                        </p>
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                        <div>
+                            <h2 className="text-2xl font-black tracking-tight">
+                                Election Performance Dashboard
+                            </h2>
+                            <p className="text-sm text-gray-400 font-medium mt-1">
+                                Real-time enterprise analytics for the General Elections
+                            </p>
+                        </div>
+
+                        <ElectionFilterBar
+                            state={selectedState}
+                            onStateChange={onStateChange}
+                            stateOptions={stateOptions}
+                            year={selectedYear}
+                            onYearChange={onYearChange}
+                            yearOptions={yearOptions}
+                        />
                     </div>
 
                     {/* ── Stat Cards ── */}
                     <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-4">
-                        {STAT_CARDS.map((s) => (
+                        {statCards.map((s) => (
                             <StatCard
                                 key={s.label}
                                 icon={s.icon}
@@ -251,7 +214,7 @@ export default function ElectionPage() {
                     {/* ── Party Performance Table ── */}
                     <ElectionTable<PartyRow>
                         title="Party Performance Breakdown"
-                        subtitle="2024 General Election — seat counts and vote shares"
+                        subtitle="General Election — seat counts and vote shares"
                         columns={[
                             {
                                 key: "party",
@@ -313,7 +276,7 @@ export default function ElectionPage() {
                     {/* ── Candidate Outcomes Table ── */}
                     <ElectionTable<CandidateRow>
                         title="Detailed Candidate Outcomes"
-                        subtitle="Key candidate results from the 2024 General Election"
+                        subtitle="Key candidate results from the General Election"
                         columns={[
                             { key: "name", label: "Candidate" },
                             { key: "constituency", label: "Constituency" },
