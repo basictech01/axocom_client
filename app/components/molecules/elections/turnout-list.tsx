@@ -44,7 +44,7 @@ export const TurnoutList: React.FC<TurnoutListProps> = ({
                         {/* Rank badge */}
                         <div
                             className={cn(
-                                "size-6 rounded-full flex items-center justify-center text-[10px] font-black shrink-0",
+                                "size-6 rounded-full flex items-center justify-center text-xs font-black shrink-0",
                                 isHigh
                                     ? "bg-green-100 text-green-700"
                                     : "bg-red-100 text-red-600"
@@ -58,7 +58,7 @@ export const TurnoutList: React.FC<TurnoutListProps> = ({
                             <p className="text-sm font-bold text-gray-800 truncate">
                                 {item.constituency}
                             </p>
-                            <p className="text-[11px] text-gray-400 font-medium">
+                            <p className="text-xs text-gray-400 font-medium">
                                 {item.state}
                             </p>
                         </div>

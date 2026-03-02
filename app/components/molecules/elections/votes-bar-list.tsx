@@ -14,13 +14,16 @@ type VotesBarListProps = {
     className?: string;
 };
 
-export const VotesBarList: React.FC<VotesBarListProps> = ({
+export const VotesBarListInner: React.FC<VotesBarListProps> = ({
     title,
     subtitle,
     data,
     className,
 }) => {
-    const maxVotes = Math.max(...data.map((d) => d.votes));
+    const maxVotes = React.useMemo(
+        () => Math.max(...data.map((d) => d.votes)),
+        [data]
+    );
 
     return (
         <Card className={cn("border-none shadow-sm overflow-hidden flex flex-col", className)}>
@@ -45,7 +48,7 @@ export const VotesBarList: React.FC<VotesBarListProps> = ({
                             </span>
                             <div className="flex-1 h-3 bg-slate-100 rounded-full overflow-hidden ml-3">
                                 <div
-                                    className="h-full bg-[#2563eb] rounded-full group-hover:bg-blue-700 transition-colors"
+                                    className="h-full bg-blue-500 rounded-full group-hover:bg-blue-700 transition-colors"
                                     style={{ width: `${pct}%` }}
                                 />
                             </div>
@@ -59,3 +62,5 @@ export const VotesBarList: React.FC<VotesBarListProps> = ({
         </Card>
     );
 };
+
+export const VotesBarList = React.memo(VotesBarListInner);

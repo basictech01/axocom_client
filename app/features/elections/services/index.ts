@@ -13,10 +13,14 @@ export const GET_ELECTIONS_BY_STATE_AND_YEAR: TypedDocumentNode<
   query GetElectionsByStateAndYear($state: String!, $year: Int!) {
     electionsByStateAndYear(state: $state, year: $year) {
       id
+      constituency_id
       total_voters
+      male_voters
+      female_voters
       start_date
       end_date
       year
+      number_of_polling_stations
     }
   }
 `;

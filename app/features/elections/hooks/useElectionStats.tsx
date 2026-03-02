@@ -6,22 +6,9 @@ import {
     GET_ELECTION_CANDIDATES_BY_STATE_AND_YEAR,
 } from "../services";
 import { GET_CONSTITUENCIES_BY_STATE } from "../../constituency/services";
+import { formatLakh } from "../utils/formatLakh";
+import { formatDateRange } from "../utils/formatDateRange";
 
-function formatDateRange(dates: string[]): string {
-    if (!dates.length) return "—";
-    const sorted = [...dates].sort();
-    const fmt = (d: string) =>
-        new Date(d).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
-    const start = fmt(sorted[0]);
-    const end = fmt(sorted[sorted.length - 1]);
-    return start === end ? start : `${start} – ${end}`;
-}
-
-function formatLakh(n: number): string {
-    if (n >= 1e7) return `${(n / 1e7).toFixed(1)} Cr`;
-    if (n >= 1e5) return `${(n / 1e5).toFixed(1)} L`;
-    return n.toLocaleString("en-IN");
-}
 
 export function useElectionStats(state: string, year: string) {
     const yearNum = Number(year);
@@ -56,7 +43,7 @@ export function useElectionStats(state: string, year: string) {
         const totalCandidates = candidates.length;
         const totalParties = new Set(candidates.map((c) => c.party_id)).size;
         const totalConstituencies = constituencies.length;
-        const totalPollingStns = constituencies.reduce((s, c) => s + (c.number_of_polling_stations ?? 0), 0);
+        const totalPollingStns = elections.reduce((s, c) => s + (c.number_of_polling_stations ?? 0), 0);
         const votesCast = candidates.reduce((s, c) => s + c.votes_polled, 0);
         const electionDates = hasFilter && !loading
             ? formatDateRange(elections.flatMap((e) => [e.start_date, e.end_date]))
@@ -120,5 +107,5 @@ export function useElectionStats(state: string, year: string) {
         ];
     }, [hasFilter, loading, electionsData, candidatesData, constituenciesData]);
 
-    return { statCards, loading };
+    return { statCards, loading, electionsData, constituenciesData };
 }

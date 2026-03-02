@@ -13,13 +13,8 @@ import { useNavigation } from "~/hooks/useNavigation";
 import { cn } from "~/lib/utils";
 import { useElectionStats } from "~/features/elections/hooks/useElectionStats";
 import { useElectionFilter } from "~/features/elections/hooks/useElectionFilter";
-
-
-const GENDER_DATA = [
-    { name: "Male", value: 52.3, color: "#2563eb" },
-    { name: "Female", value: 47.1, color: "#ec4899" },
-    { name: "Other", value: 0.6, color: "#f97316" },
-];
+import { useGenderSplitFromElections } from "~/features/elections/hooks/useGenderSplit";
+import { useVotesPerConstituency } from "~/features/elections/hooks/useVotesPerConstituency";
 
 const AGE_DATA = [
     { group: "18–25", voters: 18.2 },
@@ -36,20 +31,6 @@ const PARTY_DOMINANCE_DATA = [
     { name: "SP", value: 6.4, color: "#ef4444" },
     { name: "Others", value: 30.4, color: "#9ca3af" },
 ];
-
-const VOTES_PER_CONSTITUENCY = [
-    { constituency: "Malkajgiri", votes: 31.5 },
-    { constituency: "Bangalore North", votes: 28.2 },
-    { constituency: "Ghaziabad", votes: 26.1 },
-    { constituency: "Thane", votes: 23.8 },
-    { constituency: "Unnao", votes: 22.4 },
-    { constituency: "Diamond Harbour", votes: 20.8 },
-    { constituency: "Gurgaon", votes: 19.2 },
-    { constituency: "Raipur", votes: 17.6 },
-    { constituency: "Lucknow", votes: 16.4 },
-    { constituency: "Pune", votes: 15.1 },
-];
-
 
 type PartyRow = {
     party: string;
@@ -121,8 +102,9 @@ export default function ElectionPage() {
         selectedState, onStateChange, stateOptions,
         selectedYear, onYearChange, yearOptions,
     } = useElectionFilter();
-    const { statCards } = useElectionStats(selectedState, selectedYear);
-
+    const { statCards, electionsData, constituenciesData } = useElectionStats(selectedState, selectedYear);
+    const { data: genderData, centerValue: genderTotal, centerLabel } = useGenderSplitFromElections(electionsData);
+    const { data: votesPerConstituency } = useVotesPerConstituency(electionsData, constituenciesData, 10);
     return (
         <div className="min-h-screen bg-[#f6f6f8] text-[#111318] font-sans selection:bg-blue-100">
             <Sidebar
@@ -182,9 +164,9 @@ export default function ElectionPage() {
                         <DonutPieChart
                             title="Gender Split"
                             subtitle="Voter registration breakdown by gender"
-                            centerValue="94.5 Cr"
-                            centerLabel="TOTAL VOTERS"
-                            data={GENDER_DATA}
+                            centerValue={genderTotal}
+                            centerLabel={centerLabel}
+                            data={genderData}
                             valueSuffix="%"
                         />
 
@@ -208,7 +190,7 @@ export default function ElectionPage() {
                     <VotesBarList
                         title="Votes per Constituency (Top 10)"
                         subtitle="Highest vote counts in lakh"
-                        data={VOTES_PER_CONSTITUENCY}
+                        data={votesPerConstituency}
                     />
 
                     {/* ── Party Performance Table ── */}
@@ -301,7 +283,7 @@ export default function ElectionPage() {
                                 render: (row) => (
                                     <Badge
                                         className={cn(
-                                            "text-[10px] font-black border-none px-2",
+                                            "text-xs font-black border-none px-2",
                                             STATUS_STYLE[row.status]
                                         )}
                                     >

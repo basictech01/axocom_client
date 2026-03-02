@@ -63,6 +63,7 @@ export const GET_ELECTION_BY_CONSTITUENCY_AND_YEAR: TypedDocumentNode<
       total_voters
       male_voters
       female_voters
+      number_of_polling_stations
       type
       created_at
     }
@@ -71,7 +72,6 @@ export const GET_ELECTION_BY_CONSTITUENCY_AND_YEAR: TypedDocumentNode<
       name
       state
       ac_number
-      number_of_polling_stations
       created_at
     }
   }

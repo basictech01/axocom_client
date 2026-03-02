@@ -22,13 +22,16 @@ const BAR_COLORS = [
     "#bfdbfe", // 65+    lightest
 ];
 
-export const AgeBarChart: React.FC<AgeBarChartProps> = ({
+export const AgeBarChartInner: React.FC<AgeBarChartProps> = ({
     title,
     subtitle,
     data,
     className,
 }) => {
-    const maxVal = Math.max(...data.map((d) => d.voters));
+    const maxVal = React.useMemo(
+        () => Math.max(...data.map((d) => d.voters)),
+        [data]
+    );
 
     return (
         <Card className={`border-none shadow-sm overflow-hidden ${className ?? ""}`}>
@@ -50,7 +53,7 @@ export const AgeBarChart: React.FC<AgeBarChartProps> = ({
                                 className="flex flex-col items-center flex-1 h-full justify-end group cursor-pointer"
                             >
                                 {/* hover label */}
-                                <span className="text-[10px] font-bold text-slate-700 mb-1 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                                <span className="text-xs font-bold text-slate-700 mb-1 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
                                     {d.voters} Cr
                                 </span>
 
@@ -73,7 +76,7 @@ export const AgeBarChart: React.FC<AgeBarChartProps> = ({
                     {data.map((d) => (
                         <span
                             key={d.group}
-                            className="flex-1 text-center text-[10px] font-semibold text-slate-500 uppercase truncate"
+                            className="flex-1 text-center text-xs font-semibold text-slate-500 uppercase truncate"
                         >
                             {d.group}
                         </span>
@@ -83,3 +86,5 @@ export const AgeBarChart: React.FC<AgeBarChartProps> = ({
         </Card>
     );
 };
+
+export const AgeBarChart = React.memo(AgeBarChartInner);

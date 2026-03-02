@@ -1,9 +1,13 @@
 // Election fields used by stat cards
 export interface ElectionStat {
     id: number;
+    constituency_id: number;
     total_voters: number;
+    male_voters: number;
+    female_voters: number;
     start_date: string;
     end_date: string;
+    number_of_polling_stations: number;
     year: number;
 }
 
