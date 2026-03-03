@@ -60,8 +60,8 @@ export function useConstituencyOverview(detailData: ElectionDetailData | undefin
             {
                 icon: <Users size={18} />,
                 label: "Polling Stations",
-                value: formatNumber(constituency.number_of_polling_stations),
-                sub: `Avg ${formatNumber(Math.round(election.total_voters / constituency.number_of_polling_stations))} voters/station`,
+                value: formatNumber(election.number_of_polling_stations),
+                sub: `Avg ${formatNumber(Math.round(election.total_voters / election.number_of_polling_stations))} voters/station`,
                 color: "teal",
             },
         ];

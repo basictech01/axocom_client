@@ -4,7 +4,6 @@ export interface Constituency {
     name: string;
     state: string;
     ac_number: number;
-    number_of_polling_stations: number;
     created_at: string;
 }
 
@@ -27,6 +26,7 @@ export interface Election {
     total_voters: number;
     male_voters: number;
     female_voters: number;
+    number_of_polling_stations: number;
     type: string;
     created_at: string;
 }

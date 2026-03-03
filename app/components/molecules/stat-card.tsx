@@ -51,14 +51,14 @@ export const StatCard: React.FC<StatCardProps> = ({
                 )}
 
                 {trend && (
-                    <span className="text-green-600 text-[11px] font-bold">
+                    <span className="text-green-600 text-xs font-bold">
                         {trend}
                     </span>
                 )}
             </div>
 
             <div>
-                <p className="text-[11px] font-bold text-gray-400 uppercase tracking-wide">
+                <p className="text-xs font-bold text-gray-400 uppercase tracking-wide">
                     {label}
                 </p>
                 <h4 className="text-2xl font-black">{value}</h4>

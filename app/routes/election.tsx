@@ -1,0 +1,276 @@
+import { useState } from "react";
+import { TrendingUp, TrendingDown } from "lucide-react";
+import { Sidebar } from "~/components/molecules/sidebar";
+import { StatCard } from "~/components/molecules/stat-card";
+import { DonutPieChart } from "~/components/molecules/ratio-pie-chart";
+import { VotesBarList } from "~/components/molecules/elections/votes-bar-list";
+import { AgeBarChart } from "~/components/molecules/elections/age-bar-chart";
+import { ElectionFilterBar } from "~/components/molecules/elections/election-filter";
+import { TurnoutList } from "~/components/molecules/elections/turnout-list";
+import { ElectionTable } from "~/components/molecules/elections/election-table";
+import { Badge } from "~/components/ui/badge";
+import { useNavigation } from "~/hooks/useNavigation";
+import { cn } from "~/lib/utils";
+import { useElectionStats } from "~/features/elections/hooks/useElectionStats";
+import { useElectionFilter } from "~/features/elections/hooks/useElectionFilter";
+import { useGenderSplitFromElections } from "~/features/elections/hooks/useGenderSplit";
+import { useVotesPerConstituency } from "~/features/elections/hooks/useVotesPerConstituency";
+import { useVoterAgeDemographic } from "~/features/elections/hooks/useVoterAgeDemographics";
+import { usePartyDominance } from "~/features/elections/hooks/usePartyDominance";
+import { useDetailedCandidateResults } from "~/features/elections/hooks/useDetailedCandidateResults";
+import type { CandidateRow } from "~/features/elections/hooks/useDetailedCandidateResults";
+import { STATUS_STYLE } from "~/features/elections/hooks/useDetailedCandidateResults";
+
+type PartyRow = {
+    party: string;
+    seats: number;
+    voteShare: string;
+    trend: string;
+    trendDir: "up" | "down";
+    color: string;
+};
+
+const PARTY_PERFORMANCE: PartyRow[] = [
+    { party: "BJP", seats: 240, voteShare: "36.6%", trend: "+2.4%", trendDir: "up", color: "#f97316" },
+    { party: "INC", seats: 99, voteShare: "21.2%", trend: "+3.1%", trendDir: "up", color: "#2563eb" },
+    { party: "SP", seats: 37, voteShare: "6.2%", trend: "+1.8%", trendDir: "up", color: "#ef4444" },
+    { party: "AITC", seats: 29, voteShare: "4.8%", trend: "-0.6%", trendDir: "down", color: "#22c55e" },
+    { party: "DMK", seats: 22, voteShare: "3.7%", trend: "+0.9%", trendDir: "up", color: "#8b5cf6" },
+    { party: "TDP", seats: 16, voteShare: "2.1%", trend: "-1.2%", trendDir: "down", color: "#eab308" },
+    { party: "Others", seats: 100, voteShare: "25.4%", trend: "-5.4%", trendDir: "down", color: "#9ca3af" },
+];
+
+const HIGHEST_TURNOUT = [
+    { rank: 1, constituency: "Nagaland East", state: "Nagaland", turnout: 89.4 },
+    { rank: 2, constituency: "Tripura West", state: "Tripura", turnout: 87.1 },
+    { rank: 3, constituency: "Lakshadweep", state: "Lakshadweep", turnout: 86.8 },
+    { rank: 4, constituency: "Sikkim", state: "Sikkim", turnout: 85.3 },
+    { rank: 5, constituency: "Mizoram", state: "Mizoram", turnout: 83.9 },
+];
+
+const LOWEST_TURNOUT = [
+    { rank: 1, constituency: "Srinagar", state: "J & K", turnout: 14.4 },
+    { rank: 2, constituency: "Anantnag", state: "J & K", turnout: 19.2 },
+    { rank: 3, constituency: "Baramulla", state: "J & K", turnout: 24.7 },
+    { rank: 4, constituency: "Inner Manipur", state: "Manipur", turnout: 31.5 },
+    { rank: 5, constituency: "Outer Manipur", state: "Manipur", turnout: 38.1 },
+];
+
+
+
+export default function ElectionPage() {
+    const [sidebarOpen, setSidebarOpen] = useState(true);
+    const { navItems, onNavChange } = useNavigation();
+    const {
+        selectedState, onStateChange, stateOptions,
+        selectedYear, onYearChange, yearOptions,
+    } = useElectionFilter();
+    const { statCards, electionsData, constituenciesData, candidatesData } = useElectionStats(selectedState, selectedYear);
+    const { data: genderData, centerValue: genderTotal, centerLabel } = useGenderSplitFromElections(electionsData);
+    const { data: votesPerConstituency } = useVotesPerConstituency(electionsData, constituenciesData, 10);
+    const { ageData } = useVoterAgeDemographic(selectedState);
+    const {
+        data: partyDominanceData,
+        centerValue: partyCenterValue,
+        centerLabel: partyCenterLabel,
+    } = usePartyDominance(candidatesData);
+    const { rows: detailedCandidateRows } = useDetailedCandidateResults(
+        candidatesData,
+        constituenciesData
+    );
+
+    return (
+        <div className="min-h-screen bg-slate-100 text-slate-900 font-sans selection:bg-blue-100">
+            <Sidebar
+                navItems={navItems}
+                activeNavId="elections"
+                open={sidebarOpen}
+                onOpenChange={setSidebarOpen}
+                onNavChange={onNavChange}
+            />
+
+            <main
+                className={cn(
+                    "min-h-screen transition-[padding-left] duration-200",
+                    sidebarOpen ? "pl-56" : "pl-14"
+                )}
+            >
+                <div className="max-w-[1400px] mx-auto p-6 space-y-8">
+
+                    {/* ── Header ── */}
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                        <div>
+                            <h2 className="text-2xl font-black tracking-tight">
+                                Election Performance Dashboard
+                            </h2>
+                            <p className="text-sm text-gray-400 font-medium mt-1">
+                                Real-time enterprise analytics for the General Elections
+                            </p>
+                        </div>
+
+                        <ElectionFilterBar
+                            state={selectedState}
+                            onStateChange={onStateChange}
+                            stateOptions={stateOptions}
+                            year={selectedYear}
+                            onYearChange={onYearChange}
+                            yearOptions={yearOptions}
+                        />
+                    </div>
+
+                    {/* ── Stat Cards ── */}
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-4">
+                        {statCards.map((s) => (
+                            <StatCard
+                                key={s.label}
+                                icon={s.icon}
+                                label={s.label}
+                                value={s.value}
+                                sub={s.sub}
+                                color={s.color}
+                                active={s.active}
+                            />
+                        ))}
+                    </div>
+
+                    {/* ── Row 1: Gender / Age / Party Dominance ── */}
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <DonutPieChart
+                            title="Gender Split"
+                            subtitle="Voter registration breakdown by gender"
+                            centerValue={genderTotal}
+                            centerLabel={centerLabel}
+                            data={genderData}
+                            valueSuffix="%"
+                        />
+
+                        <AgeBarChart
+                            title="Age Demographics"
+                            subtitle="Voter distribution by age group (Cr)"
+                            data={ageData}
+                        />
+
+                        <DonutPieChart
+                            title="Party Dominance"
+                            subtitle="State vote share by major parties"
+                            centerValue={partyCenterValue}
+                            centerLabel={partyCenterLabel}
+                            data={partyDominanceData}
+                            valueSuffix="%"
+                        />
+                    </div>
+
+                    {/* ── Row 2: Votes per Constituency ── */}
+                    <VotesBarList
+                        title="Votes per Constituency (Top 10)"
+                        subtitle="Highest vote counts in lakh"
+                        data={votesPerConstituency}
+                    />
+
+                    {/* ── Party Performance Table ── */}
+                    <ElectionTable<PartyRow>
+                        title="Party Performance Breakdown"
+                        subtitle="General Election — seat counts and vote shares"
+                        columns={[
+                            {
+                                key: "party",
+                                label: "Party",
+                                render: (row) => (
+                                    <span className="flex items-center gap-2 font-bold">
+                                        <span
+                                            className="size-2.5 rounded-full shrink-0"
+                                            style={{ background: row.color }}
+                                        />
+                                        {row.party}
+                                    </span>
+                                ),
+                            },
+                            { key: "seats", label: "Seats Won", align: "right" },
+                            { key: "voteShare", label: "Vote Share", align: "right" },
+                            {
+                                key: "trend",
+                                label: "Trend",
+                                align: "right",
+                                render: (row) => (
+                                    <span
+                                        className={cn(
+                                            "flex items-center justify-end gap-1 font-bold text-xs",
+                                            row.trendDir === "up"
+                                                ? "text-green-600"
+                                                : "text-red-500"
+                                        )}
+                                    >
+                                        {row.trendDir === "up" ? (
+                                            <TrendingUp size={13} />
+                                        ) : (
+                                            <TrendingDown size={13} />
+                                        )}
+                                        {row.trend}
+                                    </span>
+                                ),
+                            },
+                        ]}
+                        rows={PARTY_PERFORMANCE}
+                    />
+
+                    {/* ── Highest / Lowest Turnout ── */}
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <TurnoutList
+                            title="Highest Turnout Constituencies"
+                            subtitle="Top 5 by voter participation"
+                            items={HIGHEST_TURNOUT}
+                            variant="high"
+                        />
+                        <TurnoutList
+                            title="Lowest Turnout Constituencies"
+                            subtitle="Bottom 5 by voter participation"
+                            items={LOWEST_TURNOUT}
+                            variant="low"
+                        />
+                    </div>
+
+                    {/* ── Candidate Outcomes Table ── */}
+                    <ElectionTable<CandidateRow>
+                        title="Detailed Candidate Outcomes"
+                        subtitle="Key candidate results from the General Election"
+                        columns={[
+                            { key: "name", label: "Candidate" },
+                            { key: "constituency", label: "Constituency" },
+                            {
+                                key: "party",
+                                label: "Party",
+                                render: (row) => (
+                                    <span className="flex items-center gap-2">
+                                        <span
+                                            className="size-2 rounded-full shrink-0"
+                                            style={{ background: row.partyColor }}
+                                        />
+                                        <span className="font-medium">{row.party}</span>
+                                    </span>
+                                ),
+                            },
+                            { key: "votes", label: "Votes", align: "right" },
+                            {
+                                key: "status",
+                                label: "Status",
+                                align: "center",
+                                render: (row) => (
+                                    <Badge
+                                        className={cn(
+                                            "text-xs font-black border-none px-2",
+                                            STATUS_STYLE[row.status]
+                                        )}
+                                    >
+                                        {row.status}
+                                    </Badge>
+                                ),
+                            },
+                        ]}
+                        rows={detailedCandidateRows}
+                    />
+
+                </div>
+            </main>
+        </div>
+    );
+}

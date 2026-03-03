@@ -5,4 +5,5 @@ export default [
     route("candidates", "routes/candidates.tsx"),
     route("constituency", "routes/constituency.tsx"),
     route("candidates/:id", "routes/candidate-profile.tsx"),
+    route("elections", "routes/election.tsx"),
 ] satisfies RouteConfig;
