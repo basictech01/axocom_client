@@ -15,22 +15,11 @@ import { useElectionStats } from "~/features/elections/hooks/useElectionStats";
 import { useElectionFilter } from "~/features/elections/hooks/useElectionFilter";
 import { useGenderSplitFromElections } from "~/features/elections/hooks/useGenderSplit";
 import { useVotesPerConstituency } from "~/features/elections/hooks/useVotesPerConstituency";
-
-const AGE_DATA = [
-    { group: "18–25", voters: 18.2 },
-    { group: "26–35", voters: 22.4 },
-    { group: "36–45", voters: 19.8 },
-    { group: "46–55", voters: 17.3 },
-    { group: "56–65", voters: 13.6 },
-    { group: "65+", voters: 8.7 },
-];
-
-const PARTY_DOMINANCE_DATA = [
-    { name: "BJP", value: 43.7, color: "#f97316" },
-    { name: "INC", value: 19.5, color: "#2563eb" },
-    { name: "SP", value: 6.4, color: "#ef4444" },
-    { name: "Others", value: 30.4, color: "#9ca3af" },
-];
+import { useVoterAgeDemographic } from "~/features/elections/hooks/useVoterAgeDemographics";
+import { usePartyDominance } from "~/features/elections/hooks/usePartyDominance";
+import { useDetailedCandidateResults } from "~/features/elections/hooks/useDetailedCandidateResults";
+import type { CandidateRow } from "~/features/elections/hooks/useDetailedCandidateResults";
+import { STATUS_STYLE } from "~/features/elections/hooks/useDetailedCandidateResults";
 
 type PartyRow = {
     party: string;
@@ -67,33 +56,7 @@ const LOWEST_TURNOUT = [
     { rank: 5, constituency: "Outer Manipur", state: "Manipur", turnout: 38.1 },
 ];
 
-type CandidateRow = {
-    name: string;
-    constituency: string;
-    party: string;
-    partyColor: string;
-    votes: string;
-    status: "Won" | "Lost" | "Leading" | "Trailing";
-};
 
-const CANDIDATE_OUTCOMES: CandidateRow[] = [
-    { name: "Narendra Modi", constituency: "Varanasi", party: "BJP", partyColor: "#f97316", votes: "6,12,970", status: "Won" },
-    { name: "Rahul Gandhi", constituency: "Raebareli", party: "INC", partyColor: "#2563eb", votes: "6,83,726", status: "Won" },
-    { name: "Smriti Irani", constituency: "Amethi", party: "BJP", partyColor: "#f97316", votes: "4,14,718", status: "Lost" },
-    { name: "Akhilesh Yadav", constituency: "Kannauj", party: "SP", partyColor: "#ef4444", votes: "5,93,507", status: "Won" },
-    { name: "Mamata Banerjee", constituency: "Bhawanipur", party: "AITC", partyColor: "#22c55e", votes: "—", status: "Trailing" },
-    { name: "Chandrababu Naidu", constituency: "Kuppam", party: "TDP", partyColor: "#eab308", votes: "1,08,432", status: "Won" },
-    { name: "Omar Abdullah", constituency: "Baramulla", party: "NC", partyColor: "#6366f1", votes: "4,64,043", status: "Won" },
-];
-
-const STATUS_STYLE: Record<CandidateRow["status"], string> = {
-    Won: "bg-green-100 text-green-700",
-    Lost: "bg-red-100 text-red-600",
-    Leading: "bg-blue-100 text-blue-700",
-    Trailing: "bg-amber-100 text-amber-700",
-};
-
-//  Component 
 
 export default function ElectionPage() {
     const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -102,11 +65,22 @@ export default function ElectionPage() {
         selectedState, onStateChange, stateOptions,
         selectedYear, onYearChange, yearOptions,
     } = useElectionFilter();
-    const { statCards, electionsData, constituenciesData } = useElectionStats(selectedState, selectedYear);
+    const { statCards, electionsData, constituenciesData, candidatesData } = useElectionStats(selectedState, selectedYear);
     const { data: genderData, centerValue: genderTotal, centerLabel } = useGenderSplitFromElections(electionsData);
     const { data: votesPerConstituency } = useVotesPerConstituency(electionsData, constituenciesData, 10);
+    const { ageData } = useVoterAgeDemographic(selectedState);
+    const {
+        data: partyDominanceData,
+        centerValue: partyCenterValue,
+        centerLabel: partyCenterLabel,
+    } = usePartyDominance(candidatesData);
+    const { rows: detailedCandidateRows } = useDetailedCandidateResults(
+        candidatesData,
+        constituenciesData
+    );
+
     return (
-        <div className="min-h-screen bg-[#f6f6f8] text-[#111318] font-sans selection:bg-blue-100">
+        <div className="min-h-screen bg-slate-100 text-slate-900 font-sans selection:bg-blue-100">
             <Sidebar
                 navItems={navItems}
                 activeNavId="elections"
@@ -173,15 +147,15 @@ export default function ElectionPage() {
                         <AgeBarChart
                             title="Age Demographics"
                             subtitle="Voter distribution by age group (Cr)"
-                            data={AGE_DATA}
+                            data={ageData}
                         />
 
                         <DonutPieChart
                             title="Party Dominance"
-                            subtitle="National vote share by major parties"
-                            centerValue="43.7%"
-                            centerLabel="BJP SHARE"
-                            data={PARTY_DOMINANCE_DATA}
+                            subtitle="State vote share by major parties"
+                            centerValue={partyCenterValue}
+                            centerLabel={partyCenterLabel}
+                            data={partyDominanceData}
                             valueSuffix="%"
                         />
                     </div>
@@ -292,7 +266,7 @@ export default function ElectionPage() {
                                 ),
                             },
                         ]}
-                        rows={CANDIDATE_OUTCOMES}
+                        rows={detailedCandidateRows}
                     />
 
                 </div>

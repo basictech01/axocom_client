@@ -107,5 +107,5 @@ export function useElectionStats(state: string, year: string) {
         ];
     }, [hasFilter, loading, electionsData, candidatesData, constituenciesData]);
 
-    return { statCards, loading, electionsData, constituenciesData };
+    return { statCards, loading, electionsData, constituenciesData, candidatesData };
 }

@@ -24,6 +24,8 @@ export interface ElectionCandidateStat {
     id: number;
     party_id: number;
     votes_polled: number;
+    constituency_id: number;
+    candidate_id: number;
 }
 
 export interface ElectionCandidateStatData {
@@ -43,4 +45,40 @@ export interface ElectionYearRow {
 
 export interface ElectionsByStateAndYearData {
     electionsByStateAndYear: ElectionYearRow[];
+}
+
+export interface VoterAgeBucket {
+    group: string;
+    total: number;
+}
+
+export interface VoterAgeBucketsData {
+    voterAgeBucketsByState: VoterAgeBucket[];
+}
+
+export interface Party {
+    id: number;
+    name: string;
+    short_name: string;
+}
+
+export interface PartiesData {
+    parties: Party[];
+}
+
+export interface ElectionResultRow {
+    id: number;
+    election_candidate_id: number;
+    votes_polled: number;
+    position: number;
+    status: string;
+    election_candidate: {
+        candidate: {
+            name: string;
+        };
+    };
+}
+
+export interface ElectionResultsByCandidateIdsData {
+    election_resultsByCandidateIds: ElectionResultRow[];
 }
