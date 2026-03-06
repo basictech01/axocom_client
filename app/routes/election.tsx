@@ -24,24 +24,7 @@ import { useNavigate } from "react-router";
 import { Button } from "~/components/ui/button";
 import { usePartyPerformance } from "~/features/elections/hooks/usePartyPerformance";
 import type { PartyPerformanceRow } from "~/features/elections/types";
-
-const HIGHEST_TURNOUT = [
-    { rank: 1, constituency: "Nagaland East", state: "Nagaland", turnout: 89.4 },
-    { rank: 2, constituency: "Tripura West", state: "Tripura", turnout: 87.1 },
-    { rank: 3, constituency: "Lakshadweep", state: "Lakshadweep", turnout: 86.8 },
-    { rank: 4, constituency: "Sikkim", state: "Sikkim", turnout: 85.3 },
-    { rank: 5, constituency: "Mizoram", state: "Mizoram", turnout: 83.9 },
-];
-
-const LOWEST_TURNOUT = [
-    { rank: 1, constituency: "Srinagar", state: "J & K", turnout: 14.4 },
-    { rank: 2, constituency: "Anantnag", state: "J & K", turnout: 19.2 },
-    { rank: 3, constituency: "Baramulla", state: "J & K", turnout: 24.7 },
-    { rank: 4, constituency: "Inner Manipur", state: "Manipur", turnout: 31.5 },
-    { rank: 5, constituency: "Outer Manipur", state: "Manipur", turnout: 38.1 },
-];
-
-
+import { useConstituencyTurnout } from "~/features/elections/hooks/useConstituencyTurnout";
 
 export default function ElectionPage() {
     const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -66,6 +49,13 @@ export default function ElectionPage() {
         candidatesData,
         partiesData,
         resultsData
+    );
+
+    const { highest: highestTurnout, lowest: lowestTurnout } = useConstituencyTurnout(
+        electionsData,
+        candidatesData,
+        constituenciesData,
+        5
     );
 
     const navigate = useNavigate();
@@ -203,20 +193,18 @@ export default function ElectionPage() {
                     />
 
                     {/* ── Highest / Lowest Turnout ── */}
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        <TurnoutList
-                            title="Highest Turnout Constituencies"
-                            subtitle="Top 5 by voter participation"
-                            items={HIGHEST_TURNOUT}
-                            variant="high"
-                        />
-                        <TurnoutList
-                            title="Lowest Turnout Constituencies"
-                            subtitle="Bottom 5 by voter participation"
-                            items={LOWEST_TURNOUT}
-                            variant="low"
-                        />
-                    </div>
+                    <TurnoutList
+                        title="Highest Turnout Constituencies"
+                        subtitle="Top 5 by voter participation"
+                        items={highestTurnout}
+                        variant="high"
+                    />
+                    <TurnoutList
+                        title="Lowest Turnout Constituencies"
+                        subtitle="Bottom 5 by voter participation"
+                        items={lowestTurnout}
+                        variant="low"
+                    />
 
                     {/* ── Candidate Outcomes Table ── */}
                     <ElectionTable<CandidateRow>
