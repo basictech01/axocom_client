@@ -30,7 +30,7 @@ type SidebarProps = {
 
 const iconForNavId = (id: string) => {
     switch (id) {
-        case "dashboard":
+        case "chat":
             return <LayoutDashboard size={20} />;
         case "constituencies":
         case "constituency":

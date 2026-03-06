@@ -4,7 +4,7 @@ export interface NavItem {
 }
 
 export const NAV_ITEMS: NavItem[] = [
-    { id: "dashboard", label: "Dashboard" },
+    { id: "chat", label: "Chat" },
     { id: "constituencies", label: "Constituencies" },
     { id: "candidates", label: "Candidates" },
     { id: "parties", label: "Parties" },
