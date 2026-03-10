@@ -5,15 +5,8 @@ import type {
     PartiesData,
 } from "../types";
 import type { PartyPerformanceRow } from "../types";
+import { PARTY_COLORS } from "~/features/elections/utils/constant";
 
-const PARTY_COLORS: Record<string, string> = {
-    BJP: "#f97316",
-    INC: "#2563eb",
-    SP: "#ef4444",
-    AITC: "#22c55e",
-    DMK: "#8b5cf6",
-    TDP: "#eab308",
-};
 
 function partyColor(shortName: string): string {
     return PARTY_COLORS[shortName] ?? "#9ca3af";
