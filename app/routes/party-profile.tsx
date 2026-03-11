@@ -22,6 +22,7 @@ import { useParams, useNavigate } from "react-router";
 import { usePartyProfile } from "~/features/party/hooks/usePartyProfile";
 import { usePartyYearFilter } from "~/features/party/hooks/usePartyYearFilter";
 import { usePartyKpiStats } from "~/features/party/hooks/usePartyKpiStats";
+import { usePartySeatsHistory } from "~/features/party/hooks/usePartySeatsHistory";
 import { usePartyCandidateRoster } from "~/features/party/hooks/usePartyCandidateRoster";
 import {
     Select,
@@ -52,20 +53,12 @@ const KPI_CARD_META = [
     },
 ];
 
-const SEATS_DATA = [
-    { value: 145, label: "'04" },
-    { value: 206, label: "'09" },
-    { value: 44, label: "'14" },
-    { value: 52, label: "'19" },
-];
-const SEATS_MAX = 206;
-
-const VOTE_SHARE_DATA = [
-    { year: "'04", voteShare: 26.5 },
-    { year: "'09", voteShare: 28.6 },
-    { year: "'14", voteShare: 19.3 },
-    { year: "'19", voteShare: 19.5 },
-];
+// const VOTE_SHARE_DATA = [
+//     { year: "'04", voteShare: 26.5 },
+//     { year: "'09", voteShare: 28.6 },
+//     { year: "'14", voteShare: 19.3 },
+//     { year: "'19", voteShare: 19.5 },
+// ];
 
 // Page 
 
@@ -88,6 +81,8 @@ export default function PartyProfilePage() {
         loading: kpiLoading,
         electionCandidateIds,
     } = usePartyKpiStats(partyId, Number(selectedYear));
+    const { seatsData, seatsMax, loading: seatsHistoryLoading } =
+        usePartySeatsHistory(partyId, Number(selectedYear), kpiStats?.seatsWon ?? 0);
     const {
         rosterRows,
         criminalData,
@@ -214,20 +209,22 @@ export default function PartyProfilePage() {
                                         Seats Won per Election
                                     </CardTitle>
                                     <p className="text-2xl font-black text-slate-900">
-                                        52{" "}
+                                        {seatsHistoryLoading || !kpiStats
+                                            ? "—"
+                                            : `${kpiStats.seatsWon.toLocaleString("en-IN")} `}
                                         <span className="text-sm font-normal text-slate-500">
-                                            Seats (2019)
+                                            Seats {selectedYear ? `(${selectedYear})` : ""}
                                         </span>
                                     </p>
                                 </CardHeader>
                                 <CardContent>
                                     <div className="flex items-end justify-around gap-2 pt-4">
-                                        {SEATS_DATA.map((d) => (
+                                        {seatsData.map((d) => (
                                             <BarChartBar
                                                 key={d.label}
                                                 value={d.value}
                                                 label={d.label}
-                                                maxValue={SEATS_MAX}
+                                                maxValue={seatsMax}
                                                 height={120}
                                                 barColor="bg-blue-500"
                                             />
@@ -237,7 +234,7 @@ export default function PartyProfilePage() {
                             </Card>
 
                             {/* Vote Share */}
-                            <TrendAreaChart
+                            {/* <TrendAreaChart
                                 title="Vote Share Trend"
                                 subtitle="Lok Sabha elections"
                                 headlineValue="19.46%"
@@ -246,7 +243,7 @@ export default function PartyProfilePage() {
                                 xKey="year"
                                 yKey="voteShare"
                                 valueSuffix="%"
-                            />
+                            /> */}
                         </div>
                     </section>
 

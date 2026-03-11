@@ -4,7 +4,7 @@ export interface NavItem {
 }
 
 export const NAV_ITEMS: NavItem[] = [
-    { id: "chat", label: "Chat" },
+    // { id: "chat", label: "Chat" }, // TODO: Add chat feature later
     { id: "constituencies", label: "Constituencies" },
     { id: "candidates", label: "Candidates" },
     { id: "parties", label: "Parties" },

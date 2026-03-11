@@ -7,6 +7,7 @@ import {
     User,
     Settings,
     Calendar,
+    Building2,
 } from "lucide-react";
 import { cn } from "~/lib/utils";
 
@@ -30,19 +31,17 @@ type SidebarProps = {
 
 const iconForNavId = (id: string) => {
     switch (id) {
-        case "chat":
-            return <LayoutDashboard size={20} />;
+        // case "chat":
+        //     return <LayoutDashboard size={20} />;
         case "constituencies":
         case "constituency":
             return <Map size={20} />;
         case "candidates":
             return <Users size={20} />;
-        case "profile":
-            return <User size={20} />;
-        case "settings":
-            return <Settings size={20} />;
+        //case "profile":
+        //    return <User size={20} />;
         case "parties":
-            return <Users size={20} />;
+            return <Building2 size={20} />;
         case "elections":
             return <Calendar size={20} />;
         default:
@@ -153,7 +152,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 </nav>
 
                 {/* Profile row from candidates page */}
-                <div className="p-4 mt-auto border-t border-slate-100">
+                {/* <div className="p-4 mt-auto border-t border-slate-100">
                     <div className="flex items-center gap-3 px-2">
                         {open && (
                             <div className="flex flex-col">
@@ -163,7 +162,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                             </div>
                         )}
                     </div>
-                </div>
+                </div> */}
             </aside>
         </>
     );

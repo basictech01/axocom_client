@@ -34,6 +34,15 @@ export interface PartyDistinctYearsData {
     distinctYearsByParty: number[];
 }
 
+export interface PartyYearSeatsWon {
+    year: number;
+    seatsWon: number;
+}
+
+export interface PartySeatsHistoryData {
+    seatsWonPerYearByParty: PartyYearSeatsWon[];
+}
+
 export interface PartyKpiStats {
     totalCandidates: number;
     seatsWon: number;
@@ -68,6 +77,26 @@ export interface PartyRosterRowVM {
     voteShare: string;
     votesPolled: number;
     imageUrl: string | null;
+}
+
+export interface RawPartyListItem {
+    id: number;
+    name: string;
+    short_name: string;
+    symbol: string;
+    party_type: string;
+}
+
+export interface PartyListData {
+    parties: RawPartyListItem[];
+}
+
+export interface PartyListVM {
+    id: number;
+    name: string;
+    shortName: string;
+    imageUrl: string | null;
+    type: string;
 }
 
 

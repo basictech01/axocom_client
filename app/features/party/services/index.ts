@@ -3,8 +3,25 @@ import type {
     PartyData,
     PartyDistinctYearsData,
     PartyElectionCandidatesData,
+    PartyListData,
     PartyRosterData,
+    PartySeatsHistoryData,
 } from "../types";
+
+export const GET_PARTIES_LIST: TypedDocumentNode<
+    PartyListData,
+    Record<string, never>
+> = gql`
+  query GetPartiesList {
+    parties {
+      id
+      name
+      short_name
+      symbol
+      party_type
+    }
+  }
+`;
 
 export const GET_PARTY_BY_ID: TypedDocumentNode<PartyData, { id: number }> = gql`
   query GetPartyById($id: Int!) {
@@ -57,6 +74,18 @@ export const GET_PARTY_ROSTER_BY_IDS: TypedDocumentNode<
         education_category
         candidate_image
       }
+    }
+  }
+`;
+
+export const GET_SEATS_WON_PER_YEAR: TypedDocumentNode<
+    PartySeatsHistoryData,
+    { party_id: number }
+> = gql`
+  query GetSeatsWonPerYearByParty($party_id: Int!) {
+    seatsWonPerYearByParty(party_id: $party_id) {
+      year
+      seatsWon
     }
   }
 `;
