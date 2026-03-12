@@ -11,6 +11,7 @@ export function useCandidateProfile(
                 identity: {
                     name: "",
                     image: "",
+                    gender: "",
                     party: "",
                     location: "",
                     age: 0,
@@ -22,6 +23,7 @@ export function useCandidateProfile(
 
         const identity: IdentityVM = {
             name: candidate.name ?? "",
+            gender: candidate.gender ?? "",
             image:
                 candidate.candidate_image ??
                 `https://ui-avatars.com/api/?name=${encodeURIComponent(
@@ -34,6 +36,10 @@ export function useCandidateProfile(
         }
 
         const metaDetails: MetaDetail[] = [
+            {
+                label: "Gender",
+                value: candidate.gender ?? "-",
+            },
             {
                 label: "Father/Husband Name",
                 value: candidate.so_do_wo ?? "-",
