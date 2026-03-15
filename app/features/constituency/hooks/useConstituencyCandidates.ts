@@ -26,6 +26,7 @@ export function useConstituencyCandidates(totalVoters: number | undefined) {
 
         return candidatesData.constituency_candidates.map((ec) => ({
             id: ec.id,
+            candidateId: ec.candidate.id,
             name: ec.candidate.name,
             party: ec.party.short_name || ec.party.name,
             partyShortName: ec.party.short_name,

@@ -39,7 +39,7 @@ export function usePartyKpiStats(partyId: number, year: number) {
 
         const totalCandidates = candidates.length;
         const totalVotes = candidates.reduce((s, c) => s + (c.votes_polled ?? 0), 0);
-        const seatsWon = results.filter((r) => r.status === "Won").length;
+        const seatsWon = results.filter((r) => r.status === "won").length;
 
         const winRate =
             totalCandidates > 0
