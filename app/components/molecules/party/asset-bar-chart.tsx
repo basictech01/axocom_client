@@ -1,29 +1,24 @@
 import * as React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { BAR_COLORS } from "~/components/constant";
+import type { AssetDatum } from "~/features/party/hooks/usePartyCandidateRoster";
 
-type AgeDatum = {
-    group: string;
-    voters: number;
-};
-
-type AgeBarChartProps = {
-    title: string;
-    subtitle?: string;
-    data: AgeDatum[];
+type AssetBarChartProps = {
+    title?: string;
+    data: AssetDatum[];
     className?: string;
+    /** Label for the count, e.g. "candidates" */
+    unitLabel?: string;
 };
 
-
-
-export const AgeBarChartInner: React.FC<AgeBarChartProps> = ({
-    title,
-    subtitle,
+const AssetBarChartInner: React.FC<AssetBarChartProps> = ({
+    title = "Asset Distribution",
     data,
     className,
+    unitLabel = "candidates",
 }) => {
     const maxVal = React.useMemo(
-        () => Math.max(...data.map((d) => d.voters)),
+        () => (data.length ? Math.max(...data.map((d) => d.candidates)) : 0),
         [data]
     );
 
@@ -31,24 +26,22 @@ export const AgeBarChartInner: React.FC<AgeBarChartProps> = ({
         <Card className={`border-none shadow-sm overflow-hidden ${className ?? ""}`}>
             <CardHeader>
                 <CardTitle className="text-base font-bold">{title}</CardTitle>
-                {subtitle && (
-                    <p className="text-xs text-gray-400 font-medium">{subtitle}</p>
-                )}
             </CardHeader>
 
             <CardContent className="pb-4 px-4">
-                {/* chart area */}
-                <div className="flex items-end justify-between gap-2 h-40">
+                <div className="flex items-end gap-2 h-40 w-full">
                     {data.map((d, i) => {
-                        const heightPct = (d.voters / maxVal) * 100;
+                        const heightPct =
+                            maxVal > 0 ? (d.candidates / maxVal) * 100 : 0;
+
                         return (
                             <div
                                 key={d.group}
-                                className="flex flex-col items-center flex-1 h-full justify-end group cursor-pointer"
+                                className="flex flex-col items-center flex-1 min-w-0 h-full justify-end group cursor-pointer"
                             >
                                 {/* hover label */}
                                 <span className="text-xs font-bold text-slate-700 mb-1 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                                    {d.voters} Cr
+                                    {d.candidates} {unitLabel}
                                 </span>
 
                                 {/* bar */}
@@ -65,7 +58,7 @@ export const AgeBarChartInner: React.FC<AgeBarChartProps> = ({
                     })}
                 </div>
 
-                {/* x-axis labels — separated so they never affect bar height */}
+                {/* x-axis labels */}
                 <div className="flex justify-between gap-2 mt-2">
                     {data.map((d) => (
                         <span
@@ -81,4 +74,4 @@ export const AgeBarChartInner: React.FC<AgeBarChartProps> = ({
     );
 };
 
-export const AgeBarChart = React.memo(AgeBarChartInner);
+export const AssetBarChart = React.memo(AssetBarChartInner);

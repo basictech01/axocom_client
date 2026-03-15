@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { TrendingUp, TrendingDown } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Sidebar } from "~/components/molecules/sidebar";
 import { StatCard } from "~/components/molecules/stat-card";
 import { DonutPieChart } from "~/components/molecules/ratio-pie-chart";
@@ -20,43 +20,11 @@ import { usePartyDominance } from "~/features/elections/hooks/usePartyDominance"
 import { useDetailedCandidateResults } from "~/features/elections/hooks/useDetailedCandidateResults";
 import type { CandidateRow } from "~/features/elections/hooks/useDetailedCandidateResults";
 import { STATUS_STYLE } from "~/features/elections/hooks/useDetailedCandidateResults";
-
-type PartyRow = {
-    party: string;
-    seats: number;
-    voteShare: string;
-    trend: string;
-    trendDir: "up" | "down";
-    color: string;
-};
-
-const PARTY_PERFORMANCE: PartyRow[] = [
-    { party: "BJP", seats: 240, voteShare: "36.6%", trend: "+2.4%", trendDir: "up", color: "#f97316" },
-    { party: "INC", seats: 99, voteShare: "21.2%", trend: "+3.1%", trendDir: "up", color: "#2563eb" },
-    { party: "SP", seats: 37, voteShare: "6.2%", trend: "+1.8%", trendDir: "up", color: "#ef4444" },
-    { party: "AITC", seats: 29, voteShare: "4.8%", trend: "-0.6%", trendDir: "down", color: "#22c55e" },
-    { party: "DMK", seats: 22, voteShare: "3.7%", trend: "+0.9%", trendDir: "up", color: "#8b5cf6" },
-    { party: "TDP", seats: 16, voteShare: "2.1%", trend: "-1.2%", trendDir: "down", color: "#eab308" },
-    { party: "Others", seats: 100, voteShare: "25.4%", trend: "-5.4%", trendDir: "down", color: "#9ca3af" },
-];
-
-const HIGHEST_TURNOUT = [
-    { rank: 1, constituency: "Nagaland East", state: "Nagaland", turnout: 89.4 },
-    { rank: 2, constituency: "Tripura West", state: "Tripura", turnout: 87.1 },
-    { rank: 3, constituency: "Lakshadweep", state: "Lakshadweep", turnout: 86.8 },
-    { rank: 4, constituency: "Sikkim", state: "Sikkim", turnout: 85.3 },
-    { rank: 5, constituency: "Mizoram", state: "Mizoram", turnout: 83.9 },
-];
-
-const LOWEST_TURNOUT = [
-    { rank: 1, constituency: "Srinagar", state: "J & K", turnout: 14.4 },
-    { rank: 2, constituency: "Anantnag", state: "J & K", turnout: 19.2 },
-    { rank: 3, constituency: "Baramulla", state: "J & K", turnout: 24.7 },
-    { rank: 4, constituency: "Inner Manipur", state: "Manipur", turnout: 31.5 },
-    { rank: 5, constituency: "Outer Manipur", state: "Manipur", turnout: 38.1 },
-];
-
-
+import { useNavigate } from "react-router";
+import { Button } from "~/components/ui/button";
+import { usePartyPerformance } from "~/features/elections/hooks/usePartyPerformance";
+import type { PartyPerformanceRow } from "~/features/elections/types";
+import { useConstituencyTurnout } from "~/features/elections/hooks/useConstituencyTurnout";
 
 export default function ElectionPage() {
     const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -67,17 +35,36 @@ export default function ElectionPage() {
     } = useElectionFilter();
     const { statCards, electionsData, constituenciesData, candidatesData } = useElectionStats(selectedState, selectedYear);
     const { data: genderData, centerValue: genderTotal, centerLabel } = useGenderSplitFromElections(electionsData);
-    const { data: votesPerConstituency } = useVotesPerConstituency(electionsData, constituenciesData, 10);
+    const { data: votesPerConstituency } = useVotesPerConstituency(candidatesData, constituenciesData, 10);
     const { ageData } = useVoterAgeDemographic(selectedState);
     const {
         data: partyDominanceData,
         centerValue: partyCenterValue,
         centerLabel: partyCenterLabel,
     } = usePartyDominance(candidatesData);
-    const { rows: detailedCandidateRows } = useDetailedCandidateResults(
+    const { rows: detailedCandidateRows, partiesData, resultsData } =
+        useDetailedCandidateResults(candidatesData, constituenciesData);
+
+    const { rows: partyPerformanceRows } = usePartyPerformance(
         candidatesData,
-        constituenciesData
+        partiesData,
+        resultsData
     );
+
+    const { highest: highestTurnout, lowest: lowestTurnout } = useConstituencyTurnout(
+        electionsData,
+        candidatesData,
+        constituenciesData,
+        5
+    );
+
+    const navigate = useNavigate();
+    const [showAllCandidates, setShowAllCandidates] = useState(false);
+
+    const visibleCandidateRows = showAllCandidates
+        ? detailedCandidateRows
+        : detailedCandidateRows.slice(0, 5);
+
 
     return (
         <div className="min-h-screen bg-slate-100 text-slate-900 font-sans selection:bg-blue-100">
@@ -168,7 +155,7 @@ export default function ElectionPage() {
                     />
 
                     {/* ── Party Performance Table ── */}
-                    <ElectionTable<PartyRow>
+                    <ElectionTable<PartyPerformanceRow>
                         title="Party Performance Breakdown"
                         subtitle="General Election — seat counts and vote shares"
                         columns={[
@@ -188,46 +175,36 @@ export default function ElectionPage() {
                             { key: "seats", label: "Seats Won", align: "right" },
                             { key: "voteShare", label: "Vote Share", align: "right" },
                             {
-                                key: "trend",
-                                label: "Trend",
-                                align: "right",
+                                key: "action",
+                                label: "Action",
+                                align: "center",
                                 render: (row) => (
-                                    <span
-                                        className={cn(
-                                            "flex items-center justify-end gap-1 font-bold text-xs",
-                                            row.trendDir === "up"
-                                                ? "text-green-600"
-                                                : "text-red-500"
-                                        )}
+                                    <Button
+                                        variant="ghost"
+                                        size="sm"
+                                        onClick={() => navigate(`/parties/${row.partyId}`)}
                                     >
-                                        {row.trendDir === "up" ? (
-                                            <TrendingUp size={13} />
-                                        ) : (
-                                            <TrendingDown size={13} />
-                                        )}
-                                        {row.trend}
-                                    </span>
+                                        View Party
+                                    </Button>
                                 ),
                             },
                         ]}
-                        rows={PARTY_PERFORMANCE}
+                        rows={partyPerformanceRows}
                     />
 
                     {/* ── Highest / Lowest Turnout ── */}
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        <TurnoutList
-                            title="Highest Turnout Constituencies"
-                            subtitle="Top 5 by voter participation"
-                            items={HIGHEST_TURNOUT}
-                            variant="high"
-                        />
-                        <TurnoutList
-                            title="Lowest Turnout Constituencies"
-                            subtitle="Bottom 5 by voter participation"
-                            items={LOWEST_TURNOUT}
-                            variant="low"
-                        />
-                    </div>
+                    <TurnoutList
+                        title="Highest Turnout Constituencies"
+                        subtitle="Top 5 by voter participation"
+                        items={highestTurnout}
+                        variant="high"
+                    />
+                    <TurnoutList
+                        title="Lowest Turnout Constituencies"
+                        subtitle="Bottom 5 by voter participation"
+                        items={lowestTurnout}
+                        variant="low"
+                    />
 
                     {/* ── Candidate Outcomes Table ── */}
                     <ElectionTable<CandidateRow>
@@ -265,9 +242,37 @@ export default function ElectionPage() {
                                     </Badge>
                                 ),
                             },
+                            {
+                                key: "action",
+                                label: "Action",
+                                align: "center",
+                                render: (row) => (
+                                    <Button
+                                        variant="ghost"
+                                        size="sm"
+                                        onClick={() => navigate(`/candidates/${row.candidateId}`)}
+                                    >
+                                        View Profile
+                                    </Button>
+                                ),
+                            },
                         ]}
-                        rows={detailedCandidateRows}
+                        rows={visibleCandidateRows}
                     />
+
+                    {!showAllCandidates && detailedCandidateRows.length > 5 && (
+                        <div className="flex justify-center mt-4">
+                            <Button
+                                type="button"
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => setShowAllCandidates(true)}
+                            >
+                                Show all {detailedCandidateRows.length} candidates
+                                <ArrowRight size={14} />
+                            </Button>
+                        </div>
+                    )}
 
                 </div>
             </main>

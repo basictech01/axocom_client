@@ -82,3 +82,16 @@ export interface ElectionResultRow {
 export interface ElectionResultsByCandidateIdsData {
     election_resultsByCandidateIds: ElectionResultRow[];
 }
+
+export interface PartyPerformanceRow {
+    [key: string]: unknown;
+    partyId: number;
+    party: string;
+    color: string;
+    seats: number;
+    voteShare: string;
+}
+
+export interface PartyPerformanceData {
+    rows: PartyPerformanceRow[];
+}

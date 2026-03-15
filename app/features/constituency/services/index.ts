@@ -100,6 +100,8 @@ export const GET_CONSTITUENCY_CANDIDATES: TypedDocumentNode<
       id
       votes_polled
       assets
+      liabilities
+      criminal_cases
       candidate {
         id
         name

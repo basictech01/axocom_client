@@ -5,6 +5,7 @@ export interface RawCandidate {
     id: number
     name: string
     caste?: string | null
+    gender?: string | null
     so_do_wo?: string | null
     age?: number | null
     candidate_image?: string | null
@@ -56,6 +57,7 @@ export interface CandidateData {
 export interface IdentityVM {
     name: string
     image: string
+    gender: string
     party: string
     location: string
     age: number

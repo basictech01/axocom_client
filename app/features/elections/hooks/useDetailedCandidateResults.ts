@@ -12,6 +12,7 @@ import type {
 import type { ConstituenciesByStateData } from "~/features/constituency/types";
 
 export type CandidateRow = {
+    candidateId: number;
     name: string;
     constituency: string;
     party: string;
@@ -110,17 +111,15 @@ export function useDetailedCandidateResults(
             const partyColor = getPartyColor(partyShort);
             const votes = formatVotes(ec.votes_polled);
 
-            // Map backend status string into UI union; assume backend uses "Won"/"Lost"/"Leading"/"Trailing"
-            const statusRaw = result?.status ?? "Trailing";
+            const statusRaw = (result?.status ?? "Trailing").toLowerCase();
             const status =
-                statusRaw === "Won" ||
-                    statusRaw === "Lost" ||
-                    statusRaw === "Leading" ||
-                    statusRaw === "Trailing"
-                    ? statusRaw
-                    : "Trailing";
+                statusRaw === "won" ? "Won"
+                    : statusRaw === "lost" ? "Lost"
+                        : statusRaw === "leading" ? "Leading"
+                            : "Trailing";
 
             return {
+                candidateId: result?.election_candidate_id ?? ec.id,
                 name: result?.election_candidate?.candidate?.name ?? "Unknown", // see note below
                 constituency: constituencyName,
                 party: partyShort,
@@ -131,5 +130,5 @@ export function useDetailedCandidateResults(
         });
     }, [candidates, constituencies, partiesData, resultsData]);
 
-    return { rows };
+    return { rows, partiesData, resultsData };
 }
