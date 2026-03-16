@@ -48,7 +48,7 @@ export const AgeBarChartInner: React.FC<AgeBarChartProps> = ({
                             >
                                 {/* hover label */}
                                 <span className="text-xs font-bold text-slate-700 mb-1 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                                    {d.voters} Cr
+                                    {d.voters}
                                 </span>
 
                                 {/* bar */}

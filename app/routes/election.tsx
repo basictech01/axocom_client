@@ -133,7 +133,7 @@ export default function ElectionPage() {
 
                         <AgeBarChart
                             title="Age Demographics"
-                            subtitle="Voter distribution by age group (Cr)"
+                            subtitle="Voter distribution by age group"
                             data={ageData}
                         />
 
