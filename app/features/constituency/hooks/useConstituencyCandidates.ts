@@ -2,17 +2,8 @@ import { useMemo } from "react";
 import { useLazyQuery } from "@apollo/client/react";
 import { GET_CONSTITUENCY_CANDIDATES } from "../services";
 import type { CandidateRowData } from "../types";
+import { PARTY_COLORS } from "~/features/elections/utils/constant";
 
-// Simple party → color mapping (extend as needed)
-const PARTY_COLORS: Record<string, string> = {
-    BJP: "orange",
-    INC: "blue",
-    AAP: "teal",
-    JDS: "green",
-    BSP: "purple",
-    TMC: "green",
-    SP: "red",
-};
 
 function getPartyColor(partyName: string): string {
     // Check short_name or full name against known parties
@@ -35,6 +26,7 @@ export function useConstituencyCandidates(totalVoters: number | undefined) {
 
         return candidatesData.constituency_candidates.map((ec) => ({
             id: ec.id,
+            candidateId: ec.candidate.id,
             name: ec.candidate.name,
             party: ec.party.short_name || ec.party.name,
             partyShortName: ec.party.short_name,

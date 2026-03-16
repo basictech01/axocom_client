@@ -1,6 +1,5 @@
 
-import { MapPin, Gavel, Wallet, BadgeCheck } from "lucide-react"
-import { Badge } from "./badge"
+import { MapPin } from "lucide-react"
 import {
     TwitterIcon,
     FacebookIcon,

@@ -32,8 +32,7 @@ export function useVoterAgeDemographic(state: string) {
         // Ensure all 6 groups exist, in order, converting to Cr
         return GROUP_ORDER.map((label) => {
             const total = map.get(label) ?? 0;
-            const votersCr = Number((total / CRORE).toFixed(1));
-            return { group: label, voters: votersCr };
+            return { group: label, voters: total };
         });
     }, [data]);
 

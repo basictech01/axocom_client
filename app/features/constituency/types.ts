@@ -101,6 +101,7 @@ export interface ConstituencyResultsData {
 // Shape consumed by CandidateRow 
 export interface CandidateRowData {
     id: number;
+    candidateId: number;
     name: string;
     party: string;
     partyShortName: string;

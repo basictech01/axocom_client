@@ -1,15 +1,15 @@
 import { useMemo } from "react";
-import type { ElectionStatByStateData } from "../types";
+import type { ElectionCandidateStatByStateData } from "../types";
 import type { ConstituenciesByStateData } from "~/features/constituency/types";
 
 type VotesBarItem = { constituency: string; votes: number };
 
 export function useVotesPerConstituency(
-    electionsData: ElectionStatByStateData | undefined,
+    candidatesData: ElectionCandidateStatByStateData | undefined,
     constituenciesData: ConstituenciesByStateData | undefined,
     topN: number = 10
 ) {
-    const elections = electionsData?.electionsByStateAndYear ?? [];
+    const candidates = candidatesData?.electionCandidatesByStateAndYear ?? [];
     const constituencies = constituenciesData?.constituenciesByState ?? [];
 
     const nameById = useMemo(() => {
@@ -17,10 +17,19 @@ export function useVotesPerConstituency(
     }, [constituencies]);
 
     const data: VotesBarItem[] = useMemo(() => {
-        return elections
-            .map((e) => ({
-                constituency_id: e.constituency_id,
-                votesLakh: Number(((e.total_voters ?? 0) / 1e5).toFixed(1)),
+        // Sum votes_polled for all candidates per constituency_id
+        const votesByConstituency = new Map<number, number>();
+        for (const c of candidates) {
+            votesByConstituency.set(
+                c.constituency_id,
+                (votesByConstituency.get(c.constituency_id) ?? 0) + c.votes_polled
+            );
+        }
+
+        return Array.from(votesByConstituency.entries())
+            .map(([constituency_id, totalVotes]) => ({
+                constituency_id,
+                votesLakh: Number((totalVotes / 1e5).toFixed(1)),
             }))
             .sort((a, b) => b.votesLakh - a.votesLakh)
             .slice(0, topN)
@@ -28,7 +37,7 @@ export function useVotesPerConstituency(
                 constituency: nameById.get(r.constituency_id) ?? `#${r.constituency_id}`,
                 votes: r.votesLakh,
             }));
-    }, [elections, nameById, topN]);
+    }, [candidates, nameById, topN]);
 
     return { data };
 }

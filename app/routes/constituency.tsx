@@ -20,6 +20,7 @@ import { useConstituencyCharts } from "~/features/constituency/hooks/useConstitu
 import { useEffect, useState } from "react";
 import { useConstituencyCandidates } from "~/features/constituency/hooks/useConstituencyCandidates";
 import { cn } from "~/lib/utils";
+import { Navigate, useNavigate } from "react-router";
 
 export default function ConstituencyPage() {
     const [showAllCandidates, setShowAllCandidates] = useState(false);
@@ -39,11 +40,16 @@ export default function ConstituencyPage() {
     );
 
     const [sidebarOpen, setSidebarOpen] = useState(true);
+    const navigate = useNavigate();
 
+
+    const sortedCandidates = [...candidates].sort(
+        (a, b) => (b.votes_polled ?? 0) - (a.votes_polled ?? 0)
+    );
 
     const visibleCandidates = showAllCandidates
-        ? candidates
-        : candidates.slice(0, 5);
+        ? sortedCandidates
+        : sortedCandidates.slice(0, 5);
 
     useEffect(() => {
         if (filters.selectedConstituencyId && filters.detailData) {
@@ -177,6 +183,7 @@ export default function ConstituencyPage() {
                                         votesPolled={c.votes_polled}
                                         partyColor={c.partyColor}
                                         profileImageUrl={c.imageUrl}
+                                        onViewProfile={() => navigate(`/candidates/${c.candidateId}`)}
                                     />
                                 ))}
                             </TableBody>

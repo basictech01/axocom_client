@@ -11,6 +11,7 @@ export const GET_CANDIDATE_BY_ID: TypedDocumentNode<
       id
       name
       caste
+      gender
       so_do_wo
       age
       candidate_image
