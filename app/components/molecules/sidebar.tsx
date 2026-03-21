@@ -44,6 +44,8 @@ const iconForNavId = (id: string) => {
             return <Building2 size={20} />;
         case "elections":
             return <Calendar size={20} />;
+        case "voters":
+            return <User size={20} />;
         default:
             return null;
     }

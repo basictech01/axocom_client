@@ -5,6 +5,7 @@ const routeForId: Record<string, string> = {
     dashboard: "/",
     constituencies: "/constituency",
     candidates: "/candidates",
+    voters: "/voters",
     parties: "/parties",
     elections: "/elections",
 };

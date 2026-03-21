@@ -9,4 +9,5 @@ export const NAV_ITEMS: NavItem[] = [
     { id: "candidates", label: "Candidates" },
     { id: "parties", label: "Parties" },
     { id: "elections", label: "Elections" },
+    { id: "voters", label: "Voters" },
 ];
