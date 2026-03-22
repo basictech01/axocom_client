@@ -20,7 +20,9 @@ import { useEducationHistory } from '~/features/candidates/hooks/useEducationHis
 import { useCandidateTimeline } from '~/features/candidates/hooks/useCandidateTimeline';
 import { useNetworthCharts } from '~/features/candidates/hooks/useNetworthCharts';
 import { NetWorthBarChart } from '~/components/molecules/candidates/net-worth-bar-chart';
-// MAIN PAGE COMPONENT 
+import { SuggestCorrection } from '~/components/molecules/suggest-correction';
+
+// MAIN PAGE COMPONENT
 export default function CandidateProfile() {
     const { navItems, onNavChange } = useNavigation();
     const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -133,6 +135,8 @@ export default function CandidateProfile() {
                             rows={section.rows}
                         />
                     ))}
+
+                    <SuggestCorrection entityId={Number(id)} />
 
                 </div>
             </main>

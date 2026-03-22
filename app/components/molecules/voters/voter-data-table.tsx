@@ -1,5 +1,6 @@
 import * as React from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Link } from "react-router";
 import { DataTableCard, type ColumnDef } from "~/components/molecules/data-table-card";
 import { Button } from "~/components/ui/button";
 import type { VoterListVM } from "~/features/voters/types";
@@ -77,9 +78,9 @@ export const VoterDataTable: React.FC<VoterDataTableProps> = ({
             header: "Action",
             headerAlign: "right",
             variant: "right",
-            render: () => (
-                <Button variant="outline" size="sm" className="font-semibold">
-                    View Voter
+            render: (voter) => (
+                <Button variant="outline" size="sm" className="font-semibold" asChild>
+                    <Link to={`/voters/${voter.id}`}>View Voter</Link>
                 </Button>
             ),
         },
