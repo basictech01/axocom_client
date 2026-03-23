@@ -31,6 +31,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "~/components/ui/select";
+import { SuggestCorrection } from "~/components/molecules/suggest-correction";
 
 // Static data
 
@@ -345,6 +346,8 @@ export default function PartyProfilePage() {
                             </Table>
                         </Card>
                     </section>
+
+                    <SuggestCorrection entityId={partyId} />
 
                 </div>
             </main>
