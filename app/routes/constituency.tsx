@@ -1,7 +1,7 @@
 import { Card } from "~/components/ui/card";
 import { Button } from "~/components/ui/button";
 import { Table, TableBody, TableHead, TableHeader, TableRow } from "~/components/ui/table";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Download } from "lucide-react";
 import { Sidebar } from "~/components/molecules/sidebar";
 import { ConstituencyFilterBar } from "~/components/molecules/constituency-filter";
 import { ConstituencyTitleSection } from "~/components/molecules/constituency-title-section";
@@ -19,6 +19,7 @@ import { useNavigation } from "~/hooks/useNavigation";
 import { useConstituencyCharts } from "~/features/constituency/hooks/useConstituencyCharts";
 import { useEffect, useState } from "react";
 import { useConstituencyCandidates } from "~/features/constituency/hooks/useConstituencyCandidates";
+import { useConstituencyExport } from "~/features/constituency/hooks/useConstituencyExport";
 import { cn } from "~/lib/utils";
 import { Navigate, useNavigate } from "react-router";
 
@@ -50,6 +51,16 @@ export default function ConstituencyPage() {
     const visibleCandidates = showAllCandidates
         ? sortedCandidates
         : sortedCandidates.slice(0, 5);
+    const { handleExport } = useConstituencyExport({
+        detailData: filters.detailData,
+        electionYear: filters.electionYear,
+        turnoutData: turnoutChart.data,
+        genderData: genderChart.data,
+        sortedCandidates,
+        indicators,
+        historicalControl,
+        incumbent,
+    });
 
     useEffect(() => {
         if (filters.selectedConstituencyId && filters.detailData) {
@@ -108,6 +119,17 @@ export default function ConstituencyPage() {
                         breadcrumb={titleSection.breadcrumb}
                         title={titleSection.title}
                         description={titleSection.description}
+                        actions={(
+                            <Button
+                                className="bg-blue-600 hover:bg-blue-700 px-5 gap-2"
+                                type="button"
+                                onClick={handleExport}
+                                disabled={!filters.detailData}
+                            >
+                                <Download size={14} />
+                                Export
+                            </Button>
+                        )}
                     />
 
                     {/* Stats Grid */}
