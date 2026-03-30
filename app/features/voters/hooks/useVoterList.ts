@@ -75,6 +75,9 @@ export function useVoterList() {
         onApply,
         onReset,
         options,
+        // Export requires "applied" filters (after user clicks Apply in the filter bar)
+        appliedConstituency,
+        appliedParliamentary,
         currentPage,
         setCurrentPage,
         totalRows,

@@ -3,8 +3,11 @@ import { Sidebar } from "~/components/molecules/sidebar";
 import { VoterDataTable } from "~/components/molecules/voters/voter-data-table";
 import { VoterFilterBar } from "~/components/molecules/voters/voter-filter";
 import { useVoterList } from "~/features/voters/hooks/useVoterList";
+import { useVoterExport } from "~/features/voters/hooks/useVoterExport";
 import { useNavigation } from "~/hooks/useNavigation";
 import { cn } from "~/lib/utils";
+import { Button } from "~/components/ui/button";
+import { Download, Loader2 } from "lucide-react";
 
 export default function VoterExplorer() {
     const { navItems, onNavChange } = useNavigation();
@@ -27,7 +30,11 @@ export default function VoterExplorer() {
         totalRows,
         totalPages,
         rowsPerPage,
+        appliedConstituency,
+        appliedParliamentary,
     } = useVoterList();
+
+    const { handleExport, exporting } = useVoterExport();
 
     return (
         <div className="min-h-screen bg-[#F7F9FC] text-slate-900 font-sans selection:bg-blue-100">
@@ -46,13 +53,35 @@ export default function VoterExplorer() {
                 )}
             >
                 <div className="mx-auto max-w-[1400px] space-y-6">
-                    <div className="space-y-2">
-                        <h2 className="text-2xl font-black text-slate-900 tracking-tight">
-                            Voter Intelligence Explorer
-                        </h2>
-                        <p className="text-sm text-slate-500 font-medium">
-                            Search and analyze voter rolls by constituency and polling station.
-                        </p>
+                    <div className="flex items-start justify-between gap-4">
+                        <div className="space-y-2">
+                            <h2 className="text-2xl font-black text-slate-900 tracking-tight">
+                                Voter Intelligence Explorer
+                            </h2>
+                            <p className="text-sm text-slate-500 font-medium">
+                                Search and analyze voter rolls by constituency and polling
+                                station.
+                            </p>
+                        </div>
+
+                        <Button
+                            className="bg-blue-600 hover:bg-blue-700 px-5 gap-2 disabled:opacity-60"
+                            type="button"
+                            disabled={!appliedConstituency || exporting}
+                            onClick={() =>
+                                handleExport(
+                                    appliedConstituency,
+                                    appliedParliamentary || undefined
+                                )
+                            }
+                        >
+                            {exporting ? (
+                                <Loader2 size={14} className="animate-spin" />
+                            ) : (
+                                <Download size={14} />
+                            )}
+                            {exporting ? "Exporting..." : "Export"}
+                        </Button>
                     </div>
 
                     <VoterFilterBar
