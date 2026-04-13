@@ -1,6 +1,10 @@
 import { useQuery } from "@apollo/client/react";
-import { useMemo, useState } from "react";
-import { GET_VOTER_FILTER_OPTIONS, GET_VOTERS_LIST } from "../services";
+import { useEffect, useMemo, useState } from "react";
+import {
+    GET_VOTER_FILTER_OPTIONS,
+    GET_VOTER_FILTER_OPTIONS_BY_ASSEMBLY,
+    GET_VOTERS_LIST,
+} from "../services";
 import { toVoterListVM, type VoterListVM } from "../types";
 
 const ROWS_PER_PAGE = 10;
@@ -10,10 +14,12 @@ export function useVoterList() {
     const [searchInput, setSearchInput] = useState("");
     const [constituencyInput, setConstituencyInput] = useState("ALL");
     const [parliamentaryInput, setParliamentaryInput] = useState("ALL");
+    const [partNameInput, setPartNameInput] = useState("ALL");
 
     const [appliedSearch, setAppliedSearch] = useState("");
     const [appliedConstituency, setAppliedConstituency] = useState("");
     const [appliedParliamentary, setAppliedParliamentary] = useState("");
+    const [appliedPartName, setAppliedPartName] = useState("");
 
     const { data, loading, error } = useQuery(GET_VOTERS_LIST, {
         variables: {
@@ -22,10 +28,18 @@ export function useVoterList() {
             search: appliedSearch || undefined,
             assembly_constituency: appliedConstituency || undefined,
             parliamentary_constituency: appliedParliamentary || undefined,
+            part_number_name: appliedPartName || undefined,
         },
     });
 
     const { data: filterOptionsData } = useQuery(GET_VOTER_FILTER_OPTIONS);
+    const { data: assemblyScopedOptionsData } = useQuery(
+        GET_VOTER_FILTER_OPTIONS_BY_ASSEMBLY,
+        {
+            variables: { assembly_constituency: constituencyInput },
+            skip: constituencyInput === "ALL",
+        }
+    );
 
     const voters: VoterListVM[] = useMemo(() => {
         if (!data?.votersPaginated?.rows) return [];
@@ -40,15 +54,27 @@ export function useVoterList() {
             constituencies:
                 filterOptionsData?.voterFilterOptions?.assembly_constituencies ?? [],
             parliamentaryConstituencies:
-                filterOptionsData?.voterFilterOptions?.parliamentary_constituencies ?? [],
+                constituencyInput !== "ALL"
+                    ? assemblyScopedOptionsData?.voterFilterOptionsByAssembly
+                        ?.parliamentary_constituencies ?? []
+                    : [],
+            partNumberNames:
+                assemblyScopedOptionsData?.voterFilterOptionsByAssembly
+                    ?.part_number_names ?? [],
         }),
-        [filterOptionsData]
+        [filterOptionsData, assemblyScopedOptionsData, constituencyInput]
     );
+
+    useEffect(() => {
+        setParliamentaryInput("ALL");
+        setPartNameInput("ALL");
+    }, [constituencyInput]);
 
     const onApply = () => {
         setAppliedSearch(searchInput.trim());
         setAppliedConstituency(constituencyInput === "ALL" ? "" : constituencyInput);
         setAppliedParliamentary(parliamentaryInput === "ALL" ? "" : parliamentaryInput);
+        setAppliedPartName(partNameInput === "ALL" ? "" : partNameInput);
         setCurrentPage(1);
     };
 
@@ -56,9 +82,11 @@ export function useVoterList() {
         setSearchInput("");
         setConstituencyInput("ALL");
         setParliamentaryInput("ALL");
+        setPartNameInput("ALL");
         setAppliedSearch("");
         setAppliedConstituency("");
         setAppliedParliamentary("");
+        setAppliedPartName("");
         setCurrentPage(1);
     };
 
@@ -72,12 +100,15 @@ export function useVoterList() {
         setConstituency: setConstituencyInput,
         parliamentaryConstituency: parliamentaryInput,
         setParliamentaryConstituency: setParliamentaryInput,
+        partNumberName: partNameInput,
+        setPartNumberName: setPartNameInput,
         onApply,
         onReset,
         options,
         // Export requires "applied" filters (after user clicks Apply in the filter bar)
         appliedConstituency,
         appliedParliamentary,
+        appliedPartName,
         currentPage,
         setCurrentPage,
         totalRows,
