@@ -22,6 +22,8 @@ export default function VoterExplorer() {
         setConstituency,
         parliamentaryConstituency,
         setParliamentaryConstituency,
+        partNumberName,
+        setPartNumberName,
         onApply,
         onReset,
         options,
@@ -93,6 +95,9 @@ export default function VoterExplorer() {
                         parliamentaryConstituency={parliamentaryConstituency}
                         onParliamentaryConstituencyChange={setParliamentaryConstituency}
                         parliamentaryConstituencyOptions={options.parliamentaryConstituencies}
+                        partNumberName={partNumberName}
+                        onPartNumberNameChange={setPartNumberName}
+                        partNumberNameOptions={options.partNumberNames}
                         onApply={onApply}
                         onReset={onReset}
                     />

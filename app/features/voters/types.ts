@@ -27,12 +27,19 @@ export interface VotersPageVariables {
     search?: string;
     assembly_constituency?: string;
     parliamentary_constituency?: string;
+    part_number_name?: string;
 }
 
 export interface VoterFilterOptionsData {
     voterFilterOptions: {
         assembly_constituencies: string[];
+    };
+}
+
+export interface VoterFilterOptionsByAssemblyData {
+    voterFilterOptionsByAssembly: {
         parliamentary_constituencies: string[];
+        part_number_names: string[];
     };
 }
 

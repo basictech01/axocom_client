@@ -3,6 +3,7 @@ import type {
     PaginatedVotersData,
     VoterByIdData,
     VoterByIdVariables,
+    VoterFilterOptionsByAssemblyData,
     VoterFilterOptionsData,
     VotersPageVariables,
 } from "../types";
@@ -17,6 +18,7 @@ export const GET_VOTERS_LIST: TypedDocumentNode<
         $search: String
         $assembly_constituency: String
         $parliamentary_constituency: String
+        $part_number_name: String
     ) {
         votersPaginated(
             page: $page
@@ -24,6 +26,7 @@ export const GET_VOTERS_LIST: TypedDocumentNode<
             search: $search
             assembly_constituency: $assembly_constituency
             parliamentary_constituency: $parliamentary_constituency
+            part_number_name: $part_number_name
         ) {
             rows {
                 id
@@ -52,7 +55,18 @@ export const GET_VOTER_FILTER_OPTIONS: TypedDocumentNode<
     query GetVoterFilterOptions {
         voterFilterOptions {
             assembly_constituencies
+        }
+    }
+`;
+
+export const GET_VOTER_FILTER_OPTIONS_BY_ASSEMBLY: TypedDocumentNode<
+    VoterFilterOptionsByAssemblyData,
+    { assembly_constituency: string }
+> = gql`
+    query GetVoterFilterOptionsByAssembly($assembly_constituency: String!) {
+        voterFilterOptionsByAssembly(assembly_constituency: $assembly_constituency) {
             parliamentary_constituencies
+            part_number_names
         }
     }
 `;
