@@ -15,6 +15,7 @@ type VoterFilterBarProps = {
     onSearchChange: (value: string) => void;
     constituency: string;
     onConstituencyChange: (value: string) => void;
+    isConstituencyLocked?: boolean;
     assemblyConstituencyOptions: string[];
     parliamentaryConstituency: string;
     onParliamentaryConstituencyChange: (value: string) => void;
@@ -32,6 +33,7 @@ export const VoterFilterBar: React.FC<VoterFilterBarProps> = ({
     onSearchChange,
     constituency,
     onConstituencyChange,
+    isConstituencyLocked = false,
     assemblyConstituencyOptions,
     parliamentaryConstituency,
     onParliamentaryConstituencyChange,
@@ -43,6 +45,20 @@ export const VoterFilterBar: React.FC<VoterFilterBarProps> = ({
     onReset,
     className = "",
 }) => {
+    const resolvedAssemblyConstituencyOptions = React.useMemo(() => {
+        if (!constituency || constituency === "ALL") {
+            return assemblyConstituencyOptions;
+        }
+        const hasCurrent = assemblyConstituencyOptions.some(
+            (option) =>
+                option.trim().toLowerCase() ===
+                constituency.trim().toLowerCase()
+        );
+        return hasCurrent
+            ? assemblyConstituencyOptions
+            : [constituency, ...assemblyConstituencyOptions];
+    }, [assemblyConstituencyOptions, constituency]);
+
     return (
         <div className={`bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-4 ${className}`}>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 items-end">
@@ -63,15 +79,21 @@ export const VoterFilterBar: React.FC<VoterFilterBarProps> = ({
 
                 <div className="space-y-1.5 min-w-0">
                     <label className="text-xs font-bold uppercase tracking-widest text-slate-400 ml-1">
-                        Constituency
+                        Constituency {isConstituencyLocked ? "(Locked)" : ""}
                     </label>
-                    <Select value={constituency} onValueChange={onConstituencyChange}>
+                    <Select
+                        value={constituency}
+                        onValueChange={onConstituencyChange}
+                        disabled={isConstituencyLocked}
+                    >
                         <SelectTrigger className="bg-white border-slate-200 text-slate-600 text-sm focus:ring-blue-600 focus:border-blue-600">
                             <SelectValue placeholder="All Constituencies" />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="ALL">All Constituencies</SelectItem>
-                            {assemblyConstituencyOptions.map((option) => (
+                            {!isConstituencyLocked && (
+                                <SelectItem value="ALL">All Constituencies</SelectItem>
+                            )}
+                            {resolvedAssemblyConstituencyOptions.map((option) => (
                                 <SelectItem key={option} value={option}>
                                     {option}
                                 </SelectItem>

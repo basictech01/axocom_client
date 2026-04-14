@@ -8,11 +8,13 @@ import { useNavigation } from "~/hooks/useNavigation";
 import { cn } from "~/lib/utils";
 import { Button } from "~/components/ui/button";
 import { Download, Loader2 } from "lucide-react";
+import { useAuth } from "~/contexts/auth-context";
 
 export default function VoterExplorer() {
     const { navItems, onNavChange } = useNavigation();
     const [sidebarOpen, setSidebarOpen] = useState(true);
-
+    const { user } = useAuth();
+    const defaultConstituency = user?.default_assembly_constituency ?? "";
     const {
         voters,
         loading,
@@ -20,6 +22,7 @@ export default function VoterExplorer() {
         setSearch,
         constituency,
         setConstituency,
+        isConstituencyLocked,
         parliamentaryConstituency,
         setParliamentaryConstituency,
         partNumberName,
@@ -34,7 +37,8 @@ export default function VoterExplorer() {
         rowsPerPage,
         appliedConstituency,
         appliedParliamentary,
-    } = useVoterList();
+        appliedPartName,
+    } = useVoterList(defaultConstituency);
 
     const { handleExport, exporting } = useVoterExport();
 
@@ -58,7 +62,7 @@ export default function VoterExplorer() {
                     <div className="flex items-start justify-between gap-4">
                         <div className="space-y-2">
                             <h2 className="text-2xl font-black text-slate-900 tracking-tight">
-                                Voter Intelligence Explorer
+                                Voter Intelligence for {user?.default_assembly_constituency}
                             </h2>
                             <p className="text-sm text-slate-500 font-medium">
                                 Search and analyze voter rolls by constituency and polling
@@ -73,7 +77,8 @@ export default function VoterExplorer() {
                             onClick={() =>
                                 handleExport(
                                     appliedConstituency,
-                                    appliedParliamentary || undefined
+                                    appliedParliamentary || undefined,
+                                    appliedPartName || undefined
                                 )
                             }
                         >
@@ -91,6 +96,7 @@ export default function VoterExplorer() {
                         onSearchChange={setSearch}
                         constituency={constituency}
                         onConstituencyChange={setConstituency}
+                        isConstituencyLocked={isConstituencyLocked}
                         assemblyConstituencyOptions={options.constituencies}
                         parliamentaryConstituency={parliamentaryConstituency}
                         onParliamentaryConstituencyChange={setParliamentaryConstituency}

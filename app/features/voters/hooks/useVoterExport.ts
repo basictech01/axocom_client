@@ -1,6 +1,6 @@
-import { useEffect, useRef } from "react";
-import { useLazyQuery } from "@apollo/client/react";
-import { EXPORT_VOTERS_CSV } from "../services";
+import { useState } from "react";
+import { getAccessToken } from "~/lib/auth-storage";
+import { API_BASE_URL } from "~/types/constant";
 
 function slugify(value: string) {
     return value
@@ -11,45 +11,60 @@ function slugify(value: string) {
 }
 
 export function useVoterExport() {
-    const downloadNameRef = useRef<string>("voters_export.csv");
+    const [exporting, setExporting] = useState(false);
 
-    const [fetchCsv, { loading, data }] = useLazyQuery(EXPORT_VOTERS_CSV, {
-        fetchPolicy: "no-cache",
-    });
-
-    useEffect(() => {
-        const csv = data?.votersExportCsv;
-        if (!csv) return;
-
-        const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-        const url = URL.createObjectURL(blob);
-
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = downloadNameRef.current;
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-
-        URL.revokeObjectURL(url);
-    }, [data]);
-
-    const handleExport = (
+    const handleExport = async (
         assemblyConstituency: string,
-        parliamentaryConstituency?: string
+        parliamentaryConstituency?: string,
+        partNumberName?: string
     ) => {
         if (!assemblyConstituency || assemblyConstituency === "ALL") return;
 
-        downloadNameRef.current = `voters_${slugify(assemblyConstituency)}.csv`;
+        const token = getAccessToken();
+        if (!token) return;
 
-        fetchCsv({
-            variables: {
+        setExporting(true);
+        try {
+            const query = new URLSearchParams({
                 assembly_constituency: assemblyConstituency,
-                parliamentary_constituency: parliamentaryConstituency ?? null,
-            },
-        });
+            });
+            if (parliamentaryConstituency && parliamentaryConstituency !== "ALL") {
+                query.set("parliamentary_constituency", parliamentaryConstituency);
+            }
+            if (partNumberName && partNumberName !== "ALL") {
+                query.set("part_number_name", partNumberName);
+            }
+
+            const response = await fetch(
+                `${API_BASE_URL}/voters/export?${query.toString()}`,
+                {
+                    method: "GET",
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error("Failed to export voters");
+            }
+
+            const blob = await response.blob();
+            const url = URL.createObjectURL(blob);
+            const fileName = `voters_${slugify(assemblyConstituency)}.csv`;
+
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = fileName;
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            URL.revokeObjectURL(url);
+        } finally {
+            setExporting(false);
+        }
     };
 
-    return { handleExport, exporting: loading };
+    return { handleExport, exporting };
 }
 

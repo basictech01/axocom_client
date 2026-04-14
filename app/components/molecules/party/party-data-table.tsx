@@ -32,30 +32,44 @@ export const PartyDataTable: React.FC<PartyDataTableProps> = ({
         {
             key: "party",
             header: "Party",
-            render: (p) => (
-                <div className="flex items-center gap-3">
-                    <div className="h-8 w-8 rounded-lg border border-slate-200 bg-slate-50 flex items-center justify-center shrink-0 overflow-hidden">
-                        {p.imageUrl ? (
-                            <img
-                                alt={p.name}
-                                src={p.imageUrl}
-                                className="h-full w-full object-contain"
-                            />
-                        ) : (
-                            <div className="h-full w-full bg-slate-200 rounded" />
-                        )}
+            render: (p) => {
+                const getInitials = (name: string) => {
+                    if (!name) return "NA";
+                    const words = name.trim().split(" ");
+                    if (words.length === 1) {
+                        return words[0].slice(0, 2).toUpperCase();
+                    }
+                    return (words[0][0] + words[1][0]).toUpperCase();
+                };
+
+                return (
+                    <div className="flex items-center gap-3">
+                        <div className="h-9 w-9 rounded-xl border border-slate-200 bg-slate-50 flex items-center justify-center shrink-0 overflow-hidden">
+                            {p.imageUrl ? (
+                                <img
+                                    alt={p.name}
+                                    src={p.imageUrl}
+                                    className="h-full w-full object-contain"
+                                />
+                            ) : (
+                                <div className="h-full w-full flex items-center justify-center bg-slate-200 text-sm font-bold text-slate-700">
+                                    {getInitials(p.name)}
+                                </div>
+                            )}
+                        </div>
+
+                        <div className="font-bold text-slate-900 text-base">
+                            {p.name}
+                        </div>
                     </div>
-                    <div className="font-bold text-slate-900 text-sm">
-                        {p.name}
-                    </div>
-                </div>
-            ),
+                );
+            }
         },
         {
             key: "shortName",
             header: "Short Name",
             render: (p) => (
-                <span className="text-sm text-slate-700">{p.shortName}</span>
+                <span className="text-[15px] text-slate-700">{p.shortName}</span>
             ),
         },
         {
@@ -64,7 +78,7 @@ export const PartyDataTable: React.FC<PartyDataTableProps> = ({
             render: (p) => (
                 <Badge
                     variant="secondary"
-                    className="bg-slate-100 text-slate-700 hover:bg-slate-100 rounded px-2 py-0.5"
+                    className="bg-slate-100 text-slate-700 hover:bg-slate-100 rounded px-2 py-0.5 text-sm"
                 >
                     {p.type}
                 </Badge>

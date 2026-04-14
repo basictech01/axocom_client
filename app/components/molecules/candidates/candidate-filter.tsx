@@ -65,10 +65,9 @@ export const CandidateFilterBar: React.FC<CandidateFilterBarProps> = ({
                 </label>
                 <Select value={constituency} onValueChange={onConstituencyChange}>
                     <SelectTrigger className="bg-white border-slate-200 text-slate-600 text-sm focus:ring-blue-600 focus:border-blue-600">
-                        <SelectValue placeholder="All Constituencies" />
+                        <SelectValue placeholder="Select Constituency" />
                     </SelectTrigger>
                     <SelectContent>
-                        <SelectItem value="ALL">All Constituencies</SelectItem>
                         {constituencyOptions.map((opt) => (
                             <SelectItem key={opt} value={opt}>
                                 {opt}

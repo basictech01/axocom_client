@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useEffect } from "react";
 import { useQuery, useLazyQuery } from "@apollo/client/react";
 import {
     GET_ALL_CONSTITUENCIES,
@@ -58,12 +58,20 @@ export function useElectionFilter() {
         return years;
     }, [stateConstData, allElectionsData]);
 
+    // Auto-pick first state option once options are loaded
+    useEffect(() => {
+        if (!stateOptions.length || selectedState) return;
+        const firstState = stateOptions[0];
+        setSelectedState(firstState);
+        fetchByState({ variables: { state: firstState } });
+    }, [stateOptions, selectedState, fetchByState]);
+
     // When year options change and current selection is invalid, auto-pick the first
-    useMemo(() => {
+    useEffect(() => {
         if (yearOptions.length && !yearOptions.includes(selectedYear)) {
             setSelectedYear(yearOptions[0]);
         }
-    }, [yearOptions]);
+    }, [yearOptions, selectedYear]);
 
     const onStateChange = useCallback(
         (state: string) => {

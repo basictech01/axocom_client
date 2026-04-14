@@ -1,9 +1,12 @@
 import * as React from "react";
 import { CheckCircle2, Plus, Trash2 } from "lucide-react";
+import { useQuery } from "@apollo/client/react";
+import { useLocation } from "react-router";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
 import { useCorrectionAddition } from "~/hooks/useCorrectionAddition";
+import { GET_MY_FLAG_DATA_BY_URL } from "~/services/flag";
 
 export interface SuggestCorrectionProps {
     /** ID of the entity being corrected (voter id, candidate id, etc.). */
@@ -15,6 +18,7 @@ export const SuggestCorrection: React.FC<SuggestCorrectionProps> = ({
     entityId,
     className = "",
 }) => {
+    const location = useLocation();
     const {
         rows,
         addRow,
@@ -27,12 +31,98 @@ export const SuggestCorrection: React.FC<SuggestCorrectionProps> = ({
         submitError,
         submitted,
     } = useCorrectionAddition(entityId);
+    const { data: previousFlagsData, loading: previousFlagsLoading, refetch } = useQuery(
+        GET_MY_FLAG_DATA_BY_URL,
+        {
+            variables: { url: location.pathname },
+            skip: !location.pathname,
+            fetchPolicy: "network-only",
+        }
+    );
+
+    React.useEffect(() => {
+        if (!submitted) return;
+        void refetch();
+    }, [submitted, refetch]);
+
+    const previousFlags = React.useMemo(() => {
+        const rows = previousFlagsData?.myFlagDataByUrl ?? [];
+        return rows
+            .map((row) => {
+                try {
+                    const parsed = JSON.parse(row.data) as {
+                        note?: string;
+                        corrections?: Array<{ field?: string; value?: string }>;
+                    };
+                    return {
+                        id: row.id,
+                        createdAt: row.created_at,
+                        note: parsed.note?.trim() ?? "",
+                        corrections: (parsed.corrections ?? []).filter(
+                            (item) => item.field?.trim() || item.value?.trim()
+                        ),
+                    };
+                } catch {
+                    return null;
+                }
+            })
+            .filter((item): item is NonNullable<typeof item> => Boolean(item));
+    }, [previousFlagsData]);
 
     return (
         <Card
             className={`rounded-xl border border-slate-200 bg-white shadow-sm ${className}`}
         >
             <CardHeader className="space-y-2 px-8 pb-2 pt-8 sm:px-10 lg:px-12">
+                {previousFlagsLoading && (
+                    <p className="text-sm text-slate-500">Loading submitted corrections...</p>
+                )}
+                {!previousFlagsLoading && previousFlags.length > 0 && (
+                    <div className="space-y-2">
+                        <p className="text-xl font-bold text-slate-900">
+                            Submitted Corrections
+                        </p>
+                        {previousFlags.map((flag) => (
+                            <div
+                                key={flag.id}
+                                className="rounded-lg border border-slate-200 bg-white p-3 shadow-sm"
+                            >
+                                <div className="space-y-2.5">
+                                    {flag.corrections.map((item, index) => (
+                                        <div
+                                            key={`${flag.id}-${index}`}
+                                            className="grid grid-cols-1 gap-2 rounded-md border border-slate-100 bg-slate-50/70 p-3 sm:grid-cols-2"
+                                        >
+                                            <p className="text-base text-slate-800">
+                                                <span className="font-semibold text-slate-900">Field: </span>
+                                                {item.field?.trim() || "—"}
+                                            </p>
+                                            <p className="text-base text-slate-800">
+                                                <span className="font-semibold text-slate-900">Value: </span>
+                                                {item.value?.trim() || "—"}
+                                            </p>
+                                        </div>
+                                    ))}
+                                </div>
+                                <div className="mt-3 border-t border-slate-100 pt-3">
+                                    {flag.note ? (
+                                        <div className="mb-2">
+                                            <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                                                Note
+                                            </p>
+                                            <p className="mt-1 text-sm leading-relaxed text-slate-700">
+                                                {flag.note}
+                                            </p>
+                                        </div>
+                                    ) : null}
+                                    <p className="text-xs text-slate-500">
+                                        Submitted at {new Date(flag.createdAt).toLocaleString()}
+                                    </p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                )}
                 <CardTitle className="text-xl font-bold text-slate-900">
                     Suggest a Correction / Add new data
                 </CardTitle>

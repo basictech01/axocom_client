@@ -7,8 +7,10 @@ import {
     GET_ELECTION_BY_CONSTITUENCY_AND_YEAR,
 } from "../services";
 import type { StateOption, Constituency } from "../types";
+import { useAuth } from "~/contexts/auth-context";
 
 export function useElectionFilter() {
+    const { user } = useAuth();
     //  Local filter state 
     const [selectedState, setSelectedState] = useState<string>("");
     const [selectedYear, setSelectedYear] = useState<string>("");
@@ -58,13 +60,29 @@ export function useElectionFilter() {
     // Default: load first constituency on initial data 
     useEffect(() => {
         if (allConstituencies?.constituencies?.length && !selectedState) {
-            const first = allConstituencies.constituencies[0];
-            setSelectedState(first.state);
-            setSelectedConstituencyId(first.id);
-            setConstituencySearch(first.name);
-            fetchByState({ variables: { state: first.state } });
+            const defaultAssembly = user?.default_assembly_constituency
+                ?.trim()
+                .toLowerCase();
+
+            const preferred =
+                defaultAssembly
+                    ? allConstituencies.constituencies.find((item) => {
+                        const normalizedName = item.name.trim().toLowerCase();
+                        return (
+                            normalizedName === defaultAssembly ||
+                            normalizedName.includes(defaultAssembly) ||
+                            defaultAssembly.includes(normalizedName)
+                        );
+                    })
+                    : null;
+
+            const initialConstituency = preferred ?? allConstituencies.constituencies[0];
+            setSelectedState(initialConstituency.state);
+            setSelectedConstituencyId(initialConstituency.id);
+            setConstituencySearch(initialConstituency.name);
+            fetchByState({ variables: { state: initialConstituency.state } });
         }
-    }, [allConstituencies]);
+    }, [allConstituencies, selectedState, fetchByState, user?.default_assembly_constituency]);
 
     // Default: pick first year once years are loaded 
     useEffect(() => {

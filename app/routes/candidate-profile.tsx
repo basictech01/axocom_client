@@ -21,6 +21,7 @@ import { useCandidateTimeline } from '~/features/candidates/hooks/useCandidateTi
 import { useNetworthCharts } from '~/features/candidates/hooks/useNetworthCharts';
 import { NetWorthBarChart } from '~/components/molecules/candidates/net-worth-bar-chart';
 import { SuggestCorrection } from '~/components/molecules/suggest-correction';
+import { Loader2 } from 'lucide-react';
 
 // MAIN PAGE COMPONENT
 export default function CandidateProfile() {
@@ -28,7 +29,7 @@ export default function CandidateProfile() {
     const [sidebarOpen, setSidebarOpen] = useState(true);
 
     const { id } = useParams<{ id: string }>();
-    const { candidate } = useCandidatesProfile(Number(id));
+    const { candidate, loading: candidateLoading } = useCandidatesProfile(Number(id));
     const { identity, metaDetails } = useCandidateProfile(candidate);
     const educationHistoryItems = useEducationHistory(candidate);
 
@@ -38,6 +39,7 @@ export default function CandidateProfile() {
         selectedYear,
         setSelectedYear,
         selectedEntry,
+        loading: timelineLoading,
     } = useCandidateTimeline(Number(id));
 
     const financialSummaryData = useFinancialSummary(selectedEntry);
@@ -48,6 +50,7 @@ export default function CandidateProfile() {
     const criminalSections = useCandidateCriminalCases(selectedEntry);
 
     const { bars, maxNetWorth } = useNetworthCharts(entries);
+    const isPageLoading = candidateLoading || timelineLoading;
 
     return (
         <div className="min-h-screen bg-[#F7F9FC] text-slate-900 font-sans">
@@ -63,6 +66,11 @@ export default function CandidateProfile() {
                 "min-h-screen p-8 transition-[padding-left] duration-200",
                 sidebarOpen ? "pl-60" : "pl-20"
             )}>
+                {isPageLoading ? (
+                    <div className="mx-auto max-w-[1400px] min-h-[60vh] flex items-center justify-center">
+                        <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+                    </div>
+                ) : (
                 <div className="mx-auto max-w-[1400px] space-y-8">
 
                     <CandidateProfileCard
@@ -139,6 +147,7 @@ export default function CandidateProfile() {
                     <SuggestCorrection entityId={Number(id)} />
 
                 </div>
+                )}
             </main>
         </div>
     );

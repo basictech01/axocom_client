@@ -6,10 +6,13 @@ import {
     Users,
     User,
     Settings,
+    LogOut,
     Calendar,
     Building2,
 } from "lucide-react";
 import { cn } from "~/lib/utils";
+import { useAuth } from "~/contexts/auth-context";
+import { useNavigate } from "react-router";
 
 export type SidebarNavItem = {
     id: string;
@@ -59,6 +62,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
     onOpenChange,
     className = "",
 }) => {
+    const { user, logout } = useAuth();
+    const navigate = useNavigate();
     const [internalOpen, setInternalOpen] = React.useState(true);
     const isControlled = controlledOpen !== undefined;
     const open = isControlled ? controlledOpen : internalOpen;
@@ -74,6 +79,18 @@ export const Sidebar: React.FC<SidebarProps> = ({
     );
 
     const toggle = () => setOpen(!open);
+    const [isLoggingOut, setIsLoggingOut] = React.useState(false);
+
+    const handleLogout = React.useCallback(async () => {
+        if (isLoggingOut) return;
+        setIsLoggingOut(true);
+        try {
+            await logout();
+            navigate("/login", { replace: true });
+        } finally {
+            setIsLoggingOut(false);
+        }
+    }, [isLoggingOut, logout, navigate]);
 
     return (
         <>
@@ -153,18 +170,35 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     })}
                 </nav>
 
-                {/* Profile row from candidates page */}
-                {/* <div className="p-4 mt-auto border-t border-slate-100">
-                    <div className="flex items-center gap-3 px-2">
+                <div className="p-4 mt-auto border-t border-slate-100">
+                    <div className="flex items-start gap-3 px-2">
+                        <div className="mt-1 shrink-0 text-slate-400">
+                            <Settings size={16} />
+                        </div>
                         {open && (
-                            <div className="flex flex-col">
-                                <span className="text-small text-slate-900">
+                            <div className="flex flex-col min-w-0">
+                                <span className="text-xs font-bold uppercase tracking-widest text-slate-400">
                                     Profile
                                 </span>
+                                <span className="text-sm text-slate-800 truncate">
+                                    {user?.email ?? "—"}
+                                </span>
+                                <span className="text-xs text-slate-500 truncate">
+                                    {user?.default_assembly_constituency ?? "No constituency"}
+                                </span>
+                                <button
+                                    type="button"
+                                    onClick={() => void handleLogout()}
+                                    disabled={isLoggingOut}
+                                    className="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    <LogOut size={14} />
+                                    {isLoggingOut ? "Logging out..." : "Logout"}
+                                </button>
                             </div>
                         )}
                     </div>
-                </div> */}
+                </div>
             </aside>
         </>
     );
