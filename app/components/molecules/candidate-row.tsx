@@ -29,20 +29,26 @@ export const CandidateRow: React.FC<CandidateRowProps> = ({
     profileImageUrl,
     onViewProfile,
 }) => {
+    const PLACEHOLDER_PROFILE_IMAGE =
+        "https://cdn-icons-png.flaticon.com/512/149/149071.png";
     const partyBadgeClasses = `text-${partyColor}-600 bg-${partyColor}-50 border-${partyColor}-100 font-black text-xs`;
+    const [imageSrc, setImageSrc] = React.useState(
+        profileImageUrl?.trim() || PLACEHOLDER_PROFILE_IMAGE
+    );
+
+    React.useEffect(() => {
+        setImageSrc(profileImageUrl?.trim() || PLACEHOLDER_PROFILE_IMAGE);
+    }, [profileImageUrl]);
 
     return (
         <TableRow className="border-gray-50">
             <TableCell className="font-bold flex items-center gap-3 py-4">
-                {profileImageUrl ? (
-                    <img
-                        src={profileImageUrl}
-                        alt={name}
-                        className="size-8 rounded-full object-cover"
-                    />
-                ) : (
-                    <div className="size-8 bg-gray-200 rounded-full" />
-                )}
+                <img
+                    src={imageSrc}
+                    alt={name}
+                    className="size-8 rounded-full object-cover"
+                    onError={() => setImageSrc(PLACEHOLDER_PROFILE_IMAGE)}
+                />
                 {name}
             </TableCell>
 

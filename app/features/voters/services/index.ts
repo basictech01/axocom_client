@@ -100,20 +100,3 @@ export const GET_VOTER_BY_ID: TypedDocumentNode<
     }
 `;
 
-export const EXPORT_VOTERS_CSV: TypedDocumentNode<
-    { votersExportCsv: string },
-    {
-        assembly_constituency: string;
-        parliamentary_constituency?: string | null;
-    }
-> = gql`
-    query ExportVotersCsv(
-        $assembly_constituency: String!
-        $parliamentary_constituency: String
-    ) {
-        votersExportCsv(
-            assembly_constituency: $assembly_constituency
-            parliamentary_constituency: $parliamentary_constituency
-        )
-    }
-`;

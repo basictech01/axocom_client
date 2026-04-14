@@ -3,6 +3,18 @@ import { useMemo, useState } from "react";
 import { GET_PARTIES_LIST } from "../services";
 import type { PartyListVM, RawPartyListItem } from "../types";
 
+const toImageUrl = (value?: string | null): string | null => {
+    const trimmed = value?.trim();
+    if (!trimmed) return null;
+
+    const normalized = trimmed.toUpperCase();
+    if (["NULL", "N/A", "NA", "NONE", "UNDEFINED"].includes(normalized)) {
+        return null;
+    }
+
+    return trimmed;
+};
+
 export function usePartyList() {
     const { data, loading } = useQuery(GET_PARTIES_LIST);
 
@@ -17,7 +29,7 @@ export function usePartyList() {
             id: p.id,
             name: p.name,
             shortName: p.short_name,
-            imageUrl: p.symbol?.trim() ? p.symbol : null,
+            imageUrl: toImageUrl(p.symbol),
             type: p.party_type ?? "Unknown",
         }));
     }, [data]);

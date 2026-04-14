@@ -8,6 +8,7 @@ import {
 } from "react-router";
 import { ApolloProvider } from "@apollo/client/react";
 import { apolloClient } from "~/lib/api";
+import { AuthProvider } from "~/contexts/auth-context";
 import type { Route } from "./+types/root";
 import "./app.css";
 
@@ -45,7 +46,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
 export default function App() {
   return (
     <ApolloProvider client={apolloClient}>
-      <Outlet />
+      <AuthProvider>
+        <Outlet />
+      </AuthProvider>
     </ApolloProvider>
   );
 }

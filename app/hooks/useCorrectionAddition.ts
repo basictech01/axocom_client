@@ -2,6 +2,7 @@ import { useCallback, useState } from "react";
 import { useLocation } from "react-router";
 import { useMutation } from "@apollo/client/react";
 import { SUBMIT_FLAG } from "~/services/flag";
+import { useAuth } from "~/contexts/auth-context";
 
 export type CorrectionRow = { field: string; value: string };
 
@@ -26,6 +27,7 @@ function detectDomain(pathname: string): CorrectionDomain {
 
 export function useCorrectionAddition(entityId: number) {
     const location = useLocation();
+    const { user } = useAuth();
     const domain = detectDomain(location.pathname);
     const url = location.pathname;
 
@@ -74,14 +76,22 @@ export function useCorrectionAddition(entityId: number) {
             };
 
             try {
-                await submitFlag({ variables: { data: JSON.stringify(payload) } });
+                if (!user?.email) {
+                    throw new Error("Authenticated email not found");
+                }
+                await submitFlag({
+                    variables: {
+                        data: JSON.stringify(payload),
+                        email: user.email,
+                    },
+                });
                 reset();
                 setSubmitted(true);
             } catch {
                 // submitError from useMutation covers this
             }
         },
-        [domain, url, entityId, rows, note, submitFlag, reset]
+        [domain, url, entityId, rows, note, submitFlag, reset, user?.email]
     );
 
     return {

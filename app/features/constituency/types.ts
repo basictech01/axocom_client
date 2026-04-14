@@ -54,6 +54,7 @@ export interface ElectionCandidateDetail {
     id: number;
     votes_polled: number;
     assets: number;
+    criminal_cases: number;
     candidate: {
         id: number;
         name: string;
