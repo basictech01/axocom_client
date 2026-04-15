@@ -55,11 +55,23 @@ export interface VoterListVM {
     partSerialNumber: number;
 }
 
+function safeNamePart(value: unknown): string {
+    if (typeof value !== "string") return "";
+    const trimmed = value.trim();
+    if (!trimmed) return "";
+    if (trimmed.toLowerCase() === "null") return "";
+    return trimmed;
+}
+
+function joinNameParts(...parts: unknown[]): string {
+    return parts.map(safeNamePart).filter(Boolean).join(" ");
+}
+
 export function toVoterListVM(voter: RawVoter): VoterListVM {
     return {
         id: voter.id,
         epicNumber: voter.epic_number,
-        fullNameEnglish: `${voter.first_name_english} ${voter.last_name_english}`.trim(),
+        fullNameEnglish: joinNameParts(voter.first_name_english, voter.last_name_english),
         genderAge: `${voter.gender} / ${voter.age}`,
         state: voter.state,
         assemblyConstituency: voter.assembly_constituency,
@@ -118,20 +130,22 @@ export function toVoterProfileVM(data: RawVoterProfile): VoterProfileVM {
     return {
         id: data.id,
         epicNumber: data.epic_number,
-        displayName:
-            `${data.first_name_english} ${data.last_name_english}`.trim(),
-        displayNameLocal:
-            `${data.first_name_local} ${data.last_name_local}`.trim(),
+        displayName: joinNameParts(data.first_name_english, data.last_name_english),
+        displayNameLocal: joinNameParts(data.first_name_local, data.last_name_local),
         firstNameEnglish: data.first_name_english,
         firstNameLocal: data.first_name_local,
         lastNameEnglish: data.last_name_english,
         lastNameLocal: data.last_name_local,
         gender: data.gender,
         age: data.age,
-        relativeName:
-            `${data.relative_first_name_english} ${data.relative_last_name_english}`.trim(),
-        relativeNameLocal:
-            `${data.relative_first_name_local} ${data.relative_last_name_local}`.trim(),
+        relativeName: joinNameParts(
+            data.relative_first_name_english,
+            data.relative_last_name_english
+        ),
+        relativeNameLocal: joinNameParts(
+            data.relative_first_name_local,
+            data.relative_last_name_local
+        ),
         state: data.state,
         parliamentaryConstituency: data.parliamentary_constituency,
         assemblyConstituency: data.assembly_constituency,
