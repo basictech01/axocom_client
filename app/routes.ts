@@ -2,9 +2,13 @@ import { type RouteConfig, index, layout, route } from "@react-router/dev/routes
 
 export default [
     route("login", "routes/login.tsx"),
+    route("careers", "routes/careers.tsx"),
+    route("election-management", "routes/election-page.tsx"),
+    route("nprweek2026", "routes/nprweek2026.tsx"),
+    index("routes/app.tsx"),
     // route("signup", "routes/signup.tsx"),
     layout("routes/protected-layout.tsx", [
-        index("routes/home.tsx"),
+        route("dashboard", "routes/home.tsx"),
         route("candidates", "routes/candidates.tsx"),
         route("voters", "routes/voter-list.tsx"),
         route("voters/:id", "routes/voter-profile.tsx"),

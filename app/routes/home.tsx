@@ -3,8 +3,8 @@ import ConstituencyPage from "./constituency";
 
 export function meta({ }: Route.MetaArgs) {
   return [
-    { title: "New React Router App" },
-    { name: "description", content: "Welcome to React Router!" },
+    { title: "Axocom Political Dashboard" },
+    { name: "description", content: "Welcome to Axocom Political Dashboard!" },
   ];
 }
 

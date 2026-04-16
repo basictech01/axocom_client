@@ -131,7 +131,46 @@ body {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Route-scoped styles for landing page only */
+@layer components {
+
+  .landing-page,
+  .landing-page * {
+    box-sizing: border-box;
+  }
+
+  .landing-page {
+    font-family: "Inter", system-ui, sans-serif;
+    background-color: #ffffff;
+    color: #111827;
+    overflow-x: hidden;
+
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .landing-page::-webkit-scrollbar,
+  .landing-page *::-webkit-scrollbar {
+    display: none;
+  }
+
+  .landing-page,
+  .landing-page * {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* Font-face can stay global */
+@font-face {
+  font-family: "HelloParis";
+  src: url("/fonts/HelloParisSerif-ExtraLight.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
 }
