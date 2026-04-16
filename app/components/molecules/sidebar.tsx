@@ -86,7 +86,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         setIsLoggingOut(true);
         try {
             await logout();
-            navigate("/login", { replace: true });
+            window.location.replace("/election-management");
         } finally {
             setIsLoggingOut(false);
         }
