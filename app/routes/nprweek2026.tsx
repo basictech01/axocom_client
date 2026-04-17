@@ -280,26 +280,20 @@ const NPRWeek2026: React.FC = () => {
                     <div className="flex flex-col items-center gap-6 bg-white border border-gray-200 rounded-3xl p-8 md:p-12">
                         <h2 className="text-2xl md:text-3xl font-bold text-gray-900">Organized By</h2>
                         <div className="flex flex-wrap items-center justify-center gap-8 md:gap-16">
-                            <div className="flex flex-col items-center gap-2">
-                                <div className="w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-gray-50 border border-gray-200 flex items-center justify-center">
-                                    <span className="text-2xl md:text-3xl font-bold text-primary">AC</span>
-                                </div>
-                                <span className="text-gray-900 font-bold text-sm md:text-base">AxoCom</span>
-                            </div>
+                            <a href="https://www.instagram.com/primecircle_events/" target="_blank" rel="noopener noreferrer" className="flex flex-col items-center gap-2">
+                                <img src="/images/prime-circle-events.jpeg" alt="Prime Circle Events" className="w-20 h-20 md:w-24 md:h-24 rounded-2xl object-cover border border-gray-200" />
+                                <span className="text-gray-900 font-bold text-sm md:text-base">Prime Circle Events</span>
+                            </a>
                             <span className="text-gray-600 text-2xl font-light hidden md:block">×</span>
-                            <div className="flex flex-col items-center gap-2">
-                                <div className="w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-gray-50 border border-gray-200 flex items-center justify-center">
-                                    <span className="text-2xl md:text-3xl font-black text-primary">SH</span>
-                                </div>
+                            <a href="https://www.instagram.com/saffronhillsstudios/" target="_blank" rel="noopener noreferrer" className="flex flex-col items-center gap-2">
+                                <img src="/images/saffron-hill-stidio.jpeg" alt="Saffron Hill Studio" className="w-20 h-20 md:w-24 md:h-24 rounded-2xl object-cover border border-gray-200" />
                                 <span className="text-gray-900 font-bold text-sm md:text-base">Saffron Hill Studio</span>
-                            </div>
+                            </a>
                             <span className="text-gray-600 text-2xl font-light hidden md:block">×</span>
-                            <div className="flex flex-col items-center gap-2">
-                                <div className="w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-gray-50 border border-gray-200 flex items-center justify-center">
-                                    <span className="text-2xl md:text-3xl font-bold text-primary/70">HS</span>
-                                </div>
+                            <a href="https://www.instagram.com/holysinncafe/" target="_blank" rel="noopener noreferrer" className="flex flex-col items-center gap-2">
+                                <img src="/images/holy-sin-cafe.jpeg" alt="Holy Sin Cafe" className="w-20 h-20 md:w-24 md:h-24 rounded-2xl object-cover border border-gray-200" />
                                 <span className="text-gray-900 font-bold text-sm md:text-base">Holy Sin Cafe</span>
-                            </div>
+                            </a>
                         </div>
                     </div>
 
@@ -314,15 +308,19 @@ const NPRWeek2026: React.FC = () => {
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
                             {[
-                                { abbr: 'UKJVNL', full: 'Uttarakhand Jal Vidyut Nigam Limited', icon: 'electric_bolt', color: 'text-blue-600 bg-blue-50 border-blue-100' },
-                                { abbr: 'UKBOCW', full: 'Uttarakhand Building & Construction Workers Board', icon: 'construction', color: 'text-amber-600 bg-amber-50 border-amber-100' },
-                                { abbr: 'UCOST', full: 'Uttarakhand Council of Science & Technology', icon: 'science', color: 'text-emerald-600 bg-emerald-50 border-emerald-100' },
+                                { abbr: 'UKJVNL', full: 'Uttarakhand Jal Vidyut Nigam Limited', img: '/images/ujvnl.png', color: 'text-blue-600 bg-blue-50 border-blue-100' },
+                                { abbr: 'UKBOCW', full: 'Uttarakhand Building & Construction Workers Board', img: '/images/ukbocw.png', color: 'text-amber-600 bg-amber-50 border-amber-100' },
+                                { abbr: 'UCOST', full: 'Uttarakhand Council of Science & Technology', img: '/images/ucost.png', color: 'text-emerald-600 bg-emerald-50 border-emerald-100' },
                                 { abbr: 'SMHFW', full: 'State Medical Health & Family Welfare Directorate', icon: 'health_and_safety', color: 'text-red-600 bg-red-50 border-red-100' },
-                                { abbr: 'SIDCUL', full: 'State Infrastructure & Industrial Development Corporation', icon: 'factory', color: 'text-indigo-600 bg-indigo-50 border-indigo-100' },
-                            ].map(({ abbr, full, icon, color }) => (
+                                { abbr: 'SIIDCUL', full: 'State Infrastructure & Industrial Development Corporation', img: '/images/siidcul.png', color: 'text-indigo-600 bg-indigo-50 border-indigo-100' },
+                            ].map(({ abbr, full, img, icon, color }) => (
                                 <div key={abbr} className={`flex items-center gap-4 border rounded-2xl p-5 ${color}`}>
-                                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 bg-white border ${color.split(' ').find(c => c.startsWith('border')) ?? ''}`}>
-                                        <span className={`material-symbols-outlined text-xl ${color.split(' ')[0]}`}>{icon}</span>
+                                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 bg-white border ${color.split(' ').find(c => c.startsWith('border')) ?? ''} overflow-hidden`}>
+                                        {img ? (
+                                            <img src={img} alt={abbr} className="w-full h-full object-contain p-1" />
+                                        ) : (
+                                            <span className={`material-symbols-outlined text-xl ${color.split(' ')[0]}`}>{icon}</span>
+                                        )}
                                     </div>
                                     <div>
                                         <p className={`font-bold text-sm ${color.split(' ')[0]}`}>{abbr}</p>
@@ -399,10 +397,10 @@ const NPRWeek2026: React.FC = () => {
                             <span className="text-xs uppercase tracking-widest text-gray-500">Axolotl Emprise LLP</span>
                         </div>
                         <div className="flex gap-6">
-                            <a href="https://www.instagram.com/axocommediaxtech" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors" aria-label="Instagram">
+                            <a href="https://www.instagram.com/axocommedia" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors" aria-label="Instagram">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5" /><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" /><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" /></svg>
                             </a>
-                            <a href="https://www.linkedin.com/in/axolotl-communications-8ba5a8393/" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors" aria-label="LinkedIn">
+                            <a href="https://www.linkedin.com/company/axocom-tech-x-media/" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors" aria-label="LinkedIn">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" /><rect x="2" y="9" width="4" height="12" /><circle cx="4" cy="4" r="2" /></svg>
                             </a>
                         </div>
