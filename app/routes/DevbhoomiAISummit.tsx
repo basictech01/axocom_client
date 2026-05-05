@@ -215,7 +215,7 @@ const DevbhoomiAISummit: React.FC = () => {
                             </div>
                             <div className="flex flex-wrap items-center gap-4">
                                 <button onClick={() => setIsModalOpen(true)} className="inline-flex min-w-[170px] items-center justify-center rounded-full bg-slate-900 px-6 py-3 text-sm font-semibold text-white transition hover:bg-slate-800">
-                                    Request an Invite
+                                    Book your spot
                                 </button>
                             </div>
                         </div>
