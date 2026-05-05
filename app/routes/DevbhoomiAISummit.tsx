@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import Navbar from '../components/static_components/Navbar';
 
 const DevbhoomiAISummit: React.FC = () => {
-    const [isVideoOpen, setIsVideoOpen] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [formData, setFormData] = useState({
         name: '',
@@ -12,7 +11,6 @@ const DevbhoomiAISummit: React.FC = () => {
         interest: '',
     });
 
-    const closeVideo = () => setIsVideoOpen(false);
     const closeModal = () => setIsModalOpen(false);
 
     const handleChange = (field: string, value: string) => {
@@ -54,9 +52,6 @@ const DevbhoomiAISummit: React.FC = () => {
                                     <button onClick={() => setIsModalOpen(true)} className="inline-flex items-center justify-center rounded-full bg-slate-900 px-6 py-3 text-sm font-semibold text-white transition hover:bg-slate-800">
                                         Book your spot
                                     </button>
-                                    <button onClick={() => setIsVideoOpen(true)} className="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-900 transition hover:border-slate-400 hover:bg-slate-50">
-                                        Learn More
-                                    </button>
                                 </div>
 
                                 <div className="grid gap-4 sm:grid-cols-3">
@@ -70,15 +65,15 @@ const DevbhoomiAISummit: React.FC = () => {
                                     </div>
                                     <div className="rounded-3xl border border-slate-200 bg-slate-50 p-6">
                                         <p className="text-sm text-slate-500 uppercase tracking-[0.2em]">Format</p>
-                                        <p className="mt-3 text-2xl font-semibold text-slate-900">Invitation-only policy and innovation summit</p>
+                                        <p className="mt-3 text-2xl font-semibold text-slate-900">Invitation-only summit</p>
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="relative rounded-[2rem] border border-slate-200 bg-slate-950/5 p-6 shadow-sm">
+                            <div className="relative ">
                                 <div className="absolute inset-0 rounded-[2rem] bg-slate-900/5" />
                                 <div className="relative grid gap-4">
-                                    <div className="rounded-3xl overflow-hidden h-[240px] bg-slate-900">
+                                    <div className="rounded-3xl overflow-hidden bg-slate-900 h-full">
                                         <video
                                             className="w-full h-full object-cover"
                                             autoPlay
@@ -87,19 +82,9 @@ const DevbhoomiAISummit: React.FC = () => {
                                             playsInline
                                             controls
                                         >
-                                            <source src="/videos/summit-video.MP4" type="video/mp4" />
+                                            <source src="/videos/summitV.mp4" type="video/mp4" />
                                             Your browser does not support the video tag.
                                         </video>
-                                    </div>
-
-                                    <div className="grid gap-4 sm:grid-cols-2">
-                                        <img src="/images/summit.png" alt="Summit photo" className="w-full h-full object-cover rounded-3xl" />
-                                        <img src="/images/summit2.png" alt="Summit secondary visual" className="w-full h-full object-cover rounded-3xl" />
-                                    </div>
-
-                                    <div className="rounded-3xl border border-slate-200 bg-slate-50 p-6 text-slate-700">
-                                        <p className="text-sm uppercase tracking-[0.25em] text-slate-500">Visual theme</p>
-                                        <p className="mt-4 text-lg font-semibold text-slate-900">Uttarakhand’s future, intelligence, and grounded public service.</p>
                                     </div>
                                 </div>
                             </div>
@@ -232,9 +217,6 @@ const DevbhoomiAISummit: React.FC = () => {
                                 <button onClick={() => setIsModalOpen(true)} className="inline-flex min-w-[170px] items-center justify-center rounded-full bg-slate-900 px-6 py-3 text-sm font-semibold text-white transition hover:bg-slate-800">
                                     Request an Invite
                                 </button>
-                                <button onClick={() => setIsVideoOpen(true)} className="inline-flex min-w-[170px] items-center justify-center rounded-full border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-900 transition hover:border-slate-400 hover:bg-slate-50">
-                                    Learn More
-                                </button>
                             </div>
                         </div>
                     </section>
@@ -243,27 +225,25 @@ const DevbhoomiAISummit: React.FC = () => {
 
             {isModalOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/80 px-2 py-4 sm:px-4 sm:py-8">
-                    <div className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-2xl overflow-hidden rounded-[1.5rem] sm:rounded-[2rem] border border-slate-200 bg-white shadow-2xl shadow-slate-900/30">
-                        <div className="bg-slate-950/5 px-6 py-6 sm:px-8 sm:py-7">
-                            <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-                                <div>
-                                    <p className="text-sm uppercase tracking-[0.32em] text-cyan-600">Summit registration</p>
-                                    <h2 className="mt-2 text-3xl font-semibold text-slate-900">Book your spot</h2>
-                                    <p className="mt-3 max-w-xl text-sm leading-6 text-slate-600">
-                                        Share your details and interest so we can send an invite request to <span className="font-semibold text-slate-900">info@axocom.in</span>.
-                                    </p>
-                                </div>
-                                <button
-                                    type="button"
-                                    onClick={closeModal}
-                                    className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 transition hover:border-slate-300 hover:text-slate-900"
-                                    aria-label="Close registration form"
-                                >
-                                    ×
-                                </button>
+                    <div className="relative w-full max-w-[95vw] sm:max-w-md md:max-w-lg lg:max-w-2xl overflow-hidden rounded-[1.5rem] sm:rounded-[2rem] border border-slate-200 bg-white shadow-2xl shadow-slate-900/30">
+                        <button
+                            type="button"
+                            onClick={closeModal}
+                            className="absolute top-4 right-4 sm:top-6 sm:right-6 z-10 inline-flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 transition hover:border-slate-300 hover:text-slate-900 text-xl sm:text-2xl"
+                            aria-label="Close registration form"
+                        >
+                            ×
+                        </button>
+                        <div className="bg-slate-950/5 px-6 py-6 sm:px-8 sm:py-7 pr-16 sm:pr-8">
+                            <div>
+                                <p className="text-sm uppercase tracking-[0.32em] text-cyan-600">Summit registration</p>
+                                <h2 className="mt-2 text-2xl sm:text-3xl font-semibold text-slate-900">Book your spot</h2>
+                                <p className="mt-3 max-w-xl text-sm leading-6 text-slate-600">
+                                    Share your details and interest so we can send an invite request to <span className="font-semibold text-slate-900">info@axocom.in</span>.
+                                </p>
                             </div>
                         </div>
-
+                        <div className="max-h-[70vh] overflow-y-auto">
                         <form onSubmit={handleSubmit} className="space-y-6 px-6 py-6 sm:px-8 sm:py-8">
                             <div className="grid gap-6 lg:grid-cols-2">
                                 <label className="space-y-2 text-sm text-slate-700">
@@ -352,37 +332,6 @@ const DevbhoomiAISummit: React.FC = () => {
                                 </button>
                             </div>
                         </form>
-                    </div>
-                </div>
-            )}
-
-            {isVideoOpen && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 px-2 py-4 sm:px-4 sm:py-8">
-                    <div className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-3xl overflow-hidden rounded-[1.5rem] sm:rounded-[2rem] bg-slate-950 shadow-2xl shadow-slate-950/40">
-                        <div className="flex items-center justify-between border-b border-slate-800 px-6 py-4">
-                            <div>
-                                <p className="text-sm uppercase tracking-[0.32em] text-cyan-300">Summit preview</p>
-                                <h2 className="text-xl font-semibold text-white">DevBhoomi AI Summit video</h2>
-                            </div>
-                            <button
-                                type="button"
-                                onClick={closeVideo}
-                                className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-slate-700 bg-slate-950 text-slate-300 transition hover:border-slate-600 hover:text-white"
-                                aria-label="Close video"
-                            >
-                                ×
-                            </button>
-                        </div>
-                        <div className="p-4 sm:p-6">
-                            <div className="aspect-video max-h-[70vh] overflow-hidden rounded-[1.5rem] bg-slate-900">
-                                <video
-                                    className="h-full w-full object-contain"
-                                    src="/videos/summitV.mp4"
-                                    controls
-                                    autoPlay
-                                    playsInline
-                                />
-                            </div>
                         </div>
                     </div>
                 </div>

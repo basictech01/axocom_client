@@ -3,7 +3,6 @@ import Navbar from '../components/static_components/Navbar';
 
 const UISHackathon: React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isVideoOpen, setIsVideoOpen] = useState(false);
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -13,7 +12,6 @@ const UISHackathon: React.FC = () => {
     });
 
     const closeModal = () => setIsModalOpen(false);
-    const closeVideo = () => setIsVideoOpen(false);
 
     const handleChange = (field: string, value: string) => {
         setFormData((prev) => ({ ...prev, [field]: value }));
@@ -54,9 +52,6 @@ const UISHackathon: React.FC = () => {
                                     <button onClick={() => setIsModalOpen(true)} className="inline-flex items-center justify-center rounded-full bg-slate-900 px-6 py-3 text-sm font-semibold text-white transition hover:bg-slate-800">
                                         Register Now
                                     </button>
-                                    <button onClick={() => setIsVideoOpen(true)} className="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-900 transition hover:border-slate-400 hover:bg-slate-50">
-                                        Learn More
-                                    </button>
                                 </div>
 
                                 <div className="grid gap-4 sm:grid-cols-3">
@@ -76,24 +71,31 @@ const UISHackathon: React.FC = () => {
                                 </div>
                             </div>
 
-                            <div className="relative rounded-[2rem] border border-slate-200 bg-slate-950/5 p-6 shadow-sm">
-                                <div className="absolute inset-0 rounded-[2rem] bg-slate-900/5" />
-                                <div className="relative grid gap-4">
-                                    <div className="rounded-3xl border border-dashed border-slate-300/60">
-                                        <img src="/images/hacka2.png" alt="Summit photo" className="w-full h-full object-cover rounded-3xl" />
-                                    </div>
-
-                                    <div className="grid gap-4 sm:grid-cols-2">
-                                        <img src="/images/hacha1.png" alt="Summit photo" className="w-full h-full object-cover rounded-3xl" />
-                                        <img src="/images/hacka.webp" alt="Summit secondary visual" className="w-full h-full object-cover rounded-3xl" />
-                                    </div>
-
-                                    <div className="rounded-3xl border border-slate-200 bg-slate-50 p-6 text-slate-700">
-                                        <p className="text-sm uppercase tracking-[0.25em] text-slate-500">Visual theme</p>
-                                        <p className="mt-4 text-lg font-semibold text-slate-900">Innovation, collaboration, and Uttarakhand's untapped potential.</p>
+                            <div className="relative shadow-sm">
+                                <div className="relative">
+                                    <div className="rounded-3xl overflow-hidden bg-slate-900 h-full">
+                                        <video
+                                            className="w-full h-full object-cover"
+                                            autoPlay
+                                            loop
+                                            muted
+                                            playsInline
+                                            controls
+                                        >
+                                            <source src="/videos/hackaV.mp4" type="video/mp4" />
+                                            Your browser does not support the video tag.
+                                        </video>
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </section>
+
+                    <section className="rounded-[1rem] border border-gray-200 bg-white p-5 shadow-xl shadow-slate-900/5">
+                        <div className="grid gap-6 md:grid-cols-3">
+                            <img src="/images/hacka2.png" alt="Hackathon photo" className="w-full h-48 object-cover rounded-3xl" />
+                            <img src="/images/hacha1.png" alt="Hackathon photo" className="w-full h-48 object-cover rounded-3xl" />
+                            <img src="/images/hacka.webp" alt="Hackathon secondary visual" className="w-full h-48 object-cover rounded-3xl" />
                         </div>
                     </section>
 
@@ -214,9 +216,6 @@ const UISHackathon: React.FC = () => {
                                 <button onClick={() => setIsModalOpen(true)} className="inline-flex min-w-[170px] items-center justify-center rounded-full bg-slate-900 px-6 py-3 text-sm font-semibold text-white transition hover:bg-slate-800">
                                     Register Now
                                 </button>
-                                <button onClick={() => setIsVideoOpen(true)} className="inline-flex min-w-[170px] items-center justify-center rounded-full border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-900 transition hover:border-slate-400 hover:bg-slate-50">
-                                    Learn More
-                                </button>
                             </div>
                         </div>
                     </section>
@@ -225,26 +224,25 @@ const UISHackathon: React.FC = () => {
 
             {isModalOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/80 px-2 py-4 sm:px-4 sm:py-8">
-                    <div className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-2xl overflow-hidden rounded-[1.5rem] sm:rounded-[2rem] border border-slate-200 bg-white shadow-2xl shadow-slate-900/30">
-                        <div className="bg-slate-950/5 px-6 py-6 sm:px-8 sm:py-7">
-                            <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-                                <div>
-                                    <p className="text-sm uppercase tracking-[0.32em] text-violet-600">Hackathon registration</p>
-                                    <h2 className="mt-2 text-3xl font-semibold text-slate-900">Register your interest</h2>
-                                    <p className="mt-3 max-w-xl text-sm leading-6 text-slate-600">
-                                        Share your profile, experience and the idea you want to build. We will prepare an email to <span className="font-semibold text-slate-900">info@axocom.in</span>.
-                                    </p>
-                                </div>
-                                <button
-                                    type="button"
-                                    onClick={closeModal}
-                                    className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 transition hover:border-slate-300 hover:text-slate-900"
-                                    aria-label="Close registration form"
-                                >
-                                    ×
-                                </button>
+                    <div className="relative w-full max-w-[95vw] sm:max-w-md md:max-w-lg lg:max-w-2xl overflow-hidden rounded-[1.5rem] sm:rounded-[2rem] border border-slate-200 bg-white shadow-2xl shadow-slate-900/30">
+                        <button
+                            type="button"
+                            onClick={closeModal}
+                            className="absolute top-4 right-4 sm:top-6 sm:right-6 z-10 inline-flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 transition hover:border-slate-300 hover:text-slate-900 text-xl sm:text-2xl"
+                            aria-label="Close registration form"
+                        >
+                            ×
+                        </button>
+                        <div className="bg-slate-950/5 px-6 py-6 sm:px-8 sm:py-7 pr-16 sm:pr-8">
+                            <div>
+                                <p className="text-sm uppercase tracking-[0.32em] text-violet-600">Hackathon registration</p>
+                                <h2 className="mt-2 text-2xl sm:text-3xl font-semibold text-slate-900">Register your interest</h2>
+                                <p className="mt-3 max-w-xl text-sm leading-6 text-slate-600">
+                                    Share your profile, experience and the idea you want to build. We will prepare an email to <span className="font-semibold text-slate-900">info@axocom.in</span>.
+                                </p>
                             </div>
                         </div>
+                        <div className="max-h-[70vh] overflow-y-auto">
                         <form onSubmit={handleSubmit} className="space-y-6 px-6 py-6 sm:px-8 sm:py-8">
                             <div className="grid gap-6 lg:grid-cols-2">
                                 <label className="space-y-2 text-sm text-slate-700">
@@ -331,37 +329,6 @@ const UISHackathon: React.FC = () => {
                                 </button>
                             </div>
                         </form>
-                    </div>
-                </div>
-            )}
-
-            {isVideoOpen && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 px-2 py-4 sm:px-4 sm:py-8">
-                    <div className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-3xl overflow-hidden rounded-[1.5rem] sm:rounded-[2rem] bg-slate-950 shadow-2xl shadow-slate-950/40">
-                        <div className="flex items-center justify-between border-b border-slate-800 px-6 py-4">
-                            <div>
-                                <p className="text-sm uppercase tracking-[0.32em] text-violet-400">Hackathon preview</p>
-                                <h2 className="text-xl font-semibold text-white">Uttarakhand Innovation & Solutions Hackathon</h2>
-                            </div>
-                            <button
-                                type="button"
-                                onClick={closeVideo}
-                                className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-slate-700 bg-slate-950 text-slate-300 transition hover:border-slate-600 hover:text-white"
-                                aria-label="Close video"
-                            >
-                                ×
-                            </button>
-                        </div>
-                        <div className="p-4 sm:p-6">
-                            <div className="aspect-video max-h-[70vh] overflow-hidden rounded-[1.5rem] bg-slate-900">
-                                <video
-                                    className="h-full w-full object-contain"
-                                    src="/videos/hackaV.mp4"
-                                    controls
-                                    autoPlay
-                                    playsInline
-                                />
-                            </div>
                         </div>
                     </div>
                 </div>
