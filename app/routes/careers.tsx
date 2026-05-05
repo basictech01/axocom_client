@@ -160,8 +160,7 @@ const Careers: React.FC = () => {
           {/* Top Section: Branding and Social Links */}
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
             <div className="flex flex-col items-center md:items-start">
-              <h2 className=" text-2xl text-gray-900 mb-1" style={{ fontFamily: 'HelloParis' }}>AXOCOM</h2>
-              <span className="text-xs uppercase tracking-widest text-gray-500">Axolotl Emprise LLP</span>
+                            <img src="/images/logo2.png" alt="AxoCom" className="h-12 mb-2" />
             </div>
 
             <div className="flex gap-6">
