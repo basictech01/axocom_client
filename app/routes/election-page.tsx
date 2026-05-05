@@ -411,7 +411,7 @@ const ElectionPage: React.FC = () => {
                 <div className="max-w-7xl mx-auto flex flex-col gap-6">
                     <div className="flex flex-col md:flex-row justify-between items-center gap-6">
                         <div className="flex flex-col items-center md:items-start">
-                            <h2 className="text-2xl text-gray-900 mb-1" style={{ fontFamily: 'HelloParis' }}>AxoCom</h2>
+                            <img src="/images/logo2.png" alt="AxoCom" className="h-12 mb-2" />
                             <span className="text-xs uppercase tracking-widest text-gray-500">Axolotl Emprise LLP</span>
                         </div>
                         <div className="flex gap-6">

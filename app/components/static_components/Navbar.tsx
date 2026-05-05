@@ -53,13 +53,27 @@ const Navbar: React.FC = () => {
                             <span className={`material-symbols-outlined text-base transition-transform duration-200 ${isEventsOpen ? 'rotate-180' : ''}`}>expand_more</span>
                         </button>
                         {isEventsOpen && (
-                            <div className="absolute top-full mt-2 left-1/2 -translate-x-1/2 bg-white/95 backdrop-blur-xl rounded-2xl shadow-xl shadow-black/10 border border-gray-200/80 py-2 min-w-[200px] z-50">
+                            <div className="absolute top-full mt-2 left-1/2 -translate-x-1/2 bg-white/95 backdrop-blur-xl rounded-2xl shadow-xl shadow-black/10 border border-gray-200/80 py-2 min-w-[240px] z-50">
                                 <Link
                                     to="/nprweek2026"
                                     className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 hover:text-primary hover:bg-gray-50 transition-all"
                                 >
                                     <span className="material-symbols-outlined text-lg">celebration</span>
                                     NPR Week 2026
+                                </Link>
+                                <Link
+                                    to="/DevbhoomiAISummit"
+                                    className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 hover:text-primary hover:bg-gray-50 transition-all"
+                                >
+                                    <span className="material-symbols-outlined text-lg">rocket_launch</span>
+                                    Devbhoomi AI Summit
+                                </Link>
+                                <Link
+                                    to="/UISHackathon"
+                                    className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 hover:text-primary hover:bg-gray-50 transition-all"
+                                >
+                                    <span className="material-symbols-outlined text-lg">lightbulb</span>
+                                    UI Solutions Hackathon
                                 </Link>
                             </div>
                         )}
@@ -114,6 +128,22 @@ const Navbar: React.FC = () => {
                             >
                                 <span className="material-symbols-outlined text-xl">celebration</span>
                                 NPR Week 2026
+                            </Link>
+                            <Link
+                                to="/DevbhoomiAISummit"
+                                onClick={() => setIsMenuOpen(false)}
+                                className="text-lg text-gray-500 hover:text-primary transition-colors flex items-center gap-2"
+                            >
+                                <span className="material-symbols-outlined text-xl">rocket_launch</span>
+                                Devbhoomi AI Summit
+                            </Link>
+                            <Link
+                                to="/UISHackathon"
+                                onClick={() => setIsMenuOpen(false)}
+                                className="text-lg text-gray-500 hover:text-primary transition-colors flex items-center gap-2"
+                            >
+                                <span className="material-symbols-outlined text-xl">lightbulb</span>
+                                UI Solutions Hackathon
                             </Link>
                         </div>
                     )}
