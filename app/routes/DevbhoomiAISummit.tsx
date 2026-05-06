@@ -1,5 +1,110 @@
 import React, { useState } from 'react';
 import Navbar from '../components/static_components/Navbar';
+import DelegatesSlider from "../components/ai_summit/DelegatesSlider";
+
+
+const delegates = [
+  {
+    name: "Shri Pushkar Singh Dhami",
+    role: "Chief Minister, Govt. of Uttarakhand",
+    image: "/images/delegates/pushkar-dhami.jpg",
+  },
+  {
+    name: "Shri Pradeep Batra",
+    role: "IT Minister, Govt. of Uttarakhand",
+    image: "/images/delegates/pradeep-batra.jpg",
+  },
+  {
+    name: "Shri Nitesh Kumar Jha (IAS)",
+    role: "Secretary, IT, Govt. of Uttarakhand",
+    image: "/images/delegates/nitesh-jha.jpg",
+  },
+  {
+    name: "Shri Alok Kumar Pandey (IAS)",
+    role: "Director, ITDA, Govt. of Uttarakhand",
+    image: "/images/delegates/alok-pandey.jpg",
+  },
+  {
+    name: "Shri Abhishek Singh",
+    role: "DG, NIC & Addl. Secretary, MeitY",
+    image: "/images/delegates/abhishek-singh.jpg",
+  },
+  {
+    name: "Aditya Maheshwari",
+    role: "Associate Professor, IIM Indore",
+    image: "/images/delegates/aditya-maheshwari.jpg",
+  },
+  {
+    name: "Dr. Amar Patnaik",
+    role: "Founding Partner, A&N Legal Solutions",
+    image: "/images/delegates/amar-patnaik.jpg",
+  },
+  {
+    name: "Ayush Gupta",
+    role: "Partner, KPMG India",
+    image: "/images/delegates/ayush-gupta.jpg",
+  },
+  {
+    name: "Dr. Sushil Meher",
+    role: "CIO, AIIMS",
+    image: "/images/delegates/sushil-meher.jpg",
+  },
+  {
+    name: "Jaspreet Singh",
+    role: "Partner - Cyber Advisory, Grant Thornton",
+    image: "/images/delegates/jaspreet-singh.jpg",
+  },
+  {
+    name: "Prof. Niladri Chatterjee",
+    role: "AI Chair Professor, IIT Delhi",
+    image: "/images/delegates/niladri-chatterjee.jpg",
+  },
+  {
+    name: "Dr. V. K. Paul",
+    role: "Member, NITI Aayog",
+    image: "/images/delegates/vk-paul.jpg",
+  },
+  {
+    name: "Harnath Babu",
+    role: "CIO, KPMG",
+    image: "/images/delegates/harnath-babu.jpg",
+  },
+  {
+    name: "Nakul Jain",
+    role: "CEO, Wadhwani AI",
+    image: "/images/delegates/nakul-jain.jpg",
+  },
+  {
+    name: "Tarun Anand",
+    role: "Founder, Universal AI University",
+    image: "/images/delegates/tarun-anand.jpg",
+  },
+  {
+    name: "Amit Pradhan",
+    role: "VP IT & CIO, Dixon Technologies",
+    image: "/images/delegates/amit-pradhan.jpg",
+  },
+  {
+    name: "Achin K Sharma",
+    role: "VP IT, Movin India",
+    image: "/images/delegates/achin-sharma.jpg",
+  },
+  {
+    name: "Golok Kumar Simli",
+    role: "President - Tech & Innovation, BLS Intl",
+    image: "/images/delegates/golok-simli.jpg",
+  },
+  {
+    name: "Vinay Kumar",
+    role: "Head IT, Tim Hortons ME",
+    image: "/images/delegates/vinay-kumar.jpg",
+  },
+  {
+    name: "Kapil Mahajan",
+    role: "Global CIO, Allcargo Logistics",
+    image: "/images/delegates/kapil-mahajan.jpg",
+  },
+];
 
 const DevbhoomiAISummit: React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -206,7 +311,7 @@ const DevbhoomiAISummit: React.FC = () => {
                     </section>
 
                     <section className="rounded-[2rem] border border-gray-200 bg-white p-10 shadow-xl shadow-slate-900/5">
-                        <div className="grid gap-6 lg:grid-cols-[1.8fr_1.2fr] items-center">
+                        <div className="grid gap-6 items-center">
                             <div>
                                 <h2 className="text-3xl font-bold text-slate-900">This is a curated, limited participation summit.</h2>
                                 <p className="mt-4 text-lg leading-8 text-slate-600">
@@ -336,6 +441,20 @@ const DevbhoomiAISummit: React.FC = () => {
                     </div>
                 </div>
             )}
+
+            <section className="rounded-[2rem] border border-gray-200 bg-white p-10 shadow-xl shadow-slate-900/5">
+                <h2 className="text-3xl font-bold text-slate-900">
+                    Delegates & Dignitaries
+                </h2>
+
+                <p className="mt-4 text-lg text-slate-600">
+                    Leaders and innovators attending the summit.
+                </p>
+
+                <div className="mt-8">
+                    <DelegatesSlider delegates={delegates} />
+                </div>
+            </section>
 
             {/* Footer */}
             <footer className="w-full py-10 px-6 border-t border-gray-200 bg-gray-50 text-gray-500">
