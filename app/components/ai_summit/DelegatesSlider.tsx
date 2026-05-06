@@ -3,6 +3,7 @@ import React from "react";
 interface Delegate {
   name: string;
   role: string;
+  image?: string; // ✅ optional now
 }
 
 interface Props {
@@ -30,16 +31,26 @@ const DelegatesSlider: React.FC<Props> = ({ delegates }) => {
         {[...data, ...data].map((person, index) => (
           <div
             key={index}
-            className="flex-shrink-0 w-[260px] bg-white border border-gray-200 rounded-2xl p-5 shadow-sm hover:shadow-md transition"
+            className="flex-shrink-0 w-[260px] bg-white/90 backdrop-blur-sm border border-slate-200 rounded-2xl p-5 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
           >
-            {/* Initials Avatar */}
-            <div className="w-12 h-12 flex items-center justify-center rounded-full bg-gradient-to-br from-slate-100 to-slate-200 text-slate-700     font-semibold mb-3">
-              {person.name
-                .split(" ")
-                .map((n) => n[0])
-                .slice(0, 2)
-                .join("")}
-            </div>
+            {/* Avatar (Image OR Initials) */}
+            {person.image ? (
+              <div className="w-14 h-14 rounded-full overflow-hidden mb-3 border border-slate-200">
+                <img
+                  src={person.image}
+                  alt={person.name}
+                  className="w-full h-full object-cover transition duration-300 hover:scale-110"
+                />
+              </div>
+            ) : (
+              <div className="w-12 h-12 flex items-center justify-center rounded-full bg-gradient-to-br from-slate-100 to-slate-200 text-slate-700 font-semibold mb-3">
+                {person.name
+                  .split(" ")
+                  .map((n) => n[0])
+                  .slice(0, 2)
+                  .join("")}
+              </div>
+            )}
 
             {/* Name */}
             <p className="font-semibold text-slate-900 text-sm leading-snug">
@@ -49,7 +60,7 @@ const DelegatesSlider: React.FC<Props> = ({ delegates }) => {
             {/* Role */}
             <p className="mt-2 text-xs text-slate-500">
               {person.role.split(",")[0]},{" "}
-              <span className="font-semibold text-violet-600">
+              <span className="font-semibold text-cyan-600">
                 {person.role.split(",")[1]}
               </span>
             </p>
