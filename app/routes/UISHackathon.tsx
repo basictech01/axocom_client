@@ -1,5 +1,15 @@
 import React, { useState } from 'react';
 import Navbar from '../components/static_components/Navbar';
+import DelegatesSlider from "../components/ai_summit/DelegatesSlider";
+
+const speakers = [
+  { name: "Rohan Pant", role: "Program Manager, Amazon" },
+  { name: "Virendra Pal", role: "Operations Manager, Amazon" },
+  { name: "Kevin Patel", role: "Software Engineer, Google" },
+  { name: "Anmol Dixit", role: "Senior Software Engineer, Rubrik" },
+  { name: "Ayush Gupta", role: "Data Engineer, Zeta" },
+  { name: "Sagar Singh", role: "Software Developer, Scapia" },
+];
 
 const UISHackathon: React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -135,23 +145,57 @@ const UISHackathon: React.FC = () => {
                                     Final submissions are evaluated on problem relevance, practicality of solution, and execution approach. Selected participants move forward in the journey.
                                 </p>
                             </div>
-
+                            
                             <div className="rounded-[2rem] border border-gray-200 bg-white p-10 shadow-xl shadow-slate-900/5">
-                                <h2 className="text-3xl font-bold text-slate-900">Phase 3: On-Ground Hackathons (Upcoming)</h2>
+                                <h2 className="text-3xl font-bold text-slate-900">
+                                Phase 3: On-Ground Hackathons
+                                </h2>
+
                                 <p className="mt-6 text-lg leading-8 text-slate-600">
-                                    The hackathon will be brought to multiple cities across Uttarakhand: Dehradun, Roorkee, and Haldwani.
+                                The hackathon evolves into a three-city offline journey across Uttarakhand, bringing participants closer to real-world problem solving and collaboration.
                                 </p>
-                                <div className="mt-8 space-y-4">
-                                    <div className="rounded-3xl border border-slate-200 bg-slate-50 p-6">
-                                        <p className="text-lg font-semibold text-slate-900">Timeline</p>
-                                        <ul className="mt-4 space-y-2 text-slate-600">
-                                            <li>• June – Haldwani</li>
-                                            <li>• July – Roorkee</li>
-                                            <li>• August – Dehradun</li>
-                                        </ul>
-                                        <p className="mt-4 text-sm text-slate-500">Exact dates will be announced</p>
+
+                                {/* Timeline Grid */}
+                                <div className="mt-8 grid gap-4 sm:grid-cols-3">
+                                {[
+                                    {
+                                    month: "June",
+                                    city: "Rudrapur",
+                                    desc: "Kickoff offline hackathon",
+                                    },
+                                    {
+                                    month: "July",
+                                    city: "Roorkee",
+                                    desc: "Second phase of on-ground builds",
+                                    },
+                                    {
+                                    month: "August",
+                                    city: "Dehradun",
+                                    desc: "Final hackathon & culmination",
+                                    },
+                                ].map((item) => (
+                                    <div
+                                    key={item.city}
+                                    className="rounded-3xl border border-slate-200 bg-slate-50 p-6 text-center"
+                                    >
+                                    <p className="text-xs uppercase tracking-[0.2em] text-slate-500">
+                                        {item.month}
+                                    </p>
+
+                                    <p className="mt-2 text-lg font-semibold text-slate-900">
+                                        {item.city}
+                                    </p>
+
+                                    <p className="mt-2 text-sm text-slate-600">
+                                        {item.desc}
+                                    </p>
                                     </div>
+                                ))}
                                 </div>
+
+                                <p className="mt-6 text-sm text-slate-500 text-center">
+                                Exact dates and venues will be announced soon.
+                                </p>
                             </div>
                         </div>
 
@@ -205,7 +249,7 @@ const UISHackathon: React.FC = () => {
                     </section>
 
                     <section className="rounded-[2rem] border border-gray-200 bg-white p-10 shadow-xl shadow-slate-900/5">
-                        <div className="grid gap-6 lg:grid-cols-[1.8fr_1.2fr] items-center">
+                        <div className="grid gap-6 items-center">
                             <div>
                                 <h2 className="text-3xl font-bold text-slate-900">Join the journey</h2>
                                 <p className="mt-4 text-lg leading-8 text-slate-600">
@@ -333,6 +377,23 @@ const UISHackathon: React.FC = () => {
                     </div>
                 </div>
             )}
+
+            <section className="rounded-[2rem] border border-gray-200 bg-white p-10 shadow-xl shadow-slate-900/5 overflow-hidden">
+            <h2 className="text-3xl font-bold text-slate-900">
+                Mentors & Speakers
+            </h2>
+
+            <p className="mt-4 text-lg text-slate-600">
+                Learn from engineers and leaders working at top tech companies.
+            </p>
+
+            <div className="mt-8 relative">
+                <div className="absolute left-0 top-0 h-full w-20 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
+                <div className="absolute right-0 top-0 h-full w-20 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
+
+                <DelegatesSlider delegates={speakers} />
+            </div>
+            </section>
 
             {/* Footer */}
             <footer className="w-full py-10 px-6 border-t border-gray-200 bg-gray-50 text-gray-500">
