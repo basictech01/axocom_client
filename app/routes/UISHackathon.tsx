@@ -72,7 +72,7 @@ const UISHackathon: React.FC = () => {
                                     </div>
                                     <div className="rounded-3xl border border-slate-200 bg-slate-50 p-6">
                                         <p className="text-sm text-slate-500 uppercase tracking-[0.2em]">Cities</p>
-                                        <p className="mt-3 text-2xl font-semibold text-slate-900">Dehradun, Roorkee, Haldwani</p>
+                                        <p className="mt-3 text-2xl font-semibold text-slate-900">Dehradun, Roorkee, Rudrapur</p>
                                     </div>
                                     <div className="rounded-3xl border border-slate-200 bg-slate-50 p-6">
                                         <p className="text-sm text-slate-500 uppercase tracking-[0.2em]">Focus</p>
