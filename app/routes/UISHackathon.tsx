@@ -146,7 +146,7 @@ const UISHackathon: React.FC = () => {
                                 <div className="relative">
                                     <div className="rounded-3xl overflow-hidden bg-slate-900 h-full">
                                         <video
-                                            className="w-full h-full object-cover"
+                                            className="w-full h-full object-contain bg-black"
                                             autoPlay
                                             loop
                                             muted
