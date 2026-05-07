@@ -79,6 +79,67 @@ const UISHackathon: React.FC = () => {
                                         <p className="mt-3 text-2xl font-semibold text-slate-900">Real products, real problems</p>
                                     </div>
                                 </div>
+
+                                <div className="space-y-4">
+                                    <p className="text-sm uppercase tracking-[0.28em] text-slate-500">
+                                        In Association With
+                                    </p>
+
+                                    <div className="grid gap-4 sm:grid-cols-3">
+                                        
+                                        {/* ANI */}
+                                        <div className="flex flex-col items-center justify-center rounded-3xl border border-slate-200 bg-slate-50 p-5 text-center">
+                                        <img
+                                            src="/images/ani.jpeg"
+                                            alt="ANI"
+                                            className="h-12 object-contain"
+                                        />
+
+                                        <p className="mt-4 text-sm font-semibold text-slate-900">
+                                            Asian News International
+                                        </p>
+
+                                        <p className="mt-1 text-xs text-slate-500">
+                                            ANI
+                                        </p>
+                                        </div>
+
+                                        {/* PTI */}
+                                        <div className="flex flex-col items-center justify-center rounded-3xl border border-slate-200 bg-slate-50 p-5 text-center">
+                                        <img
+                                            src="/images/pti.jpeg"
+                                            alt="PTI"
+                                            className="h-12 object-contain"
+                                        />
+
+                                        <p className="mt-4 text-sm font-semibold text-slate-900">
+                                            Press Trust of India
+                                        </p>
+
+                                        <p className="mt-1 text-xs text-slate-500">
+                                            PTI
+                                        </p>
+                                        </div>
+
+                                        {/* ET */}
+                                        <div className="flex flex-col items-center justify-center rounded-3xl border border-slate-200 bg-slate-50 p-5 text-center">
+                                        <img
+                                            src="/images/et.jpeg"
+                                            alt="Economic Times"
+                                            className="h-12 object-contain"
+                                        />
+
+                                        <p className="mt-4 text-sm font-semibold text-slate-900">
+                                            The Economic Times
+                                        </p>
+
+                                        <p className="mt-1 text-xs text-slate-500">
+                                            ET
+                                        </p>
+                                        </div>
+
+                                    </div>
+                                </div>
                             </div>
 
                             <div className="relative shadow-sm">
