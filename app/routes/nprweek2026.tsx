@@ -1,5 +1,24 @@
 import React, { useRef, useState } from 'react';
 import Navbar from '../components/static_components/Navbar';
+import { buildSeoLinks, buildSeoMeta, eventSchema, organizationSchema, structuredData, webPageSchema } from "~/lib/seo";
+
+const seo = {
+    title: "National PR Week 2026",
+    description: "National PR Week 2026 by AxoCom with Saffron Hill Studio and Holy Sin Cafe, featuring public relations sessions, government knowledge partners, and certificate downloads.",
+    path: "/nprweek2026",
+    image: "/images/prime-circle-events.jpeg",
+    imageAlt: "National PR Week 2026 by AxoCom",
+    keywords: [
+        "National PR Week 2026",
+        "National PR Day India",
+        "public relations event",
+        "AxoCom PR Week",
+        "PR certificate",
+    ],
+};
+
+export const meta = () => buildSeoMeta(seo);
+export const links = () => buildSeoLinks(seo);
 
 const NPRWeek2026: React.FC = () => {
     const [name, setName] = useState('');
@@ -230,6 +249,26 @@ const NPRWeek2026: React.FC = () => {
 
     return (
         <div className="min-h-screen w-full bg-background-dark font-space">
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: structuredData([
+                        organizationSchema,
+                        webPageSchema(seo),
+                        eventSchema({
+                            name: seo.title,
+                            description: seo.description,
+                            path: seo.path,
+                            image: seo.image,
+                            startDate: "2026-04-16",
+                            endDate: "2026-04-21",
+                            locationName: "National PR Week partner colleges",
+                            locationAddress: "Uttarakhand, India",
+                            eventStatus: "https://schema.org/EventCompleted",
+                        }),
+                    ]),
+                }}
+            />
             <Navbar />
 
             {/* Hero */}

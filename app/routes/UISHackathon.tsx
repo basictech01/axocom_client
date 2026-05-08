@@ -1,6 +1,25 @@
 import React, { useState } from 'react';
 import Navbar from '../components/static_components/Navbar';
 import DelegatesSlider from "../components/ai_summit/DelegatesSlider";
+import { buildSeoLinks, buildSeoMeta, eventSchema, organizationSchema, structuredData, webPageSchema } from "~/lib/seo";
+
+const seo = {
+    title: "Uttarakhand Innovation & Solutions Hackathon",
+    description: "A state-wide innovation series by AxoCom for students, developers, and professionals building practical solutions for Uttarakhand through online and on-ground hackathon rounds.",
+    path: "/UISHackathon",
+    image: "/images/hacka2.png",
+    imageAlt: "Uttarakhand Innovation and Solutions Hackathon",
+    keywords: [
+        "Uttarakhand hackathon",
+        "innovation challenge Uttarakhand",
+        "student hackathon",
+        "AxoCom hackathon",
+        "UI Solutions Hackathon",
+    ],
+};
+
+export const meta = () => buildSeoMeta(seo);
+export const links = () => buildSeoLinks(seo);
 
 const speakers = [
   { name: "Rohan Pant", role: "Program Manager, Amazon" },
@@ -42,6 +61,25 @@ const UISHackathon: React.FC = () => {
 
     return (
         <div className="min-h-screen bg-slate-50 font-space text-slate-900">
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: structuredData([
+                        organizationSchema,
+                        webPageSchema(seo),
+                        eventSchema({
+                            name: seo.title,
+                            description: seo.description,
+                            path: seo.path,
+                            image: seo.image,
+                            startDate: "2026-06-01",
+                            endDate: "2026-08-31",
+                            locationName: "Uttarakhand Innovation Series",
+                            locationAddress: "Rudrapur, Roorkee, and Dehradun, Uttarakhand, India",
+                        }),
+                    ]),
+                }}
+            />
             <Navbar />
 
             <main className="pt-28 pb-16 px-4 md:px-10 lg:px-20">

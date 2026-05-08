@@ -8,7 +8,26 @@ import Chapter4 from '../components/static_components/Chapter4';
 import Chapter6 from '../components/static_components/Chapter6';
 import Finale from '../components/static_components/Finale';
 import Navbar from '../components/static_components/Navbar';
+import { buildSeoLinks, buildSeoMeta, organizationSchema, structuredData, webPageSchema } from "~/lib/seo";
 import '../app.css';
+
+const seo = {
+    title: "AxoCom - Tech x Media",
+    description: "AxoCom is a tech x media company building AI-powered communication, owned media networks, campaign systems, PR strategy, and election intelligence for modern India.",
+    path: "/",
+    image: "/images/services.png",
+    imageAlt: "AxoCom tech x media services",
+    keywords: [
+        "AxoCom",
+        "tech x media",
+        "AI media company",
+        "PR technology",
+        "campaign intelligence",
+    ],
+};
+
+export const meta = () => buildSeoMeta(seo);
+export const links = () => buildSeoLinks(seo);
 
 const App: React.FC = () => {
     const scrollTo = (id: string) => {
@@ -20,6 +39,15 @@ const App: React.FC = () => {
 
     return (
         <div className="landing-page bg-background-dark min-h-screen w-full relative">
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: structuredData([
+                        organizationSchema,
+                        webPageSchema(seo),
+                    ]),
+                }}
+            />
 
             <Navbar />
 

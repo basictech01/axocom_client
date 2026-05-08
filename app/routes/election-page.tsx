@@ -1,5 +1,24 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Navbar from '../components/static_components/Navbar';
+import { buildSeoLinks, buildSeoMeta, organizationSchema, structuredData, webPageSchema } from "~/lib/seo";
+
+const seo = {
+    title: "Election Management Services",
+    description: "AxoCom offers AI-powered election management, campaign strategy, voter intelligence, media operations, political branding, and war-room execution from Panchayat to Parliament.",
+    path: "/election-management",
+    image: "/images/india7.png",
+    imageAlt: "AxoCom AI-powered election management services",
+    keywords: [
+        "election management India",
+        "political campaign management",
+        "AI voter intelligence",
+        "election war room",
+        "AxoCom elections",
+    ],
+};
+
+export const meta = () => buildSeoMeta(seo);
+export const links = () => buildSeoLinks(seo);
 
 const phases = [
     {
@@ -216,6 +235,25 @@ const ElectionPage: React.FC = () => {
 
     return (
         <div className="min-h-screen w-full bg-background-dark font-space">
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: structuredData([
+                        organizationSchema,
+                        webPageSchema(seo),
+                        {
+                            "@context": "https://schema.org",
+                            "@type": "Service",
+                            name: "Election Management Services",
+                            description: seo.description,
+                            provider: organizationSchema,
+                            areaServed: "India",
+                            serviceType: "Political campaign management",
+                            url: "https://www.axocom.in/election-management",
+                        },
+                    ]),
+                }}
+            />
             <Navbar />
 
             <div className="pt-32 pb-20 px-4 md:px-10 lg:px-20">
