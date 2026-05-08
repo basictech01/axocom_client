@@ -15,7 +15,7 @@ const seo = {
     title: "AxoCom - Tech x Media",
     description: "AxoCom is a tech x media company building AI-powered communication, owned media networks, campaign systems, PR strategy, and election intelligence for modern India.",
     path: "/",
-    image: "/images/services.png",
+    image: "/images/logo2.png",
     imageAlt: "AxoCom tech x media services",
     keywords: [
         "AxoCom",
