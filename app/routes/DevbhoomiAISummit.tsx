@@ -1,7 +1,25 @@
 import React, { useState } from 'react';
 import Navbar from '../components/static_components/Navbar';
 import DelegatesSlider from "../components/ai_summit/DelegatesSlider";
+import { buildSeoLinks, buildSeoMeta, eventSchema, organizationSchema, structuredData, webPageSchema } from "~/lib/seo";
 
+const seo = {
+  title: "DevBhoomi AI Summit 2026",
+  description: "An invitation-only policy and innovation summit in Dehradun bringing together government, industry, academia, and AI leaders to shape Uttarakhand's AI future.",
+  path: "/DevbhoomiAISummit",
+  image: "/images/summit.png",
+  imageAlt: "DevBhoomi AI Summit by AxoCom",
+  keywords: [
+    "DevBhoomi AI Summit",
+    "Uttarakhand AI summit",
+    "AI governance India",
+    "Dehradun AI event",
+    "AxoCom",
+  ],
+};
+
+export const meta = () => buildSeoMeta(seo);
+export const links = () => buildSeoLinks(seo);
 
 const delegates = [
   {
@@ -137,6 +155,25 @@ const DevbhoomiAISummit: React.FC = () => {
 
     return (
         <div className="min-h-screen bg-slate-50 font-space text-slate-900">
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: structuredData([
+                        organizationSchema,
+                        webPageSchema(seo),
+                        eventSchema({
+                            name: "DevBhoomi AI Summit 2026",
+                            description: seo.description,
+                            path: seo.path,
+                            image: seo.image,
+                            startDate: "2026-06-12",
+                            endDate: "2026-06-14",
+                            locationName: "Dehradun Convention Centre",
+                            locationAddress: "Dehradun, Uttarakhand, India",
+                        }),
+                    ]),
+                }}
+            />
             <Navbar />
 
             <main className="pt-28 pb-16 px-4 md:px-10 lg:px-20">

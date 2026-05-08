@@ -1,0 +1,21 @@
+# AxoCom
+
+> AxoCom is a tech x media company operated by Axolotl Emprise LLP. It builds AI-powered communication systems, media networks, campaign intelligence, PR strategy, event platforms, and election management tools.
+
+## Primary Pages
+
+- [AxoCom](https://www.axocom.in/): Company overview, services, media technology, and partnership information.
+- [DevBhoomi AI Summit 2026](https://www.axocom.in/DevbhoomiAISummit): Invitation-only policy and innovation summit in Dehradun focused on AI for Uttarakhand governance and public systems.
+- [Uttarakhand Innovation & Solutions Hackathon](https://www.axocom.in/UISHackathon): State-wide innovation series for students, developers, and professionals solving real problems in Uttarakhand.
+- [National PR Week 2026](https://www.axocom.in/nprweek2026): Public relations week with sessions, government knowledge partners, collaborators, and certificate information.
+- [Election Management Services](https://www.axocom.in/election-management): AI-powered election management, campaign strategy, voter intelligence, media operations, political branding, and war-room execution.
+- [Careers & Internships](https://www.axocom.in/careers): Internship roles across research, strategy, creative production, client service, account management, media, technology, and AI campaign work.
+
+## Organization
+
+- Name: AxoCom
+- Legal entity: Axolotl Emprise LLP
+- Website: https://www.axocom.in/
+- LinkedIn: https://www.linkedin.com/company/axocom-tech-x-media/
+- Instagram: https://www.instagram.com/axocommedia/
+- YouTube: https://www.youtube.com/@AxoComTechXMedia

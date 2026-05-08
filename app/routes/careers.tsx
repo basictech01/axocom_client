@@ -1,5 +1,24 @@
 import React, { useState } from 'react';
 import Navbar from '../components/static_components/Navbar';
+import { buildSeoLinks, buildSeoMeta, organizationSchema, structuredData, webPageSchema } from "~/lib/seo";
+
+const seo = {
+  title: "Careers & Internships",
+  description: "Apply for AxoCom internships across strategy, research, creative production, client service, account management, media, technology, and AI-powered campaign work.",
+  path: "/careers",
+  image: "/images/services.png",
+  imageAlt: "AxoCom careers and internship opportunities",
+  keywords: [
+    "AxoCom careers",
+    "AxoCom internship",
+    "media internship",
+    "PR internship",
+    "AI campaign internship",
+  ],
+};
+
+export const meta = () => buildSeoMeta(seo);
+export const links = () => buildSeoLinks(seo);
 
 interface CardProps {
   title: string;
@@ -75,6 +94,29 @@ const Card: React.FC<CardProps> = ({ title, image, description, idealCandidates 
 const Careers: React.FC = () => {
   return (
     <div className="min-h-screen w-full bg-background-dark font-space">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: structuredData([
+            organizationSchema,
+            webPageSchema(seo),
+            {
+              "@context": "https://schema.org",
+              "@type": "ItemList",
+              name: "AxoCom Internship Tracks",
+              itemListElement: [
+                "Strategy & Research Analyst",
+                "Creative & Generative Production",
+                "Client Service & Account Management",
+              ].map((name, index) => ({
+                "@type": "ListItem",
+                position: index + 1,
+                name,
+              })),
+            },
+          ]),
+        }}
+      />
       <Navbar />
 
       {/* Main Content */}
