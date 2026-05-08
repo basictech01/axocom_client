@@ -6,7 +6,7 @@ const seo = {
   title: "Careers & Internships",
   description: "Apply for AxoCom internships across strategy, research, creative production, client service, account management, media, technology, and AI-powered campaign work.",
   path: "/careers",
-  image: "/images/services.png",
+  image: "/images/logo2.png",
   imageAlt: "AxoCom careers and internship opportunities",
   keywords: [
     "AxoCom careers",

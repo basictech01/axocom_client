@@ -6,7 +6,7 @@ const seo = {
     title: "Election Management Services",
     description: "AxoCom offers AI-powered election management, campaign strategy, voter intelligence, media operations, political branding, and war-room execution from Panchayat to Parliament.",
     path: "/election-management",
-    image: "/images/india7.png",
+    image: "/images/logo2.png",
     imageAlt: "AxoCom AI-powered election management services",
     keywords: [
         "election management India",
