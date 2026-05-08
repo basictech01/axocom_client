@@ -176,21 +176,6 @@ const Careers: React.FC = () => {
             </div>
           </div>
 
-          {/* Middle Section: Media Entities */}
-          <div className="flex flex-col items-center gap-4">
-            <h3 className="text-gray-900 text-sm font-bold uppercase tracking-wider">Our Media Entities</h3>
-            <div className="flex flex-wrap justify-center gap-4 text-sm">
-              <a href="https://www.hillsquills.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">Hillsquills</a>
-              <span className="text-gray-600">•</span>
-              <a href="https://india7live.com/" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">India7Live</a>
-              <span className="text-gray-600">•</span>
-              <a href="https://tehelkaindianews.com/" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">Tehelka India News</a>
-              <span className="text-gray-600">•</span>
-              <a href="https://www.youtube.com/@Lawmedy_yt" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">Lawmedy</a>
-              <span className="text-gray-600">•</span>
-              <span className="text-gray-400">Cyber Youth India</span>
-            </div>
-          </div>
 
           {/* Bottom Section: Copyright */}
           <div className="text-center pt-4 border-t border-gray-100">
