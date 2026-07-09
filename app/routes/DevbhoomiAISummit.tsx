@@ -1,5 +1,4 @@
 import React, { useRef, useState } from "react";
-import Navbar from "../components/static_components/Navbar";
 import {
   buildSeoLinks,
   buildSeoMeta,
@@ -64,14 +63,6 @@ const stats = [
   { icon: "flag_2", num: "4", desc: "AI Action Plans unveiled as the principal outcome of the summit" },
 ];
 
-const whyCards = [
-  { icon: "health_and_safety", label: "Pilgrim safety" },
-  { icon: "traffic", label: "Traffic & mobility management" },
-  { icon: "satellite_alt", label: "Encroachment monitoring" },
-  { icon: "support_agent", label: "Citizen service delivery" },
-  { icon: "architecture", label: "Public infrastructure planning" },
-];
-
 const themes = [
   { icon: "temple_hindu", title: "AI for Char Dham Yatra & pilgrim safety" },
   { icon: "traffic", title: "AI-driven traffic & mobility management" },
@@ -92,7 +83,7 @@ const attendees = [
 
 const patrons = [
   {
-    name: "Lt Gen Gurmit Singh (Retd)",
+    name: "Lt Gen (Retd) Gurmit Singh",
     role: "Hon'ble Governor, Uttarakhand",
     image: "/images/governor_Gen_Gurmit_Singh.jpeg",
   },
@@ -123,37 +114,6 @@ const speakers = [
   { name: "Shri Ashish Upadhyaya", role: "General Manager (AI)", image: "/images/ashish_upadhyay.jpg.jpeg" },
 ];
 
-const tiers = [
-  {
-    icon: "diamond",
-    iconColor: "var(--blue)",
-    name: "Diamond Partner",
-    flagship: true,
-    desc: "Solo speaking slot, one panel seat for senior leadership, premium logo placement across all event branding, 2 dedicated media interviews, 1:1 meetings with government stakeholders and summit speakers, logo on backdrop, standee, website, social media, invitation and delegate kit, and priority branding in the post-event report.",
-  },
-  {
-    icon: "military_tech",
-    iconColor: "var(--gold)",
-    name: "Gold Partner",
-    flagship: false,
-    desc: "One panel speaking slot, prominent logo branding, media mention in press release and post-event coverage, one curated one-on-one meeting with relevant stakeholders, logo on website, stage branding, delegate badges, and selected print collateral.",
-  },
-  {
-    icon: "workspace_premium",
-    iconColor: "var(--grey-500)",
-    name: "Silver Partner",
-    flagship: false,
-    desc: "Branding on event website and backdrop, one panel speaking slot, logo on select on-site branding, inclusion in media coverage and event report, and access to curated networking with delegates.",
-  },
-  {
-    icon: "handshake",
-    iconColor: "var(--grey-500)",
-    name: "Associate Partner",
-    flagship: false,
-    desc: "Logo on website and select collateral, branding in event communications, inclusion in post-event coverage and report, and access to networking and stakeholder interactions.",
-  },
-];
-
 const roleChips = [
   "Government / Policy",
   "Enterprise / IT",
@@ -162,8 +122,6 @@ const roleChips = [
   "Academia / Research",
   "Media / Civil society",
 ];
-
-const tierChips = ["Diamond", "Gold", "Silver", "Associate"];
 
 const Eyebrow = ({ icon, children }: { icon: string; children: React.ReactNode }) => (
   <span className="dbs-eyebrow">
@@ -228,7 +186,6 @@ const Ribbons = ({
 const DevbhoomiAISummit: React.FC = () => {
   const [form, setForm] = useState({ name: "", org: "", email: "", phone: "" });
   const [role, setRole] = useState<string | null>(null);
-  const [tier, setTier] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -263,7 +220,6 @@ const DevbhoomiAISummit: React.FC = () => {
           email: form.email,
           phone: form.phone || "Not provided",
           role: role ?? "Not specified",
-          tier: tier ?? "Not specified",
           _subject: "Devbhoomi AI Summit 2026 - Sponsorship request",
           _template: "table",
         }),
@@ -280,7 +236,6 @@ const DevbhoomiAISummit: React.FC = () => {
   const resetForm = () => {
     setForm({ name: "", org: "", email: "", phone: "" });
     setRole(null);
-    setTier(null);
     setSubmitted(false);
     setError(null);
   };
@@ -436,8 +391,6 @@ const DevbhoomiAISummit: React.FC = () => {
         }}
       />
 
-      <Navbar />
-
       {/* B. HERO */}
       <header id="top" style={{ position: "relative", overflow: "hidden" }}>
         <div
@@ -460,25 +413,18 @@ const DevbhoomiAISummit: React.FC = () => {
           className="dbs-wrap"
           style={{
             position: "relative", zIndex: 1,
-            paddingTop: "clamp(120px,16vw,168px)", paddingBottom: "clamp(56px,8vw,104px)",
+            paddingTop: "clamp(64px,10vw,120px)", paddingBottom: "clamp(56px,8vw,104px)",
             display: "grid", gap: "clamp(32px,5vw,56px)",
             gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,320px),1fr))", alignItems: "center",
           }}
         >
           <div>
-            <span className="dbs-eyebrow" style={{ background: "rgba(16,185,129,.10)", border: "1px solid rgba(5,150,105,.24)", padding: "8px 14px", borderRadius: "999px" }}>
-              <span className="material-symbols-rounded">landscape</span>
+            <h1 className="dbs-serif" style={{ fontSize: "clamp(38px,6vw,72px)", lineHeight: 1.0, margin: "0", color: "var(--text-primary)", fontWeight: 700 }}>
               Devbhoomi AI Summit 2026
-            </span>
-
-            <h1 className="dbs-serif" style={{ fontSize: "clamp(38px,5.6vw,66px)", lineHeight: 1.06, margin: "22px 0 0", color: "var(--text-primary)" }}>
-              Building an AI-Native <span className="dbs-grad">Uttarakhand</span>
             </h1>
 
-            <p className="dbs-lead" style={{ margin: "20px 0 0", maxWidth: "540px" }}>
-              Uttarakhand's flagship leadership forum on Artificial Intelligence — bringing
-              policymakers, industry leaders, technology experts, startups, academia, and
-              media together to shape the state's AI-led future.
+            <p className="dbs-serif" style={{ fontSize: "clamp(18px,2.6vw,30px)", lineHeight: 1.25, margin: "14px 0 0", color: "var(--text-secondary)" }}>
+              Building an AI-Native <span className="dbs-grad">Uttarakhand</span>
             </p>
 
             <div style={{ display: "flex", flexWrap: "wrap", gap: "24px", margin: "26px 0 0" }}>
@@ -571,79 +517,25 @@ const DevbhoomiAISummit: React.FC = () => {
           style={{ display: "grid", gap: "clamp(28px,5vw,64px)", gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,300px),1fr))" }}
         >
           <div>
-            <Eyebrow icon="flag">Overview</Eyebrow>
-            <h2 className="dbs-serif dbs-h2">A leadership forum for the state's AI-led future.</h2>
-            <div className="dbs-patrons-grid">
-              {patrons.map((p) => (
-                <div key={p.name} style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: "16px" }}>
-                  <img
-                    src={p.image}
-                    alt={p.name}
-                    style={{
-                      width: "clamp(100px, 12vw, 150px)",
-                      height: "clamp(100px, 12vw, 150px)",
-                      borderRadius: "50%",
-                      objectFit: "cover",
-                      objectPosition: "center top",
-                      border: "3px solid #fff",
-                      boxShadow: "0 0 0 1px var(--glass-brd), 0 18px 40px rgba(15,23,42,.14)",
-                    }}
-                  />
-                  <div>
-                    <p style={{ fontWeight: 700, fontSize: "clamp(15px,1.4vw,17px)" }}>{p.name}</p>
-                    <p style={{ color: "var(--text-muted)", fontSize: "13px", lineHeight: 1.45, marginTop: "5px" }}>{p.role}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
+            <Eyebrow icon="flag">About the Summit</Eyebrow>
+            <h2 className="dbs-serif dbs-h2">Uttarakhand's flagship AI event</h2>
           </div>
           <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", gap: "18px" }}>
             <p className="dbs-lead">
-              Devbhoomi AI Summit 2026 is Uttarakhand's flagship leadership forum on
-              Artificial Intelligence, bringing together policymakers, industry leaders,
-              technology experts, startups, academia, and media to shape the state's AI-led
-              future.
+              Devbhoomi AI Summit 2026 is Uttarakhand's flagship event on Artificial
+              Intelligence, bringing together policymakers, industry leaders, technology
+              experts, startups, academia, and media.
             </p>
             <p className="dbs-lead">
               With a sharp focus on governance, mobility, tourism, public safety, and
-              sustainable development, the summit is designed to move beyond conversations and
-              deliver actionable AI roadmaps for the state's most pressing priorities.
+              sustainable development, the summit is designed to move beyond conversations
+              and deliver actionable AI roadmaps for the state's most pressing priorities.
             </p>
           </div>
         </div>
       </section>
 
-      {/* D. CONFIRMED SPEAKERS */}
-      <section id="speakers" className="dbs-section" style={{ background: "var(--band-b)" }}>
-        <div className="dbs-wrap">
-          <div style={{ maxWidth: "760px" }}>
-            <Eyebrow icon="record_voice_over">State leadership</Eyebrow>
-            <h2 className="dbs-serif dbs-h2">Leadership from the state's technology ecosystem</h2>
-          </div>
-
-          <div className="dbs-grid" style={{ marginTop: "clamp(32px,5vw,48px)" }}>
-            {speakers.map((sp) => (
-              <div key={sp.name} className="dbs-card" style={{ textAlign: "center" }}>
-                {sp.image ? (
-                  <img
-                    src={sp.image}
-                    alt={sp.name}
-                    style={{ width: "104px", height: "104px", borderRadius: "50%", objectFit: "cover", objectPosition: "center top", margin: "0 auto 16px", border: "1px solid var(--glass-brd)" }}
-                  />
-                ) : (
-                  <div className="dbs-ph" style={{ width: "104px", height: "104px", borderRadius: "50%", margin: "0 auto 16px", fontSize: "12px" }}>
-                    Photo
-                  </div>
-                )}
-                <p style={{ fontWeight: 700, fontSize: "16px" }}>{sp.name}</p>
-                <p style={{ color: "var(--text-muted)", fontSize: "13.5px", lineHeight: 1.45, marginTop: "6px" }}>{sp.role}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* E. EVENT HIGHLIGHTS — tinted stat band */}
+      {/* D. EVENT HIGHLIGHTS */}
       <section id="highlights" className="dbs-section dbs-dotgrid" style={{ background: "var(--band-tint)" }}>
         <div className="dbs-wrap">
           <div style={{ textAlign: "center", maxWidth: "760px", margin: "0 auto" }}>
@@ -651,7 +543,7 @@ const DevbhoomiAISummit: React.FC = () => {
               <span className="material-symbols-rounded">auto_awesome</span>
               Event Highlights
             </span>
-            <h2 className="dbs-serif dbs-h2">One day. A concentrated agenda of outcomes.</h2>
+            <h2 className="dbs-serif dbs-h2">The Summit in Numbers</h2>
           </div>
 
           <div
@@ -677,39 +569,77 @@ const DevbhoomiAISummit: React.FC = () => {
         </div>
       </section>
 
-      {/* F. WHY IT MATTERS */}
-      <section id="why" className="dbs-section" style={{ background: "var(--band-a)" }}>
+      {/* E. GOVERNMENT OFFICIALS */}
+      <section id="speakers" className="dbs-section" style={{ background: "var(--band-b)" }}>
         <div className="dbs-wrap">
           <div style={{ maxWidth: "760px" }}>
-            <Eyebrow icon="priority_high">Why it matters</Eyebrow>
-            <h2 className="dbs-serif dbs-h2">Why Devbhoomi AI Summit 2026 matters</h2>
-            <p className="dbs-lead" style={{ marginTop: "18px" }}>
-              Uttarakhand is at a critical inflection point where seasonal pilgrim movement,
-              fragile Himalayan terrain, rapid urban expansion, and infrastructure pressures
-              demand AI-native solutions rather than conventional approaches. The summit aims
-              to transform AI from a discussion topic into a practical governance tool.
-            </p>
+            <Eyebrow icon="account_balance">Government Officials</Eyebrow>
+            <h2 className="dbs-serif dbs-h2">Distinguished government officials attending the summit</h2>
           </div>
 
-          <div className="dbs-grid" style={{ marginTop: "clamp(32px,5vw,48px)" }}>
-            {whyCards.map((c) => (
-              <div key={c.label} className="dbs-card" style={{ display: "flex", alignItems: "center", gap: "16px", padding: "18px 20px" }}>
-                <span className="dbs-iconwell">
-                  <span className="material-symbols-rounded">{c.icon}</span>
-                </span>
-                <span style={{ fontWeight: 600, fontSize: "15px" }}>{c.label}</span>
+          <div className="dbs-patrons-grid" style={{ marginTop: "clamp(32px,5vw,48px)" }}>
+            {patrons.map((p) => (
+              <div key={p.name} style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: "16px" }}>
+                <img
+                  src={p.image}
+                  alt={p.name}
+                  style={{
+                    width: "clamp(100px, 12vw, 150px)",
+                    height: "clamp(100px, 12vw, 150px)",
+                    borderRadius: "50%",
+                    objectFit: "cover",
+                    objectPosition: "center top",
+                    border: "3px solid #fff",
+                    boxShadow: "0 0 0 1px var(--glass-brd), 0 18px 40px rgba(15,23,42,.14)",
+                  }}
+                />
+                <div>
+                  <p style={{ fontWeight: 700, fontSize: "clamp(15px,1.4vw,17px)" }}>{p.name}</p>
+                  <p style={{ color: "var(--text-muted)", fontSize: "13px", lineHeight: 1.45, marginTop: "5px" }}>{p.role}</p>
+                </div>
               </div>
             ))}
+          </div>
+
+          <div style={{ marginTop: "clamp(48px,6vw,64px)", borderTop: "1px solid var(--line)", paddingTop: "clamp(32px,5vw,48px)" }}>
+            <Eyebrow icon="record_voice_over">State leadership</Eyebrow>
+            <h3 className="dbs-serif dbs-h2">Leadership from the state's technology ecosystem</h3>
+
+            <div className="dbs-grid" style={{ marginTop: "clamp(32px,5vw,48px)" }}>
+              {speakers.map((sp) => (
+                <div key={sp.name} className="dbs-card" style={{ textAlign: "center" }}>
+                  {sp.image ? (
+                    <img
+                      src={sp.image}
+                      alt={sp.name}
+                      style={{ width: "104px", height: "104px", borderRadius: "50%", objectFit: "cover", objectPosition: "center top", margin: "0 auto 16px", border: "1px solid var(--glass-brd)" }}
+                    />
+                  ) : (
+                    <div className="dbs-ph" style={{ width: "104px", height: "104px", borderRadius: "50%", margin: "0 auto 16px", fontSize: "12px" }}>
+                      Photo
+                    </div>
+                  )}
+                  <p style={{ fontWeight: 700, fontSize: "16px" }}>{sp.name}</p>
+                  <p style={{ color: "var(--text-muted)", fontSize: "13.5px", lineHeight: 1.45, marginTop: "6px" }}>{sp.role}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div style={{ marginTop: "clamp(48px,6vw,64px)", borderTop: "1px solid var(--line)", paddingTop: "clamp(32px,5vw,48px)" }}>
+            <Eyebrow icon="mic">Summit Speakers</Eyebrow>
+            <h3 className="dbs-serif" style={{ fontSize: "clamp(22px,3vw,30px)", marginTop: "12px", color: "var(--text-secondary)" }}>Coming soon</h3>
+            <p style={{ color: "var(--text-muted)", fontSize: "15px", marginTop: "10px" }}>Speaker announcements will be published shortly. Stay tuned.</p>
           </div>
         </div>
       </section>
 
-      {/* G. KEY DISCUSSION THEMES — 3 columns x 2 rows */}
-      <section id="themes" className="dbs-section" style={{ background: "var(--band-b)" }}>
+      {/* F. DISCUSSION TOPICS */}
+      <section id="themes" className="dbs-section" style={{ background: "var(--band-a)" }}>
         <div className="dbs-wrap">
           <div style={{ maxWidth: "760px" }}>
-            <Eyebrow icon="hub">Key discussion themes</Eyebrow>
-            <h2 className="dbs-serif dbs-h2">Six conversations shaping the roadmap</h2>
+            <Eyebrow icon="hub">Discussion Topics</Eyebrow>
+            <h2 className="dbs-serif dbs-h2">What we will discuss</h2>
           </div>
 
           <div className="dbs-grid-3" style={{ marginTop: "clamp(32px,5vw,48px)" }}>
@@ -728,12 +658,12 @@ const DevbhoomiAISummit: React.FC = () => {
         </div>
       </section>
 
-      {/* H. WHO SHOULD ATTEND */}
-      <section id="attend" className="dbs-section" style={{ background: "var(--band-a)" }}>
+      {/* G. WHO SHOULD ATTEND */}
+      <section id="attend" className="dbs-section" style={{ background: "var(--band-b)" }}>
         <div className="dbs-wrap">
           <div style={{ maxWidth: "760px" }}>
-            <Eyebrow icon="groups">Who should attend</Eyebrow>
-            <h2 className="dbs-serif dbs-h2">Built for the people who move the state forward</h2>
+            <Eyebrow icon="groups">Who Should Attend</Eyebrow>
+            <h2 className="dbs-serif dbs-h2">Who Should Attend</h2>
           </div>
 
           <div className="dbs-grid" style={{ marginTop: "clamp(32px,5vw,48px)" }}>
@@ -749,55 +679,7 @@ const DevbhoomiAISummit: React.FC = () => {
         </div>
       </section>
 
-      {/* I. SPONSORSHIP OPPORTUNITIES */}
-      <section id="sponsorship" className="dbs-section" style={{ background: "var(--band-b)" }}>
-        <div className="dbs-wrap">
-          <div style={{ maxWidth: "760px" }}>
-            <Eyebrow icon="workspace_premium">Sponsorship opportunities</Eyebrow>
-            <h2 className="dbs-serif dbs-h2">Partner with the state's defining AI moment</h2>
-          </div>
-
-          <div className="dbs-grid" style={{ marginTop: "clamp(32px,5vw,48px)" }}>
-            {tiers.map((t) => (
-              <div
-                key={t.name}
-                className="dbs-card"
-                style={{
-                  position: "relative", display: "flex", flexDirection: "column", gap: "16px",
-                  ...(t.flagship
-                    ? {
-                        background: "linear-gradient(160deg, rgba(16,185,129,.10), rgba(37,99,235,.08))",
-                        border: "1px solid rgba(5,150,105,.32)",
-                        boxShadow: "0 20px 46px rgba(16,185,129,.16)",
-                      }
-                    : {}),
-                }}
-              >
-                {t.flagship && (
-                  <span
-                    style={{
-                      position: "absolute", top: "18px", right: "18px",
-                      background: "linear-gradient(115deg,#10B981,#2563EB)", color: "#fff",
-                      fontSize: "11px", fontWeight: 700, letterSpacing: ".06em",
-                      padding: "5px 11px", borderRadius: "999px", textTransform: "uppercase",
-                    }}
-                  >
-                    Flagship
-                  </span>
-                )}
-                <span className="material-symbols-rounded" style={{ fontSize: "34px", color: t.iconColor }}>{t.icon}</span>
-                <h3 className="dbs-serif" style={{ fontSize: "22px", color: "var(--text-primary)" }}>{t.name}</h3>
-                <p style={{ fontSize: "13.5px", lineHeight: 1.6, color: "var(--text-secondary)", flex: 1 }}>{t.desc}</p>
-                <a href="#sponsor" className={t.flagship ? "dbs-btn dbs-btn-primary dbs-btn-full" : "dbs-btn dbs-btn-secondary dbs-btn-full"}>
-                  Request this tier
-                </a>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* J. REQUEST TO SPONSOR — form */}
+      {/* H. SPONSOR CONTACT */}
       <section id="sponsor" className="dbs-section" style={{ background: "var(--band-tint)", position: "relative", overflow: "hidden" }}>
         <div className="dbs-blob" style={{ width: "420px", height: "420px", background: "rgba(16,185,129,.12)", top: "-120px", right: "-80px", animation: "dbsFloat 18s ease-in-out infinite" }} />
         <Ribbons id="sponsor" style={{ opacity: 0.8 }} />
@@ -806,11 +688,10 @@ const DevbhoomiAISummit: React.FC = () => {
           style={{ position: "relative", zIndex: 1, display: "grid", gap: "clamp(28px,5vw,56px)", gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,320px),1fr))", alignItems: "start" }}
         >
           <div>
-            <Eyebrow icon="edit_note">Request to sponsor</Eyebrow>
-            <h2 className="dbs-serif dbs-h2">Express your partnership interest</h2>
+            <Eyebrow icon="edit_note">Sponsorship</Eyebrow>
+            <h2 className="dbs-serif dbs-h2">Interested in sponsoring?</h2>
             <p className="dbs-lead" style={{ marginTop: "18px" }}>
-              Share a few details and the summit team will get in touch with the right
-              sponsorship pack for your organisation.
+              Get in touch and the summit team will share the sponsorship details.
             </p>
             <div className="dbs-card" style={{ marginTop: "26px", display: "flex", gap: "14px", alignItems: "center" }}>
               <span className="dbs-iconwell">
@@ -892,17 +773,6 @@ const DevbhoomiAISummit: React.FC = () => {
                   <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
                     {roleChips.map((c) => (
                       <button key={c} type="button" onClick={() => setRole(role === c ? null : c)} className={role === c ? "dbs-chip active" : "dbs-chip"}>
-                        {c}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-                  <label style={{ fontSize: "13px", fontWeight: 600 }}>Partnership tier of interest</label>
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
-                    {tierChips.map((c) => (
-                      <button key={c} type="button" onClick={() => setTier(tier === c ? null : c)} className={tier === c ? "dbs-chip active" : "dbs-chip"}>
                         {c}
                       </button>
                     ))}
