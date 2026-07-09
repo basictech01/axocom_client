@@ -92,23 +92,23 @@ const attendees = [
 
 const patrons = [
   {
+    name: "Lt Gen Gurmit Singh (Retd)",
+    role: "Hon'ble Governor, Uttarakhand",
+    image: "/images/governor_Gen_Gurmit_Singh.jpeg",
+  },
+  {
     name: "Shri Pushkar Singh Dhami",
     role: "Hon'ble Chief Minister, Uttarakhand",
     image: "/images/cm_pushkar_singh_dhami.jpg",
   },
   {
-    name: "Lt Gen Gurmit Singh (Retd)",
-    role: "Hon'ble Governor, Uttarakhand",
-    image: "/images/governor_Gen_Gurmit_Singh.jpeg",
-  },
-];
-
-const speakers = [
-  {
     name: "Shri Pradeep Batra",
     role: "IT Minister & Good Governance, Uttarakhand",
     image: "/images/summitDeligate/shri_pradeep_batra_it_minister_govt_uttarakhand.jpg",
   },
+];
+
+const speakers = [
   {
     name: "Shri Nitesh Jha",
     role: "Honourable IT Secretary, Government of Uttarakhand",
@@ -358,6 +358,18 @@ const DevbhoomiAISummit: React.FC = () => {
         .dbs-grid-3 { display:grid; gap:16px; grid-template-columns:repeat(3,minmax(0,1fr)); }
         @media (max-width:900px){ .dbs-grid-3{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
         @media (max-width:580px){ .dbs-grid-3{ grid-template-columns:1fr; } }
+        .dbs-patrons-grid {
+          display: flex;
+          flex-wrap: wrap;
+          flex-direction: row;
+          justify-content: center;
+          gap: clamp(16px, 3vw, 32px);
+          margin-top: clamp(24px, 4vw, 32px);
+        }
+        .dbs-patrons-grid > * {
+          flex: 1 1 140px;
+          max-width: 200px;
+        }
         .dbs-dotgrid {
           background-image:radial-gradient(rgba(15,23,42,.06) 1px,transparent 1px);
           background-size:22px 22px;
@@ -561,15 +573,15 @@ const DevbhoomiAISummit: React.FC = () => {
           <div>
             <Eyebrow icon="flag">Overview</Eyebrow>
             <h2 className="dbs-serif dbs-h2">A leadership forum for the state's AI-led future.</h2>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "clamp(16px,3vw,32px)", marginTop: "clamp(24px,4vw,32px)" }}>
+            <div className="dbs-patrons-grid">
               {patrons.map((p) => (
                 <div key={p.name} style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: "16px" }}>
                   <img
                     src={p.image}
                     alt={p.name}
                     style={{
-                      width: "clamp(120px,16vw,164px)",
-                      height: "clamp(120px,16vw,164px)",
+                      width: "clamp(100px, 12vw, 150px)",
+                      height: "clamp(100px, 12vw, 150px)",
                       borderRadius: "50%",
                       objectFit: "cover",
                       objectPosition: "center top",
