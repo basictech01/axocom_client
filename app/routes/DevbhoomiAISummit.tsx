@@ -1,591 +1,950 @@
-import React, { useState } from 'react';
-import Navbar from '../components/static_components/Navbar';
-import DelegatesSlider from "../components/ai_summit/DelegatesSlider";
-import { buildSeoLinks, buildSeoMeta, eventSchema, organizationSchema, structuredData, webPageSchema } from "~/lib/seo";
+import React, { useRef, useState } from "react";
+import Navbar from "../components/static_components/Navbar";
+import {
+  buildSeoLinks,
+  buildSeoMeta,
+  eventSchema,
+  organizationSchema,
+  structuredData,
+  webPageSchema,
+} from "~/lib/seo";
 
 const seo = {
-  title: "DevBhoomi AI Summit 2026",
-  description: "An invitation-only policy and innovation summit in Dehradun bringing together government, industry, academia, and AI leaders to shape Uttarakhand's AI future.",
+  title: "Devbhoomi AI Summit 2026",
+  description:
+    "Devbhoomi AI Summit 2026 - Uttarakhand's flagship leadership forum on Artificial Intelligence, on 9 October 2026 at Hyatt Centric, Dehradun. An initiative of ITDA, Government of Uttarakhand.",
   path: "/DevbhoomiAISummit",
-  image: "/images/summit.png",
-  imageAlt: "DevBhoomi AI Summit by AxoCom",
+  image: "/images/summit2.png",
+  imageAlt: "Devbhoomi AI Summit 2026 - Building an AI-Native Uttarakhand",
   keywords: [
-    "DevBhoomi AI Summit",
-    "Uttarakhand AI summit",
-    "AI governance India",
-    "Dehradun AI event",
-    "AxoCom",
+    "Devbhoomi AI Summit 2026",
+    "Uttarakhand AI Summit",
+    "AI governance",
+    "Hyatt Centric Dehradun event",
+    "ITDA Uttarakhand",
   ],
 };
 
 export const meta = () => buildSeoMeta(seo);
-export const links = () => buildSeoLinks(seo);
-
-const delegates = [
+export const links = () => [
+  ...buildSeoLinks(seo),
+  { rel: "preconnect", href: "https://fonts.googleapis.com" },
   {
-    name: "Shri Pushkar Singh Dhami",
-    role: "Chief Minister, Govt. of Uttarakhand",
-    image: "/images/summitDeligate/1.jpg",
+    rel: "preconnect",
+    href: "https://fonts.gstatic.com",
+    crossOrigin: "anonymous",
   },
   {
-    name: "Shri Pradeep Batra",
-    role: "IT Minister, Govt. of Uttarakhand",
-    image: "/images/summitDeligate/2.jpg",
-  },
-  {
-    name: "Shri Nitesh Kumar Jha (IAS)",
-    role: "Secretary, Information Technology, Govt. of Uttarakhand",
-    image: "/images/summitDeligate/3.jpg",
-  },
-  {
-    name: "Shri Alok Kumar Pandey (IAS)",
-    role: "Director, ITDA, Govt. of Uttarakhand",
-    image: "/images/summitDeligate/4.jpg",
-  },
-  {
-    name: "Shri Abhishek Singh",
-    role: "DG, NIC & Additional Secretary, MeitY, Govt. of India",
-    image: "/images/summitDeligate/5.jpg",
-  },
-  {
-    name: "Aditya Maheshwari",
-    role: "Associate Professor & Consortium Member, BharatGen, IIM Indore",
-    image: "/images/summitDeligate/6.jpg",
-  },
-  {
-    name: "Dr. Amar Patnaik",
-    role: "Founding Partner, A&N Legal Solutions",
-    image: "/images/summitDeligate/7.jpg",
-  },
-  {
-    name: "Ayush Gupta",
-    role: "Partner, KPMG India",
-    image: "/images/summitDeligate/8.jpg",
-  },
-  {
-    name: "Dr. Sushil Meher",
-    role: "CIO, AIIMS",
-    image: "/images/summitDeligate/9.jpg",
-  },
-  {
-    name: "Jaspreet Singh",
-    role: "Partner - Cyber Advisory, Grant Thornton Bharat",
-    image: "/images/summitDeligate/10.jpg",
-  },
-  {
-    name: "Prof. Niladri Chatterjee",
-    role: "Soumitra Dutta Chair Professor of Artificial Intelligence, IIT Delhi",
-    image: "/images/summitDeligate/11.jpg",
-  },
-  {
-    name: "Dr. V. K. Paul",
-    role: "Member, NITI Aayog",
-    image: "/images/summitDeligate/12.jpg",
-  },
-  {
-    name: "Harnath Babu",
-    role: "CIO, KPMG",
-    image: "/images/summitDeligate/13.jpg",
-  },
-  {
-    name: "Nakul Jain",
-    role: "CEO, Wadhwani AI Global",
-    image: "/images/summitDeligate/14.jpg",
-  },
-  {
-    name: "Tarun Anand",
-    role: "Chairman & Founder, Universal AI University",
-    image: "/images/summitDeligate/15.jpg",
-  },
-  {
-    name: "Amit Pradhan",
-    role: "VP - IT & CIO, Dixon Technologies",
-    image: "/images/summitDeligate/16.jpg",
-  },
-  {
-    name: "Achin K Sharma",
-    role: "VP - IT, Movin India",
-    image: "/images/summitDeligate/17.jpg",
-  },
-  {
-    name: "Golok Kumar Simli",
-    role: "President - Technology & Innovation, BLS International",
-    image: "/images/summitDeligate/18.jpg",
-  },
-  {
-    name: "Vinay Kumar",
-    role: "Head - IT, Tim Hortons Middle East",
-    image: "/images/summitDeligate/19.jpg",
-  },
-  {
-    name: "Kapil Mahajan",
-    role: "Global Chief Information & Technology Officer, Allcargo Logistic",
-    image: "/images/summitDeligate/20.jpg",
+    rel: "stylesheet",
+    href: "https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Geist:wght@400;500;600;700;800&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&display=swap",
   },
 ];
 
+const localBusinessSchema = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  name: "Hyatt Centric Rajpur Road Dehradun",
+  image: "",
+  telephone: "+91-135-614-1234",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "152 / 3-4, Jakhan, Rajpur Road",
+    addressLocality: "Dehradun",
+    addressRegion: "Uttarakhand",
+    postalCode: "248001",
+    addressCountry: "IN",
+  },
+};
+
+const stats = [
+  { icon: "forum", num: "10+", desc: "Topical sessions — keynotes, panels, fireside chats & case studies" },
+  { icon: "record_voice_over", num: "25+", desc: "Speakers from government, industry, technology & innovation" },
+  { icon: "groups", num: "150+", desc: "Delegates — CXOs, policymakers, IT leaders, startups, academia & media" },
+  { icon: "handshake", num: "6+", desc: "Hours of structured networking for stakeholder engagement" },
+  { icon: "flag_2", num: "4", desc: "AI Action Plans unveiled as the principal outcome of the summit" },
+];
+
+const whyCards = [
+  { icon: "health_and_safety", label: "Pilgrim safety" },
+  { icon: "traffic", label: "Traffic & mobility management" },
+  { icon: "satellite_alt", label: "Encroachment monitoring" },
+  { icon: "support_agent", label: "Citizen service delivery" },
+  { icon: "architecture", label: "Public infrastructure planning" },
+];
+
+const themes = [
+  { icon: "temple_hindu", title: "AI for Char Dham Yatra & pilgrim safety" },
+  { icon: "traffic", title: "AI-driven traffic & mobility management" },
+  { icon: "satellite_alt", title: "AI-powered encroachment & illegal construction detection" },
+  { icon: "support_agent", title: "AI-enabled grievance redressal & citizen services" },
+  { icon: "account_balance", title: "AI in governance & public infrastructure" },
+  { icon: "landscape", title: "AI for sustainability & replicable Himalayan development models" },
+];
+
+const attendees = [
+  { icon: "account_balance", label: "Government departments & policymakers" },
+  { icon: "developer_board", label: "CIOs, CTOs, CDOs & enterprise technology leaders" },
+  { icon: "luggage", label: "Tourism, transport & infrastructure stakeholders" },
+  { icon: "rocket_launch", label: "AI startups & solution providers" },
+  { icon: "school", label: "Academia & research institutions" },
+  { icon: "campaign", label: "Media & civil society representatives" },
+];
+
+const speakers = [
+  {
+    name: "Shri Pradeep Batra",
+    role: "IT Minister & Good Governance, Uttarakhand",
+    image: "/images/summitDeligate/shri_pradeep_batra_it_minister_govt_uttarakhand.jpg",
+  },
+  {
+    name: "Shri Nitesh Jha",
+    role: "Honourable IT Secretary, Government of Uttarakhand",
+    image: "/images/summitDeligate/shri_nitesh_kumar_jha_ias_secretary_information_technology_govt_uttarakhand.jpg",
+  },
+  {
+    name: "Shri Alok Pandey",
+    role: "Director, ITDA",
+    image: "/images/Alok-Kumar-Pandey.jpeg",
+  },
+  { name: "Shri Ravi Shankar Singh", role: "CTO, ITDA", image: "/images/Ravi_Shankar.jpeg" },
+  { name: "Shri Ashish Upadhyaya", role: "General Manager (AI)", image: "/images/ashish_upadhyay.jpg.jpeg" },
+];
+
+const tiers = [
+  {
+    icon: "diamond",
+    iconColor: "var(--blue)",
+    name: "Diamond Partner",
+    flagship: true,
+    desc: "Solo speaking slot, one panel seat for senior leadership, premium logo placement across all event branding, 2 dedicated media interviews, 1:1 meetings with government stakeholders and summit speakers, logo on backdrop, standee, website, social media, invitation and delegate kit, and priority branding in the post-event report.",
+  },
+  {
+    icon: "military_tech",
+    iconColor: "var(--gold)",
+    name: "Gold Partner",
+    flagship: false,
+    desc: "One panel speaking slot, prominent logo branding, media mention in press release and post-event coverage, one curated one-on-one meeting with relevant stakeholders, logo on website, stage branding, delegate badges, and selected print collateral.",
+  },
+  {
+    icon: "workspace_premium",
+    iconColor: "var(--grey-500)",
+    name: "Silver Partner",
+    flagship: false,
+    desc: "Branding on event website and backdrop, one panel speaking slot, logo on select on-site branding, inclusion in media coverage and event report, and access to curated networking with delegates.",
+  },
+  {
+    icon: "handshake",
+    iconColor: "var(--grey-500)",
+    name: "Associate Partner",
+    flagship: false,
+    desc: "Logo on website and select collateral, branding in event communications, inclusion in post-event coverage and report, and access to networking and stakeholder interactions.",
+  },
+];
+
+const roleChips = [
+  "Government / Policy",
+  "Enterprise / IT",
+  "Tourism / Transport",
+  "AI Startup",
+  "Academia / Research",
+  "Media / Civil society",
+];
+
+const tierChips = ["Diamond", "Gold", "Silver", "Associate"];
+
+const Eyebrow = ({ icon, children }: { icon: string; children: React.ReactNode }) => (
+  <span className="dbs-eyebrow">
+    <span className="material-symbols-rounded">{icon}</span>
+    {children}
+  </span>
+);
+
+const Ribbons = ({
+  id,
+  className = "",
+  style,
+}: {
+  id: string;
+  className?: string;
+  style?: React.CSSProperties;
+}) => (
+  <svg
+    className={`dbs-ribbons ${className}`}
+    style={style}
+    viewBox="0 0 1440 520"
+    preserveAspectRatio="none"
+    aria-hidden="true"
+    focusable="false"
+  >
+    <defs>
+      <linearGradient id={`${id}-stroke`} x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stopColor="#34D399" />
+        <stop offset="0.5" stopColor="#10B981" />
+        <stop offset="1" stopColor="#38BDF8" />
+      </linearGradient>
+      <linearGradient id={`${id}-stroke2`} x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stopColor="#38BDF8" />
+        <stop offset="1" stopColor="#3B82F6" />
+      </linearGradient>
+      <linearGradient id={`${id}-em`} x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stopColor="#10B981" stopOpacity="0.24" />
+        <stop offset="1" stopColor="#10B981" stopOpacity="0" />
+      </linearGradient>
+      <linearGradient id={`${id}-blue`} x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stopColor="#38BDF8" stopOpacity="0.20" />
+        <stop offset="1" stopColor="#38BDF8" stopOpacity="0" />
+      </linearGradient>
+      <linearGradient id={`${id}-front`} x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stopColor="#10B981" stopOpacity="0.30" />
+        <stop offset="1" stopColor="#10B981" stopOpacity="0" />
+      </linearGradient>
+    </defs>
+
+    {/* Filled ridges — mountain silhouettes that double as stacked data bands */}
+    <path d="M0,300 C220,250 380,332 620,300 C880,266 1060,342 1300,296 C1372,284 1416,300 1440,296 L1440,520 L0,520 Z" fill={`url(#${id}-blue)`} />
+    <path d="M0,378 C240,330 430,432 720,372 C1010,312 1200,422 1440,366 L1440,520 L0,520 Z" fill={`url(#${id}-em)`} />
+    <path d="M0,440 C260,400 470,492 780,432 C1090,372 1250,470 1440,428 L1440,520 L0,520 Z" fill={`url(#${id}-front)`} />
+
+    {/* Glowing ridge lines — digital data waves tracing the ridge crests */}
+    <path className="dbs-ribbon-line dbs-ribbon-a" d="M0,300 C220,250 380,332 620,300 C880,266 1060,342 1300,296 C1372,284 1416,300 1440,296" stroke={`url(#${id}-stroke)`} strokeWidth="2" opacity="0.9" />
+    <path className="dbs-ribbon-line dbs-ribbon-b" d="M0,378 C240,330 430,432 720,372 C1010,312 1200,422 1440,366" stroke={`url(#${id}-stroke2)`} strokeWidth="1.5" opacity="0.7" />
+    <path className="dbs-ribbon-line dbs-ribbon-a" d="M-40,232 C240,196 430,270 720,226 C1010,182 1220,258 1480,214" stroke={`url(#${id}-stroke)`} strokeWidth="1.25" opacity="0.5" />
+  </svg>
+);
+
 const DevbhoomiAISummit: React.FC = () => {
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        role: 'Government official',
-        experience: 'Exploring AI for governance',
-        interest: '',
-    });
+  const [form, setForm] = useState({ name: "", org: "", email: "", phone: "" });
+  const [role, setRole] = useState<string | null>(null);
+  const [tier, setTier] = useState<string | null>(null);
+  const [submitted, setSubmitted] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-    const closeModal = () => setIsModalOpen(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [muted, setMuted] = useState(true);
+  const toggleMute = () => {
+    const v = videoRef.current;
+    if (!v) return;
+    const next = !v.muted;
+    v.muted = next;
+    if (!next) {
+      v.volume = 1;
+      void v.play().catch(() => {});
+    }
+    setMuted(next);
+  };
 
-    const handleChange = (field: string, value: string) => {
-        setFormData((prev) => ({ ...prev, [field]: value }));
-    };
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!(form.name.trim() && form.email.trim()) || sending) return;
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
+    setSending(true);
+    setError(null);
+    try {
+      const res = await fetch("https://formsubmit.co/ajax/sponsorship@axocom.in", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          name: form.name,
+          organisation: form.org || "Not provided",
+          email: form.email,
+          phone: form.phone || "Not provided",
+          role: role ?? "Not specified",
+          tier: tier ?? "Not specified",
+          _subject: "Devbhoomi AI Summit 2026 - Sponsorship request",
+          _template: "table",
+        }),
+      });
+      if (!res.ok) throw new Error("Request failed");
+      setSubmitted(true);
+    } catch {
+      setError("Something went wrong. Please email sponsorship@axocom.in directly.");
+    } finally {
+      setSending(false);
+    }
+  };
 
-        const subject = encodeURIComponent('DevBhoomi AI Summit invite request');
-        const body = encodeURIComponent(
-            `Name: ${formData.name}\nEmail: ${formData.email}\nRole: ${formData.role}\nFocus: ${formData.experience}\n\nWhat I hope to bring or learn: ${formData.interest}`
-        );
+  const resetForm = () => {
+    setForm({ name: "", org: "", email: "", phone: "" });
+    setRole(null);
+    setTier(null);
+    setSubmitted(false);
+    setError(null);
+  };
 
-        const mailtoLink = `mailto:info@axocom.in?subject=${subject}&body=${body}`;
-        window.location.href = mailtoLink;
-        setIsModalOpen(false);
-    };
+  return (
+    <div className="dbs-root">
+      <style>{`
+        .dbs-root {
+          /* Light eco-futurism: snow-white base · deep slate gray type · emerald green · electric blue */
+          --emerald:#10B981; --emerald-bright:#059669; --emerald-deep:#047857;
+          --green:#10B981; --green-deep:#059669; --mint:#059669;
+          --sky:#0EA5E9; --blue:#2563EB; --electric:#0EA5E9; --gold:#B45309;
+          --grey-100:#EEF2F1; --grey-300:#D6DEE0; --grey-500:#5B6B72;
+          --band-a:radial-gradient(900px 480px at 82% 0%, rgba(14,165,233,.05), transparent 60%), #FFFFFF;
+          --band-b:radial-gradient(900px 480px at 18% 0%, rgba(16,185,129,.06), transparent 60%), #F5FAF8;
+          --band-tint:radial-gradient(rgba(15,23,42,.05) 1px, transparent 1px) 0 0 / 22px 22px,
+            radial-gradient(1100px 520px at 50% -10%, rgba(16,185,129,.12), transparent 60%),
+            linear-gradient(180deg,#F2FAF7,#EDF6FB);
+          --text-primary:#0F1E2E; --text-secondary:#4A5A6E; --text-muted:#77869A;
+          --glass:rgba(255,255,255,.72); --glass-2:rgba(255,255,255,.9); --glass-brd:rgba(15,23,42,.09);
+          --line:rgba(15,23,42,.08);
+          font-family:'Geist',system-ui,-apple-system,sans-serif;
+          color:var(--text-primary); scroll-behavior:smooth; -webkit-font-smoothing:antialiased;
+          background:
+            radial-gradient(1100px 640px at 80% -6%, rgba(16,185,129,.10), transparent 60%),
+            radial-gradient(980px 620px at 12% 4%, rgba(14,165,233,.09), transparent 62%),
+            radial-gradient(1200px 820px at 50% 110%, rgba(37,99,235,.07), transparent 60%),
+            linear-gradient(180deg, #FFFFFF 0%, #F5FAF8 48%, #EFF6FB 100%);
+        }
+        .dbs-root .material-symbols-rounded { font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24; line-height:1; }
+        .dbs-wrap { max-width:1160px; margin:0 auto; padding:0 24px; }
+        .dbs-section { padding:clamp(64px,8.5vw,116px) 0; position:relative; }
+        .dbs-serif { font-family:'Newsreader',Georgia,serif; font-weight:500; letter-spacing:-0.02em; }
+        .dbs-eyebrow {
+          display:inline-flex; align-items:center; gap:8px; color:var(--emerald-bright);
+          text-transform:uppercase; letter-spacing:.18em; font-size:12px; font-weight:700;
+        }
+        .dbs-eyebrow .material-symbols-rounded { font-size:15px; }
+        .dbs-h2 { font-size:clamp(27px,3.5vw,44px); line-height:1.1; margin-top:14px; color:var(--text-primary); }
+        .dbs-grad {
+          background:linear-gradient(115deg,#059669 0%,#10B981 40%,#2563EB 100%);
+          -webkit-background-clip:text; background-clip:text; color:transparent;
+        }
+        .dbs-lead { color:var(--text-secondary); font-size:clamp(15px,1.3vw,17px); line-height:1.72; }
+        .dbs-iconwell {
+          width:48px; height:48px; border-radius:13px; flex:0 0 auto;
+          background:linear-gradient(150deg,rgba(16,185,129,.16),rgba(14,165,233,.13));
+          border:1px solid var(--glass-brd); color:var(--emerald-bright);
+          display:flex; align-items:center; justify-content:center;
+          box-shadow:inset 0 1px 0 rgba(255,255,255,.6), 0 8px 18px rgba(16,185,129,.12);
+        }
+        .dbs-iconwell .material-symbols-rounded { font-size:26px; }
+        .dbs-btn {
+          display:inline-flex; align-items:center; justify-content:center; gap:8px;
+          border-radius:12px; padding:14px 22px; font-weight:600; font-size:15px;
+          cursor:pointer; text-decoration:none; border:1px solid transparent; min-height:44px;
+          transition:transform .15s ease,filter .15s ease,background .15s ease,border-color .15s ease;
+        }
+        .dbs-btn-primary {
+          background:linear-gradient(115deg,#10B981,#2563EB); color:#fff; font-weight:700;
+          box-shadow:0 12px 28px rgba(16,185,129,.28), inset 0 1px 0 rgba(255,255,255,.25);
+        }
+        .dbs-btn-primary:hover { transform:translateY(-1px); filter:brightness(1.05); }
+        .dbs-btn-secondary { background:var(--glass-2); color:var(--text-primary); border-color:var(--glass-brd); backdrop-filter:blur(8px); }
+        .dbs-btn-secondary:hover { border-color:var(--emerald); color:var(--emerald-bright); }
+        .dbs-btn-full { width:100%; }
+        .dbs-card {
+          background:var(--glass); border:1px solid var(--glass-brd); border-radius:18px;
+          padding:24px; backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+          box-shadow:inset 0 1px 0 rgba(255,255,255,.6), 0 1px 2px rgba(15,23,42,.05), 0 20px 44px rgba(15,23,42,.07);
+          transition:border-color .2s ease, transform .2s ease, box-shadow .2s ease, background .2s ease;
+        }
+        .dbs-card:hover { border-color:rgba(5,150,105,.4); transform:translateY(-2px); box-shadow:inset 0 1px 0 rgba(255,255,255,.6), 0 26px 52px rgba(15,23,42,.11); background:var(--glass-2); }
+        .dbs-grid { display:grid; gap:16px; grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr)); }
+        .dbs-grid-3 { display:grid; gap:16px; grid-template-columns:repeat(3,minmax(0,1fr)); }
+        @media (max-width:900px){ .dbs-grid-3{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
+        @media (max-width:580px){ .dbs-grid-3{ grid-template-columns:1fr; } }
+        .dbs-dotgrid {
+          background-image:radial-gradient(rgba(15,23,42,.06) 1px,transparent 1px);
+          background-size:22px 22px;
+        }
+        .dbs-root a { color:var(--blue); text-decoration:none; }
+        .dbs-root a:hover { color:var(--emerald-bright); }
+        .dbs-root a.dbs-btn-primary, .dbs-root a.dbs-btn-primary:hover { color:#fff; }
+        .dbs-root a.dbs-btn-secondary, .dbs-root a.dbs-btn-secondary:hover { color:var(--text-primary); }
+        .dbs-blob { position:absolute; border-radius:50%; filter:blur(90px); z-index:0; pointer-events:none; }
+        @keyframes dbsFloat {
+          0% { transform:translate3d(0,0,0) scale(1); }
+          50% { transform:translate3d(26px,-20px,0) scale(1.14); }
+          100% { transform:translate3d(0,0,0) scale(1); }
+        }
+        .dbs-ribbons { position:absolute; left:0; right:0; bottom:0; width:100%; height:clamp(280px,42vw,520px); z-index:0; pointer-events:none; }
+        .dbs-ribbon-line { fill:none; stroke-linecap:round; filter:drop-shadow(0 0 7px rgba(14,165,233,.35)); }
+        .dbs-ribbon-a { animation:dbsDriftA 22s ease-in-out infinite; }
+        .dbs-ribbon-b { animation:dbsDriftB 28s ease-in-out infinite; }
+        @keyframes dbsDriftA { 0%,100%{ transform:translate3d(0,0,0);} 50%{ transform:translate3d(-24px,-6px,0);} }
+        @keyframes dbsDriftB { 0%,100%{ transform:translate3d(0,0,0);} 50%{ transform:translate3d(20px,-10px,0);} }
+        .dbs-input {
+          width:100%; padding:13px 15px; border-radius:12px; border:1px solid var(--glass-brd);
+          background:#fff; font-family:inherit; font-size:15px; color:var(--text-primary);
+          outline:none; transition:border-color .15s ease,box-shadow .15s ease,background .15s ease;
+        }
+        .dbs-input::placeholder { color:var(--text-muted); }
+        .dbs-input:focus { border-color:var(--emerald); box-shadow:0 0 0 3px rgba(16,185,129,.16); background:#fff; }
+        .dbs-chip {
+          border:1px solid var(--glass-brd); background:#fff; color:var(--text-secondary);
+          border-radius:999px; padding:9px 16px; font-size:13.5px; font-weight:500; cursor:pointer;
+          min-height:40px; transition:all .15s ease; font-family:inherit;
+        }
+        .dbs-chip:hover { border-color:rgba(5,150,105,.5); color:var(--text-primary); }
+        .dbs-chip.active { background:linear-gradient(115deg,#10B981,#2563EB); border-color:transparent; color:#fff; font-weight:700; }
+        .dbs-ph {
+          border:1.5px dashed var(--glass-brd); border-radius:16px; display:flex;
+          align-items:center; justify-content:center; text-align:center; color:var(--text-muted);
+          font-size:13px; padding:16px; background:rgba(15,23,42,.02);
+        }
+        @media (prefers-reduced-motion: reduce){
+          .dbs-blob, .dbs-ribbon-a, .dbs-ribbon-b { animation:none !important; }
+        }
+      `}</style>
 
-    return (
-        <div className="min-h-screen bg-slate-50 font-space text-slate-900">
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{
-                    __html: structuredData([
-                        organizationSchema,
-                        webPageSchema(seo),
-                        eventSchema({
-                            name: "DevBhoomi AI Summit 2026",
-                            description: seo.description,
-                            path: seo.path,
-                            image: seo.image,
-                            startDate: "2026-06-12",
-                            endDate: "2026-06-14",
-                            locationName: "Dehradun Convention Centre",
-                            locationAddress: "Dehradun, Uttarakhand, India",
-                        }),
-                    ]),
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: structuredData([
+            organizationSchema,
+            webPageSchema(seo),
+            eventSchema({
+              name: "Devbhoomi AI Summit 2026",
+              description: seo.description,
+              path: seo.path,
+              image: seo.image,
+              startDate: "2026-10-09T09:00:00+05:30",
+              endDate: "2026-10-09T18:00:00+05:30",
+              locationName: "Hyatt Centric Rajpur Road Dehradun",
+              locationAddress:
+                "152 / 3-4, Jakhan, Rajpur Road, Dehradun, Uttarakhand 248001, India",
+            }),
+            localBusinessSchema,
+          ]),
+        }}
+      />
+
+      <Navbar />
+
+      {/* B. HERO */}
+      <header id="top" style={{ position: "relative", overflow: "hidden" }}>
+        <div
+          className="dbs-blob"
+          style={{ width: "clamp(280px,40vw,520px)", height: "clamp(280px,40vw,520px)", background: "rgba(16,185,129,.14)", top: "20px", right: "-100px", animation: "dbsFloat 16s ease-in-out infinite" }}
+        />
+        <div
+          className="dbs-blob"
+          style={{ width: "clamp(240px,34vw,440px)", height: "clamp(240px,34vw,440px)", background: "rgba(14,165,233,.12)", bottom: "-120px", left: "-80px", animation: "dbsFloat 19s ease-in-out infinite reverse" }}
+        />
+        <div
+          className="dbs-blob"
+          style={{ width: "clamp(200px,28vw,360px)", height: "clamp(200px,28vw,360px)", background: "rgba(37,99,235,.10)", top: "-80px", left: "42%", animation: "dbsFloat 21s ease-in-out infinite" }}
+        />
+
+        <Ribbons id="hero" style={{ height: "clamp(340px,48vw,600px)", opacity: 0.9 }} />
+
+
+        <div
+          className="dbs-wrap"
+          style={{
+            position: "relative", zIndex: 1,
+            paddingTop: "clamp(120px,16vw,168px)", paddingBottom: "clamp(56px,8vw,104px)",
+            display: "grid", gap: "clamp(32px,5vw,56px)",
+            gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,320px),1fr))", alignItems: "center",
+          }}
+        >
+          <div>
+            <span className="dbs-eyebrow" style={{ background: "rgba(16,185,129,.10)", border: "1px solid rgba(5,150,105,.24)", padding: "8px 14px", borderRadius: "999px" }}>
+              <span className="material-symbols-rounded">landscape</span>
+              Devbhoomi AI Summit 2026
+            </span>
+
+            <h1 className="dbs-serif" style={{ fontSize: "clamp(38px,5.6vw,66px)", lineHeight: 1.06, margin: "22px 0 0", color: "var(--text-primary)" }}>
+              Building an AI-Native <span className="dbs-grad">Uttarakhand</span>
+            </h1>
+
+            <p className="dbs-lead" style={{ margin: "20px 0 0", maxWidth: "540px" }}>
+              Uttarakhand's flagship leadership forum on Artificial Intelligence — bringing
+              policymakers, industry leaders, technology experts, startups, academia, and
+              media together to shape the state's AI-led future.
+            </p>
+
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "24px", margin: "26px 0 0" }}>
+              <span style={{ display: "inline-flex", alignItems: "center", gap: "8px", color: "var(--text-secondary)", fontSize: "14.5px", fontWeight: 500 }}>
+                <span className="material-symbols-rounded" style={{ fontSize: "20px", color: "var(--green)" }}>calendar_month</span>
+                October 9, 2026
+              </span>
+              <span style={{ display: "inline-flex", alignItems: "center", gap: "8px", color: "var(--text-secondary)", fontSize: "14.5px", fontWeight: 500 }}>
+                <span className="material-symbols-rounded" style={{ fontSize: "20px", color: "var(--blue)" }}>location_on</span>
+                Hyatt Centric, Dehradun, Uttarakhand
+              </span>
+            </div>
+
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "12px", margin: "30px 0 0" }}>
+              <a href="#sponsor" className="dbs-btn dbs-btn-primary">
+                Request to Sponsor
+                <span className="material-symbols-rounded" style={{ fontSize: "18px" }}>arrow_forward</span>
+              </a>
+              <a href="#themes" className="dbs-btn dbs-btn-secondary">Explore the agenda</a>
+            </div>
+          </div>
+
+          <div style={{ position: "relative", width: "100%", maxWidth: "372px", margin: "0 auto" }}>
+            <div
+              style={{
+                position: "relative", aspectRatio: "9 / 16", borderRadius: "22px", overflow: "hidden",
+                border: "1px solid var(--glass-brd)", background: "#0F1E2E",
+                boxShadow: "0 34px 80px rgba(15,23,42,.18), inset 0 1px 0 rgba(255,255,255,.5)",
+              }}
+            >
+              <video
+                ref={videoRef}
+                src="/videos/ai_summit_reel.mp4"
+                poster="/images/summit2.png"
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                aria-label="Devbhoomi AI Summit 2026 reel"
+                style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+              />
+              <div
+                style={{
+                  position: "absolute", inset: 0, pointerEvents: "none",
+                  background: "linear-gradient(180deg, rgba(15,30,46,.10) 0%, transparent 24%, transparent 66%, rgba(15,30,46,.45) 100%)",
                 }}
-            />
-            <Navbar />
-
-            <main className="pt-28 pb-16 px-4 md:px-10 lg:px-20">
-                <div className="max-w-[1400px] mx-auto space-y-16">
-                    <section className="relative overflow-hidden rounded-[2rem] border border-gray-200 bg-white/90 backdrop-blur-xl shadow-2xl shadow-slate-900/5">
-                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.18),transparent_35%),radial-gradient(circle_at_80%_20%,rgba(125,211,252,0.14),transparent_30%)] pointer-events-none" />
-                        <div className="relative grid gap-10 lg:grid-cols-[1.4fr_1fr] px-6 py-16 sm:px-10 lg:px-14">
-                            <div className="space-y-8">
-                                <div className="space-y-4 max-w-3xl">
-                                    <p className="text-sm uppercase tracking-[0.3em] text-cyan-600">DevBhoomi AI Summit</p>
-                                    <h1 className="text-4xl sm:text-5xl font-black tracking-tight text-slate-900">Governing with Intelligence: AI as the Backbone of a New Uttarakhand</h1>
-                                    <p className="text-lg leading-8 text-slate-600">
-                                        A closed-door policy and innovation summit bringing together leaders from government, industry, and academia to shape Uttarakhand’s AI future.
-                                    </p>
-                                </div>
-
-                                <div className="flex flex-wrap gap-4">
-                                    <button onClick={() => setIsModalOpen(true)} className="inline-flex items-center justify-center rounded-full bg-slate-900 px-6 py-3 text-sm font-semibold text-white transition hover:bg-slate-800">
-                                        Book your spot
-                                    </button>
-                                </div>
-
-                                <div className="grid gap-4 sm:grid-cols-3">
-                                    <div className="rounded-3xl border border-slate-200 bg-slate-50 p-6">
-                                        <p className="text-sm text-slate-500 uppercase tracking-[0.2em]">When</p>
-                                        <p className="mt-3 text-2xl font-semibold text-slate-900">June 12–14, 2026</p>
-                                    </div>
-                                    <div className="rounded-3xl border border-slate-200 bg-slate-50 p-6">
-                                        <p className="text-sm text-slate-500 uppercase tracking-[0.2em]">Where</p>
-                                        <p className="mt-3 text-2xl font-semibold text-slate-900">Dehradun Convention Centre</p>
-                                    </div>
-                                    <div className="rounded-3xl border border-slate-200 bg-slate-50 p-6">
-                                        <p className="text-sm text-slate-500 uppercase tracking-[0.2em]">Format</p>
-                                        <p className="mt-3 text-2xl font-semibold text-slate-900">Invitation-only summit</p>
-                                    </div>
-                                </div>
-
-                                <div className="space-y-4">
-                                    <p className="text-sm uppercase tracking-[0.28em] text-slate-500">
-                                        In Association With
-                                    </p>
-
-                                    <div className="grid gap-4 sm:grid-cols-3">
-                                        
-                                        {/* ANI */}
-                                        <div className="flex flex-col items-center justify-center rounded-3xl border border-slate-200 bg-slate-50 p-5 text-center">
-                                        <img
-                                            src="/images/ani.jpeg"
-                                            alt="ANI"
-                                            className="h-12 object-contain"
-                                        />
-
-                                        <p className="mt-4 text-sm font-semibold text-slate-900">
-                                            Asian News International
-                                        </p>
-
-                                        <p className="mt-1 text-xs text-slate-500">
-                                            ANI
-                                        </p>
-                                        </div>
-
-                                        {/* PTI */}
-                                        <div className="flex flex-col items-center justify-center rounded-3xl border border-slate-200 bg-slate-50 p-5 text-center">
-                                        <img
-                                            src="/images/pti.jpeg"
-                                            alt="PTI"
-                                            className="h-12 object-contain"
-                                        />
-
-                                        <p className="mt-4 text-sm font-semibold text-slate-900">
-                                            Press Trust of India
-                                        </p>
-
-                                        <p className="mt-1 text-xs text-slate-500">
-                                            PTI
-                                        </p>
-                                        </div>
-
-                                        {/* ET */}
-                                        <div className="flex flex-col items-center justify-center rounded-3xl border border-slate-200 bg-slate-50 p-5 text-center">
-                                        <img
-                                            src="/images/et.jpeg"
-                                            alt="Economic Times"
-                                            className="h-12 object-contain"
-                                        />
-
-                                        <p className="mt-4 text-sm font-semibold text-slate-900">
-                                            The Economic Times
-                                        </p>
-
-                                        <p className="mt-1 text-xs text-slate-500">
-                                            ET
-                                        </p>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="relative ">
-                                <div className="absolute inset-0 rounded-[2rem] bg-slate-900/5" />
-                                <div className="relative grid gap-4">
-                                    <div className="rounded-3xl overflow-hidden bg-slate-900 h-full">
-                                        <video
-                                            className="w-full h-full object-contain bg-black"
-                                            autoPlay
-                                            loop
-                                            muted
-                                            playsInline
-                                            controls
-                                        >
-                                            <source src="/videos/summitV.mp4" type="video/mp4" />
-                                            Your browser does not support the video tag.
-                                        </video>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
-                    <section className="grid gap-10 xl:grid-cols-[1.2fr_0.8fr]">
-                        <div className="space-y-8">
-                            <div className="rounded-[2rem] border border-gray-200 bg-white p-10 shadow-xl shadow-slate-900/5">
-                                <h2 className="text-3xl font-bold text-slate-900">Why this summit exists</h2>
-                                <p className="mt-6 text-lg leading-8 text-slate-600">
-                                    Uttarakhand is more than a state it is a region of immense potential, talent, and resilience. Yet, many challenges remain unaddressed from disaster response to healthcare access to migration.
-                                </p>
-                                <p className="mt-4 text-lg leading-8 text-slate-600">
-                                    We believe technology especially AI can change this.
-                                </p>
-                                <p className="mt-4 text-lg leading-8 text-slate-600">
-                                    DevBhoomi AI Summit is an effort to bring the right people together to think, build, and act for Uttarakhand.
-                                </p>
-                            </div>
-
-                            <div className="rounded-[2rem] border border-gray-200 bg-white p-10 shadow-xl shadow-slate-900/5">
-                                <h2 className="text-3xl font-bold text-slate-900">What this summit is</h2>
-                                <p className="mt-6 text-lg leading-8 text-slate-600">
-                                    This is not a conference. This is a working platform.
-                                </p>
-                                <div className="mt-8 grid gap-4 sm:grid-cols-3">
-                                    {[
-                                        'Ideas turn into action',
-                                        'Policy meets technology',
-                                        'Discussions lead to commitments',
-                                    ].map((item) => (
-                                        <div key={item} className="rounded-3xl border border-slate-200 bg-slate-50 p-6">
-                                            <p className="font-semibold text-slate-900">{item}</p>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-
-                            <div className="rounded-[2rem] border border-gray-200 bg-white p-10 shadow-xl shadow-slate-900/5">
-                                <h2 className="text-3xl font-bold text-slate-900">Who this is for</h2>
-                                <div className="mt-6 grid gap-4 sm:grid-cols-2">
-                                    {[
-                                        'Senior government officials',
-                                        'Policy makers and advisors',
-                                        'Leaders from global consulting and technology firms',
-                                        'Researchers and academicians from top institutions',
-                                        'AI practitioners and system builders',
-                                    ].map((profile) => (
-                                        <div key={profile} className="rounded-3xl border border-slate-200 bg-slate-50 p-5">
-                                            <p className="text-slate-700">{profile}</p>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-
-                            <div className="rounded-[2rem] border border-gray-200 bg-white p-10 shadow-xl shadow-slate-900/5">
-                                <div className="flex flex-col items-center gap-6">
-                                    <div className="w-48 h-48 rounded-full overflow-hidden border-4 border-cyan-500/30">
-                                        <img src="/images/ITMinister.jpeg" alt="Minister of Uttarakhand" className="w-full h-full object-cover" />
-                                    </div>
-                                    <div className="text-center space-y-4">
-                                        <p className="text-lg font-semibold text-slate-900">Shri Pradeep Batra <br/>Hon’ble Cabinet Minister <br/>Information Technology and Good Governance	</p>
-                                        <p className="text-base leading-7 text-slate-600">
-                                            Uttarakhand is not just a state of mountains and tradition it is a state of immense talent, innovation, and untapped potential. Our people are capable, creative, and ambitious.
-                                        </p>
-                                        <p className="text-base leading-7 text-slate-600">
-                                            We need their ideas. We need their perspectives. We need leaders, builders, and thinkers to reimagine Uttarakhand through technology.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="space-y-8">
-                            <div className="rounded-[2rem] border border-gray-200 bg-white p-10 shadow-xl shadow-slate-900/5">
-                                <h2 className="text-3xl font-bold text-slate-900">Participation</h2>
-                                <p className="mt-6 text-lg leading-8 text-slate-600">
-                                    The summit is being shaped with participation from leaders and experts associated with institutions such as national-level policy bodies, leading technology and consulting firms, top academic and research institutions, and healthcare and public system organizations.
-                                </p>
-                                <p className="mt-4 text-lg leading-8 text-slate-600 text-slate-500">
-                                    Including individuals associated with organizations like these will be reflected through trusted partners and advisory presence.
-                                </p>
-                            </div>
-
-                            <div className="rounded-[2rem] border border-gray-200 bg-slate-950/5 p-10 shadow-xl shadow-slate-900/5">
-                                <h2 className="text-3xl font-bold text-slate-900">Uttarakhand AI Action Charter</h2>
-                                <p className="mt-6 text-lg leading-8 text-slate-600">
-                                    The outcome of the summit will be a structured set of actionable commitments across key domains that are designed for implementation not ideas.
-                                </p>
-                                <ul className="mt-8 space-y-3 text-slate-600">
-                                    {['Disaster management', 'Agriculture', 'Governance systems', 'Healthcare', 'Tourism', 'Education & skilling'].map((item) => (
-                                        <li key={item} className="flex items-center gap-3">
-                                            <span className="inline-flex h-2.5 w-2.5 rounded-full bg-cyan-500" />
-                                            <span>{item}</span>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-
-                            <div className="rounded-[2rem] border border-gray-200 bg-white p-10 shadow-xl shadow-slate-900/5">
-                                <h2 className="text-3xl font-bold text-slate-900">Our commitment to Uttarakhand</h2>
-                                <p className="mt-6 text-lg leading-8 text-slate-600">
-                                    At Axolotl Emprise, our vision is rooted in Uttarakhand. We believe the state has untapped talent, real problems worth solving, and a future that can be shaped with the right systems.
-                                </p>
-                                <p className="mt-4 text-lg leading-8 text-slate-600">
-                                    This summit is our step towards building that future by connecting people who can make it happen.
-                                </p>
-                            </div>
-
-                            <div className="rounded-[2rem] border border-gray-200 bg-slate-50 p-10 shadow-xl shadow-slate-900/5">
-                                <h2 className="text-3xl font-bold text-slate-900">Partnership</h2>
-                                <p className="mt-6 text-lg leading-8 text-slate-600">
-                                    In collaboration with Information Technology Development Agency (ITDA), Uttarakhand.
-                                </p>
-                                <p className="mt-6 text-sm uppercase tracking-[0.28em] text-slate-500">Government-trust aligned</p>
-                            </div>
-                        </div>
-                    </section>
-
-                    <section className="rounded-[2rem] border border-gray-200 bg-white p-10 shadow-xl shadow-slate-900/5">
-                        <div className="grid gap-6 items-center">
-                            <div>
-                                <h2 className="text-3xl font-bold text-slate-900">This is a curated, limited participation summit.</h2>
-                                <p className="mt-4 text-lg leading-8 text-slate-600">
-                                    If you are interested in being a part of this initiative, request an invite and stay updated as the summit takes shape.
-                                </p>
-                            </div>
-                            <div className="flex flex-wrap items-center gap-4">
-                                <button onClick={() => setIsModalOpen(true)} className="inline-flex min-w-[170px] items-center justify-center rounded-full bg-slate-900 px-6 py-3 text-sm font-semibold text-white transition hover:bg-slate-800">
-                                    Book your spot
-                                </button>
-                            </div>
-                        </div>
-                    </section>
-                </div>
-            </main>
-
-            {isModalOpen && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/80 px-2 py-4 sm:px-4 sm:py-8">
-                    <div className="relative w-full max-w-[95vw] sm:max-w-md md:max-w-lg lg:max-w-2xl overflow-hidden rounded-[1.5rem] sm:rounded-[2rem] border border-slate-200 bg-white shadow-2xl shadow-slate-900/30">
-                        <button
-                            type="button"
-                            onClick={closeModal}
-                            className="absolute top-4 right-4 sm:top-6 sm:right-6 z-10 inline-flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 transition hover:border-slate-300 hover:text-slate-900 text-xl sm:text-2xl"
-                            aria-label="Close registration form"
-                        >
-                            ×
-                        </button>
-                        <div className="bg-slate-950/5 px-6 py-6 sm:px-8 sm:py-7 pr-16 sm:pr-8">
-                            <div>
-                                <p className="text-sm uppercase tracking-[0.32em] text-cyan-600">Summit registration</p>
-                                <h2 className="mt-2 text-2xl sm:text-3xl font-semibold text-slate-900">Book your spot</h2>
-                                <p className="mt-3 max-w-xl text-sm leading-6 text-slate-600">
-                                    Share your details and interest so we can send an invite request to <span className="font-semibold text-slate-900">info@axocom.in</span>.
-                                </p>
-                            </div>
-                        </div>
-                        <div className="max-h-[70vh] overflow-y-auto">
-                        <form onSubmit={handleSubmit} className="space-y-6 px-6 py-6 sm:px-8 sm:py-8">
-                            <div className="grid gap-6 lg:grid-cols-2">
-                                <label className="space-y-2 text-sm text-slate-700">
-                                    <span className="font-medium text-slate-900">Name</span>
-                                    <input
-                                        required
-                                        value={formData.name}
-                                        onChange={(e) => handleChange('name', e.target.value)}
-                                        className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100"
-                                        placeholder="Your full name"
-                                    />
-                                </label>
-                                <label className="space-y-2 text-sm text-slate-700">
-                                    <span className="font-medium text-slate-900">Email</span>
-                                    <input
-                                        required
-                                        type="email"
-                                        value={formData.email}
-                                        onChange={(e) => handleChange('email', e.target.value)}
-                                        className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100"
-                                        placeholder="you@example.com"
-                                    />
-                                </label>
-                            </div>
-
-                            <div className="grid gap-6 lg:grid-cols-2">
-                                <label className="space-y-2 text-sm text-slate-700">
-                                    <span className="font-medium text-slate-900">Role</span>
-                                    <select
-                                        value={formData.role}
-                                        onChange={(e) => handleChange('role', e.target.value)}
-                                        className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100"
-                                    >
-                                        <option value="Government official">Government official</option>
-                                        <option value="Industry leader">Industry leader</option>
-                                        <option value="Academic / researcher">Academic / researcher</option>
-                                        <option value="AI practitioner">AI practitioner</option>
-                                        <option value="Other">Other</option>
-                                    </select>
-                                </label>
-                                <label className="space-y-2 text-sm text-slate-700">
-                                    <span className="font-medium text-slate-900">Focus</span>
-                                    <select
-                                        value={formData.experience}
-                                        onChange={(e) => handleChange('experience', e.target.value)}
-                                        className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100"
-                                    >
-                                        <option value="Exploring AI for governance">Exploring AI for governance</option>
-                                        <option value="Policy and public systems">Policy and public systems</option>
-                                        <option value="Healthcare and disaster response">Healthcare and disaster response</option>
-                                        <option value="Education and skilling">Education and skilling</option>
-                                        <option value="Other">Other</option>
-                                    </select>
-                                </label>
-                            </div>
-
-                            <div className="space-y-3 rounded-3xl border border-slate-200 bg-slate-50 p-4">
-                                <div className="flex items-center justify-between gap-4">
-                                    <span className="text-sm font-medium text-slate-900">What I hope to bring or learn</span>
-                                    <span className="text-xs uppercase tracking-[0.24em] text-slate-400">Optional</span>
-                                </div>
-                                <textarea
-                                    value={formData.interest}
-                                    onChange={(e) => handleChange('interest', e.target.value)}
-                                    maxLength={150}
-                                    rows={5}
-                                    className="w-full rounded-3xl border border-slate-200 bg-white px-4 py-3 text-slate-900 outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100"
-                                    placeholder="Tell us what you want to contribute or learn at the summit"
-                                />
-                                <p className="text-xs text-slate-500">A short note helps us tailor the invite.</p>
-                            </div>
-
-                            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-end">
-                                <button
-                                    type="button"
-                                    onClick={closeModal}
-                                    className="inline-flex min-w-[140px] items-center justify-center rounded-full border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-900 transition hover:border-slate-400 hover:bg-slate-50"
-                                >
-                                    Cancel
-                                </button>
-                                <button
-                                    type="submit"
-                                    className="inline-flex min-w-[140px] items-center justify-center rounded-full bg-cyan-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-cyan-700"
-                                >
-                                    Send invite request
-                                </button>
-                            </div>
-                        </form>
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            <section className="rounded-[2rem] border border-gray-200 bg-white p-10 shadow-xl shadow-slate-900/5">
-                <h2 className="text-3xl font-bold text-slate-900">
-                    Delegates & Dignitaries
-                </h2>
-
-                <p className="mt-4 text-lg text-slate-600">
-                    Leaders and innovators attending the summit.
-                </p>
-
-                <div className="mt-8">
-                    <DelegatesSlider delegates={delegates} />
-                </div>
-            </section>
-
-            {/* Footer */}
-            <footer className="w-full py-10 px-6 border-t border-gray-200 bg-gray-50 text-gray-500">
-                <div className="max-w-7xl mx-auto flex flex-col gap-8">
-                    {/* Top Section: Branding and Social Links */}
-                    <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-                        <div className="flex flex-col items-center md:items-start">
-                            <img src="/images/logo2.png" alt="AxoCom" className="h-12 mb-2" />
-                            <span className="text-xs uppercase tracking-widest text-gray-500">Axolotl Emprise LLP</span>
-                        </div>
-
-                        <div className="flex gap-6">
-                            <a href="https://www.youtube.com/@AxoComTechXMedia" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors" aria-label="YouTube">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z" /><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" /></svg>
-                            </a>
-                            <a href="https://www.instagram.com/axocommedia/" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors" aria-label="Instagram">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5" /><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" /><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" /></svg>
-                            </a>
-                            <a href="https://www.linkedin.com/company/axocom-tech-x-media/" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors" aria-label="LinkedIn">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" /><rect x="2" y="9" width="4" height="12" /><circle cx="4" cy="4" r="2" /></svg>
-                            </a>
-                        </div>
-                    </div>
-
-
-                    {/* Bottom Section: Copyright */}
-                    <div className="text-center pt-4 border-t border-gray-100">
-                        <p className="text-sm">© 2024 AxoCom. All rights reserved.</p>
-                    </div>
-                </div>
-            </footer>
+              />
+              <button
+                type="button"
+                onClick={toggleMute}
+                aria-label={muted ? "Unmute video" : "Mute video"}
+                aria-pressed={!muted}
+                style={{
+                  position: "absolute", top: "14px", right: "14px", zIndex: 3,
+                  display: "inline-flex", alignItems: "center", justifyContent: "center",
+                  width: "42px", height: "42px", borderRadius: "999px",
+                  background: "rgba(255,255,255,.85)", backdropFilter: "blur(6px)",
+                  WebkitBackdropFilter: "blur(6px)",
+                  border: "1px solid var(--glass-brd)", color: "var(--text-primary)",
+                  cursor: "pointer", boxShadow: "0 6px 18px rgba(15,23,42,.18)",
+                  transition: "transform .15s ease, background .15s ease",
+                }}
+              >
+                <span className="material-symbols-rounded" style={{ fontSize: "20px" }} aria-hidden="true">
+                  {muted ? "volume_off" : "volume_up"}
+                </span>
+              </button>
+              <span
+                style={{
+                  position: "absolute", left: "14px", bottom: "14px", zIndex: 2,
+                  display: "inline-flex", alignItems: "center", gap: "6px",
+                  background: "rgba(255,255,255,.85)", backdropFilter: "blur(6px)",
+                  border: "1px solid var(--glass-brd)", borderRadius: "999px",
+                  padding: "7px 13px", fontSize: "12.5px", fontWeight: 600, color: "var(--text-primary)",
+                }}
+              >
+                <span className="material-symbols-rounded" style={{ fontSize: "16px", color: "var(--green)" }}>play_circle</span>
+                Devbhoomi AI Summit 2026
+              </span>
+            </div>
+          </div>
         </div>
-    );
+      </header>
+
+      {/* C. OVERVIEW */}
+      <section id="overview" className="dbs-section" style={{ background: "var(--band-a)" }}>
+        <div
+          className="dbs-wrap"
+          style={{ display: "grid", gap: "clamp(28px,5vw,64px)", gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,300px),1fr))" }}
+        >
+          <div>
+            <Eyebrow icon="flag">Overview</Eyebrow>
+            <h2 className="dbs-serif dbs-h2">A leadership forum for the state's AI-led future.</h2>
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
+            <p className="dbs-lead">
+              Devbhoomi AI Summit 2026 is Uttarakhand's flagship leadership forum on
+              Artificial Intelligence, bringing together policymakers, industry leaders,
+              technology experts, startups, academia, and media to shape the state's AI-led
+              future.
+            </p>
+            <p className="dbs-lead">
+              With a sharp focus on governance, mobility, tourism, public safety, and
+              sustainable development, the summit is designed to move beyond conversations and
+              deliver actionable AI roadmaps for the state's most pressing priorities.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* D. CONFIRMED SPEAKERS */}
+      <section id="speakers" className="dbs-section" style={{ background: "var(--band-b)" }}>
+        <div className="dbs-wrap">
+          <div style={{ maxWidth: "760px" }}>
+            <Eyebrow icon="record_voice_over">State leadership</Eyebrow>
+            <h2 className="dbs-serif dbs-h2">Leadership from the state's technology ecosystem</h2>
+          </div>
+
+          <div className="dbs-grid" style={{ marginTop: "clamp(32px,5vw,48px)" }}>
+            {speakers.map((sp) => (
+              <div key={sp.name} className="dbs-card" style={{ textAlign: "center" }}>
+                {sp.image ? (
+                  <img
+                    src={sp.image}
+                    alt={sp.name}
+                    style={{ width: "104px", height: "104px", borderRadius: "50%", objectFit: "cover", margin: "0 auto 16px", border: "1px solid var(--glass-brd)" }}
+                  />
+                ) : (
+                  <div className="dbs-ph" style={{ width: "104px", height: "104px", borderRadius: "50%", margin: "0 auto 16px", fontSize: "12px" }}>
+                    Photo
+                  </div>
+                )}
+                <p style={{ fontWeight: 700, fontSize: "16px" }}>{sp.name}</p>
+                <p style={{ color: "var(--text-muted)", fontSize: "13.5px", lineHeight: 1.45, marginTop: "6px" }}>{sp.role}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* E. EVENT HIGHLIGHTS — tinted stat band */}
+      <section id="highlights" className="dbs-section dbs-dotgrid" style={{ background: "var(--band-tint)" }}>
+        <div className="dbs-wrap">
+          <div style={{ textAlign: "center", maxWidth: "760px", margin: "0 auto" }}>
+            <span className="dbs-eyebrow" style={{ color: "var(--blue)", justifyContent: "center" }}>
+              <span className="material-symbols-rounded">auto_awesome</span>
+              Event Highlights
+            </span>
+            <h2 className="dbs-serif dbs-h2">One day. A concentrated agenda of outcomes.</h2>
+          </div>
+
+          <div
+            style={{
+              marginTop: "clamp(36px,5vw,56px)",
+              display: "grid", gap: "0",
+              gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,200px),1fr))",
+              border: "1px solid var(--line)", borderRadius: "16px", overflow: "hidden",
+              background: "rgba(255,255,255,.6)", backdropFilter: "blur(12px)",
+              boxShadow: "inset 0 1px 0 rgba(255,255,255,.6), 0 24px 50px rgba(15,23,42,.08)",
+            }}
+          >
+            {stats.map((s) => (
+              <div key={s.desc} style={{ padding: "28px 24px", borderRight: "1px solid var(--line)", borderBottom: "1px solid var(--line)" }}>
+                <span className="material-symbols-rounded" style={{ fontSize: "28px", color: "var(--green)" }}>{s.icon}</span>
+                <div className="dbs-serif dbs-grad" style={{ fontWeight: 800, fontSize: "clamp(38px,5vw,56px)", lineHeight: 1, margin: "14px 0 10px" }}>
+                  {s.num}
+                </div>
+                <p style={{ color: "var(--text-secondary)", fontSize: "13.5px", lineHeight: 1.55 }}>{s.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* F. WHY IT MATTERS */}
+      <section id="why" className="dbs-section" style={{ background: "var(--band-a)" }}>
+        <div className="dbs-wrap">
+          <div style={{ maxWidth: "760px" }}>
+            <Eyebrow icon="priority_high">Why it matters</Eyebrow>
+            <h2 className="dbs-serif dbs-h2">Why Devbhoomi AI Summit 2026 matters</h2>
+            <p className="dbs-lead" style={{ marginTop: "18px" }}>
+              Uttarakhand is at a critical inflection point where seasonal pilgrim movement,
+              fragile Himalayan terrain, rapid urban expansion, and infrastructure pressures
+              demand AI-native solutions rather than conventional approaches. The summit aims
+              to transform AI from a discussion topic into a practical governance tool.
+            </p>
+          </div>
+
+          <div className="dbs-grid" style={{ marginTop: "clamp(32px,5vw,48px)" }}>
+            {whyCards.map((c) => (
+              <div key={c.label} className="dbs-card" style={{ display: "flex", alignItems: "center", gap: "16px", padding: "18px 20px" }}>
+                <span className="dbs-iconwell">
+                  <span className="material-symbols-rounded">{c.icon}</span>
+                </span>
+                <span style={{ fontWeight: 600, fontSize: "15px" }}>{c.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* G. KEY DISCUSSION THEMES — 3 columns x 2 rows */}
+      <section id="themes" className="dbs-section" style={{ background: "var(--band-b)" }}>
+        <div className="dbs-wrap">
+          <div style={{ maxWidth: "760px" }}>
+            <Eyebrow icon="hub">Key discussion themes</Eyebrow>
+            <h2 className="dbs-serif dbs-h2">Six conversations shaping the roadmap</h2>
+          </div>
+
+          <div className="dbs-grid-3" style={{ marginTop: "clamp(32px,5vw,48px)" }}>
+            {themes.map((t, i) => (
+              <div key={t.title} className="dbs-card">
+                <span style={{ fontWeight: 700, fontSize: "13px", letterSpacing: ".08em", color: "var(--grey-500)" }}>
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span className="dbs-iconwell" style={{ margin: "16px 0 16px" }}>
+                  <span className="material-symbols-rounded">{t.icon}</span>
+                </span>
+                <p className="dbs-serif" style={{ fontSize: "18px", lineHeight: 1.35 }}>{t.title}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* H. WHO SHOULD ATTEND */}
+      <section id="attend" className="dbs-section" style={{ background: "var(--band-a)" }}>
+        <div className="dbs-wrap">
+          <div style={{ maxWidth: "760px" }}>
+            <Eyebrow icon="groups">Who should attend</Eyebrow>
+            <h2 className="dbs-serif dbs-h2">Built for the people who move the state forward</h2>
+          </div>
+
+          <div className="dbs-grid" style={{ marginTop: "clamp(32px,5vw,48px)" }}>
+            {attendees.map((a) => (
+              <div key={a.label} className="dbs-card" style={{ display: "flex", alignItems: "center", gap: "16px", padding: "18px 20px" }}>
+                <span className="dbs-iconwell">
+                  <span className="material-symbols-rounded">{a.icon}</span>
+                </span>
+                <span style={{ fontWeight: 600, fontSize: "15px" }}>{a.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* I. SPONSORSHIP OPPORTUNITIES */}
+      <section id="sponsorship" className="dbs-section" style={{ background: "var(--band-b)" }}>
+        <div className="dbs-wrap">
+          <div style={{ maxWidth: "760px" }}>
+            <Eyebrow icon="workspace_premium">Sponsorship opportunities</Eyebrow>
+            <h2 className="dbs-serif dbs-h2">Partner with the state's defining AI moment</h2>
+          </div>
+
+          <div className="dbs-grid" style={{ marginTop: "clamp(32px,5vw,48px)" }}>
+            {tiers.map((t) => (
+              <div
+                key={t.name}
+                className="dbs-card"
+                style={{
+                  position: "relative", display: "flex", flexDirection: "column", gap: "16px",
+                  ...(t.flagship
+                    ? {
+                        background: "linear-gradient(160deg, rgba(16,185,129,.10), rgba(37,99,235,.08))",
+                        border: "1px solid rgba(5,150,105,.32)",
+                        boxShadow: "0 20px 46px rgba(16,185,129,.16)",
+                      }
+                    : {}),
+                }}
+              >
+                {t.flagship && (
+                  <span
+                    style={{
+                      position: "absolute", top: "18px", right: "18px",
+                      background: "linear-gradient(115deg,#10B981,#2563EB)", color: "#fff",
+                      fontSize: "11px", fontWeight: 700, letterSpacing: ".06em",
+                      padding: "5px 11px", borderRadius: "999px", textTransform: "uppercase",
+                    }}
+                  >
+                    Flagship
+                  </span>
+                )}
+                <span className="material-symbols-rounded" style={{ fontSize: "34px", color: t.iconColor }}>{t.icon}</span>
+                <h3 className="dbs-serif" style={{ fontSize: "22px", color: "var(--text-primary)" }}>{t.name}</h3>
+                <p style={{ fontSize: "13.5px", lineHeight: 1.6, color: "var(--text-secondary)", flex: 1 }}>{t.desc}</p>
+                <a href="#sponsor" className={t.flagship ? "dbs-btn dbs-btn-primary dbs-btn-full" : "dbs-btn dbs-btn-secondary dbs-btn-full"}>
+                  Request this tier
+                </a>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* J. REQUEST TO SPONSOR — form */}
+      <section id="sponsor" className="dbs-section" style={{ background: "var(--band-tint)", position: "relative", overflow: "hidden" }}>
+        <div className="dbs-blob" style={{ width: "420px", height: "420px", background: "rgba(16,185,129,.12)", top: "-120px", right: "-80px", animation: "dbsFloat 18s ease-in-out infinite" }} />
+        <Ribbons id="sponsor" style={{ opacity: 0.8 }} />
+        <div
+          className="dbs-wrap"
+          style={{ position: "relative", zIndex: 1, display: "grid", gap: "clamp(28px,5vw,56px)", gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,320px),1fr))", alignItems: "start" }}
+        >
+          <div>
+            <Eyebrow icon="edit_note">Request to sponsor</Eyebrow>
+            <h2 className="dbs-serif dbs-h2">Express your partnership interest</h2>
+            <p className="dbs-lead" style={{ marginTop: "18px" }}>
+              Share a few details and the summit team will get in touch with the right
+              sponsorship pack for your organisation.
+            </p>
+            <div className="dbs-card" style={{ marginTop: "26px", display: "flex", gap: "14px", alignItems: "center" }}>
+              <span className="dbs-iconwell">
+                <span className="material-symbols-rounded">event</span>
+              </span>
+              <div>
+                <p style={{ fontWeight: 700, fontSize: "15px" }}>October 9, 2026</p>
+                <p style={{ color: "var(--text-muted)", fontSize: "13.5px", marginTop: "2px" }}>Hyatt Centric, Dehradun</p>
+              </div>
+            </div>
+            <div className="dbs-card" style={{ marginTop: "14px", display: "flex", gap: "14px", alignItems: "flex-start" }}>
+              <span className="dbs-iconwell">
+                <span className="material-symbols-rounded">location_on</span>
+              </span>
+              <div>
+                <p style={{ fontWeight: 700, fontSize: "15px" }}>Hyatt Centric Dehradun</p>
+                <p style={{ color: "var(--text-muted)", fontSize: "13.5px", marginTop: "2px" }}>
+                  3-4, 152, Rajpur Rd, Jakhan, Dehradun, Uttarakhand 248001
+                </p>
+                <a
+                  href="https://maps.app.goo.gl/i33gWViTrEYK4bXHA"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ display: "inline-flex", alignItems: "center", gap: "6px", color: "var(--green-deep)", fontSize: "13.5px", fontWeight: 600, marginTop: "8px", textDecoration: "none" }}
+                >
+                  <span className="material-symbols-rounded" style={{ fontSize: "17px" }}>map</span>
+                  View on Google Maps
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div className="dbs-card" style={{ padding: "clamp(22px,3vw,32px)" }}>
+            {submitted ? (
+              <div style={{ textAlign: "center", padding: "24px 8px" }}>
+                <span
+                  style={{
+                    display: "inline-flex", alignItems: "center", justifyContent: "center",
+                    width: "64px", height: "64px", borderRadius: "50%",
+                    background: "rgba(16,185,129,.14)", color: "var(--green-deep)", margin: "0 auto 18px",
+                  }}
+                >
+                  <span className="material-symbols-rounded" style={{ fontSize: "34px" }}>check_circle</span>
+                </span>
+                <h3 className="dbs-serif" style={{ fontSize: "24px" }}>Thank you</h3>
+                <p className="dbs-lead" style={{ marginTop: "10px" }}>
+                  Your partnership interest has been noted. The Devbhoomi AI Summit team will
+                  reach out shortly.
+                </p>
+                <button
+                  type="button"
+                  onClick={resetForm}
+                  style={{ marginTop: "18px", background: "none", border: "none", color: "var(--green-deep)", fontWeight: 600, fontSize: "14.5px", cursor: "pointer", fontFamily: "inherit" }}
+                >
+                  Submit another response
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: "7px" }}>
+                  <label style={{ fontSize: "13px", fontWeight: 600 }}>Full name</label>
+                  <input className="dbs-input" required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Your full name" />
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", gap: "7px" }}>
+                  <label style={{ fontSize: "13px", fontWeight: 600 }}>Organisation</label>
+                  <input className="dbs-input" value={form.org} onChange={(e) => setForm({ ...form, org: e.target.value })} placeholder="Your organisation" />
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", gap: "7px" }}>
+                  <label style={{ fontSize: "13px", fontWeight: 600 }}>Work email</label>
+                  <input className="dbs-input" type="email" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="you@organisation.com" />
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", gap: "7px" }}>
+                  <label style={{ fontSize: "13px", fontWeight: 600 }}>Phone number</label>
+                  <input className="dbs-input" type="tel" required value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} placeholder="+91 00000 00000" />
+                </div>
+
+                <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                  <label style={{ fontSize: "13px", fontWeight: 600 }}>Your role</label>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+                    {roleChips.map((c) => (
+                      <button key={c} type="button" onClick={() => setRole(role === c ? null : c)} className={role === c ? "dbs-chip active" : "dbs-chip"}>
+                        {c}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                  <label style={{ fontSize: "13px", fontWeight: 600 }}>Partnership tier of interest</label>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+                    {tierChips.map((c) => (
+                      <button key={c} type="button" onClick={() => setTier(tier === c ? null : c)} className={tier === c ? "dbs-chip active" : "dbs-chip"}>
+                        {c}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={sending}
+                  className="dbs-btn dbs-btn-primary dbs-btn-full"
+                  style={{ marginTop: "4px", opacity: sending ? 0.7 : 1, cursor: sending ? "not-allowed" : "pointer" }}
+                >
+                  <span className="material-symbols-rounded" style={{ fontSize: "18px" }}>send</span>
+                  {sending ? "Submitting..." : "Submit partnership request"}
+                </button>
+                {error && (
+                  <p style={{ fontSize: "12.5px", color: "#DC2626", textAlign: "center" }}>{error}</p>
+                )}
+                <p style={{ fontSize: "12px", color: "var(--text-muted)", textAlign: "center" }}>
+                  By submitting you agree to be contacted by the summit team regarding sponsorship.
+                </p>
+              </form>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* K. FOOTER */}
+      <footer className="dbs-dotgrid" style={{ background: "var(--band-tint)", borderTop: "1px solid var(--line)", position: "relative", overflow: "hidden" }}>
+        <Ribbons id="footer" style={{ opacity: 0.7 }} />
+        <div
+          className="dbs-wrap dbs-section"
+          style={{ position: "relative", zIndex: 1, display: "grid", gap: "clamp(32px,5vw,56px)", gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,300px),1fr))" }}
+        >
+          <div>
+            <p className="dbs-serif" style={{ fontSize: "24px", color: "var(--text-primary)" }}>Devbhoomi AI Summit 2026</p>
+            <p style={{ color: "var(--text-secondary)", fontSize: "14px", lineHeight: 1.65, marginTop: "14px", maxWidth: "420px" }}>
+              Building an AI-native Uttarakhand — transforming AI from a discussion topic into
+              a practical governance tool for the Himalayan state.
+            </p>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "12px", marginTop: "22px" }}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "56px", padding: "8px 16px", background: "#F4F8FC", border: "1px solid var(--glass-brd)", borderRadius: "12px" }}>
+                <img src="/images/itda.jpg" alt="ITDA, Government of Uttarakhand" style={{ maxHeight: "100%", maxWidth: "160px", objectFit: "contain" }} />
+              </div>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "56px", padding: "8px 16px", background: "#F4F8FC", border: "1px solid var(--glass-brd)", borderRadius: "12px" }}>
+                <img src="/images/uttarakhand_government.svg" alt="Government of Uttarakhand" style={{ maxHeight: "100%", maxWidth: "160px", objectFit: "contain" }} />
+              </div>
+            </div>
+          </div>
+
+          <div className="dbs-grid" style={{ gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,220px),1fr))" }}>
+            <div className="dbs-card" style={{ padding: "20px" }}>
+              <span className="dbs-eyebrow" style={{ color: "var(--blue)" }}>Speaking opportunity</span>
+              <p style={{ fontWeight: 700, color: "var(--text-primary)", fontSize: "16px", marginTop: "12px" }}>Neeraj Pandey</p>
+              <p style={{ display: "flex", alignItems: "center", gap: "8px", color: "var(--text-secondary)", fontSize: "13.5px", marginTop: "10px" }}>
+                <span className="material-symbols-rounded" style={{ fontSize: "17px", color: "var(--green)" }}>mail</span>
+                sponsorship@axocom.in
+              </p>
+              <p style={{ display: "flex", alignItems: "center", gap: "8px", color: "var(--text-secondary)", fontSize: "13.5px", marginTop: "6px" }}>
+                <span className="material-symbols-rounded" style={{ fontSize: "17px", color: "var(--green)" }}>call</span>
+                +91 89792 01974
+              </p>
+            </div>
+            <div className="dbs-card" style={{ padding: "20px" }}>
+              <span className="dbs-eyebrow" style={{ color: "var(--blue)" }}>Partnership opportunity</span>
+              <p style={{ fontWeight: 700, color: "var(--text-primary)", fontSize: "16px", marginTop: "12px" }}>Shruti Kotiyal</p>
+              <p style={{ display: "flex", alignItems: "center", gap: "8px", color: "var(--text-secondary)", fontSize: "13.5px", marginTop: "10px" }}>
+                <span className="material-symbols-rounded" style={{ fontSize: "17px", color: "var(--green)" }}>mail</span>
+                sponsorship@axocom.in
+              </p>
+              <p style={{ display: "flex", alignItems: "center", gap: "8px", color: "var(--text-secondary)", fontSize: "13.5px", marginTop: "6px" }}>
+                <span className="material-symbols-rounded" style={{ fontSize: "17px", color: "var(--green)" }}>call</span>
+                +91 63999 06916
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div style={{ borderTop: "1px solid var(--line)", position: "relative", zIndex: 1 }}>
+          <div
+            className="dbs-wrap"
+            style={{ display: "flex", flexWrap: "wrap", gap: "10px", justifyContent: "space-between", padding: "22px 24px", color: "var(--text-muted)", fontSize: "13px" }}
+          >
+            <span>October 9, 2026 · Hyatt Centric, Dehradun, Uttarakhand</span>
+            <span>An initiative of ITDA, Government of Uttarakhand</span>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
 };
 
 export default DevbhoomiAISummit;
