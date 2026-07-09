@@ -90,6 +90,19 @@ const attendees = [
   { icon: "campaign", label: "Media & civil society representatives" },
 ];
 
+const patrons = [
+  {
+    name: "Shri Pushkar Singh Dhami",
+    role: "Hon'ble Chief Minister, Uttarakhand",
+    image: "/images/cm_pushkar_singh_dhami.jpg",
+  },
+  {
+    name: "Lt Gen Gurmit Singh (Retd)",
+    role: "Hon'ble Governor, Uttarakhand",
+    image: "/images/governor_Gen_Gurmit_Singh.jpeg",
+  },
+];
+
 const speakers = [
   {
     name: "Shri Pradeep Batra",
@@ -548,8 +561,31 @@ const DevbhoomiAISummit: React.FC = () => {
           <div>
             <Eyebrow icon="flag">Overview</Eyebrow>
             <h2 className="dbs-serif dbs-h2">A leadership forum for the state's AI-led future.</h2>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "clamp(16px,3vw,32px)", marginTop: "clamp(24px,4vw,32px)" }}>
+              {patrons.map((p) => (
+                <div key={p.name} style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: "16px" }}>
+                  <img
+                    src={p.image}
+                    alt={p.name}
+                    style={{
+                      width: "clamp(120px,16vw,164px)",
+                      height: "clamp(120px,16vw,164px)",
+                      borderRadius: "50%",
+                      objectFit: "cover",
+                      objectPosition: "center top",
+                      border: "3px solid #fff",
+                      boxShadow: "0 0 0 1px var(--glass-brd), 0 18px 40px rgba(15,23,42,.14)",
+                    }}
+                  />
+                  <div>
+                    <p style={{ fontWeight: 700, fontSize: "clamp(15px,1.4vw,17px)" }}>{p.name}</p>
+                    <p style={{ color: "var(--text-muted)", fontSize: "13px", lineHeight: 1.45, marginTop: "5px" }}>{p.role}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
+          <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", gap: "18px" }}>
             <p className="dbs-lead">
               Devbhoomi AI Summit 2026 is Uttarakhand's flagship leadership forum on
               Artificial Intelligence, bringing together policymakers, industry leaders,
@@ -580,7 +616,7 @@ const DevbhoomiAISummit: React.FC = () => {
                   <img
                     src={sp.image}
                     alt={sp.name}
-                    style={{ width: "104px", height: "104px", borderRadius: "50%", objectFit: "cover", margin: "0 auto 16px", border: "1px solid var(--glass-brd)" }}
+                    style={{ width: "104px", height: "104px", borderRadius: "50%", objectFit: "cover", objectPosition: "center top", margin: "0 auto 16px", border: "1px solid var(--glass-brd)" }}
                   />
                 ) : (
                   <div className="dbs-ph" style={{ width: "104px", height: "104px", borderRadius: "50%", margin: "0 auto 16px", fontSize: "12px" }}>
