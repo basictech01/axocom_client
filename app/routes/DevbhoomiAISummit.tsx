@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import {
   buildSeoLinks,
   buildSeoMeta,
@@ -190,20 +190,6 @@ const DevbhoomiAISummit: React.FC = () => {
   const [sending, setSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [muted, setMuted] = useState(true);
-  const toggleMute = () => {
-    const v = videoRef.current;
-    if (!v) return;
-    const next = !v.muted;
-    v.muted = next;
-    if (!next) {
-      v.volume = 1;
-      void v.play().catch(() => {});
-    }
-    setMuted(next);
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!(form.name.trim() && form.email.trim()) || sending) return;
@@ -392,7 +378,7 @@ const DevbhoomiAISummit: React.FC = () => {
       />
 
       {/* B. HERO */}
-      <header id="top" style={{ position: "relative", overflow: "hidden" }}>
+      <header id="top" style={{ position: "relative", overflow: "hidden", minHeight: "80vh", display: "flex", flexDirection: "column", justifyContent: "center" }}>
         <div
           className="dbs-blob"
           style={{ width: "clamp(280px,40vw,520px)", height: "clamp(280px,40vw,520px)", background: "rgba(16,185,129,.14)", top: "20px", right: "-100px", animation: "dbsFloat 16s ease-in-out infinite" }}
@@ -438,74 +424,6 @@ const DevbhoomiAISummit: React.FC = () => {
               </span>
             </div>
 
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "12px", margin: "30px 0 0" }}>
-              <a href="#sponsor" className="dbs-btn dbs-btn-primary">
-                Request to Sponsor
-                <span className="material-symbols-rounded" style={{ fontSize: "18px" }}>arrow_forward</span>
-              </a>
-              <a href="#themes" className="dbs-btn dbs-btn-secondary">Explore the agenda</a>
-            </div>
-          </div>
-
-          <div style={{ position: "relative", width: "100%", maxWidth: "372px", margin: "0 auto" }}>
-            <div
-              style={{
-                position: "relative", aspectRatio: "9 / 16", borderRadius: "22px", overflow: "hidden",
-                border: "1px solid var(--glass-brd)", background: "#0F1E2E",
-                boxShadow: "0 34px 80px rgba(15,23,42,.18), inset 0 1px 0 rgba(255,255,255,.5)",
-              }}
-            >
-              <video
-                ref={videoRef}
-                src="/videos/ai_summit_reel.mp4"
-                poster="/images/summit2.png"
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="metadata"
-                aria-label="Devbhoomi AI Summit 2026 reel"
-                style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
-              />
-              <div
-                style={{
-                  position: "absolute", inset: 0, pointerEvents: "none",
-                  background: "linear-gradient(180deg, rgba(15,30,46,.10) 0%, transparent 24%, transparent 66%, rgba(15,30,46,.45) 100%)",
-                }}
-              />
-              <button
-                type="button"
-                onClick={toggleMute}
-                aria-label={muted ? "Unmute video" : "Mute video"}
-                aria-pressed={!muted}
-                style={{
-                  position: "absolute", top: "14px", right: "14px", zIndex: 3,
-                  display: "inline-flex", alignItems: "center", justifyContent: "center",
-                  width: "42px", height: "42px", borderRadius: "999px",
-                  background: "rgba(255,255,255,.85)", backdropFilter: "blur(6px)",
-                  WebkitBackdropFilter: "blur(6px)",
-                  border: "1px solid var(--glass-brd)", color: "var(--text-primary)",
-                  cursor: "pointer", boxShadow: "0 6px 18px rgba(15,23,42,.18)",
-                  transition: "transform .15s ease, background .15s ease",
-                }}
-              >
-                <span className="material-symbols-rounded" style={{ fontSize: "20px" }} aria-hidden="true">
-                  {muted ? "volume_off" : "volume_up"}
-                </span>
-              </button>
-              <span
-                style={{
-                  position: "absolute", left: "14px", bottom: "14px", zIndex: 2,
-                  display: "inline-flex", alignItems: "center", gap: "6px",
-                  background: "rgba(255,255,255,.85)", backdropFilter: "blur(6px)",
-                  border: "1px solid var(--glass-brd)", borderRadius: "999px",
-                  padding: "7px 13px", fontSize: "12.5px", fontWeight: 600, color: "var(--text-primary)",
-                }}
-              >
-                <span className="material-symbols-rounded" style={{ fontSize: "16px", color: "var(--green)" }}>play_circle</span>
-                Devbhoomi AI Summit 2026
-              </span>
-            </div>
           </div>
         </div>
       </header>
@@ -573,7 +491,6 @@ const DevbhoomiAISummit: React.FC = () => {
       <section id="speakers" className="dbs-section" style={{ background: "var(--band-b)" }}>
         <div className="dbs-wrap">
           <div style={{ maxWidth: "760px" }}>
-            <Eyebrow icon="mic">Summit Speakers</Eyebrow>
             <h2 className="dbs-serif dbs-h2">Summit Speakers</h2>
           </div>
 
@@ -627,8 +544,7 @@ const DevbhoomiAISummit: React.FC = () => {
       <section id="themes" className="dbs-section" style={{ background: "var(--band-a)" }}>
         <div className="dbs-wrap">
           <div style={{ maxWidth: "760px" }}>
-            <Eyebrow icon="hub">Discussion Topics</Eyebrow>
-            <h2 className="dbs-serif dbs-h2">What we will discuss</h2>
+            <h2 className="dbs-serif dbs-h2">Discussion Topics</h2>
           </div>
 
           <div className="dbs-grid-3" style={{ marginTop: "clamp(32px,5vw,48px)" }}>
@@ -651,7 +567,6 @@ const DevbhoomiAISummit: React.FC = () => {
       <section id="attend" className="dbs-section" style={{ background: "var(--band-b)" }}>
         <div className="dbs-wrap">
           <div style={{ maxWidth: "760px" }}>
-            <Eyebrow icon="groups">Who Should Attend</Eyebrow>
             <h2 className="dbs-serif dbs-h2">Who Should Attend</h2>
           </div>
 
@@ -668,6 +583,16 @@ const DevbhoomiAISummit: React.FC = () => {
         </div>
       </section>
 
+      {/* I. WHY THIS MATTERS */}
+      <section className="dbs-section" style={{ background: "var(--band-a)" }}>
+        <div className="dbs-wrap" style={{ maxWidth: "860px" }}>
+          <h2 className="dbs-serif dbs-h2">Why this matters</h2>
+          <p className="dbs-lead" style={{ marginTop: "22px" }}>
+            Uttarakhand is at a crucial inflection point where seasonal pilgrim movement, fragile terrain, urban expansion, and infrastructure pressure demand AI-native solutions rather than conventional fixes. The summit matters because it creates a platform to convert AI from a buzzword into a practical governance tool for safety, mobility, encroachment monitoring, and citizen services.
+          </p>
+        </div>
+      </section>
+
       {/* H. SPONSOR CONTACT */}
       <section id="sponsor" className="dbs-section" style={{ background: "var(--band-tint)", position: "relative", overflow: "hidden" }}>
         <div className="dbs-blob" style={{ width: "420px", height: "420px", background: "rgba(16,185,129,.12)", top: "-120px", right: "-80px", animation: "dbsFloat 18s ease-in-out infinite" }} />
@@ -677,8 +602,7 @@ const DevbhoomiAISummit: React.FC = () => {
           style={{ position: "relative", zIndex: 1, display: "grid", gap: "clamp(28px,5vw,56px)", gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,320px),1fr))", alignItems: "start" }}
         >
           <div>
-            <Eyebrow icon="edit_note">Sponsorship</Eyebrow>
-            <h2 className="dbs-serif dbs-h2">Interested in sponsoring?</h2>
+            <h2 className="dbs-serif dbs-h2">Sponsorship</h2>
             <p className="dbs-lead" style={{ marginTop: "18px" }}>
               Get in touch and the summit team will share the sponsorship details.
             </p>
