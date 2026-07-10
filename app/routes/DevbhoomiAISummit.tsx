@@ -569,12 +569,12 @@ const DevbhoomiAISummit: React.FC = () => {
         </div>
       </section>
 
-      {/* E. GOVERNMENT OFFICIALS */}
+      {/* E. SPEAKERS */}
       <section id="speakers" className="dbs-section" style={{ background: "var(--band-b)" }}>
         <div className="dbs-wrap">
           <div style={{ maxWidth: "760px" }}>
-            <Eyebrow icon="account_balance">Government Officials</Eyebrow>
-            <h2 className="dbs-serif dbs-h2">Distinguished government officials attending the summit</h2>
+            <Eyebrow icon="mic">Summit Speakers</Eyebrow>
+            <h2 className="dbs-serif dbs-h2">Summit Speakers</h2>
           </div>
 
           <div className="dbs-patrons-grid" style={{ marginTop: "clamp(32px,5vw,48px)" }}>
@@ -601,35 +601,24 @@ const DevbhoomiAISummit: React.FC = () => {
             ))}
           </div>
 
-          <div style={{ marginTop: "clamp(48px,6vw,64px)", borderTop: "1px solid var(--line)", paddingTop: "clamp(32px,5vw,48px)" }}>
-            <Eyebrow icon="record_voice_over">State leadership</Eyebrow>
-            <h3 className="dbs-serif dbs-h2">Leadership from the state's technology ecosystem</h3>
-
-            <div className="dbs-grid" style={{ marginTop: "clamp(32px,5vw,48px)" }}>
-              {speakers.map((sp) => (
-                <div key={sp.name} className="dbs-card" style={{ textAlign: "center" }}>
-                  {sp.image ? (
-                    <img
-                      src={sp.image}
-                      alt={sp.name}
-                      style={{ width: "104px", height: "104px", borderRadius: "50%", objectFit: "cover", objectPosition: "center top", margin: "0 auto 16px", border: "1px solid var(--glass-brd)" }}
-                    />
-                  ) : (
-                    <div className="dbs-ph" style={{ width: "104px", height: "104px", borderRadius: "50%", margin: "0 auto 16px", fontSize: "12px" }}>
-                      Photo
-                    </div>
-                  )}
-                  <p style={{ fontWeight: 700, fontSize: "16px" }}>{sp.name}</p>
-                  <p style={{ color: "var(--text-muted)", fontSize: "13.5px", lineHeight: 1.45, marginTop: "6px" }}>{sp.role}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div style={{ marginTop: "clamp(48px,6vw,64px)", borderTop: "1px solid var(--line)", paddingTop: "clamp(32px,5vw,48px)" }}>
-            <Eyebrow icon="mic">Summit Speakers</Eyebrow>
-            <h3 className="dbs-serif" style={{ fontSize: "clamp(22px,3vw,30px)", marginTop: "12px", color: "var(--text-secondary)" }}>Coming soon</h3>
-            <p style={{ color: "var(--text-muted)", fontSize: "15px", marginTop: "10px" }}>Speaker announcements will be published shortly. Stay tuned.</p>
+          <div className="dbs-grid" style={{ marginTop: "clamp(32px,5vw,48px)" }}>
+            {speakers.map((sp) => (
+              <div key={sp.name} className="dbs-card" style={{ textAlign: "center" }}>
+                {sp.image ? (
+                  <img
+                    src={sp.image}
+                    alt={sp.name}
+                    style={{ width: "104px", height: "104px", borderRadius: "50%", objectFit: "cover", objectPosition: "center top", margin: "0 auto 16px", border: "1px solid var(--glass-brd)" }}
+                  />
+                ) : (
+                  <div className="dbs-ph" style={{ width: "104px", height: "104px", borderRadius: "50%", margin: "0 auto 16px", fontSize: "12px" }}>
+                    Photo
+                  </div>
+                )}
+                <p style={{ fontWeight: 700, fontSize: "16px" }}>{sp.name}</p>
+                <p style={{ color: "var(--text-muted)", fontSize: "13.5px", lineHeight: 1.45, marginTop: "6px" }}>{sp.role}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
