@@ -55,14 +55,6 @@ const localBusinessSchema = {
   },
 };
 
-const stats = [
-  { icon: "forum", num: "10+", desc: "Topical sessions — keynotes, panels, fireside chats & case studies" },
-  { icon: "record_voice_over", num: "25+", desc: "Speakers from government, industry, technology & innovation" },
-  { icon: "groups", num: "150+", desc: "Delegates — CXOs, policymakers, IT leaders, startups, academia & media" },
-  { icon: "handshake", num: "6+", desc: "Hours of structured networking for stakeholder engagement" },
-  { icon: "flag_2", num: "4", desc: "AI Action Plans unveiled as the principal outcome of the summit" },
-];
-
 const themes = [
   { icon: "temple_hindu", title: "AI for Char Dham Yatra & pilgrim safety" },
   { icon: "traffic", title: "AI-driven traffic & mobility management" },
@@ -435,8 +427,7 @@ const DevbhoomiAISummit: React.FC = () => {
           style={{ display: "grid", gap: "clamp(28px,5vw,64px)", gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,300px),1fr))" }}
         >
           <div>
-            <Eyebrow icon="flag">About the Summit</Eyebrow>
-            <h2 className="dbs-serif dbs-h2">Uttarakhand's flagship AI event</h2>
+            <h2 className="dbs-serif dbs-h2">About the Summit</h2>
           </div>
           <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", gap: "18px" }}>
             <p className="dbs-lead">
@@ -449,40 +440,6 @@ const DevbhoomiAISummit: React.FC = () => {
               sustainable development, the summit is designed to move beyond conversations
               and deliver actionable AI roadmaps for the state's most pressing priorities.
             </p>
-          </div>
-        </div>
-      </section>
-
-      {/* D. EVENT HIGHLIGHTS */}
-      <section id="highlights" className="dbs-section dbs-dotgrid" style={{ background: "var(--band-tint)" }}>
-        <div className="dbs-wrap">
-          <div style={{ textAlign: "center", maxWidth: "760px", margin: "0 auto" }}>
-            <span className="dbs-eyebrow" style={{ color: "var(--blue)", justifyContent: "center" }}>
-              <span className="material-symbols-rounded">auto_awesome</span>
-              Event Highlights
-            </span>
-            <h2 className="dbs-serif dbs-h2">The Summit in Numbers</h2>
-          </div>
-
-          <div
-            style={{
-              marginTop: "clamp(36px,5vw,56px)",
-              display: "grid", gap: "0",
-              gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,200px),1fr))",
-              border: "1px solid var(--line)", borderRadius: "16px", overflow: "hidden",
-              background: "rgba(255,255,255,.6)", backdropFilter: "blur(12px)",
-              boxShadow: "inset 0 1px 0 rgba(255,255,255,.6), 0 24px 50px rgba(15,23,42,.08)",
-            }}
-          >
-            {stats.map((s) => (
-              <div key={s.desc} style={{ padding: "28px 24px", borderRight: "1px solid var(--line)", borderBottom: "1px solid var(--line)" }}>
-                <span className="material-symbols-rounded" style={{ fontSize: "28px", color: "var(--green)" }}>{s.icon}</span>
-                <div className="dbs-serif dbs-grad" style={{ fontWeight: 800, fontSize: "clamp(38px,5vw,56px)", lineHeight: 1, margin: "14px 0 10px" }}>
-                  {s.num}
-                </div>
-                <p style={{ color: "var(--text-secondary)", fontSize: "13.5px", lineHeight: 1.55 }}>{s.desc}</p>
-              </div>
-            ))}
           </div>
         </div>
       </section>
@@ -727,12 +684,18 @@ const DevbhoomiAISummit: React.FC = () => {
               a practical governance tool for the Himalayan state.
             </p>
             <div style={{ display: "flex", flexWrap: "wrap", gap: "12px", marginTop: "22px" }}>
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "56px", padding: "8px 16px", background: "#F4F8FC", border: "1px solid var(--glass-brd)", borderRadius: "12px" }}>
-                <img src="/images/itda.jpg" alt="ITDA, Government of Uttarakhand" style={{ maxHeight: "100%", maxWidth: "160px", objectFit: "contain" }} />
-              </div>
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "56px", padding: "8px 16px", background: "#F4F8FC", border: "1px solid var(--glass-brd)", borderRadius: "12px" }}>
-                <img src="/images/uttarakhand_government.svg" alt="Government of Uttarakhand" style={{ maxHeight: "100%", maxWidth: "160px", objectFit: "contain" }} />
-              </div>
+              <a href="https://it.uk.gov.in/" target="_blank" rel="noreferrer" style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "8px", minWidth: "180px", padding: "10px 16px", background: "#F4F8FC", border: "1px solid var(--glass-brd)", borderRadius: "12px", textDecoration: "none" }}>
+                <span style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "56px" }}>
+                  <img src="/images/itda.jpg" alt="ITDA, Government of Uttarakhand" style={{ maxHeight: "100%", maxWidth: "160px", objectFit: "contain" }} />
+                </span>
+                <span style={{ color: "var(--text-primary)", fontSize: "13px", fontWeight: 700, textAlign: "center" }}>ITDA</span>
+              </a>
+              <a href="https://uk.gov.in/" target="_blank" rel="noreferrer" style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "8px", minWidth: "180px", padding: "10px 16px", background: "#F4F8FC", border: "1px solid var(--glass-brd)", borderRadius: "12px", textDecoration: "none" }}>
+                <span style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "56px" }}>
+                  <img src="/images/uttarakhand_government.svg" alt="Government of Uttarakhand" style={{ maxHeight: "100%", maxWidth: "160px", objectFit: "contain" }} />
+                </span>
+                <span style={{ color: "var(--text-primary)", fontSize: "13px", fontWeight: 700, textAlign: "center" }}>Uttarakhand Government</span>
+              </a>
             </div>
           </div>
 
