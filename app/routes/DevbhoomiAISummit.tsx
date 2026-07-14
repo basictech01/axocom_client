@@ -102,7 +102,6 @@ const speakers = [
     role: "Director, ITDA",
     image: "/images/Alok-Kumar-Pandey.jpeg",
   },
-  { name: "Shri Ravi Shankar Singh", role: "CTO, ITDA", image: "/images/Ravi_Shankar.jpeg" },
   { name: "Shri Ashish Upadhyaya", role: "General Manager (AI)", image: "/images/ashish_upadhyay.jpg.jpeg" },
 ];
 
