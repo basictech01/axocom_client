@@ -234,7 +234,7 @@ const DevbhoomiAISummit: React.FC = () => {
           --text-primary:#0F1E2E; --text-secondary:#4A5A6E; --text-muted:#77869A;
           --glass:rgba(255,255,255,.72); --glass-2:rgba(255,255,255,.9); --glass-brd:rgba(15,23,42,.09);
           --line:rgba(15,23,42,.08);
-          font-family:'Geist',system-ui,-apple-system,sans-serif;
+          font-family:'Times New Roman',Times,serif;
           color:var(--text-primary); scroll-behavior:smooth; -webkit-font-smoothing:antialiased;
           background:
             radial-gradient(1100px 640px at 80% -6%, rgba(16,185,129,.10), transparent 60%),
@@ -245,7 +245,7 @@ const DevbhoomiAISummit: React.FC = () => {
         .dbs-root .material-symbols-rounded { font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24; line-height:1; }
         .dbs-wrap { max-width:1160px; margin:0 auto; padding:0 24px; }
         .dbs-section { padding:clamp(64px,8.5vw,116px) 0; position:relative; }
-        .dbs-serif { font-family:'Newsreader',Georgia,serif; font-weight:500; letter-spacing:-0.02em; }
+        .dbs-serif { font-family:'Times New Roman',Times,serif; font-weight:500; letter-spacing:-0.02em; }
         .dbs-eyebrow {
           display:inline-flex; align-items:center; gap:8px; color:var(--emerald-bright);
           text-transform:uppercase; letter-spacing:.18em; font-size:12px; font-weight:700;
