@@ -141,7 +141,7 @@ const speakers: SummitSpeaker[] = [
   },
   {
     name: "Manoj Kumar",
-    role: "Co-founder, MatterCodeAI",
+    role: "Co-founder, MatterCodeAI | IIT Kanpur",
     image: "/images/manoj_kumar.jpeg",
     linkedin: "https://www.linkedin.com/in/manojku/",
   },
@@ -167,6 +167,39 @@ const BrandIcon = ({ icon: Icon }: { icon: LucideIcon }) => (
     <Icon strokeWidth={1.8} />
   </span>
 );
+
+const SpeakerProfileLinks = ({ speaker }: { speaker: SummitSpeaker }) => {
+  if (!(speaker.linkedin || speaker.officialProfile)) return null;
+
+  return (
+    <div className="summit-speaker-profile-links">
+      {speaker.linkedin && (
+        <a
+          className="summit-speaker-link"
+          href={speaker.linkedin}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`${speaker.name} on LinkedIn`}
+          title={`${speaker.name} on LinkedIn`}
+        >
+          <img src="/images/linkedin.png" alt="" aria-hidden="true" />
+        </a>
+      )}
+      {speaker.officialProfile && (
+        <a
+          className="summit-speaker-link summit-official-profile-link"
+          href={speaker.officialProfile}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`${speaker.name} official government profile`}
+          title={`${speaker.name} official government profile`}
+        >
+          <img src="/images/Emblem_of_India.svg" alt="" aria-hidden="true" />
+        </a>
+      )}
+    </div>
+  );
+};
 
 const DevbhoomiAISummit: React.FC = () => {
   const [form, setForm] = useState({ name: "", org: "", email: "", phone: "" });
@@ -333,20 +366,27 @@ const DevbhoomiAISummit: React.FC = () => {
         }
         .summit-speaker-grid { position:relative; display:grid; grid-template-columns:repeat(5,1fr); gap:16px; margin-top:28px; }
         .summit-speaker { overflow:hidden; display:flex; flex-direction:column; }
-        .summit-speaker > img { width:100%; aspect-ratio:.92; display:block; object-fit:cover; object-position:center top; background:#eef7f7; }
+        .summit-speaker-photo { position:relative; }
+        .summit-speaker-photo > img { width:100%; aspect-ratio:.92; display:block; object-fit:cover; object-position:center top; background:#eef7f7; }
         .summit-speaker-info { padding:16px; flex:1; display:flex; flex-direction:column; align-items:flex-start; }
         .summit-speaker h3 { margin:0; font-size:13px; line-height:1.35; }
         .summit-speaker p { margin:7px 0 0; color:var(--muted); font-size:11px; line-height:1.45; }
-        .summit-patron img { aspect-ratio:1.08; }
+        .summit-patron .summit-speaker-photo > img { aspect-ratio:1.08; }
         .summit-patron .summit-speaker-info { padding:20px; }
         .summit-patron h3 { font-size:16px; }
         .summit-patron p { font-size:12px; }
+        .summit-speaker-profile-links {
+          position:absolute; right:9px; bottom:9px; display:flex; align-items:center; gap:6px;
+        }
         .summit-speaker-link {
-          width:30px; height:30px; margin-top:auto; padding-top:12px; box-sizing:content-box;
-          display:inline-flex; align-items:flex-end; justify-content:center;
-          border-radius:7px; transition:transform .2s ease;
+          width:22px; height:22px; padding:0; display:inline-flex; align-items:center; justify-content:center;
+          background:transparent; box-shadow:none; transition:transform .2s ease;
         }
         .summit-speaker-link:hover { transform:translateY(-2px); }
+        .summit-official-profile-link {
+          width:25px; height:25px; padding:3px; border-radius:6px;
+          background:rgba(255,255,255,.92); box-shadow:0 3px 10px rgba(17,17,17,.18);
+        }
         .summit-speaker-link img {
           width:100%; height:100%; display:block; object-fit:contain; border-radius:7px;
           filter:grayscale(1); opacity:.62; transition:opacity .2s ease;
@@ -606,34 +646,13 @@ const DevbhoomiAISummit: React.FC = () => {
           <div className="summit-patron-grid">
             {patrons.map((speaker) => (
               <article className="summit-card summit-speaker summit-patron" key={speaker.name}>
-                <img src={speaker.image} alt={speaker.name} />
+                <div className="summit-speaker-photo">
+                  <img src={speaker.image} alt={speaker.name} />
+                  <SpeakerProfileLinks speaker={speaker} />
+                </div>
                 <div className="summit-speaker-info">
                   <h3>{speaker.name}</h3>
                   <p>{speaker.role}</p>
-                  {speaker.linkedin && (
-                    <a
-                      className="summit-speaker-link"
-                      href={speaker.linkedin}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={`${speaker.name} on LinkedIn`}
-                      title={`${speaker.name} on LinkedIn`}
-                    >
-                      <img src="/images/linkedin.png" alt="" aria-hidden="true" />
-                    </a>
-                  )}
-                  {speaker.officialProfile && (
-                    <a
-                      className="summit-speaker-link summit-official-profile-link"
-                      href={speaker.officialProfile}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={`${speaker.name} official government profile`}
-                      title={`${speaker.name} official government profile`}
-                    >
-                      <img src="/images/Emblem_of_India.svg" alt="" aria-hidden="true" />
-                    </a>
-                  )}
                 </div>
               </article>
             ))}
@@ -641,34 +660,13 @@ const DevbhoomiAISummit: React.FC = () => {
           <div className="summit-speaker-grid">
             {speakers.map((speaker) => (
               <article className="summit-card summit-speaker" key={speaker.name}>
-                <img src={speaker.image} alt={speaker.name} />
+                <div className="summit-speaker-photo">
+                  <img src={speaker.image} alt={speaker.name} />
+                  <SpeakerProfileLinks speaker={speaker} />
+                </div>
                 <div className="summit-speaker-info">
                   <h3>{speaker.name}</h3>
                   <p>{speaker.role}</p>
-                  {speaker.linkedin && (
-                    <a
-                      className="summit-speaker-link"
-                      href={speaker.linkedin}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={`${speaker.name} on LinkedIn`}
-                      title={`${speaker.name} on LinkedIn`}
-                    >
-                      <img src="/images/linkedin.png" alt="" aria-hidden="true" />
-                    </a>
-                  )}
-                  {speaker.officialProfile && (
-                    <a
-                      className="summit-speaker-link summit-official-profile-link"
-                      href={speaker.officialProfile}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={`${speaker.name} official government profile`}
-                      title={`${speaker.name} official government profile`}
-                    >
-                      <img src="/images/Emblem_of_India.svg" alt="" aria-hidden="true" />
-                    </a>
-                  )}
                 </div>
               </article>
             ))}
