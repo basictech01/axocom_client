@@ -69,7 +69,7 @@ const Navbar: React.FC = () => {
                                     Devbhoomi AI Summit
                                 </Link>
                                 <Link
-                                    to="/UISHackathon"
+                                    to="/UKISHackathon"
                                     className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 hover:text-primary hover:bg-gray-50 transition-all"
                                 >
                                     <span className="material-symbols-outlined text-lg">lightbulb</span>
@@ -138,7 +138,7 @@ const Navbar: React.FC = () => {
                                 Devbhoomi AI Summit
                             </Link>
                             <Link
-                                to="/UISHackathon"
+                                to="/UKISHackathon"
                                 onClick={() => setIsMenuOpen(false)}
                                 className="text-lg text-gray-500 hover:text-primary transition-colors flex items-center gap-2"
                             >
