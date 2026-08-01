@@ -1,5 +1,25 @@
 import React, { useState } from "react";
 import {
+  Building2,
+  Bus,
+  CalendarDays,
+  CarFront,
+  Check,
+  Church,
+  Cpu,
+  GraduationCap,
+  Handshake,
+  Headphones,
+  Landmark,
+  MapPin,
+  Megaphone,
+  Mic,
+  Mountain,
+  Rocket,
+  Satellite,
+  type LucideIcon,
+} from "lucide-react";
+import {
   buildSeoLinks,
   buildSeoMeta,
   eventSchema,
@@ -13,7 +33,7 @@ const seo = {
   description:
     "Devbhoomi AI Summit 2026 - Uttarakhand's flagship leadership forum on Artificial Intelligence, on 9 October 2026 at Hyatt Centric, Dehradun. An initiative of ITDA, Government of Uttarakhand.",
   path: "/DevbhoomiAISummit",
-  image: "/images/summit2.png",
+  image: "/images/devbhoomi-ai/summit-logo.png",
   imageAlt: "Devbhoomi AI Summit 2026 - Building an AI-Native Uttarakhand",
   keywords: [
     "Devbhoomi AI Summit 2026",
@@ -35,7 +55,7 @@ export const links = () => [
   },
   {
     rel: "stylesheet",
-    href: "https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Geist:wght@400;500;600;700;800&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&display=swap",
+    href: "https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,500,0,0&display=swap",
   },
 ];
 
@@ -43,7 +63,6 @@ const localBusinessSchema = {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
   name: "Hyatt Centric Rajpur Road Dehradun",
-  image: "",
   telephone: "+91-135-614-1234",
   address: {
     "@type": "PostalAddress",
@@ -56,33 +75,43 @@ const localBusinessSchema = {
 };
 
 const themes = [
-  { icon: "temple_hindu", title: "AI for Char Dham Yatra & pilgrim safety" },
-  { icon: "traffic", title: "AI-driven traffic & mobility management" },
-  { icon: "satellite_alt", title: "AI-powered encroachment & illegal construction detection" },
-  { icon: "support_agent", title: "AI-enabled grievance redressal & citizen services" },
-  { icon: "account_balance", title: "AI in governance & public infrastructure" },
-  { icon: "landscape", title: "AI for sustainability & replicable Himalayan development models" },
+  { icon: Church, title: "Pilgrim Safety", copy: "AI for Char Dham Yatra and crowd management." },
+  { icon: CarFront, title: "Smart Mobility", copy: "Data-led traffic and transport management." },
+  { icon: Satellite, title: "Urban Intelligence", copy: "Encroachment and construction monitoring." },
+  { icon: Headphones, title: "Citizen Services", copy: "Faster, AI-enabled grievance redressal." },
+  { icon: Landmark, title: "Smart Governance", copy: "AI for resilient public infrastructure." },
+  { icon: Mountain, title: "Climate Tech", copy: "Sustainable Himalayan development models." },
 ];
 
 const attendees = [
-  { icon: "account_balance", label: "Government departments & policymakers" },
-  { icon: "developer_board", label: "CIOs, CTOs, CDOs & enterprise technology leaders" },
-  { icon: "luggage", label: "Tourism, transport & infrastructure stakeholders" },
-  { icon: "rocket_launch", label: "AI startups & solution providers" },
-  { icon: "school", label: "Academia & research institutions" },
-  { icon: "campaign", label: "Media & civil society representatives" },
+  { icon: Building2, label: "Government departments and policymakers" },
+  { icon: Cpu, label: "CIOs, CTOs, CDOs and technology leaders" },
+  { icon: Bus, label: "Tourism, transport and infrastructure leaders" },
+  { icon: Rocket, label: "AI startups and solution providers" },
+  { icon: GraduationCap, label: "Academia and research institutions" },
+  { icon: Megaphone, label: "Media and civil society representatives" },
 ];
 
-const patrons = [
+interface SummitSpeaker {
+  name: string;
+  role: string;
+  image: string;
+  linkedin?: string;
+  officialProfile?: string;
+}
+
+const patrons: SummitSpeaker[] = [
   {
     name: "Lt Gen (Retd) Gurmit Singh",
     role: "Hon'ble Governor, Uttarakhand",
     image: "/images/governor_Gen_Gurmit_Singh.jpeg",
+    linkedin: "https://www.linkedin.com/in/ltgengurmit/",
   },
   {
     name: "Shri Pushkar Singh Dhami",
     role: "Hon'ble Chief Minister, Uttarakhand",
     image: "/images/cm_pushkar_singh_dhami.jpg",
+    linkedin: "https://www.linkedin.com/in/pushkar-singh-dhami-986b66260/",
   },
   {
     name: "Shri Pradeep Batra",
@@ -91,18 +120,37 @@ const patrons = [
   },
 ];
 
-const speakers = [
+const speakers: SummitSpeaker[] = [
   {
-    name: "Shri Nitesh Jha",
-    role: "Honourable IT Secretary, Government of Uttarakhand",
-    image: "/images/summitDeligate/shri_nitesh_kumar_jha_ias_secretary_information_technology_govt_uttarakhand.jpg",
+    name: "Dr. Pankaj Kumar Pandey",
+    role: "IT Secretary, Government of Uttarakhand",
+    image: "/images/pankaj_kumar_pandey.jpeg",
+    officialProfile: "https://sad.uk.gov.in/dr-pankaj-kumar-pandey/",
   },
   {
     name: "Shri Alok Pandey",
     role: "Director, ITDA",
     image: "/images/Alok-Kumar-Pandey.jpeg",
+    officialProfile: "https://sad.uk.gov.in/alok-kumar-pandey/",
   },
-  { name: "Shri Ashish Upadhyaya", role: "General Manager (AI)", image: "/images/ashish_upadhyay.jpg.jpeg" },
+  {
+    name: "Shri Ashish Upadhyaya",
+    role: "General Manager (AI)",
+    image: "/images/ashish_upadhyay.jpg.jpeg",
+    linkedin: "https://www.linkedin.com/in/ashishiitk22/",
+  },
+  {
+    name: "Manoj Kumar",
+    role: "Co-founder, MatterCodeAI",
+    image: "/images/manoj_kumar.jpeg",
+    linkedin: "https://www.linkedin.com/in/manojku/",
+  },
+  {
+    name: "Umesh Joshi",
+    role: "Co-founder, Calibr.AI | CPTO, MindSpark | Co-founder, Hush | IIT Kanpur",
+    image: "/images/umesh_joshi.jpeg",
+    linkedin: "https://www.linkedin.com/in/umeshjoshi/",
+  },
 ];
 
 const roleChips = [
@@ -114,64 +162,10 @@ const roleChips = [
   "Media / Civil society",
 ];
 
-const Eyebrow = ({ icon, children }: { icon: string; children: React.ReactNode }) => (
-  <span className="dbs-eyebrow">
-    <span className="material-symbols-rounded">{icon}</span>
-    {children}
+const BrandIcon = ({ icon: Icon }: { icon: LucideIcon }) => (
+  <span className="summit-icon" aria-hidden="true">
+    <Icon strokeWidth={1.8} />
   </span>
-);
-
-const Ribbons = ({
-  id,
-  className = "",
-  style,
-}: {
-  id: string;
-  className?: string;
-  style?: React.CSSProperties;
-}) => (
-  <svg
-    className={`dbs-ribbons ${className}`}
-    style={style}
-    viewBox="0 0 1440 520"
-    preserveAspectRatio="none"
-    aria-hidden="true"
-    focusable="false"
-  >
-    <defs>
-      <linearGradient id={`${id}-stroke`} x1="0" y1="0" x2="1" y2="0">
-        <stop offset="0" stopColor="#34D399" />
-        <stop offset="0.5" stopColor="#10B981" />
-        <stop offset="1" stopColor="#38BDF8" />
-      </linearGradient>
-      <linearGradient id={`${id}-stroke2`} x1="0" y1="0" x2="1" y2="0">
-        <stop offset="0" stopColor="#38BDF8" />
-        <stop offset="1" stopColor="#3B82F6" />
-      </linearGradient>
-      <linearGradient id={`${id}-em`} x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stopColor="#10B981" stopOpacity="0.24" />
-        <stop offset="1" stopColor="#10B981" stopOpacity="0" />
-      </linearGradient>
-      <linearGradient id={`${id}-blue`} x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stopColor="#38BDF8" stopOpacity="0.20" />
-        <stop offset="1" stopColor="#38BDF8" stopOpacity="0" />
-      </linearGradient>
-      <linearGradient id={`${id}-front`} x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stopColor="#10B981" stopOpacity="0.30" />
-        <stop offset="1" stopColor="#10B981" stopOpacity="0" />
-      </linearGradient>
-    </defs>
-
-    {/* Filled ridges — mountain silhouettes that double as stacked data bands */}
-    <path d="M0,300 C220,250 380,332 620,300 C880,266 1060,342 1300,296 C1372,284 1416,300 1440,296 L1440,520 L0,520 Z" fill={`url(#${id}-blue)`} />
-    <path d="M0,378 C240,330 430,432 720,372 C1010,312 1200,422 1440,366 L1440,520 L0,520 Z" fill={`url(#${id}-em)`} />
-    <path d="M0,440 C260,400 470,492 780,432 C1090,372 1250,470 1440,428 L1440,520 L0,520 Z" fill={`url(#${id}-front)`} />
-
-    {/* Glowing ridge lines — digital data waves tracing the ridge crests */}
-    <path className="dbs-ribbon-line dbs-ribbon-a" d="M0,300 C220,250 380,332 620,300 C880,266 1060,342 1300,296 C1372,284 1416,300 1440,296" stroke={`url(#${id}-stroke)`} strokeWidth="2" opacity="0.9" />
-    <path className="dbs-ribbon-line dbs-ribbon-b" d="M0,378 C240,330 430,432 720,372 C1010,312 1200,422 1440,366" stroke={`url(#${id}-stroke2)`} strokeWidth="1.5" opacity="0.7" />
-    <path className="dbs-ribbon-line dbs-ribbon-a" d="M-40,232 C240,196 430,270 720,226 C1010,182 1220,258 1480,214" stroke={`url(#${id}-stroke)`} strokeWidth="1.25" opacity="0.5" />
-  </svg>
 );
 
 const DevbhoomiAISummit: React.FC = () => {
@@ -181,14 +175,14 @@ const DevbhoomiAISummit: React.FC = () => {
   const [sending, setSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
     if (!(form.name.trim() && form.email.trim()) || sending) return;
 
     setSending(true);
     setError(null);
     try {
-      const res = await fetch("https://formsubmit.co/ajax/sponsorship@axocom.in", {
+      const response = await fetch("https://formsubmit.co/ajax/sponsorship@axocom.in", {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify({
@@ -201,7 +195,7 @@ const DevbhoomiAISummit: React.FC = () => {
           _template: "table",
         }),
       });
-      if (!res.ok) throw new Error("Request failed");
+      if (!response.ok) throw new Error("Request failed");
       setSubmitted(true);
     } catch {
       setError("Something went wrong. Please email sponsorship@axocom.in directly.");
@@ -218,131 +212,290 @@ const DevbhoomiAISummit: React.FC = () => {
   };
 
   return (
-    <div className="dbs-root">
+    <div className="summit-page">
       <style>{`
-        .dbs-root {
-          /* Light eco-futurism: snow-white base · deep slate gray type · emerald green · electric blue */
-          --emerald:#10B981; --emerald-bright:#059669; --emerald-deep:#047857;
-          --green:#10B981; --green-deep:#059669; --mint:#059669;
-          --sky:#0EA5E9; --blue:#2563EB; --electric:#0EA5E9; --gold:#B45309;
-          --grey-100:#EEF2F1; --grey-300:#D6DEE0; --grey-500:#5B6B72;
-          --band-a:radial-gradient(900px 480px at 82% 0%, rgba(14,165,233,.05), transparent 60%), #FFFFFF;
-          --band-b:radial-gradient(900px 480px at 18% 0%, rgba(16,185,129,.06), transparent 60%), #F5FAF8;
-          --band-tint:radial-gradient(rgba(15,23,42,.05) 1px, transparent 1px) 0 0 / 22px 22px,
-            radial-gradient(1100px 520px at 50% -10%, rgba(16,185,129,.12), transparent 60%),
-            linear-gradient(180deg,#F2FAF7,#EDF6FB);
-          --text-primary:#0F1E2E; --text-secondary:#4A5A6E; --text-muted:#77869A;
-          --glass:rgba(255,255,255,.72); --glass-2:rgba(255,255,255,.9); --glass-brd:rgba(15,23,42,.09);
-          --line:rgba(15,23,42,.08);
-          font-family:'Times New Roman',Times,serif;
-          color:var(--text-primary); scroll-behavior:smooth; -webkit-font-smoothing:antialiased;
+        html { scroll-behavior:smooth; scroll-padding-top:96px; }
+        .summit-page {
+          --green:#B7D933;
+          --green-2:#67C85A;
+          --teal:#17B6B8;
+          --cyan:#00B8D4;
+          --blue:#2D7DBB;
+          --deep-blue:#2C4F96;
+          --ink:#111111;
+          --muted:#6F6F73;
+          --line:#D9D9D9;
+          --gradient:linear-gradient(135deg,#B7D933 0%,#67C85A 25%,#17B6B8 52%,#2D7DBB 78%,#2C4F96 100%);
+          min-height:100vh;
+          overflow:hidden;
+          color:var(--ink);
+          background:#fff;
+          font-family:"Montserrat",sans-serif;
+          font-size:16px;
+          scroll-behavior:smooth;
+        }
+        .summit-page * { box-sizing:border-box; }
+        .summit-page [id] { scroll-margin-top:96px; }
+        .summit-page a { color:inherit; text-decoration:none; }
+        .summit-page button, .summit-page input { font:inherit; }
+        .summit-shell { width:min(1180px,calc(100% - 48px)); margin:0 auto; }
+        .summit-section { padding:96px 0; position:relative; }
+        .summit-kicker { color:#128F9D; font-size:12px; font-weight:800; letter-spacing:.14em; text-transform:uppercase; }
+        .summit-title { margin:12px 0 0; font-size:clamp(32px,4vw,48px); line-height:1.12; font-weight:800; letter-spacing:-.035em; }
+        .summit-title span, .summit-gradient-text {
+          background:var(--gradient); color:transparent; background-clip:text; -webkit-background-clip:text;
+        }
+        .summit-copy { color:var(--muted); font-size:16px; line-height:1.75; }
+        .summit-btn {
+          min-height:48px; padding:0 24px; border-radius:8px; border:1px solid transparent;
+          display:inline-flex; align-items:center; justify-content:center; gap:10px;
+          font-weight:700; font-size:14px; cursor:pointer; transition:.2s ease;
+        }
+        .summit-btn:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(44,79,150,.18); }
+        .summit-btn-primary {
+          color:#fff!important; background:var(--gradient); border:0; outline:0;
+          box-shadow:none;
+        }
+        .summit-btn-primary:focus, .summit-btn-primary:focus-visible { outline:0; box-shadow:none; }
+        .summit-btn-outline { border-color:var(--teal); color:#127F88!important; background:#fff; }
+        .summit-card {
+          background:rgba(255,255,255,.94); border:1px solid rgba(217,217,217,.7); border-radius:16px;
+          box-shadow:0 8px 24px rgba(0,0,0,.08);
+        }
+        .summit-nav {
+          position:sticky; top:0; z-index:50; background:rgba(255,255,255,.92);
+          border-bottom:1px solid rgba(217,217,217,.65); backdrop-filter:blur(18px);
+        }
+        .summit-nav-inner { height:86px; display:flex; align-items:center; justify-content:space-between; gap:24px; }
+        .summit-nav-logo { width:190px; height:70px; object-fit:contain; object-position:left center; }
+        .summit-nav-links { display:flex; align-items:center; gap:28px; color:#333; font-size:13px; font-weight:600; }
+        .summit-nav-links a { position:relative; }
+        .summit-nav-links a:not(.summit-btn)::after {
+          content:""; position:absolute; left:0; right:100%; bottom:-8px; height:2px; background:var(--gradient); transition:.2s ease;
+        }
+        .summit-nav-links a:hover::after { right:0; }
+        .summit-hero {
+          min-height:clamp(560px,36.35vw,727px); position:relative; display:flex; align-items:center;
           background:
-            radial-gradient(1100px 640px at 80% -6%, rgba(16,185,129,.10), transparent 60%),
-            radial-gradient(980px 620px at 12% 4%, rgba(14,165,233,.09), transparent 62%),
-            radial-gradient(1200px 820px at 50% 110%, rgba(37,99,235,.07), transparent 60%),
-            linear-gradient(180deg, #FFFFFF 0%, #F5FAF8 48%, #EFF6FB 100%);
+            linear-gradient(90deg,rgba(255,255,255,.98) 0%,rgba(255,255,255,.91) 34%,rgba(255,255,255,.34) 62%,rgba(255,255,255,.06) 100%),
+            url("/images/devbhoomi-ai/background_image.png");
+          background-color:#fff;
+          background-position:center,center top;
+          background-repeat:no-repeat;
+          background-size:cover,contain;
         }
-        .dbs-root .material-symbols-rounded { font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24; line-height:1; }
-        .dbs-wrap { max-width:1160px; margin:0 auto; padding:0 24px; }
-        .dbs-section { padding:clamp(64px,8.5vw,116px) 0; position:relative; }
-        .dbs-serif { font-family:'Times New Roman',Times,serif; font-weight:500; letter-spacing:-0.02em; }
-        .dbs-eyebrow {
-          display:inline-flex; align-items:center; gap:8px; color:var(--emerald-bright);
-          text-transform:uppercase; letter-spacing:.18em; font-size:12px; font-weight:700;
+        .summit-hero::after {
+          content:""; position:absolute; inset:0;
+          background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,0) 68%,rgba(255,255,255,.3));
+          pointer-events:none;
         }
-        .dbs-eyebrow .material-symbols-rounded { font-size:15px; }
-        .dbs-h2 { font-size:clamp(27px,3.5vw,44px); line-height:1.1; margin-top:14px; color:var(--text-primary); }
-        .dbs-grad {
-          background:linear-gradient(115deg,#059669 0%,#10B981 40%,#2563EB 100%);
-          -webkit-background-clip:text; background-clip:text; color:transparent;
+        .summit-hero-grid {
+          position:relative; z-index:2; display:grid; grid-template-columns:minmax(0,650px); align-items:center;
+          padding:72px 0 110px;
         }
-        .dbs-lead { color:var(--text-secondary); font-size:clamp(15px,1.3vw,17px); line-height:1.72; }
-        .dbs-iconwell {
-          width:48px; height:48px; border-radius:13px; flex:0 0 auto;
-          background:linear-gradient(150deg,rgba(16,185,129,.16),rgba(14,165,233,.13));
-          border:1px solid var(--glass-brd); color:var(--emerald-bright);
-          display:flex; align-items:center; justify-content:center;
-          box-shadow:inset 0 1px 0 rgba(255,255,255,.6), 0 8px 18px rgba(16,185,129,.12);
+        .summit-hero h1 { margin:0; font-size:clamp(48px,6.4vw,76px); line-height:.98; font-weight:800; letter-spacing:-.055em; }
+        .summit-hero h1 .line { display:block; }
+        .summit-hero h1 .summit-name { color:#168D9D; }
+        .summit-hero h1 .year { color:#87B82D; }
+        .summit-hero-subtitle { margin:18px 0 0; font-size:clamp(20px,2vw,28px); line-height:1.25; font-weight:500; }
+        .summit-hero-copy { max-width:650px; margin:20px 0 0; color:var(--muted); line-height:1.7; font-size:16px; }
+        .summit-audience {
+          width:max-content; max-width:100%; margin:14px 0 0; font-weight:700; font-size:14px; line-height:1.6;
+          background:var(--gradient); color:transparent; background-clip:text; -webkit-background-clip:text;
         }
-        .dbs-iconwell .material-symbols-rounded { font-size:26px; }
-        .dbs-btn {
-          display:inline-flex; align-items:center; justify-content:center; gap:8px;
-          border-radius:12px; padding:14px 22px; font-weight:600; font-size:15px;
-          cursor:pointer; text-decoration:none; border:1px solid transparent; min-height:44px;
-          transition:transform .15s ease,filter .15s ease,background .15s ease,border-color .15s ease;
+        .summit-actions { margin-top:30px; display:flex; flex-wrap:wrap; gap:14px; }
+        .summit-event-meta { margin-top:26px; display:flex; flex-wrap:wrap; gap:18px; color:#444; font-size:13px; font-weight:600; }
+        .summit-event-meta span { display:flex; align-items:center; gap:8px; }
+        .summit-event-meta .material-symbols-rounded { color:var(--teal); font-size:19px; }
+        .summit-about-grid { display:grid; grid-template-columns:.8fr 1.2fr; gap:72px; align-items:start; }
+        .summit-checks { display:grid; grid-template-columns:repeat(2,1fr); gap:10px 24px; margin:26px 0 0; }
+        .summit-check { display:flex; align-items:center; gap:9px; font-size:13px; font-weight:600; color:#333; }
+        .summit-check .material-symbols-rounded { color:#8CB927; font-size:18px; }
+        .summit-focus-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+        .summit-focus-card { min-height:180px; padding:24px; transition:.2s ease; }
+        .summit-focus-card:hover { transform:translateY(-5px); box-shadow:0 16px 40px rgba(0,0,0,.12); }
+        .summit-icon {
+          width:54px; height:54px; display:grid; place-items:center; border-radius:16px;
+          color:#178EA6; background:linear-gradient(135deg,rgba(23,182,184,.15),rgba(45,125,187,.1));
+          border:1px solid rgba(23,182,184,.2); box-shadow:0 8px 18px rgba(23,182,184,.1);
         }
-        .dbs-btn-primary {
-          background:linear-gradient(115deg,#10B981,#2563EB); color:#fff; font-weight:700;
-          box-shadow:0 12px 28px rgba(16,185,129,.28), inset 0 1px 0 rgba(255,255,255,.25);
+        .summit-icon svg { width:34px; height:34px; }
+        .summit-focus-card h3 { margin:18px 0 0; font-size:15px; font-weight:700; }
+        .summit-focus-card p { margin:8px 0 0; color:var(--muted); font-size:12px; line-height:1.55; }
+        .summit-pattern-section { background:#fbfdfd; overflow:hidden; }
+        .summit-pattern-section::before {
+          content:""; position:absolute; inset:0; background:url("/images/devbhoomi-ai/summit-landscape.png") center/cover no-repeat;
+          opacity:.055; pointer-events:none;
         }
-        .dbs-btn-primary:hover { transform:translateY(-1px); filter:brightness(1.05); }
-        .dbs-btn-secondary { background:var(--glass-2); color:var(--text-primary); border-color:var(--glass-brd); backdrop-filter:blur(8px); }
-        .dbs-btn-secondary:hover { border-color:var(--emerald); color:var(--emerald-bright); }
-        .dbs-btn-full { width:100%; }
-        .dbs-card {
-          background:var(--glass); border:1px solid var(--glass-brd); border-radius:18px;
-          padding:24px; backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
-          box-shadow:inset 0 1px 0 rgba(255,255,255,.6), 0 1px 2px rgba(15,23,42,.05), 0 20px 44px rgba(15,23,42,.07);
-          transition:border-color .2s ease, transform .2s ease, box-shadow .2s ease, background .2s ease;
+        .summit-patron-grid {
+          position:relative; display:grid; grid-template-columns:repeat(3,minmax(0,280px));
+          justify-content:center; gap:24px; margin-top:40px;
         }
-        .dbs-card:hover { border-color:rgba(5,150,105,.4); transform:translateY(-2px); box-shadow:inset 0 1px 0 rgba(255,255,255,.6), 0 26px 52px rgba(15,23,42,.11); background:var(--glass-2); }
-        .dbs-grid { display:grid; gap:16px; grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr)); }
-        .dbs-grid-3 { display:grid; gap:16px; grid-template-columns:repeat(3,minmax(0,1fr)); }
-        @media (max-width:900px){ .dbs-grid-3{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
-        @media (max-width:580px){ .dbs-grid-3{ grid-template-columns:1fr; } }
-        .dbs-patrons-grid {
-          display: flex;
-          flex-wrap: wrap;
-          flex-direction: row;
-          justify-content: center;
-          gap: clamp(16px, 3vw, 32px);
-          margin-top: clamp(24px, 4vw, 32px);
+        .summit-speaker-grid { position:relative; display:grid; grid-template-columns:repeat(5,1fr); gap:16px; margin-top:28px; }
+        .summit-speaker { overflow:hidden; display:flex; flex-direction:column; }
+        .summit-speaker > img { width:100%; aspect-ratio:.92; display:block; object-fit:cover; object-position:center top; background:#eef7f7; }
+        .summit-speaker-info { padding:16px; flex:1; display:flex; flex-direction:column; align-items:flex-start; }
+        .summit-speaker h3 { margin:0; font-size:13px; line-height:1.35; }
+        .summit-speaker p { margin:7px 0 0; color:var(--muted); font-size:11px; line-height:1.45; }
+        .summit-patron img { aspect-ratio:1.08; }
+        .summit-patron .summit-speaker-info { padding:20px; }
+        .summit-patron h3 { font-size:16px; }
+        .summit-patron p { font-size:12px; }
+        .summit-speaker-link {
+          width:30px; height:30px; margin-top:auto; padding-top:12px; box-sizing:content-box;
+          display:inline-flex; align-items:flex-end; justify-content:center;
+          border-radius:7px; transition:transform .2s ease;
         }
-        .dbs-patrons-grid > * {
-          flex: 1 1 140px;
-          max-width: 200px;
+        .summit-speaker-link:hover { transform:translateY(-2px); }
+        .summit-speaker-link img {
+          width:100%; height:100%; display:block; object-fit:contain; border-radius:7px;
+          filter:grayscale(1); opacity:.62; transition:opacity .2s ease;
         }
-        .dbs-dotgrid {
-          background-image:radial-gradient(rgba(15,23,42,.06) 1px,transparent 1px);
-          background-size:22px 22px;
+        .summit-speaker-link:hover img { opacity:.88; }
+        .summit-attendee-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+        .summit-attendee { display:flex; align-items:center; gap:18px; padding:22px; min-height:108px; }
+        .summit-attendee .summit-icon { width:64px; height:64px; border-radius:16px; flex:0 0 auto; }
+        .summit-attendee .summit-icon svg { width:42px; height:42px; }
+        .summit-attendee span:last-child { font-size:13px; line-height:1.5; font-weight:600; }
+        .summit-why {
+          background:linear-gradient(135deg,rgba(183,217,51,.09),rgba(23,182,184,.08),rgba(44,79,150,.08));
         }
-        .dbs-root a { color:var(--blue); text-decoration:none; }
-        .dbs-root a:hover { color:var(--emerald-bright); }
-        .dbs-root a.dbs-btn-primary, .dbs-root a.dbs-btn-primary:hover { color:#fff; }
-        .dbs-root a.dbs-btn-secondary, .dbs-root a.dbs-btn-secondary:hover { color:var(--text-primary); }
-        .dbs-blob { position:absolute; border-radius:50%; filter:blur(90px); z-index:0; pointer-events:none; }
-        @keyframes dbsFloat {
-          0% { transform:translate3d(0,0,0) scale(1); }
-          50% { transform:translate3d(26px,-20px,0) scale(1.14); }
-          100% { transform:translate3d(0,0,0) scale(1); }
+        .summit-why-grid { display:grid; grid-template-columns:.72fr 1.28fr; gap:72px; align-items:center; }
+        .summit-why-copy {
+          padding:32px; border-left:4px solid var(--teal); border-radius:0 16px 16px 0;
+          background:rgba(255,255,255,.8); box-shadow:0 8px 24px rgba(0,0,0,.06);
         }
-        .dbs-ribbons { position:absolute; left:0; right:0; bottom:0; width:100%; height:clamp(280px,42vw,520px); z-index:0; pointer-events:none; }
-        .dbs-ribbon-line { fill:none; stroke-linecap:round; filter:drop-shadow(0 0 7px rgba(14,165,233,.35)); }
-        .dbs-ribbon-a { animation:dbsDriftA 22s ease-in-out infinite; }
-        .dbs-ribbon-b { animation:dbsDriftB 28s ease-in-out infinite; }
-        @keyframes dbsDriftA { 0%,100%{ transform:translate3d(0,0,0);} 50%{ transform:translate3d(-24px,-6px,0);} }
-        @keyframes dbsDriftB { 0%,100%{ transform:translate3d(0,0,0);} 50%{ transform:translate3d(20px,-10px,0);} }
-        .dbs-input {
-          width:100%; padding:13px 15px; border-radius:12px; border:1px solid var(--glass-brd);
-          background:#fff; font-family:inherit; font-size:15px; color:var(--text-primary);
-          outline:none; transition:border-color .15s ease,box-shadow .15s ease,background .15s ease;
+        .summit-sponsor { background:linear-gradient(135deg,#f7fce8 0%,#effbfa 52%,#eef6fc 100%); }
+        .summit-sponsor-grid { display:grid; grid-template-columns:.8fr 1.2fr; gap:64px; align-items:start; }
+        .summit-contact-card { margin-top:28px; padding:22px; display:flex; gap:15px; align-items:flex-start; }
+        .summit-contact-card + .summit-contact-card { margin-top:12px; }
+        .summit-contact-card h3 { margin:0; font-size:14px; }
+        .summit-contact-card p { margin:6px 0 0; color:var(--muted); font-size:12px; line-height:1.55; }
+        .summit-form { padding:34px; }
+        .summit-form-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+        .summit-field { display:flex; flex-direction:column; gap:8px; }
+        .summit-field label { font-size:12px; font-weight:700; }
+        .summit-field input {
+          width:100%; min-height:48px; padding:0 15px; border:1px solid #d9d9d9; border-radius:8px; color:var(--ink); background:#fff; outline:0;
         }
-        .dbs-input::placeholder { color:var(--text-muted); }
-        .dbs-input:focus { border-color:var(--emerald); box-shadow:0 0 0 3px rgba(16,185,129,.16); background:#fff; }
-        .dbs-chip {
-          border:1px solid var(--glass-brd); background:#fff; color:var(--text-secondary);
-          border-radius:999px; padding:9px 16px; font-size:13.5px; font-weight:500; cursor:pointer;
-          min-height:40px; transition:all .15s ease; font-family:inherit;
+        .summit-field input:focus { border-color:var(--teal); box-shadow:0 0 0 3px rgba(23,182,184,.12); }
+        .summit-role { grid-column:1/-1; }
+        .summit-chips { display:flex; flex-wrap:wrap; gap:8px; }
+        .summit-chip { padding:9px 13px; border:1px solid #d9d9d9; border-radius:999px; background:#fff; color:var(--muted); font-size:11px; cursor:pointer; }
+        .summit-chip.active { color:#fff; border-color:transparent; background:var(--gradient); }
+        .summit-form-submit { grid-column:1/-1; width:100%; }
+        .summit-error { grid-column:1/-1; margin:0; color:#c62828; text-align:center; font-size:12px; }
+        .summit-success { padding:30px 10px; text-align:center; }
+        .summit-success .summit-icon { margin:0 auto; }
+        .summit-success h3 { margin:20px 0 0; font-size:28px; }
+        .summit-success p { max-width:480px; margin:12px auto 22px; }
+        .summit-opportunities {
+          padding:72px 0; position:relative; overflow:hidden;
+          background:
+            radial-gradient(rgba(45,125,187,.12) 1px,transparent 1px) 0 0/24px 24px,
+            linear-gradient(180deg,#f4fbf9,#eaf8fb);
         }
-        .dbs-chip:hover { border-color:rgba(5,150,105,.5); color:var(--text-primary); }
-        .dbs-chip.active { background:linear-gradient(115deg,#10B981,#2563EB); border-color:transparent; color:#fff; font-weight:700; }
-        .dbs-ph {
-          border:1.5px dashed var(--glass-brd); border-radius:16px; display:flex;
-          align-items:center; justify-content:center; text-align:center; color:var(--text-muted);
-          font-size:13px; padding:16px; background:rgba(15,23,42,.02);
+        .summit-opportunities::after {
+          content:""; position:absolute; inset:auto 0 -20% 0; height:70%;
+          background:url("/images/devbhoomi-ai/summit-landscape.png") center/cover no-repeat;
+          opacity:.08; pointer-events:none;
         }
-        @media (prefers-reduced-motion: reduce){
-          .dbs-blob, .dbs-ribbon-a, .dbs-ribbon-b { animation:none !important; }
+        .summit-opportunity-grid { position:relative; z-index:1; display:grid; grid-template-columns:1fr 1fr; gap:28px; }
+        .summit-opportunity-card {
+          min-height:260px; padding:32px; position:relative; overflow:hidden;
+          border-color:rgba(23,182,184,.18); box-shadow:0 16px 40px rgba(44,79,150,.1);
+          transition:transform .2s ease,box-shadow .2s ease;
+        }
+        .summit-opportunity-card:hover { transform:translateY(-4px); box-shadow:0 22px 48px rgba(44,79,150,.15); }
+        .summit-opportunity-card::before {
+          content:""; position:absolute; inset:0 0 auto; height:5px;
+          background:linear-gradient(90deg,#17B6B8,#2D7DBB);
+        }
+        .summit-opportunity-card::after {
+          content:""; position:absolute; width:180px; height:180px; border-radius:50%;
+          top:-95px; right:-65px; background:linear-gradient(135deg,rgba(183,217,51,.14),rgba(23,182,184,.08));
+        }
+        .summit-opportunity-head { position:relative; z-index:1; display:flex; align-items:center; gap:16px; }
+        .summit-opportunity-icon {
+          width:54px; height:54px; flex:0 0 auto; border-radius:14px; display:grid; place-items:center;
+          color:#178EA6; background:linear-gradient(135deg,rgba(23,182,184,.16),rgba(45,125,187,.11));
+          border:1px solid rgba(23,182,184,.2); box-shadow:0 8px 20px rgba(23,182,184,.1);
+        }
+        .summit-opportunity-icon svg { width:31px; height:31px; }
+        .summit-opportunity-label {
+          margin:0; color:#168D9D; font-size:10px; font-weight:800;
+          letter-spacing:.13em; text-transform:uppercase;
+        }
+        .summit-opportunity-card h3 { margin:7px 0 0; font-size:23px; line-height:1.2; font-weight:800; }
+        .summit-opportunity-details { position:relative; z-index:1; display:grid; gap:10px; margin-top:26px; }
+        .summit-opportunity-details a {
+          width:100%; min-height:48px; padding:11px 14px; display:flex; align-items:center; gap:12px;
+          color:#4f5f6c; font-size:13px; font-weight:600; border:1px solid #e4edef; border-radius:10px;
+          background:rgba(248,252,252,.9); transition:border-color .2s ease,background .2s ease,color .2s ease;
+        }
+        .summit-opportunity-details a:hover { color:#127f88; border-color:rgba(23,182,184,.4); background:#fff; }
+        .summit-opportunity-details .material-symbols-rounded { color:#12AFA8; font-size:21px; }
+        .summit-cta { padding:60px 0 0; background:#fff; }
+        .summit-cta-inner {
+          min-height:220px; padding:42px; border-radius:24px; text-align:center; position:relative; overflow:hidden;
+          background:linear-gradient(100deg,rgba(183,217,51,.13),rgba(23,182,184,.12),rgba(45,125,187,.14));
+        }
+        .summit-cta-inner::before {
+          content:""; position:absolute; inset:0; background:url("/images/devbhoomi-ai/summit-landscape.png") center 57%/cover no-repeat; opacity:.18;
+        }
+        .summit-cta-content { position:relative; z-index:1; }
+        .summit-cta h2 { margin:0; font-size:clamp(26px,3vw,38px); font-weight:800; color:#138D95; }
+        .summit-cta p { margin:10px 0 22px; font-size:16px; }
+        .summit-footer { padding:48px 0 24px; background:#fff; }
+        .summit-footer-grid { display:grid; grid-template-columns:1fr 1.4fr 1fr; gap:48px; align-items:center; }
+        .summit-footer-logo { width:220px; height:120px; object-fit:contain; object-position:left; }
+        .summit-footer-contact { display:grid; gap:11px; color:var(--muted); font-size:12px; }
+        .summit-footer-contact span { display:flex; align-items:center; gap:9px; }
+        .summit-footer-contact .material-symbols-rounded { color:var(--teal); font-size:17px; }
+        .summit-gov-logos { display:flex; justify-content:flex-end; align-items:center; gap:24px; }
+        .summit-gov-logos img { max-width:130px; max-height:70px; object-fit:contain; }
+        .summit-footer-bottom { margin-top:32px; padding-top:20px; border-top:1px solid #e8e8e8; display:flex; justify-content:space-between; gap:20px; color:var(--muted); font-size:10px; }
+        @media (max-width:1020px) {
+          .summit-nav-links a:not(.summit-btn) { display:none; }
+          .summit-hero-grid, .summit-about-grid, .summit-sponsor-grid, .summit-why-grid { grid-template-columns:1fr; }
+          .summit-hero { min-height:auto; }
+          .summit-hero-grid { padding-top:56px; }
+          .summit-focus-grid, .summit-attendee-grid { grid-template-columns:repeat(2,1fr); }
+          .summit-patron-grid { grid-template-columns:repeat(3,1fr); }
+          .summit-speaker-grid { grid-template-columns:repeat(3,1fr); }
+        }
+        @media (max-width:720px) {
+          .summit-shell { width:min(100% - 32px,1180px); }
+          .summit-section { padding:64px 0; }
+          .summit-nav-inner { height:74px; }
+          .summit-nav-logo { width:150px; height:60px; }
+          .summit-nav .summit-btn { min-height:40px; padding:0 16px; font-size:12px; }
+          .summit-hero-grid { padding:48px 0 92px; }
+          .summit-hero h1 { font-size:clamp(42px,14vw,60px); }
+          .summit-hero {
+            background:
+              linear-gradient(90deg,rgba(255,255,255,.97),rgba(255,255,255,.76)),
+              url("/images/devbhoomi-ai/background_image.png");
+            background-color:#fff;
+            background-position:center,center top;
+            background-repeat:no-repeat;
+            background-size:cover,contain;
+          }
+          .summit-focus-grid, .summit-attendee-grid { grid-template-columns:1fr; }
+          .summit-patron-grid { grid-template-columns:1fr; max-width:340px; margin-left:auto; margin-right:auto; }
+          .summit-speaker-grid { grid-template-columns:repeat(2,1fr); }
+          .summit-form-grid { grid-template-columns:1fr; }
+          .summit-opportunity-grid { grid-template-columns:1fr; }
+          .summit-role, .summit-form-submit, .summit-error { grid-column:auto; }
+          .summit-form { padding:24px; }
+          .summit-opportunity-card { min-height:auto; padding:28px; }
+          .summit-checks { grid-template-columns:1fr; }
+          .summit-footer-grid { grid-template-columns:1fr; gap:24px; }
+          .summit-gov-logos { justify-content:flex-start; }
+          .summit-footer-bottom { flex-direction:column; }
+        }
+        @media (prefers-reduced-motion:reduce) {
+          html { scroll-behavior:auto; }
         }
       `}</style>
 
@@ -368,370 +521,333 @@ const DevbhoomiAISummit: React.FC = () => {
         }}
       />
 
-      {/* B. HERO */}
-      <header id="top" style={{ position: "relative", overflow: "hidden", minHeight: "80vh", display: "flex", flexDirection: "column", justifyContent: "center" }}>
-        <div
-          className="dbs-blob"
-          style={{ width: "clamp(280px,40vw,520px)", height: "clamp(280px,40vw,520px)", background: "rgba(16,185,129,.14)", top: "20px", right: "-100px", animation: "dbsFloat 16s ease-in-out infinite" }}
-        />
-        <div
-          className="dbs-blob"
-          style={{ width: "clamp(240px,34vw,440px)", height: "clamp(240px,34vw,440px)", background: "rgba(14,165,233,.12)", bottom: "-120px", left: "-80px", animation: "dbsFloat 19s ease-in-out infinite reverse" }}
-        />
-        <div
-          className="dbs-blob"
-          style={{ width: "clamp(200px,28vw,360px)", height: "clamp(200px,28vw,360px)", background: "rgba(37,99,235,.10)", top: "-80px", left: "42%", animation: "dbsFloat 21s ease-in-out infinite" }}
-        />
+      <nav className="summit-nav" aria-label="Summit navigation">
+        <div className="summit-shell summit-nav-inner">
+          <a href="#top" aria-label="Devbhoomi AI Summit home">
+            <img className="summit-nav-logo" src="/images/devbhoomi-ai/summit-logo.png" alt="Devbhoomi AI Summit 2026" />
+          </a>
+          <div className="summit-nav-links">
+            <a href="#top">Home</a>
+            <a href="#about">About</a>
+            <a href="#speakers">Speakers</a>
+            <a href="#themes">Focus Areas</a>
+            <a href="#attend">Who Should Attend</a>
+            <a href="#venue">Venue</a>
+            <a className="summit-btn summit-btn-primary" href="#sponsor">Partner With Us</a>
+          </div>
+        </div>
+      </nav>
 
-        <Ribbons id="hero" style={{ height: "clamp(340px,48vw,600px)", opacity: 0.9 }} />
-
-
-        <div
-          className="dbs-wrap"
-          style={{
-            position: "relative", zIndex: 1,
-            paddingTop: "clamp(64px,10vw,120px)", paddingBottom: "clamp(56px,8vw,104px)",
-            display: "grid", gap: "clamp(32px,5vw,56px)",
-            gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,320px),1fr))", alignItems: "center",
-          }}
-        >
+      <header id="top" className="summit-hero">
+        <div className="summit-shell summit-hero-grid">
           <div>
-            <h1 className="dbs-serif" style={{ fontSize: "clamp(38px,6vw,72px)", lineHeight: 1.0, margin: "0", color: "var(--text-primary)", fontWeight: 700 }}>
-              Devbhoomi AI Summit 2026
+            <p className="summit-kicker">Uttarakhand's flagship AI gathering</p>
+            <h1>
+              <span className="line summit-name">DEVBHOOMI</span>
+              <span className="line">AI SUMMIT <span className="year">2026</span></span>
             </h1>
-
-            <p className="dbs-serif" style={{ fontSize: "clamp(18px,2.6vw,30px)", lineHeight: 1.25, margin: "14px 0 0", color: "var(--text-secondary)" }}>
-              Building an AI-Native <span className="dbs-grad">Uttarakhand</span>
+            <p className="summit-hero-subtitle">Building an AI-Native Uttarakhand</p>
+            <p className="summit-hero-copy">
+              A premier AI innovation summit bringing together policymakers, industry
+              leaders, startups, academia and investors to shape an intelligent future.
             </p>
-
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "24px", margin: "26px 0 0" }}>
-              <span style={{ display: "inline-flex", alignItems: "center", gap: "8px", color: "var(--text-secondary)", fontSize: "14.5px", fontWeight: 500 }}>
-                <span className="material-symbols-rounded" style={{ fontSize: "20px", color: "var(--green)" }}>calendar_month</span>
-                October 9, 2026
-              </span>
-              <span style={{ display: "inline-flex", alignItems: "center", gap: "8px", color: "var(--text-secondary)", fontSize: "14.5px", fontWeight: 500 }}>
-                <span className="material-symbols-rounded" style={{ fontSize: "20px", color: "var(--blue)" }}>location_on</span>
-                Hyatt Centric, Dehradun, Uttarakhand
-              </span>
+            <p className="summit-audience">Government · Industry · Startups · Academia · Investors</p>
+            <div className="summit-actions">
+              <a className="summit-btn summit-btn-primary" href="#sponsor">
+                Partner With Us <span className="material-symbols-rounded">arrow_forward</span>
+              </a>
+              <a className="summit-btn summit-btn-outline" href="#about">Explore the Summit</a>
             </div>
-
+            <div className="summit-event-meta">
+              <span><span className="material-symbols-rounded">calendar_month</span>October 9, 2026</span>
+              <span><span className="material-symbols-rounded">location_on</span>Hyatt Centric, Dehradun</span>
+            </div>
           </div>
         </div>
       </header>
 
-      {/* C. OVERVIEW */}
-      <section id="overview" className="dbs-section" style={{ background: "var(--band-a)" }}>
-        <div
-          className="dbs-wrap"
-          style={{ display: "grid", gap: "clamp(28px,5vw,64px)", gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,300px),1fr))" }}
-        >
+      <section id="about" className="summit-section">
+        <div className="summit-shell summit-about-grid">
           <div>
-            <h2 className="dbs-serif dbs-h2">About the Summit</h2>
+            <p className="summit-kicker">About the summit</p>
+            <h2 className="summit-title">Building the future of <span>Uttarakhand</span></h2>
+            <p className="summit-copy">
+              Devbhoomi AI Summit 2026 is the state's flagship AI event focused on
+              innovation, entrepreneurship, governance, education, mobility, tourism and
+              sustainable development.
+            </p>
+            <div className="summit-checks">
+              {["AI for Government", "Research Presentations", "Startup Showcase", "AI Workshops", "Innovation Expo", "Investor Connect"].map((item) => (
+                <span className="summit-check" key={item}>
+                  <span className="material-symbols-rounded">check_circle</span>{item}
+                </span>
+              ))}
+            </div>
           </div>
-          <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", gap: "18px" }}>
-            <p className="dbs-lead">
-              Devbhoomi AI Summit 2026 is Uttarakhand's flagship event on Artificial
-              Intelligence, bringing together policymakers, industry leaders, technology
-              experts, startups, academia, and media.
-            </p>
-            <p className="dbs-lead">
-              With a sharp focus on governance, mobility, tourism, public safety, and
-              sustainable development, the summit is designed to move beyond conversations
-              and deliver actionable AI roadmaps for the state's most pressing priorities.
-            </p>
+          <div id="themes">
+            <p className="summit-kicker">Focus areas</p>
+            <div className="summit-focus-grid" style={{ marginTop: 18 }}>
+              {themes.map((theme) => (
+                <article className="summit-card summit-focus-card" key={theme.title}>
+                  <BrandIcon icon={theme.icon} />
+                  <h3>{theme.title}</h3>
+                  <p>{theme.copy}</p>
+                </article>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* E. SPEAKERS */}
-      <section id="speakers" className="dbs-section" style={{ background: "var(--band-b)" }}>
-        <div className="dbs-wrap">
-          <div style={{ maxWidth: "760px" }}>
-            <h2 className="dbs-serif dbs-h2">Summit Speakers</h2>
-          </div>
-
-          <div className="dbs-patrons-grid" style={{ marginTop: "clamp(32px,5vw,48px)" }}>
-            {patrons.map((p) => (
-              <div key={p.name} style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: "16px" }}>
-                <img
-                  src={p.image}
-                  alt={p.name}
-                  style={{
-                    width: "clamp(100px, 12vw, 150px)",
-                    height: "clamp(100px, 12vw, 150px)",
-                    borderRadius: "50%",
-                    objectFit: "cover",
-                    objectPosition: "center top",
-                    border: "3px solid #fff",
-                    boxShadow: "0 0 0 1px var(--glass-brd), 0 18px 40px rgba(15,23,42,.14)",
-                  }}
-                />
-                <div>
-                  <p style={{ fontWeight: 700, fontSize: "clamp(15px,1.4vw,17px)" }}>{p.name}</p>
-                  <p style={{ color: "var(--text-muted)", fontSize: "13px", lineHeight: 1.45, marginTop: "5px" }}>{p.role}</p>
+      <section id="speakers" className="summit-section summit-pattern-section">
+        <div className="summit-shell" style={{ position: "relative" }}>
+          <p className="summit-kicker">Leadership and expertise</p>
+          <h2 className="summit-title">Summit <span>Speakers</span></h2>
+          <div className="summit-patron-grid">
+            {patrons.map((speaker) => (
+              <article className="summit-card summit-speaker summit-patron" key={speaker.name}>
+                <img src={speaker.image} alt={speaker.name} />
+                <div className="summit-speaker-info">
+                  <h3>{speaker.name}</h3>
+                  <p>{speaker.role}</p>
+                  {speaker.linkedin && (
+                    <a
+                      className="summit-speaker-link"
+                      href={speaker.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`${speaker.name} on LinkedIn`}
+                      title={`${speaker.name} on LinkedIn`}
+                    >
+                      <img src="/images/linkedin.png" alt="" aria-hidden="true" />
+                    </a>
+                  )}
+                  {speaker.officialProfile && (
+                    <a
+                      className="summit-speaker-link summit-official-profile-link"
+                      href={speaker.officialProfile}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`${speaker.name} official government profile`}
+                      title={`${speaker.name} official government profile`}
+                    >
+                      <img src="/images/Emblem_of_India.svg" alt="" aria-hidden="true" />
+                    </a>
+                  )}
                 </div>
-              </div>
+              </article>
             ))}
           </div>
-
-          <div className="dbs-grid" style={{ marginTop: "clamp(32px,5vw,48px)" }}>
-            {speakers.map((sp) => (
-              <div key={sp.name} className="dbs-card" style={{ textAlign: "center" }}>
-                {sp.image ? (
-                  <img
-                    src={sp.image}
-                    alt={sp.name}
-                    style={{ width: "104px", height: "104px", borderRadius: "50%", objectFit: "cover", objectPosition: "center top", margin: "0 auto 16px", border: "1px solid var(--glass-brd)" }}
-                  />
-                ) : (
-                  <div className="dbs-ph" style={{ width: "104px", height: "104px", borderRadius: "50%", margin: "0 auto 16px", fontSize: "12px" }}>
-                    Photo
-                  </div>
-                )}
-                <p style={{ fontWeight: 700, fontSize: "16px" }}>{sp.name}</p>
-                <p style={{ color: "var(--text-muted)", fontSize: "13.5px", lineHeight: 1.45, marginTop: "6px" }}>{sp.role}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* F. DISCUSSION TOPICS */}
-      <section id="themes" className="dbs-section" style={{ background: "var(--band-a)" }}>
-        <div className="dbs-wrap">
-          <div style={{ maxWidth: "760px" }}>
-            <h2 className="dbs-serif dbs-h2">Discussion Topics</h2>
-          </div>
-
-          <div className="dbs-grid-3" style={{ marginTop: "clamp(32px,5vw,48px)" }}>
-            {themes.map((t, i) => (
-              <div key={t.title} className="dbs-card">
-                <span style={{ fontWeight: 700, fontSize: "13px", letterSpacing: ".08em", color: "var(--grey-500)" }}>
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <span className="dbs-iconwell" style={{ margin: "16px 0 16px" }}>
-                  <span className="material-symbols-rounded">{t.icon}</span>
-                </span>
-                <p className="dbs-serif" style={{ fontSize: "18px", lineHeight: 1.35 }}>{t.title}</p>
-              </div>
+          <div className="summit-speaker-grid">
+            {speakers.map((speaker) => (
+              <article className="summit-card summit-speaker" key={speaker.name}>
+                <img src={speaker.image} alt={speaker.name} />
+                <div className="summit-speaker-info">
+                  <h3>{speaker.name}</h3>
+                  <p>{speaker.role}</p>
+                  {speaker.linkedin && (
+                    <a
+                      className="summit-speaker-link"
+                      href={speaker.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`${speaker.name} on LinkedIn`}
+                      title={`${speaker.name} on LinkedIn`}
+                    >
+                      <img src="/images/linkedin.png" alt="" aria-hidden="true" />
+                    </a>
+                  )}
+                  {speaker.officialProfile && (
+                    <a
+                      className="summit-speaker-link summit-official-profile-link"
+                      href={speaker.officialProfile}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`${speaker.name} official government profile`}
+                      title={`${speaker.name} official government profile`}
+                    >
+                      <img src="/images/Emblem_of_India.svg" alt="" aria-hidden="true" />
+                    </a>
+                  )}
+                </div>
+              </article>
             ))}
           </div>
         </div>
       </section>
 
-      {/* G. WHO SHOULD ATTEND */}
-      <section id="attend" className="dbs-section" style={{ background: "var(--band-b)" }}>
-        <div className="dbs-wrap">
-          <div style={{ maxWidth: "760px" }}>
-            <h2 className="dbs-serif dbs-h2">Who Should Attend</h2>
-          </div>
-
-          <div className="dbs-grid" style={{ marginTop: "clamp(32px,5vw,48px)" }}>
-            {attendees.map((a) => (
-              <div key={a.label} className="dbs-card" style={{ display: "flex", alignItems: "center", gap: "16px", padding: "18px 20px" }}>
-                <span className="dbs-iconwell">
-                  <span className="material-symbols-rounded">{a.icon}</span>
-                </span>
-                <span style={{ fontWeight: 600, fontSize: "15px" }}>{a.label}</span>
+      <section id="attend" className="summit-section">
+        <div className="summit-shell">
+          <p className="summit-kicker">Built for decision-makers and innovators</p>
+          <h2 className="summit-title">Who Should <span>Attend</span></h2>
+          <div className="summit-attendee-grid" style={{ marginTop: 40 }}>
+            {attendees.map((attendee) => (
+              <div className="summit-card summit-attendee" key={attendee.label}>
+                <BrandIcon icon={attendee.icon} />
+                <span>{attendee.label}</span>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* I. WHY THIS MATTERS */}
-      <section className="dbs-section" style={{ background: "var(--band-a)" }}>
-        <div className="dbs-wrap" style={{ maxWidth: "860px" }}>
-          <h2 className="dbs-serif dbs-h2">Why this matters</h2>
-          <p className="dbs-lead" style={{ marginTop: "22px" }}>
-            Uttarakhand is at a crucial inflection point where seasonal pilgrim movement, fragile terrain, urban expansion, and infrastructure pressure demand AI-native solutions rather than conventional fixes. The summit matters because it creates a platform to convert AI from a buzzword into a practical governance tool for safety, mobility, encroachment monitoring, and citizen services.
-          </p>
-        </div>
-      </section>
-
-      {/* H. SPONSOR CONTACT */}
-      <section id="sponsor" className="dbs-section" style={{ background: "var(--band-tint)", position: "relative", overflow: "hidden" }}>
-        <div className="dbs-blob" style={{ width: "420px", height: "420px", background: "rgba(16,185,129,.12)", top: "-120px", right: "-80px", animation: "dbsFloat 18s ease-in-out infinite" }} />
-        <Ribbons id="sponsor" style={{ opacity: 0.8 }} />
-        <div
-          className="dbs-wrap"
-          style={{ position: "relative", zIndex: 1, display: "grid", gap: "clamp(28px,5vw,56px)", gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,320px),1fr))", alignItems: "start" }}
-        >
+      <section className="summit-section summit-why">
+        <div className="summit-shell summit-why-grid">
           <div>
-            <h2 className="dbs-serif dbs-h2">Sponsorship</h2>
-            <p className="dbs-lead" style={{ marginTop: "18px" }}>
-              Get in touch and the summit team will share the sponsorship details.
+            <p className="summit-kicker">Why this matters</p>
+            <h2 className="summit-title">AI built for the <span>Himalayan state</span></h2>
+          </div>
+          <div className="summit-why-copy">
+            <p className="summit-copy" style={{ margin: 0 }}>
+              Uttarakhand is at a crucial inflection point where seasonal pilgrim movement,
+              fragile terrain, urban expansion and infrastructure pressure demand AI-native
+              solutions rather than conventional fixes. The summit creates a platform to
+              turn AI from a buzzword into a practical governance tool for safety, mobility,
+              encroachment monitoring and citizen services.
             </p>
-            <div className="dbs-card" style={{ marginTop: "26px", display: "flex", gap: "14px", alignItems: "center" }}>
-              <span className="dbs-iconwell">
-                <span className="material-symbols-rounded">event</span>
-              </span>
-              <div>
-                <p style={{ fontWeight: 700, fontSize: "15px" }}>October 9, 2026</p>
-                <p style={{ color: "var(--text-muted)", fontSize: "13.5px", marginTop: "2px" }}>Hyatt Centric, Dehradun</p>
-              </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="sponsor" className="summit-section summit-sponsor">
+        <div className="summit-shell summit-sponsor-grid">
+          <div>
+            <p className="summit-kicker">Shape the future with us</p>
+            <h2 className="summit-title">Become a <span>Summit Partner</span></h2>
+            <p className="summit-copy">
+              Connect your organisation with Uttarakhand's AI ecosystem. Submit your
+              interest and our summit team will share partnership opportunities.
+            </p>
+            <div className="summit-card summit-contact-card">
+              <BrandIcon icon={CalendarDays} />
+              <div><h3>October 9, 2026</h3><p>A full day of keynotes, showcases and collaboration.</p></div>
             </div>
-            <div className="dbs-card" style={{ marginTop: "14px", display: "flex", gap: "14px", alignItems: "flex-start" }}>
-              <span className="dbs-iconwell">
-                <span className="material-symbols-rounded">location_on</span>
-              </span>
+            <div id="venue" className="summit-card summit-contact-card">
+              <BrandIcon icon={MapPin} />
               <div>
-                <p style={{ fontWeight: 700, fontSize: "15px" }}>Hyatt Centric Dehradun</p>
-                <p style={{ color: "var(--text-muted)", fontSize: "13.5px", marginTop: "2px" }}>
-                  3-4, 152, Rajpur Rd, Jakhan, Dehradun, Uttarakhand 248001
-                </p>
-                <a
-                  href="https://maps.app.goo.gl/i33gWViTrEYK4bXHA"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ display: "inline-flex", alignItems: "center", gap: "6px", color: "var(--green-deep)", fontSize: "13.5px", fontWeight: 600, marginTop: "8px", textDecoration: "none" }}
-                >
-                  <span className="material-symbols-rounded" style={{ fontSize: "17px" }}>map</span>
-                  View on Google Maps
-                </a>
+                <h3>Hyatt Centric, Dehradun</h3>
+                <p>152/3-4, Rajpur Road, Jakhan, Dehradun, Uttarakhand 248001</p>
+                <p><a href="https://maps.app.goo.gl/i33gWViTrEYK4bXHA" target="_blank" rel="noopener noreferrer" style={{ color: "#128F9D", fontWeight: 700 }}>View on Google Maps</a></p>
               </div>
             </div>
           </div>
 
-          <div className="dbs-card" style={{ padding: "clamp(22px,3vw,32px)" }}>
+          <div className="summit-card summit-form">
             {submitted ? (
-              <div style={{ textAlign: "center", padding: "24px 8px" }}>
-                <span
-                  style={{
-                    display: "inline-flex", alignItems: "center", justifyContent: "center",
-                    width: "64px", height: "64px", borderRadius: "50%",
-                    background: "rgba(16,185,129,.14)", color: "var(--green-deep)", margin: "0 auto 18px",
-                  }}
-                >
-                  <span className="material-symbols-rounded" style={{ fontSize: "34px" }}>check_circle</span>
-                </span>
-                <h3 className="dbs-serif" style={{ fontSize: "24px" }}>Thank you</h3>
-                <p className="dbs-lead" style={{ marginTop: "10px" }}>
-                  Your partnership interest has been noted. The Devbhoomi AI Summit team will
-                  reach out shortly.
-                </p>
-                <button
-                  type="button"
-                  onClick={resetForm}
-                  style={{ marginTop: "18px", background: "none", border: "none", color: "var(--green-deep)", fontWeight: 600, fontSize: "14.5px", cursor: "pointer", fontFamily: "inherit" }}
-                >
-                  Submit another response
-                </button>
+              <div className="summit-success">
+                <BrandIcon icon={Check} />
+                <h3>Thank you</h3>
+                <p className="summit-copy">Your partnership interest has been noted. The summit team will reach out shortly.</p>
+                <button className="summit-btn summit-btn-outline" type="button" onClick={resetForm}>Submit another response</button>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
-                <div style={{ display: "flex", flexDirection: "column", gap: "7px" }}>
-                  <label style={{ fontSize: "13px", fontWeight: 600 }}>Full name</label>
-                  <input className="dbs-input" required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Your full name" />
+              <form className="summit-form-grid" onSubmit={handleSubmit}>
+                <div className="summit-field">
+                  <label htmlFor="summit-name">Full name</label>
+                  <input id="summit-name" required value={form.name} onChange={(event) => setForm({ ...form, name: event.target.value })} placeholder="Your full name" />
                 </div>
-                <div style={{ display: "flex", flexDirection: "column", gap: "7px" }}>
-                  <label style={{ fontSize: "13px", fontWeight: 600 }}>Organisation</label>
-                  <input className="dbs-input" value={form.org} onChange={(e) => setForm({ ...form, org: e.target.value })} placeholder="Your organisation" />
+                <div className="summit-field">
+                  <label htmlFor="summit-org">Organisation</label>
+                  <input id="summit-org" value={form.org} onChange={(event) => setForm({ ...form, org: event.target.value })} placeholder="Your organisation" />
                 </div>
-                <div style={{ display: "flex", flexDirection: "column", gap: "7px" }}>
-                  <label style={{ fontSize: "13px", fontWeight: 600 }}>Work email</label>
-                  <input className="dbs-input" type="email" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="you@organisation.com" />
+                <div className="summit-field">
+                  <label htmlFor="summit-email">Work email</label>
+                  <input id="summit-email" type="email" required value={form.email} onChange={(event) => setForm({ ...form, email: event.target.value })} placeholder="you@organisation.com" />
                 </div>
-                <div style={{ display: "flex", flexDirection: "column", gap: "7px" }}>
-                  <label style={{ fontSize: "13px", fontWeight: 600 }}>Phone number</label>
-                  <input className="dbs-input" type="tel" required value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} placeholder="+91 00000 00000" />
+                <div className="summit-field">
+                  <label htmlFor="summit-phone">Phone number</label>
+                  <input id="summit-phone" type="tel" required value={form.phone} onChange={(event) => setForm({ ...form, phone: event.target.value })} placeholder="+91 00000 00000" />
                 </div>
-
-                <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-                  <label style={{ fontSize: "13px", fontWeight: 600 }}>Your role</label>
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
-                    {roleChips.map((c) => (
-                      <button key={c} type="button" onClick={() => setRole(role === c ? null : c)} className={role === c ? "dbs-chip active" : "dbs-chip"}>
-                        {c}
+                <div className="summit-field summit-role">
+                  <label>Your role</label>
+                  <div className="summit-chips">
+                    {roleChips.map((chip) => (
+                      <button className={`summit-chip${role === chip ? " active" : ""}`} key={chip} type="button" onClick={() => setRole(role === chip ? null : chip)}>
+                        {chip}
                       </button>
                     ))}
                   </div>
                 </div>
-
-                <button
-                  type="submit"
-                  disabled={sending}
-                  className="dbs-btn dbs-btn-primary dbs-btn-full"
-                  style={{ marginTop: "4px", opacity: sending ? 0.7 : 1, cursor: sending ? "not-allowed" : "pointer" }}
-                >
-                  <span className="material-symbols-rounded" style={{ fontSize: "18px" }}>send</span>
-                  {sending ? "Submitting..." : "Submit partnership request"}
+                <button className="summit-btn summit-btn-primary summit-form-submit" type="submit" disabled={sending}>
+                  {sending ? "Submitting..." : "Submit Partnership Request"}
+                  <span className="material-symbols-rounded">arrow_forward</span>
                 </button>
-                {error && (
-                  <p style={{ fontSize: "12.5px", color: "#DC2626", textAlign: "center" }}>{error}</p>
-                )}
-                <p style={{ fontSize: "12px", color: "var(--text-muted)", textAlign: "center" }}>
-                  By submitting you agree to be contacted by the summit team regarding sponsorship.
-                </p>
+                {error && <p className="summit-error">{error}</p>}
               </form>
             )}
           </div>
         </div>
       </section>
 
-      {/* K. FOOTER */}
-      <footer className="dbs-dotgrid" style={{ background: "var(--band-tint)", borderTop: "1px solid var(--line)", position: "relative", overflow: "hidden" }}>
-        <Ribbons id="footer" style={{ opacity: 0.7 }} />
-        <div
-          className="dbs-wrap dbs-section"
-          style={{ position: "relative", zIndex: 1, display: "grid", gap: "clamp(32px,5vw,56px)", gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,300px),1fr))" }}
-        >
-          <div>
-            <p className="dbs-serif" style={{ fontSize: "24px", color: "var(--text-primary)" }}>Devbhoomi AI Summit 2026</p>
-            <p style={{ color: "var(--text-secondary)", fontSize: "14px", lineHeight: 1.65, marginTop: "14px", maxWidth: "420px" }}>
-              Building an AI-native Uttarakhand — transforming AI from a discussion topic into
-              a practical governance tool for the Himalayan state.
-            </p>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "12px", marginTop: "22px" }}>
-              <a href="https://it.uk.gov.in/" target="_blank" rel="noreferrer" style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "8px", minWidth: "180px", padding: "10px 16px", background: "#F4F8FC", border: "1px solid var(--glass-brd)", borderRadius: "12px", textDecoration: "none" }}>
-                <span style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "56px" }}>
-                  <img src="/images/itda.jpg" alt="ITDA, Government of Uttarakhand" style={{ maxHeight: "100%", maxWidth: "160px", objectFit: "contain" }} />
-                </span>
-                <span style={{ color: "var(--text-primary)", fontSize: "13px", fontWeight: 700, textAlign: "center" }}>ITDA</span>
-              </a>
-              <a href="https://uk.gov.in/" target="_blank" rel="noreferrer" style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "8px", minWidth: "180px", padding: "10px 16px", background: "#F4F8FC", border: "1px solid var(--glass-brd)", borderRadius: "12px", textDecoration: "none" }}>
-                <span style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "56px" }}>
-                  <img src="/images/uttarakhand_government.svg" alt="Government of Uttarakhand" style={{ maxHeight: "100%", maxWidth: "160px", objectFit: "contain" }} />
-                </span>
-                <span style={{ color: "var(--text-primary)", fontSize: "13px", fontWeight: 700, textAlign: "center" }}>Uttarakhand Government</span>
-              </a>
+      <section className="summit-opportunities" aria-label="Summit contact opportunities">
+        <div className="summit-shell summit-opportunity-grid">
+          <article className="summit-card summit-opportunity-card">
+            <div className="summit-opportunity-head">
+              <span className="summit-opportunity-icon" aria-hidden="true"><Mic strokeWidth={1.8} /></span>
+              <div>
+                <p className="summit-opportunity-label">Speaking Opportunity</p>
+                <h3>Neeraj Pandey</h3>
+              </div>
             </div>
-          </div>
-
-          <div className="dbs-grid" style={{ gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,220px),1fr))" }}>
-            <div className="dbs-card" style={{ padding: "20px" }}>
-              <span className="dbs-eyebrow" style={{ color: "var(--blue)" }}>Speaking opportunity</span>
-              <p style={{ fontWeight: 700, color: "var(--text-primary)", fontSize: "16px", marginTop: "12px" }}>Neeraj Pandey</p>
-              <p style={{ display: "flex", alignItems: "center", gap: "8px", color: "var(--text-secondary)", fontSize: "13.5px", marginTop: "10px" }}>
-                <span className="material-symbols-rounded" style={{ fontSize: "17px", color: "var(--green)" }}>mail</span>
+            <div className="summit-opportunity-details">
+              <a href="mailto:sponsorship@axocom.in">
+                <span className="material-symbols-rounded">mail</span>
                 sponsorship@axocom.in
-              </p>
-              <p style={{ display: "flex", alignItems: "center", gap: "8px", color: "var(--text-secondary)", fontSize: "13.5px", marginTop: "6px" }}>
-                <span className="material-symbols-rounded" style={{ fontSize: "17px", color: "var(--green)" }}>call</span>
+              </a>
+              <a href="tel:+918979201974">
+                <span className="material-symbols-rounded">call</span>
                 +91 89792 01974
-              </p>
+              </a>
             </div>
-            <div className="dbs-card" style={{ padding: "20px" }}>
-              <span className="dbs-eyebrow" style={{ color: "var(--blue)" }}>Partnership opportunity</span>
-              <p style={{ fontWeight: 700, color: "var(--text-primary)", fontSize: "16px", marginTop: "12px" }}>Shruti Kotiyal</p>
-              <p style={{ display: "flex", alignItems: "center", gap: "8px", color: "var(--text-secondary)", fontSize: "13.5px", marginTop: "10px" }}>
-                <span className="material-symbols-rounded" style={{ fontSize: "17px", color: "var(--green)" }}>mail</span>
+          </article>
+          <article className="summit-card summit-opportunity-card">
+            <div className="summit-opportunity-head">
+              <span className="summit-opportunity-icon" aria-hidden="true"><Handshake strokeWidth={1.8} /></span>
+              <div>
+                <p className="summit-opportunity-label">Partnership Opportunity</p>
+                <h3>Shruti Kotiyal</h3>
+              </div>
+            </div>
+            <div className="summit-opportunity-details">
+              <a href="mailto:sponsorship@axocom.in">
+                <span className="material-symbols-rounded">mail</span>
                 sponsorship@axocom.in
-              </p>
-              <p style={{ display: "flex", alignItems: "center", gap: "8px", color: "var(--text-secondary)", fontSize: "13.5px", marginTop: "6px" }}>
-                <span className="material-symbols-rounded" style={{ fontSize: "17px", color: "var(--green)" }}>call</span>
+              </a>
+              <a href="tel:+916399906916">
+                <span className="material-symbols-rounded">call</span>
                 +91 63999 06916
-              </p>
+              </a>
             </div>
+          </article>
+        </div>
+      </section>
+
+      <section className="summit-cta">
+        <div className="summit-shell summit-cta-inner">
+          <div className="summit-cta-content">
+            <h2>Ready to shape the future of AI?</h2>
+            <p>Join Uttarakhand's largest AI gathering.</p>
+            <a className="summit-btn summit-btn-primary" href="#sponsor">Partner Today <span className="material-symbols-rounded">arrow_forward</span></a>
           </div>
         </div>
+      </section>
 
-        <div style={{ borderTop: "1px solid var(--line)", position: "relative", zIndex: 1 }}>
-          <div
-            className="dbs-wrap"
-            style={{ display: "flex", flexWrap: "wrap", gap: "10px", justifyContent: "space-between", padding: "22px 24px", color: "var(--text-muted)", fontSize: "13px" }}
-          >
-            <span>October 9, 2026 · Hyatt Centric, Dehradun, Uttarakhand</span>
+      <footer className="summit-footer">
+        <div className="summit-shell">
+          <div className="summit-footer-grid">
+            <img className="summit-footer-logo" src="/images/devbhoomi-ai/summit-logo.png" alt="Devbhoomi AI Summit 2026" />
+            <div className="summit-footer-contact">
+              <span><span className="material-symbols-rounded">location_on</span>Dehradun, Uttarakhand, India</span>
+              <span><span className="material-symbols-rounded">mail</span>sponsorship@axocom.in</span>
+              <span><span className="material-symbols-rounded">call</span>+91 89792 01974 · +91 63999 06916</span>
+            </div>
+            <div className="summit-gov-logos">
+              <img src="/images/itda.jpg" alt="Information Technology Development Agency" />
+              <img src="/images/uttarakhand_government.svg" alt="Government of Uttarakhand" />
+            </div>
+          </div>
+          <div className="summit-footer-bottom">
+            <span>© 2026 Devbhoomi AI Summit. All rights reserved.</span>
             <span>An initiative of ITDA, Government of Uttarakhand</span>
           </div>
         </div>
