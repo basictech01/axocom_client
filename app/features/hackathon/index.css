@@ -1,0 +1,530 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is([data-theme='dark'] *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  /* Brand anchors → Tailwind utilities */
+  --color-brand-himalayan-cyan: var(--brand-himalayan-cyan);
+  --color-brand-glacier-blue: var(--brand-glacier-blue);
+  --color-brand-ai-azure: var(--brand-ai-azure);
+  --color-brand-summit-blue: var(--brand-summit-blue);
+  --color-brand-devbhoomi-navy: var(--brand-devbhoomi-navy);
+
+  /* Semantic tokens → Tailwind (values live on :root / data-theme) */
+  --color-page: var(--background);
+  --color-surface: var(--card);
+  --color-surface-raised: var(--popover);
+  --color-surface-subtle: var(--muted);
+  --color-text: var(--foreground);
+  --color-text-muted: var(--muted-foreground);
+  --color-link: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-on-primary: var(--primary-foreground);
+  --color-selection: var(--selection);
+  --color-visited: var(--visited);
+  --color-focus: var(--ring);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-error: var(--destructive);
+  --color-info: var(--info);
+
+  /* shadcn / component bridge */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-display: 'Space Grotesk', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ─── Central colour tokens (raw HEX lives only here) ─── */
+.hackathon-app,
+.hackathon-app[data-theme='light'] {
+  color-scheme: light;
+
+  --brand-himalayan-cyan: #35DCF5;
+  --brand-glacier-blue: #38B5F2;
+  --brand-ai-azure: #168FED;
+  --brand-summit-blue: #0058D4;
+  --brand-devbhoomi-navy: #053075;
+
+  --color-page: #F6F8FB;
+  --color-surface: #FFFFFF;
+  --color-surface-raised: #FCFDFE;
+  --color-surface-subtle: #EDF5FB;
+
+  --color-text: #10213A;
+  --color-text-muted: #526174;
+  --color-border: #CBD6E2;
+
+  --color-link: #0058D4;
+  --color-primary: #0058D4;
+  --color-primary-hover: #053075;
+  --color-on-primary: #FFFFFF;
+
+  --color-selection: #B9F4FB;
+  --color-visited: #604C9D;
+  --color-focus: #168FED;
+
+  --color-success: #146C43;
+  --color-warning: #8A4B00;
+  --color-error: #B42318;
+  --color-info: #0058D4;
+
+  --radius: 0.75rem;
+
+  /* Bridge → existing component tokens */
+  --background: var(--color-page);
+  --foreground: var(--color-text);
+  --card: var(--color-surface);
+  --card-foreground: var(--color-text);
+  --popover: var(--color-surface-raised);
+  --popover-foreground: var(--color-text);
+  --primary: var(--color-primary);
+  --primary-hover: var(--color-primary-hover);
+  --primary-foreground: var(--color-on-primary);
+  --secondary: var(--color-surface);
+  --secondary-foreground: var(--color-text);
+  --muted: var(--color-surface-subtle);
+  --muted-foreground: var(--color-text-muted);
+  --accent: var(--color-surface-subtle);
+  --accent-foreground: var(--color-text);
+  --destructive: var(--color-error);
+  --destructive-foreground: #FFFFFF;
+  --border: var(--color-border);
+  --input: var(--color-border);
+  --ring: var(--color-focus);
+  --selection: var(--color-selection);
+  --visited: var(--color-visited);
+  --success: var(--color-success);
+  --warning: var(--color-warning);
+  --info: var(--color-info);
+  --chart-1: var(--brand-summit-blue);
+  --chart-2: var(--brand-glacier-blue);
+  --chart-3: var(--brand-ai-azure);
+  --chart-4: var(--brand-himalayan-cyan);
+  --chart-5: var(--brand-devbhoomi-navy);
+  --sidebar: var(--color-surface);
+  --sidebar-foreground: var(--color-text);
+  --sidebar-primary: var(--color-primary);
+  --sidebar-primary-foreground: var(--color-on-primary);
+  --sidebar-accent: var(--color-surface-subtle);
+  --sidebar-accent-foreground: var(--color-text);
+  --sidebar-border: var(--color-border);
+  --sidebar-ring: var(--color-focus);
+}
+
+.hackathon-app[data-theme='dark'] {
+  color-scheme: dark;
+
+  --color-page: #07111F;
+  --color-surface: #0D1B2E;
+  --color-surface-raised: #13243A;
+  --color-surface-subtle: #17304B;
+
+  --color-text: #F3F7FB;
+  --color-text-muted: #B7C5D4;
+  --color-border: #314964;
+
+  --color-link: #7DD9FA;
+  --color-primary: #38B5F2;
+  --color-primary-hover: #35DCF5;
+  --color-on-primary: #061626;
+
+  --color-selection: #164A63;
+  --color-visited: #C0A7FF;
+  --color-focus: #35DCF5;
+
+  --color-success: #5DDA96;
+  --color-warning: #FFC266;
+  --color-error: #FF8A80;
+  --color-info: #7DD9FA;
+
+  --background: var(--color-page);
+  --foreground: var(--color-text);
+  --card: var(--color-surface);
+  --card-foreground: var(--color-text);
+  --popover: var(--color-surface-raised);
+  --popover-foreground: var(--color-text);
+  --primary: var(--color-primary);
+  --primary-hover: var(--color-primary-hover);
+  --primary-foreground: var(--color-on-primary);
+  --secondary: var(--color-surface);
+  --secondary-foreground: var(--color-text);
+  --muted: var(--color-surface-subtle);
+  --muted-foreground: var(--color-text-muted);
+  --accent: var(--color-surface-subtle);
+  --accent-foreground: var(--color-text);
+  --destructive: var(--color-error);
+  --destructive-foreground: #061626;
+  --border: var(--color-border);
+  --input: var(--color-border);
+  --ring: var(--color-focus);
+  --selection: var(--color-selection);
+  --visited: var(--color-visited);
+  --success: var(--color-success);
+  --warning: var(--color-warning);
+  --info: var(--color-info);
+  --chart-1: var(--brand-glacier-blue);
+  --chart-2: var(--brand-himalayan-cyan);
+  --chart-3: var(--brand-ai-azure);
+  --chart-4: var(--brand-summit-blue);
+  --chart-5: #7DD9FA;
+  --sidebar: var(--color-surface);
+  --sidebar-foreground: var(--color-text);
+  --sidebar-primary: var(--color-primary);
+  --sidebar-primary-foreground: var(--color-on-primary);
+  --sidebar-accent: var(--color-surface-subtle);
+  --sidebar-accent-foreground: var(--color-text);
+  --sidebar-border: var(--color-border);
+  --sidebar-ring: var(--color-focus);
+}
+
+@layer base {
+  .hackathon-app,
+  .hackathon-app * {
+    @apply border-border outline-ring/50;
+  }
+
+  .hackathon-app {
+    @apply bg-background text-foreground font-sans;
+    background-color: var(--color-page);
+    color: var(--color-text);
+  }
+
+  .hackathon-app ::selection {
+    background-color: var(--color-selection);
+  }
+
+  /* Visited colour applies to plain content links only — not nav/buttons */
+  .hackathon-app .prose a:visited,
+  .hackathon-app main a.visited-aware:visited {
+    color: var(--color-visited);
+  }
+
+  .hackathon-app button:not(:disabled),
+  .hackathon-app [role="button"]:not([aria-disabled="true"]),
+  .hackathon-app [type="button"]:not(:disabled),
+  .hackathon-app [type="submit"]:not(:disabled),
+  .hackathon-app [type="reset"]:not(:disabled),
+  .hackathon-app a[href],
+  .hackathon-app select:not(:disabled),
+  .hackathon-app input[type="checkbox"]:not(:disabled),
+  .hackathon-app input[type="radio"]:not(:disabled) {
+    @apply cursor-pointer;
+  }
+
+  .hackathon-app h1,
+  .hackathon-app h2,
+  .hackathon-app h3,
+  .hackathon-app h4,
+  .hackathon-app h5,
+  .hackathon-app h6 {
+    font-family: 'Space Grotesk', system-ui, sans-serif;
+    color: var(--color-text);
+  }
+
+  .hackathon-app :focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  .hackathon-app .container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .hackathon-app .flex {
+    min-height: 0;
+    min-width: 0;
+  }
+
+  @media (min-width: 640px) {
+    .hackathon-app .container {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .hackathon-app .container {
+      padding-left: 2rem;
+      padding-right: 2rem;
+      max-width: 1280px;
+    }
+  }
+
+  /* Logo sits on a pale neutral tile in both themes */
+  .hackathon-app .logo-tile {
+    background: #FFFFFF;
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .hackathon-app[data-theme='dark'] .logo-tile {
+    background: #F6F8FB;
+  }
+
+  .hackathon-app .gradient-border {
+    position: relative;
+    background: var(--color-surface);
+    border-radius: var(--radius-lg);
+  }
+
+  .hackathon-app .gradient-border::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+      135deg,
+      var(--brand-himalayan-cyan) 0%,
+      var(--brand-glacier-blue) 35%,
+      var(--brand-ai-azure) 65%,
+      var(--brand-summit-blue) 100%
+    );
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    opacity: 0.55;
+  }
+
+  /* Restrained brand accent for headings — adjacent colours only */
+  .hackathon-app .text-brand-accent {
+    background: linear-gradient(
+      135deg,
+      var(--brand-ai-azure) 0%,
+      var(--brand-summit-blue) 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hackathon-app[data-theme='dark'] .text-brand-accent {
+    background: linear-gradient(
+      135deg,
+      var(--brand-himalayan-cyan) 0%,
+      var(--brand-glacier-blue) 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hackathon-app .brand-gradient {
+    background: linear-gradient(
+      135deg,
+      var(--brand-himalayan-cyan) 0%,
+      var(--brand-glacier-blue) 35%,
+      var(--brand-ai-azure) 65%,
+      var(--brand-summit-blue) 100%
+    );
+  }
+
+  /* Editorial homepage utilities */
+  .hackathon-app .ukis-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+    font-weight: 500;
+  }
+
+  .hackathon-app .ukis-accent-word {
+    color: var(--color-primary);
+  }
+
+  .hackathon-app .ukis-contour {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.07;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='600' viewBox='0 0 800 600' fill='none'%3E%3Cpath d='M0 420C80 380 140 360 220 370C320 382 380 440 480 430C580 420 640 350 720 340C760 335 780 338 800 345' stroke='%230058D4' stroke-width='1.2'/%3E%3Cpath d='M0 460C100 430 160 410 250 425C340 440 400 490 500 480C600 470 680 410 800 400' stroke='%23168FED' stroke-width='1'/%3E%3Cpath d='M0 500C90 470 180 455 270 470C360 485 430 520 530 510C630 500 710 455 800 450' stroke='%2338B5F2' stroke-width='0.8'/%3E%3Cpath d='M40 80C120 100 180 140 260 120C340 100 400 60 480 70C560 80 620 130 700 110' stroke='%230058D4' stroke-width='0.9'/%3E%3Cpath d='M0 200C60 180 140 170 220 190C300 210 360 250 440 230C520 210 600 160 700 170C740 174 770 180 800 186' stroke='%2353DCF5' stroke-width='0.7' opacity='0.8'/%3E%3C/svg%3E");
+    background-size: cover;
+    background-position: center;
+  }
+
+  .hackathon-app[data-theme='dark'] .ukis-contour {
+    opacity: 0.12;
+  }
+
+  .hackathon-app .ukis-jaali {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Ccircle cx='30' cy='30' r='8' fill='none' stroke='%230058D4' stroke-width='0.6'/%3E%3Ccircle cx='0' cy='0' r='8' fill='none' stroke='%230058D4' stroke-width='0.6'/%3E%3Ccircle cx='60' cy='0' r='8' fill='none' stroke='%230058D4' stroke-width='0.6'/%3E%3Ccircle cx='0' cy='60' r='8' fill='none' stroke='%230058D4' stroke-width='0.6'/%3E%3Ccircle cx='60' cy='60' r='8' fill='none' stroke='%230058D4' stroke-width='0.6'/%3E%3C/svg%3E");
+    background-size: 60px 60px;
+  }
+
+  .hackathon-app[data-theme='dark'] .ukis-jaali {
+    opacity: 0.05;
+  }
+
+  .hackathon-app .ukis-image-blend {
+    mask-image: linear-gradient(to left, #000 55%, transparent 100%);
+  }
+
+  @media (max-width: 1023px) {
+    .hackathon-app .ukis-image-blend {
+      mask-image: linear-gradient(to top, #000 40%, transparent 100%);
+    }
+  }
+
+  .hackathon-app .ukis-section {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+
+  @media (min-width: 1024px) {
+    .hackathon-app .ukis-section {
+      padding-top: 7rem;
+      padding-bottom: 7rem;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hackathon-app {
+    scroll-behavior: smooth;
+  }
+
+  .hackathon-app .ukis-contour {
+    animation: ukis-contour-drift 48s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes ukis-contour-drift {
+  from {
+    background-position: center top;
+  }
+  to {
+    background-position: center 8%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hackathon-app .ukis-contour {
+    animation: none !important;
+  }
+}
+
+/* Final CTA photo panel — same treatment in day + night (dark scrim, light copy) */
+.hackathon-app .final-cta-scrim {
+  background:
+    linear-gradient(
+      to top,
+      rgba(7, 17, 31, 0.92) 0%,
+      rgba(7, 17, 31, 0.72) 38%,
+      rgba(7, 17, 31, 0.28) 68%,
+      transparent 100%
+    ),
+    linear-gradient(
+      to right,
+      rgba(7, 17, 31, 0.5) 0%,
+      transparent 70%
+    );
+}
+
+.hackathon-app .final-cta-eyebrow {
+  color: #35dcf5;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85), 0 0 16px rgba(0, 0, 0, 0.55);
+}
+
+.hackathon-app .final-cta-title {
+  color: #f6f8fb;
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.95),
+    0 4px 18px rgba(0, 0, 0, 0.75),
+    0 0 28px rgba(7, 17, 31, 0.9);
+}
+
+.hackathon-app .final-cta-body {
+  color: #d7e3f4;
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.9),
+    0 3px 14px rgba(0, 0, 0, 0.7);
+}
+
+.hackathon-app .final-cta-link {
+  color: #35dcf5;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
+}
+
+.hackathon-app .final-cta-link:hover {
+  text-decoration: underline;
+}
+
+/* Custom scrollbar — theme-aware */
+.hackathon-app::-webkit-scrollbar,
+.hackathon-app *::-webkit-scrollbar {
+  width: 8px;
+}
+
+.hackathon-app::-webkit-scrollbar-track,
+.hackathon-app *::-webkit-scrollbar-track {
+  background: var(--color-page);
+}
+
+.hackathon-app::-webkit-scrollbar-thumb,
+.hackathon-app *::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 4px;
+}
+
+.hackathon-app::-webkit-scrollbar-thumb:hover,
+.hackathon-app *::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-muted);
+}
