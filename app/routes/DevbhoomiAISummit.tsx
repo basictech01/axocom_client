@@ -96,6 +96,7 @@ interface SummitSpeaker {
   name: string;
   role: string;
   image: string;
+  imageClassName?: string;
   linkedin?: string;
   officialProfile?: string;
 }
@@ -137,6 +138,7 @@ const speakers: SummitSpeaker[] = [
     name: "Shri Ashish Upadhyaya",
     role: "General Manager (AI)",
     image: "/images/ashish_upadhyay.jpg.jpeg",
+    imageClassName: "summit-ashish-photo",
     linkedin: "https://www.linkedin.com/in/ashishiitk22/",
   },
   {
@@ -366,8 +368,11 @@ const DevbhoomiAISummit: React.FC = () => {
         }
         .summit-speaker-grid { position:relative; display:grid; grid-template-columns:repeat(5,1fr); gap:16px; margin-top:28px; }
         .summit-speaker { overflow:hidden; display:flex; flex-direction:column; }
-        .summit-speaker-photo { position:relative; }
+        .summit-speaker-photo { position:relative; overflow:hidden; }
         .summit-speaker-photo > img { width:100%; aspect-ratio:.92; display:block; object-fit:cover; object-position:center top; background:#eef7f7; }
+        .summit-speaker-photo > img.summit-ashish-photo {
+          transform:scale(1.42); transform-origin:60% 38%;
+        }
         .summit-speaker-info { padding:16px; flex:1; display:flex; flex-direction:column; align-items:flex-start; }
         .summit-speaker h3 { margin:0; font-size:13px; line-height:1.35; }
         .summit-speaker p { margin:7px 0 0; color:var(--muted); font-size:11px; line-height:1.45; }
@@ -647,7 +652,7 @@ const DevbhoomiAISummit: React.FC = () => {
             {patrons.map((speaker) => (
               <article className="summit-card summit-speaker summit-patron" key={speaker.name}>
                 <div className="summit-speaker-photo">
-                  <img src={speaker.image} alt={speaker.name} />
+                  <img className={speaker.imageClassName} src={speaker.image} alt={speaker.name} />
                   <SpeakerProfileLinks speaker={speaker} />
                 </div>
                 <div className="summit-speaker-info">
@@ -661,7 +666,7 @@ const DevbhoomiAISummit: React.FC = () => {
             {speakers.map((speaker) => (
               <article className="summit-card summit-speaker" key={speaker.name}>
                 <div className="summit-speaker-photo">
-                  <img src={speaker.image} alt={speaker.name} />
+                  <img className={speaker.imageClassName} src={speaker.image} alt={speaker.name} />
                   <SpeakerProfileLinks speaker={speaker} />
                 </div>
                 <div className="summit-speaker-info">
