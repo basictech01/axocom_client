@@ -7,8 +7,11 @@ export default function HomeLeadership() {
   const reduceMotion = useReducedMotion();
 
   return (
-    <section className="ukis-section border-t border-border bg-surface" ref={ref}>
-      <div className="container">
+    <section className="ukis-section relative overflow-hidden" ref={ref}>
+      <div className="ukis-contour opacity-[0.06]" />
+      <div className="ukis-jaali" />
+
+      <div className="container relative z-10">
         <motion.div
           initial={reduceMotion ? false : { opacity: 0, y: 14 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}

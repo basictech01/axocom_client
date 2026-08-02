@@ -11,9 +11,21 @@ export interface Problem {
   difficulty: "Beginner" | "Intermediate" | "Advanced";
   publishedAt: string;
   solutionCount: number;
+  /**
+   * Optional problem sponsor shown above the title.
+   * Government body that shared the problem, or a company that sponsored it.
+   * Leave unset when there is no sponsor yet.
+   */
+  sponsor?: string;
   whatsappGroup?: string;
 }
 
+/**
+ * Static problem catalogue.
+ * To attach a sponsor for a problem, set `sponsor` to the organisation or company name, e.g.:
+ *   sponsor: "ITDA Uttarakhand"
+ * Omit `sponsor` when none is assigned yet.
+ */
 export const problems: Problem[] = [
   {
     id: "P-001",
@@ -74,3 +86,106 @@ export function getProblemById(id: string): Problem | undefined {
 export function getTotalProblems(): number {
   return problems.length;
 }
+
+/**
+ * Known programme mentors shown on the homepage and Mentors page.
+ * Accepted mentors from the API are listed in addition to these.
+ */
+export interface CuratedMentor {
+  id: string;
+  fullName: string;
+  currentRole: string;
+  organisation: string;
+  expertise: string;
+  experienceSummary: string;
+  initials: string;
+  image?: string;
+  profileUrl?: string;
+}
+
+export const CURATED_MENTORS: CuratedMentor[] = [
+  {
+    id: "curated-rohan-pant",
+    fullName: "Rohan Pant",
+    currentRole: "Program Manager",
+    organisation: "Amazon",
+    expertise: "Program Management, Product",
+    experienceSummary:
+      "Guides teams on product thinking, delivery, and stakeholder alignment through the innovation series.",
+    initials: "RP",
+    image: "/hackathon/mentors/RohanP.jpeg",
+    profileUrl: "https://www.linkedin.com/in/pantrohan/",
+  },
+  {
+    id: "curated-virendra-pal",
+    fullName: "Virendra Pal",
+    currentRole: "Operations Manager",
+    organisation: "Amazon",
+    expertise: "Operations, Process",
+    experienceSummary:
+      "Supports builders on operational design, execution discipline, and scaling practical solutions.",
+    initials: "VP",
+    image: "/hackathon/mentors/virendraP.jpg",
+    profileUrl: "https://www.linkedin.com/in/virendrapal0210/",
+  },
+  {
+    id: "curated-kevin-patel",
+    fullName: "Kevin Patel",
+    currentRole: "Software Engineer",
+    organisation: "Google",
+    expertise: "Software Engineering, Systems",
+    experienceSummary:
+      "Mentors teams on engineering quality, architecture choices, and shipping reliable products.",
+    initials: "KP",
+    image: "/hackathon/mentors/kevinP.jpeg",
+    profileUrl: "https://www.linkedin.com/in/kevinpatel20/",
+  },
+  {
+    id: "curated-anmol-dixit",
+    fullName: "Anmol Dixit",
+    currentRole: "Senior Software Engineer",
+    organisation: "Rubrik",
+    expertise: "Software Engineering, Backend",
+    experienceSummary:
+      "Helps teams strengthen technical depth, code quality, and production-ready implementation.",
+    initials: "AD",
+    image: "/hackathon/mentors/anmolD.jpeg",
+    profileUrl: "https://www.linkedin.com/in/dixitanmol97/",
+  },
+  {
+    id: "curated-ayush-gupta",
+    fullName: "Ayush Gupta",
+    currentRole: "Data Engineer",
+    organisation: "Zeta",
+    expertise: "Data Engineering, Analytics",
+    experienceSummary:
+      "Advises on data pipelines, analytics, and turning real-world signals into product insight.",
+    initials: "AG",
+    image: "/hackathon/mentors/AyushG.jpeg",
+    profileUrl: "https://www.linkedin.com/in/ayush-gupta-870595175/",
+  },
+  {
+    id: "curated-sagar-singh",
+    fullName: "Sagar Singh",
+    currentRole: "Software Developer",
+    organisation: "Scapia",
+    expertise: "Software Development, Product",
+    experienceSummary:
+      "Works with builders on product development, rapid prototyping, and user-focused delivery.",
+    initials: "SS",
+    image: "/hackathon/mentors/SagarS.jpeg",
+    profileUrl: "https://www.linkedin.com/in/sagar-singh-ba43001b3/",
+  },
+  {
+    id: "curated-sparsh-goil",
+    fullName: "Sparsh Goil",
+    currentRole: "Senior Software Engineer",
+    organisation: "ThoughtSpot",
+    expertise: "Software Engineering, Analytics",
+    experienceSummary:
+      "Mentors teams on engineering craft, analytics products, and shipping high-impact software.",
+    initials: "SG",
+    image: "/hackathon/mentors/SparshG.png",
+    profileUrl: "https://www.linkedin.com/in/sparsh-goil-973973112/",
+  },
+];

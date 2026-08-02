@@ -42,7 +42,12 @@ export default function HomeFeaturedProblems() {
               transition={{ delay: i * 0.08, duration: 0.45 }}
               className="flex flex-col border border-border rounded-xl bg-page p-6 sm:p-7 hover:border-primary/35 transition-colors group"
             >
-              <div className="flex items-center justify-between gap-3 mb-6">
+              <div className="flex flex-wrap items-center gap-2 mb-6">
+                {problem.sponsor ? (
+                  <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-primary/10 text-primary border border-primary/20">
+                    {problem.sponsor}
+                  </span>
+                ) : null}
                 <span className="ukis-eyebrow !text-[0.6rem]">{problem.category}</span>
               </div>
 
@@ -55,8 +60,8 @@ export default function HomeFeaturedProblems() {
               </p>
 
               <div className="flex items-center justify-between pt-4 border-t border-border">
-                <span className="text-xs text-muted-foreground font-mono">
-                  {problem.difficulty}
+                <span className="text-xs text-muted-foreground">
+                  {problem.id}
                 </span>
                 <Link
                   href={`/problems/${problem.id}`}

@@ -58,9 +58,16 @@ export default function SectionImageSlot({
 
       {src && fade ? (
         <>
+          {/* Stronger solid wash on small screens so body text stays readable over photos */}
           <div
             className={cn(
-              "absolute inset-0",
+              "absolute inset-0 md:hidden",
+              isSurface ? "bg-surface/88" : "bg-page/88",
+            )}
+          />
+          <div
+            className={cn(
+              "absolute inset-0 hidden md:block",
               fadeLight
                 ? isSurface
                   ? "bg-gradient-to-r from-surface/70 via-surface/40 to-surface/15"
@@ -72,7 +79,7 @@ export default function SectionImageSlot({
           />
           <div
             className={cn(
-              "absolute inset-0",
+              "absolute inset-0 hidden md:block",
               fadeLight
                 ? isSurface
                   ? "bg-gradient-to-b from-surface/50 via-transparent to-surface/55"

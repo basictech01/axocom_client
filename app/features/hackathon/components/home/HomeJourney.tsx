@@ -1,6 +1,6 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { useScrollReveal } from "~/features/hackathon/hooks/useScrollReveal";
-import { PHASES, OFFLINE_ROUNDS } from "./data";
+import { PHASES } from "./data";
 
 export default function HomeJourney() {
   const { ref, isInView } = useScrollReveal();
@@ -69,28 +69,6 @@ export default function HomeJourney() {
             </motion.li>
           ))}
         </ol>
-
-        <motion.div
-          initial={reduceMotion ? false : { opacity: 0, y: 12 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ delay: 0.4, duration: 0.45 }}
-          className="mt-16 pt-10 border-t border-border max-w-3xl"
-        >
-          <h3 className="font-display font-semibold text-lg text-foreground mb-4">
-            {OFFLINE_ROUNDS.title}
-          </h3>
-          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5">
-            {OFFLINE_ROUNDS.points.map((point) => (
-              <li key={point} className="text-sm text-muted-foreground flex gap-2">
-                <span className="text-primary mt-0.5" aria-hidden>
-                  •
-                </span>
-                {point}
-              </li>
-            ))}
-          </ul>
-          <p className="text-sm text-foreground leading-relaxed">{OFFLINE_ROUNDS.closing}</p>
-        </motion.div>
       </div>
     </section>
   );

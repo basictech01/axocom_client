@@ -1,12 +1,13 @@
 import { motion, useReducedMotion } from "framer-motion";
+import type { Icon } from "@phosphor-icons/react";
 import {
-  ArrowRight,
   Briefcase,
-  Building2,
-  Cloud,
+  Circuitry,
   GraduationCap,
   Trophy,
-} from "lucide-react";
+  UsersThree,
+} from "@phosphor-icons/react";
+import { ArrowRight } from "lucide-react";
 import { WHATSAPP_COMMUNITY_URL } from "~/features/hackathon/components/WhatsAppCommunityCta";
 import { useScrollReveal } from "~/features/hackathon/hooks/useScrollReveal";
 import { ORG_SECTIONS } from "./data";
@@ -40,6 +41,29 @@ function slotSrc(image: string) {
   return image.trim() ? image : undefined;
 }
 
+function SectionEyebrow({
+  icon: IconComp,
+  label,
+  className = "mb-4",
+}: {
+  icon: Icon;
+  label: string;
+  className?: string;
+}) {
+  return (
+    <div className={`flex items-start gap-3 ${className}`}>
+      <IconComp
+        className="w-7 h-7 sm:w-8 sm:h-8 text-primary shrink-0 mt-0.5"
+        weight="duotone"
+        aria-hidden
+      />
+      <p className="font-display font-bold text-base sm:text-lg tracking-tight text-primary leading-snug">
+        {label}
+      </p>
+    </div>
+  );
+}
+
 /** Challenge Sponsors: numbered runway list */
 function ChallengeSponsorsSection() {
   const section = byId["challenge-sponsors"];
@@ -49,7 +73,7 @@ function ChallengeSponsorsSection() {
   return (
     <section
       id={section.id}
-      className="relative overflow-hidden border-t border-border py-10 sm:py-12 lg:py-14"
+      className="relative overflow-hidden border-t border-border min-h-[100svh] flex flex-col justify-center py-12 sm:py-16"
       ref={ref}
     >
       <SectionImageSlot
@@ -65,12 +89,7 @@ function ChallengeSponsorsSection() {
           transition={{ duration: 0.45 }}
           className="max-w-3xl mb-5"
         >
-          <div className="flex items-center gap-3 mb-3">
-            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
-              <Trophy className="w-4 h-4" strokeWidth={1.5} aria-hidden />
-            </span>
-            <p className="ukis-eyebrow mb-0">{section.eyebrow}</p>
-          </div>
+          <SectionEyebrow icon={Trophy} label={section.eyebrow} className="mb-3" />
           <h2 className="font-display font-bold text-3xl sm:text-4xl text-foreground leading-tight mb-3">
             {section.title}
           </h2>
@@ -113,7 +132,7 @@ function TechnologyPartnersSection() {
   return (
     <section
       id={section.id}
-      className="ukis-section border-t border-border bg-surface"
+      className="border-t border-border bg-surface min-h-[100svh] flex flex-col justify-center py-12 sm:py-16 lg:py-20"
       ref={ref}
     >
       <div className="container">
@@ -124,12 +143,7 @@ function TechnologyPartnersSection() {
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.45 }}
           >
-            <div className="flex items-center gap-3 mb-4">
-              <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                <Cloud className="w-5 h-5" strokeWidth={1.5} aria-hidden />
-              </span>
-              <p className="ukis-eyebrow mb-0">{section.eyebrow}</p>
-            </div>
+            <SectionEyebrow icon={Circuitry} label={section.eyebrow} />
             <h2 className="font-display font-bold text-3xl sm:text-4xl text-foreground leading-tight mb-5">
               {section.title}
             </h2>
@@ -198,7 +212,7 @@ function HiringPartnersSection() {
   return (
     <section
       id={section.id}
-      className="ukis-section border-t border-border relative overflow-hidden"
+      className="border-t border-border relative overflow-hidden min-h-[100svh] flex flex-col justify-center py-12 sm:py-16 lg:py-20"
       ref={ref}
     >
       <SectionImageSlot
@@ -216,12 +230,7 @@ function HiringPartnersSection() {
           className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10"
         >
           <div className="max-w-xl">
-            <div className="flex items-center gap-3 mb-4">
-              <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                <Briefcase className="w-5 h-5" strokeWidth={1.5} aria-hidden />
-              </span>
-              <p className="ukis-eyebrow mb-0">{section.eyebrow}</p>
-            </div>
+            <SectionEyebrow icon={UsersThree} label={section.eyebrow} />
             <h2 className="font-display font-bold text-3xl sm:text-4xl text-foreground leading-tight">
               {section.title}
             </h2>
@@ -240,33 +249,74 @@ function HiringPartnersSection() {
           {HIRING_MODES.map((mode) => (
             <li
               key={mode}
-              className="text-center px-3 py-4 rounded-xl border border-dashed border-border bg-surface-subtle/80"
+              className="text-center px-2.5 sm:px-3 py-3.5 sm:py-4 rounded-xl border border-border bg-page/90 backdrop-blur-sm"
             >
-              <span className="text-sm font-semibold text-foreground">{mode}</span>
+              <span className="text-xs sm:text-sm font-semibold text-foreground leading-snug">
+                {mode}
+              </span>
             </li>
           ))}
         </motion.ul>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
           <motion.p
-            className="lg:col-span-4 text-sm text-muted-foreground leading-relaxed"
+            className="lg:col-span-4 text-sm text-foreground/80 leading-relaxed"
             initial={reduceMotion ? false : { opacity: 0, y: 12 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.1, duration: 0.4 }}
           >
             {section.body[1]}
           </motion.p>
-          <ul className="lg:col-span-8 space-y-0 border-l border-border pl-5 sm:pl-6">
+
+          <ul className="lg:col-span-8 relative">
+            <motion.div
+              aria-hidden
+              className="absolute left-[11px] top-3 bottom-3 w-px origin-top bg-gradient-to-b from-primary via-primary/55 to-primary/15"
+              initial={reduceMotion ? false : { scaleY: 0 }}
+              animate={isInView ? { scaleY: 1 } : {}}
+              transition={{ duration: 1.05, ease: [0.22, 1, 0.36, 1], delay: 0.12 }}
+            />
+
             {section.points.map((point, i) => (
               <motion.li
                 key={point}
-                initial={reduceMotion ? false : { opacity: 0, x: 8 }}
+                initial={reduceMotion ? false : { opacity: 0, x: 14 }}
                 animate={isInView ? { opacity: 1, x: 0 } : {}}
-                transition={{ delay: 0.12 + i * 0.05, duration: 0.35 }}
-                className="relative py-3.5 border-b border-border last:border-b-0"
+                transition={{
+                  delay: 0.22 + i * 0.11,
+                  duration: 0.45,
+                  ease: [0.23, 1, 0.32, 1],
+                }}
+                className="relative flex gap-4 sm:gap-5 pb-7 last:pb-0"
               >
-                <span className="absolute -left-[1.4rem] sm:-left-[1.65rem] top-5 h-2 w-2 rounded-full bg-primary" />
-                <p className="text-sm text-foreground leading-relaxed">{point}</p>
+                <div className="relative z-10 mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center">
+                  <motion.span
+                    aria-hidden
+                    className="absolute inset-0 rounded-full border border-primary/40"
+                    initial={reduceMotion ? false : { scale: 0.5, opacity: 0 }}
+                    animate={isInView ? { scale: 1, opacity: 1 } : {}}
+                    transition={{
+                      delay: 0.28 + i * 0.11,
+                      duration: 0.4,
+                      ease: [0.23, 1, 0.32, 1],
+                    }}
+                  />
+                  <motion.span
+                    aria-hidden
+                    className="h-2.5 w-2.5 rounded-full bg-primary shadow-[0_0_0_4px] shadow-primary/15"
+                    initial={reduceMotion ? false : { scale: 0 }}
+                    animate={isInView ? { scale: 1 } : {}}
+                    transition={{
+                      delay: 0.34 + i * 0.11,
+                      type: "spring",
+                      stiffness: 420,
+                      damping: 22,
+                    }}
+                  />
+                </div>
+                <p className="pt-0.5 text-sm sm:text-[0.95rem] text-foreground leading-relaxed">
+                  {point}
+                </p>
               </motion.li>
             ))}
           </ul>
@@ -285,7 +335,7 @@ function KnowledgePartnersSection() {
   return (
     <section
       id={section.id}
-      className="ukis-section border-t border-border bg-surface"
+      className="border-t border-border bg-surface min-h-[100svh] flex flex-col justify-center py-12 sm:py-16 lg:py-20"
       ref={ref}
     >
       <div className="container">
@@ -296,12 +346,7 @@ function KnowledgePartnersSection() {
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.45 }}
           >
-            <div className="flex items-center gap-3 mb-4">
-              <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                <GraduationCap className="w-5 h-5" strokeWidth={1.5} aria-hidden />
-              </span>
-              <p className="ukis-eyebrow mb-0">{section.eyebrow}</p>
-            </div>
+            <SectionEyebrow icon={GraduationCap} label={section.eyebrow} />
             <h2 className="font-display font-bold text-3xl sm:text-4xl text-foreground leading-tight mb-5">
               {section.title}
             </h2>
@@ -348,7 +393,7 @@ function HiringOpportunitySection() {
   return (
     <section
       id={section.id}
-      className="ukis-section border-t border-border relative overflow-hidden"
+      className="border-t border-border relative overflow-hidden min-h-[100svh] flex flex-col justify-center py-12 sm:py-16 lg:py-20"
       ref={ref}
     >
       <SectionImageSlot
@@ -365,12 +410,7 @@ function HiringOpportunitySection() {
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.45 }}
           >
-            <div className="flex items-center gap-3 mb-4">
-              <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                <Building2 className="w-5 h-5" strokeWidth={1.5} aria-hidden />
-              </span>
-              <p className="ukis-eyebrow mb-0">{section.eyebrow}</p>
-            </div>
+            <SectionEyebrow icon={Briefcase} label={section.eyebrow} />
             <h2 className="font-display font-bold text-3xl sm:text-4xl text-foreground leading-tight mb-5">
               {section.title}
             </h2>

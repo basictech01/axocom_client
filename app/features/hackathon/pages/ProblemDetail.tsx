@@ -108,6 +108,11 @@ export default function ProblemDetail() {
           className="mb-12"
         >
           <div className="flex flex-wrap items-center gap-3 mb-4">
+            {problem.sponsor ? (
+              <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-primary/10 text-primary border border-primary/20">
+                {problem.sponsor}
+              </span>
+            ) : null}
             <span className="text-sm text-muted-foreground">{problem.category}</span>
           </div>
           <h1 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-foreground mb-6">
@@ -129,7 +134,7 @@ export default function ProblemDetail() {
             </div>
           </div>
 
-          <Link href="/register/solution">
+          <Link href={`/register/solution?problem=${problem.id}`}>
             <motion.button
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}

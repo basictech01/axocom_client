@@ -22,10 +22,10 @@ export default function Home() {
     <div className="overflow-x-hidden">
       <HomeHero />
       <HomePartners />
+      <HomeLeadership />
       <HomeWhatIs />
       <HomeJourney />
       <HomeParticipants />
-      <HomeLeadership />
       <HomeOrgSections />
       <HomeFeaturedProblems />
       <HomeContrastCta />

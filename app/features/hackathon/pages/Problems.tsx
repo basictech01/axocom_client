@@ -58,7 +58,8 @@ export default function Problems() {
         !search ||
         p.title.toLowerCase().includes(search.toLowerCase()) ||
         p.category.toLowerCase().includes(search.toLowerCase()) ||
-        p.description.toLowerCase().includes(search.toLowerCase())
+        p.description.toLowerCase().includes(search.toLowerCase()) ||
+        (p.sponsor?.toLowerCase().includes(search.toLowerCase()) ?? false)
       );
     });
   }, [search]);
@@ -132,7 +133,12 @@ export default function Problems() {
                       >
                         <div className="flex flex-col sm:flex-row sm:items-start gap-4">
                           <div className="flex-1">
-                            <div className="mb-3">
+                            <div className="mb-3 flex flex-wrap items-center gap-2">
+                              {problem.sponsor ? (
+                                <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-primary/10 text-primary border border-primary/20">
+                                  {problem.sponsor}
+                                </span>
+                              ) : null}
                               <span className="text-xs text-muted-foreground">
                                 {problem.category}
                               </span>

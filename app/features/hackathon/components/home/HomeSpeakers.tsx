@@ -25,7 +25,7 @@ export default function HomeSpeakers() {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-5 lg:gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-7 gap-5 lg:gap-4">
           {SPEAKERS.map((speaker, i) => {
             const hasPhoto = Boolean(speaker.image?.trim());
             return (
@@ -34,9 +34,9 @@ export default function HomeSpeakers() {
                 initial={reduceMotion ? false : { opacity: 0, y: 12 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ delay: i * 0.05, duration: 0.4 }}
-                className="text-center sm:text-left"
+                className="flex h-full flex-col text-left"
               >
-                <div className="aspect-square w-full rounded-lg border border-border bg-surface-subtle mb-3 overflow-hidden relative">
+                <div className="aspect-square w-full rounded-lg border border-border bg-surface-subtle mb-3 overflow-hidden relative shrink-0">
                   {hasPhoto ? (
                     <img
                       src={speaker.image}
@@ -56,12 +56,28 @@ export default function HomeSpeakers() {
                     </div>
                   )}
                 </div>
-                <h3 className="font-display font-semibold text-sm text-foreground leading-snug">
-                  {speaker.name}
-                </h3>
-                <p className="text-xs text-muted-foreground mt-1 leading-snug">
-                  {speaker.role}
-                </p>
+
+                <div className="flex flex-1 flex-col min-h-0">
+                  <h3 className="font-display font-semibold text-sm text-foreground leading-tight line-clamp-1">
+                    {speaker.name}
+                  </h3>
+                  <p className="text-xs text-muted-foreground leading-tight line-clamp-1 mt-0.5">
+                    {speaker.role}
+                  </p>
+                  <p className="text-xs font-bold text-foreground leading-tight truncate mt-0.5">
+                    {speaker.organisation}
+                  </p>
+                  {speaker.linkedin ? (
+                    <a
+                      href={speaker.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-auto pt-1.5 text-xs font-medium text-primary hover:underline underline-offset-2"
+                    >
+                      Meet them
+                    </a>
+                  ) : null}
+                </div>
               </motion.article>
             );
           })}

@@ -1,5 +1,7 @@
 /** Static content for the UKIS Hackathon homepage - verified project copy only */
 
+import { CURATED_MENTORS } from "~/features/hackathon/lib/data";
+
 export const HERO = {
   eyebrow: "Uttarakhand Innovation & Solutions Hackathon",
   headlineLead: "Not just a hackathon.",
@@ -14,9 +16,14 @@ export const HERO = {
 } as const;
 
 export const PARTNERS = [
-  { abbr: "ANI", name: "Asian News International" },
-  { abbr: "PTI", name: "Press Trust of India" },
-  { abbr: "ET", name: "The Economic Times" },
+  {
+    name: "PACE",
+    role: "Hiring & Mentorship Partner",
+  },
+  {
+    name: "AxoCom",
+    role: "Media Partner",
+  },
 ] as const;
 
 export const WHAT_UKIS = {
@@ -116,18 +123,6 @@ export const LEADERSHIP = [
     image: "/images/summitDeligate/shri_pradeep_batra_it_minister_govt_uttarakhand.jpg",
   },
 ] as const;
-
-export const OFFLINE_ROUNDS = {
-  title: "What happens in offline rounds",
-  points: [
-    "Deeper problem solving",
-    "Mentorship from experts",
-    "Real-world validation of ideas",
-    "Collaboration with other builders",
-  ],
-  closing:
-    "This is where ideas become stronger, more refined, and closer to real implementation.",
-} as const;
 
 export const FINAL_GOAL = {
   title: "Final goal",
@@ -246,44 +241,14 @@ export const ORG_SECTIONS = [
   },
 ] as const;
 
-export const SPEAKERS = [
-  {
-    name: "Rohan Pant",
-    role: "Program Manager, Amazon",
-    initials: "RP",
-    image: "/hackathon/mentors/RohanP.jpeg",
-  },
-  {
-    name: "Virendra Pal",
-    role: "Operations Manager, Amazon",
-    initials: "VP",
-    image: "/hackathon/mentors/virendraP.jpg",
-  },
-  {
-    name: "Kevin Patel",
-    role: "Software Engineer, Google",
-    initials: "KP",
-    image: "/hackathon/mentors/kevinP.jpeg",
-  },
-  {
-    name: "Anmol Dixit",
-    role: "Senior Software Engineer, Rubrik",
-    initials: "AD",
-    image: "/hackathon/mentors/anmolD.jpeg",
-  },
-  {
-    name: "Ayush Gupta",
-    role: "Data Engineer, Zeta",
-    initials: "AG",
-    image: "/hackathon/mentors/AyushG.jpeg",
-  },
-  {
-    name: "Sagar Singh",
-    role: "Software Developer, Scapia",
-    initials: "SS",
-    image: "",
-  },
-] as const;
+export const SPEAKERS = CURATED_MENTORS.map((mentor) => ({
+  name: mentor.fullName,
+  role: mentor.currentRole,
+  organisation: mentor.organisation,
+  initials: mentor.initials,
+  image: mentor.image ?? "",
+  linkedin: mentor.profileUrl ?? "",
+})) as const;
 
 export const FINAL_CTA = {
   title: "Join the journey",
