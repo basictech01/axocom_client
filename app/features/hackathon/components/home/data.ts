@@ -1,6 +1,6 @@
 /** Static content for the UKIS Hackathon homepage - verified project copy only */
 
-import { CURATED_MENTORS } from "~/features/hackathon/lib/data";
+import { MENTORS } from "~/features/hackathon/lib/mentors";
 
 export const HERO = {
   eyebrow: "Uttarakhand Innovation & Solutions Hackathon",
@@ -241,14 +241,14 @@ export const ORG_SECTIONS = [
   },
 ] as const;
 
-export const SPEAKERS = CURATED_MENTORS.map((mentor) => ({
-  name: mentor.fullName,
-  role: mentor.currentRole,
-  organisation: mentor.organisation,
+export const SPEAKERS = MENTORS.map((mentor) => ({
+  name: mentor.name,
+  role: mentor.designation,
+  organisation: mentor.organization,
   initials: mentor.initials,
   image: mentor.image ?? "",
-  linkedin: mentor.profileUrl ?? "",
-})) as const;
+  linkedin: mentor.linkedinUrl ?? "",
+}));
 
 export const FINAL_CTA = {
   title: "Join the journey",
