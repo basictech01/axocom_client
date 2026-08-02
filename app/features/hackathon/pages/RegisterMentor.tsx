@@ -1,5 +1,5 @@
 /**
- * Register Mentor Page — Kinetic Dark design
+ * Register Mentor Page - Kinetic Dark design
  * Multi-step animated form for mentor application
  */
 import { useState } from "react";
@@ -156,7 +156,7 @@ export default function RegisterMentor() {
     <div className="relative min-h-screen overflow-x-hidden pt-28 pb-20">
       <RegisterAsideImage
         label="UKIS mentor with a team photograph"
-        note="Mentor registration — mentor speaking with a builder team"
+        note="Mentor registration: mentor speaking with a builder team"
         src="/hackathon/logos/prop11.webp"
       />
 

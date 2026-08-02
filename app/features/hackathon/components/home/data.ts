@@ -1,4 +1,4 @@
-/** Static content for the UKIS Hackathon homepage — verified project copy only */
+/** Static content for the UKIS Hackathon homepage - verified project copy only */
 
 export const HERO = {
   eyebrow: "Uttarakhand Innovation & Solutions Hackathon",
@@ -7,7 +7,7 @@ export const HERO = {
   support:
     "A state-wide innovation series bringing builders from across Uttarakhand together to solve real-world problems through multi-stage collaboration.",
   meta: [
-    { label: "Phase 1", value: "Online · Currently Live" },
+    { label: "Format", value: "Online and on-ground" },
     { label: "Cities", value: "Dehradun · Roorkee · Rudrapur" },
     { label: "Focus", value: "Real products, real problems" },
   ],
@@ -24,16 +24,16 @@ export const WHAT_UKIS = {
   title: "What UKIS Is",
   body: [
     "The Uttarakhand Innovation & Solutions Hackathon is designed as a multi-stage innovation series, bringing together builders from across the state to solve real-world problems.",
-    "It begins online and evolves into on-ground hackathons across key cities of Uttarakhand.",
+    "It includes an online stage and on-ground hackathons across key cities of Uttarakhand.",
   ],
   principles: [
     {
       title: "Real problems",
-      description: "Published challenges rooted in Uttarakhand’s civic and developmental needs.",
+      description: "Challenges rooted in Uttarakhand’s civic and developmental needs.",
     },
     {
-      title: "Immediate building",
-      description: "Participants start exploring, ideating and building right after registration.",
+      title: "Hands-on building",
+      description: "Builders explore, ideate and develop products around real problems.",
     },
     {
       title: "Expert guidance",
@@ -46,82 +46,32 @@ export const WHAT_UKIS = {
   ],
 } as const;
 
-/** Domain rows derived from existing published problem categories */
-export const DOMAINS = [
-  {
-    number: "01",
-    title: "Healthcare & AI",
-    description:
-      "Bridge urban medical expertise and rural healthcare needs with intelligent, accessible systems.",
-    problemId: "P-001",
-    image: "/hackathon/prop3.webp",
-  },
-  {
-    number: "02",
-    title: "Sustainability",
-    description:
-      "Track waste, recycling and environmental impact for municipal programmes across the state.",
-    problemId: "P-002",
-    image: "/hackathon/prop4.webp",
-  },
-  {
-    number: "03",
-    title: "Education & FinTech",
-    description:
-      "Build engaging platforms that teach financial literacy to students through real scenarios.",
-    problemId: "P-003",
-    image: "/hackathon/prop5.cms",
-  },
-  {
-    number: "04",
-    title: "Agriculture & IoT",
-    description:
-      "Help farms conserve water with soil, weather and crop-aware irrigation systems.",
-    problemId: "P-004",
-    image: "/hackathon/prop6.webp",
-  },
-  {
-    number: "05",
-    title: "Civic Tech",
-    description:
-      "Simplify government service access with multilingual, accessibility-first digital tools.",
-    problemId: "P-005",
-    image: "/hackathon/prop7.webp",
-  },
-] as const;
-
 export const PHASES = [
   {
     id: "phase-1",
     number: "01",
-    phase: "Phase 1",
-    status: "Currently Live",
+    phase: "Stage 1",
     title: "Online Hackathon",
     description:
-      "This is where ideas begin. Open to students, developers, and professionals. Participants start building immediately after registration.",
-    dateLabel: "Open now",
+      "Where ideas begin. Open to students, developers and professionals working on published problems.",
     points: ["Exploration", "Ideation", "Early product building"],
   },
   {
     id: "phase-2",
     number: "02",
-    phase: "Phase 2",
-    status: null,
+    phase: "Stage 2",
     title: "Evaluation & Shortlisting",
     description:
-      "Final submissions are evaluated on problem relevance, practicality of solution, and execution approach. Selected participants move forward in the journey.",
-    dateLabel: "Date to be announced",
+      "Submissions are evaluated on problem relevance, practicality of solution, and execution approach. Selected participants move forward in the journey.",
     points: ["Problem relevance", "Practicality", "Execution approach"],
   },
   {
     id: "phase-3",
     number: "03",
-    phase: "Phase 3",
-    status: null,
+    phase: "Stage 3",
     title: "On-Ground Hackathons",
     description:
-      "The hackathon evolves into a three-city offline journey across Uttarakhand Rudrapur, Roorkee and Dehradun with a final hackathon and culmination.",
-    dateLabel: "Date to be announced",
+      "The series continues as a three-city offline journey across Uttarakhand: Rudrapur, Roorkee and Dehradun, with a final hackathon and culmination.",
     points: ["Rudrapur · Roorkee · Dehradun", "Final hackathon & culmination"],
   },
 ] as const;
@@ -144,6 +94,26 @@ export const PARTICIPANTS = [
     description: "Apply industry experience to Uttarakhand’s real-world problems and mentor others.",
     note: "Intended photo: mixed group of professionals in discussion with a mentor",
     image: "/hackathon/prop9.webp",
+  },
+] as const;
+
+export const LEADERSHIP = [
+  {
+    name: "Lt Gen (Retd) Gurmit Singh",
+    role: "Hon'ble Governor, Uttarakhand",
+    image: "/images/governor_Gen_Gurmit_Singh.jpeg",
+    linkedin: "https://www.linkedin.com/in/ltgengurmit/",
+  },
+  {
+    name: "Shri Pushkar Singh Dhami",
+    role: "Hon'ble Chief Minister, Uttarakhand",
+    image: "/images/cm_pushkar_singh_dhami.jpg",
+    linkedin: "https://www.linkedin.com/in/pushkar-singh-dhami-986b66260/",
+  },
+  {
+    name: "Shri Pradeep Batra",
+    role: "IT Minister & Good Governance, Uttarakhand",
+    image: "/images/summitDeligate/shri_pradeep_batra_it_minister_govt_uttarakhand.jpg",
   },
 ] as const;
 
@@ -170,21 +140,152 @@ export const BEYOND = {
 } as const;
 
 export const CONTRAST_CTA = {
-  eyebrow: "Phase 1 is live",
-  title: "Start building for Uttarakhand today",
-  body: "Register your solution, explore published problems, and join a community of builders creating real impact across the state.",
+  eyebrow: "Uttarakhand Innovation & Solutions Hackathon",
+  title: "Build for Uttarakhand",
+  body: "Explore the problems, meet the community of builders, and learn how UKIS connects real challenges with solutions across the state.",
 } as const;
 
+/** Five standalone homepage sections for organisational involvement */
+export const ORG_SECTIONS = [
+  {
+    id: "challenge-sponsors",
+    eyebrow: "Challenge Sponsors",
+    title: "Support one specific problem",
+    body: [
+      "Challenge Sponsors support one specific problem, its operations, prize or conditional pilot fund.",
+      "As a challenge or pilot partner, a company gets a structured way to bring a real business, CSR or public-interest problem. Builders work around the approved challenge, with mentor and expert engagement, approved challenge-level visibility and content, product demonstrations, evidence and an outcome report. There is also a possible route to test a strong solution under a separately agreed pilot.",
+    ],
+    pointsLabel: "What challenge sponsors get",
+    points: [
+      "A structured way to bring a real business, CSR or public-interest problem",
+      "Builder participation around the approved challenge",
+      "Mentor and expert engagement",
+      "Approved challenge-level visibility and content",
+      "Product demonstrations, evidence and an outcome report",
+      "A possible route to test a strong solution under a separately agreed pilot",
+    ],
+    /** Set to a public path when ready, e.g. "/hackathon/challenge-sponsors.webp" */
+    image: "/hackathon/pt5.png",
+    imageLabel: "Challenge sponsor session or problem showcase",
+  },
+  {
+    id: "technology-partners",
+    eyebrow: "Technology Partners",
+    title: "Cloud, tools, engineers and workshops",
+    body: [
+      "Technology Partners provide cloud credits, APIs, software, cybersecurity, data tools, engineers and workshops.",
+      "As a technology partner, a company gets a relevant route to support builders working on real problems, product education and adoption, approved technical content and solution case-study opportunities, and aggregated programme insights without access to private participant data.",
+    ],
+    pointsLabel: "What technology partners get",
+    points: [
+      "A relevant route to provide cloud credits, APIs, software, tools, engineers and workshops",
+      "Product education and adoption by builders working on real problems",
+      "Approved technical content and solution case-study opportunities",
+      "Aggregated programme insights without access to private participant data",
+    ],
+    image: "",
+    imageLabel: "Builders using tools, APIs or workshop floor",
+  },
+  {
+    id: "hiring-partners",
+    eyebrow: "Hiring Partners",
+    title: "Mentors, interviews, internships and jobs",
+    body: [
+      "Hiring Partners take part through mentors, interviews, internships, apprenticeships, contracts and jobs.",
+      "A technology company, consultancy, recruitment agency, staffing firm or other employer can get consent-based access to builders evaluated through real work rather than CVs alone, with verified solution links, work samples and participant contributions.",
+    ],
+    pointsLabel: "What hiring partners get",
+    points: [
+      "Consent-based access to builders evaluated through real work rather than CVs alone",
+      "Verified solution links, work samples and participant contributions",
+      "Role matching for internships, apprenticeships, contract roles and employment",
+      "Structured showcases and interview coordination",
+      "Opportunities to mentor teams or sponsor relevant challenges",
+    ],
+    image: "/hackathon/pt6.png",
+    imageLabel: "Mentor interview or hiring showcase moment",
+  },
+  {
+    id: "knowledge-partners",
+    eyebrow: "Knowledge and University Partners",
+    title: "Participants, faculty, research and facilities",
+    body: [
+      "Knowledge and University Partners contribute participants, faculty, research, evaluators and facilities.",
+      "Universities, research groups and knowledge institutions help connect campus talent and research with real Uttarakhand problems. They get a structured route from an operational or research issue to evidence-backed solution exploration, with access to builders, mentors and technology partners around the problem.",
+    ],
+    pointsLabel: "What knowledge and university partners get",
+    points: [
+      "A discovery and scoping process that converts an issue into a clear, neutral and measurable challenge",
+      "A public problem page explaining the approved context, users, constraints, resources and desired outcomes",
+      "Access to builders, mentors and relevant technology partners around the problem",
+      "Progress visibility through agreed reviews without having to manage each solution team",
+      "Working-product demonstrations, verified evidence, limitations and deployment considerations",
+      "Approved visibility for enabling responsible innovation in Uttarakhand",
+    ],
+    image: "",
+    imageLabel: "Campus, faculty or university research setting",
+  },
+  {
+    id: "hiring-opportunity",
+    eyebrow: "Hiring opportunity",
+    title: "Hire the best talent of Uttarakhand",
+    body: [
+      "This section is for people or companies who want to hire the best talent of Uttarakhand. They can come here, participate in the programme, and get a chance to hire the best talents of Uttarakhand.",
+      "Builders are evaluated through real work on published problems. Participant data will never be sold or shared outside the participant's consent. Participation and judging will never depend on joining a hiring database, and no company receives a guaranteed hire or control over judging.",
+    ],
+    pointsLabel: "How hiring works here",
+    points: [
+      "Consent-based access to builders evaluated through real work rather than CVs alone",
+      "Verified solution links, work samples and participant contributions",
+      "Role matching for internships, apprenticeships, contract roles and employment",
+      "Structured showcases and interview coordination",
+      "Opportunities to mentor teams or sponsor relevant challenges",
+    ],
+    image: "/hackathon/pt7.png",
+    imageLabel: "Uttarakhand builders presenting or demo day",
+  },
+] as const;
+
 export const SPEAKERS = [
-  { name: "Rohan Pant", role: "Program Manager, Amazon", initials: "RP" },
-  { name: "Virendra Pal", role: "Operations Manager, Amazon", initials: "VP" },
-  { name: "Kevin Patel", role: "Software Engineer, Google", initials: "KP" },
-  { name: "Anmol Dixit", role: "Senior Software Engineer, Rubrik", initials: "AD" },
-  { name: "Ayush Gupta", role: "Data Engineer, Zeta", initials: "AG" },
-  { name: "Sagar Singh", role: "Software Developer, Scapia", initials: "SS" },
+  {
+    name: "Rohan Pant",
+    role: "Program Manager, Amazon",
+    initials: "RP",
+    image: "/hackathon/mentors/RohanP.jpeg",
+  },
+  {
+    name: "Virendra Pal",
+    role: "Operations Manager, Amazon",
+    initials: "VP",
+    image: "/hackathon/mentors/virendraP.jpg",
+  },
+  {
+    name: "Kevin Patel",
+    role: "Software Engineer, Google",
+    initials: "KP",
+    image: "/hackathon/mentors/kevinP.jpeg",
+  },
+  {
+    name: "Anmol Dixit",
+    role: "Senior Software Engineer, Rubrik",
+    initials: "AD",
+    image: "/hackathon/mentors/anmolD.jpeg",
+  },
+  {
+    name: "Ayush Gupta",
+    role: "Data Engineer, Zeta",
+    initials: "AG",
+    image: "/hackathon/mentors/AyushG.jpeg",
+  },
+  {
+    name: "Sagar Singh",
+    role: "Software Developer, Scapia",
+    initials: "SS",
+    image: "",
+  },
 ] as const;
 
 export const FINAL_CTA = {
   title: "Join the journey",
-  body: "Whether you are a student, a developer, or a working professional if you want to build something meaningful for Uttarakhand, this is where it starts.",
+  body: "Whether you are a student, a developer, or a working professional, if you want to build something meaningful for Uttarakhand, UKIS is the programme for you.",
 } as const;

@@ -1,9 +1,10 @@
 export { default as HomeHero } from "./HomeHero";
 export { default as HomePartners } from "./HomePartners";
 export { default as HomeWhatIs } from "./HomeWhatIs";
-export { default as HomeDomains } from "./HomeDomains";
 export { default as HomeJourney } from "./HomeJourney";
 export { default as HomeParticipants } from "./HomeParticipants";
+export { default as HomeLeadership } from "./HomeLeadership";
+export { default as HomeOrgSections } from "./HomeOrgSections";
 export { default as HomeFeaturedProblems } from "./HomeFeaturedProblems";
 export { default as HomeContrastCta } from "./HomeContrastCta";
 export { default as HomeSpeakers } from "./HomeSpeakers";

@@ -48,14 +48,6 @@ export default function HomeJourney() {
 
               <div className="flex flex-wrap items-center gap-2 mb-2">
                 <span className="ukis-eyebrow !text-[0.6rem]">{phase.phase}</span>
-                {phase.status && (
-                  <span className="px-2 py-0.5 rounded text-[11px] font-medium border border-primary/30 bg-surface-subtle text-primary">
-                    {phase.status}
-                  </span>
-                )}
-                <span className="text-xs text-muted-foreground ml-auto sm:ml-0">
-                  {phase.dateLabel}
-                </span>
               </div>
 
               <h3 className="font-display font-semibold text-xl sm:text-2xl text-foreground mb-3">
@@ -91,7 +83,7 @@ export default function HomeJourney() {
             {OFFLINE_ROUNDS.points.map((point) => (
               <li key={point} className="text-sm text-muted-foreground flex gap-2">
                 <span className="text-primary mt-0.5" aria-hidden>
-                  —
+                  •
                 </span>
                 {point}
               </li>

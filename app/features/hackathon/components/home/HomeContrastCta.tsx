@@ -2,13 +2,12 @@ import { motion, useReducedMotion } from "framer-motion";
 import { Link } from "~/features/hackathon/lib/router";
 import { ArrowRight } from "lucide-react";
 import { useScrollReveal } from "~/features/hackathon/hooks/useScrollReveal";
-import { CONTRAST_CTA, PHASES } from "./data";
+import { CONTRAST_CTA } from "./data";
 
-/** Contrasting light panel — primary conversion moment */
+/** Contrasting light panel - primary conversion moment */
 export default function HomeContrastCta() {
   const { ref, isInView } = useScrollReveal();
   const reduceMotion = useReducedMotion();
-  const livePhase = PHASES[0];
 
   return (
     <section className="ukis-section" ref={ref}>
@@ -37,29 +36,26 @@ export default function HomeContrastCta() {
             >
               {CONTRAST_CTA.title}
             </h2>
-            <p className="text-base sm:text-lg leading-relaxed mb-3" style={{ color: "#526174" }}>
+            <p className="text-base sm:text-lg leading-relaxed mb-8" style={{ color: "#526174" }}>
               {CONTRAST_CTA.body}
-            </p>
-            <p className="text-sm mb-8" style={{ color: "#526174" }}>
-              {livePhase.phase}: {livePhase.title} · {livePhase.dateLabel}
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-              <Link href="/register/solution">
+              <Link href="/problems">
                 <span
                   className="inline-flex items-center gap-2 px-7 py-3.5 font-semibold text-sm rounded-lg min-h-11 transition-colors"
                   style={{ background: "#0058D4", color: "#FFFFFF" }}
                 >
-                  Register Now
+                  Explore Problems
                   <ArrowRight className="w-4 h-4" aria-hidden />
                 </span>
               </Link>
-              <Link href="/problems">
+              <Link href="/mentors">
                 <span
                   className="inline-flex items-center gap-2 px-7 py-3.5 font-semibold text-sm rounded-lg border min-h-11 transition-colors"
                   style={{ borderColor: "#CBD6E2", color: "#10213A", background: "#FFFFFF" }}
                 >
-                  Explore Problems
+                  Meet Mentors
                 </span>
               </Link>
             </div>

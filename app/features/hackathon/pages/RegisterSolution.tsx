@@ -1,5 +1,5 @@
 /**
- * Register Solution Page — Kinetic Dark design
+ * Register Solution Page - Kinetic Dark design
  * Multi-step animated form with progress indicator
  * Fields: select problem, solution title, description, prototype URL, owner details, consent
  */
@@ -146,7 +146,7 @@ export default function RegisterSolution() {
     <div className="relative min-h-screen overflow-x-hidden pt-28 pb-20">
       <RegisterAsideImage
         label="Uttarakhand hillside landscape"
-        note="Solution registration — misty terraced hills of Uttarakhand"
+        note="Solution registration: misty terraced hills of Uttarakhand"
         src="/hackathon/logos/prop12.webp"
       />
 

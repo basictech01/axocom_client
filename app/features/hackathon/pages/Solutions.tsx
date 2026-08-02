@@ -1,5 +1,5 @@
 /**
- * Solutions Page — Kinetic Dark design
+ * Solutions Page - Kinetic Dark design
  * Public listing of accepted solutions from the API
  */
 import { useEffect, useMemo, useState } from "react";

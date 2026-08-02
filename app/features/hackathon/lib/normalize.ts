@@ -14,7 +14,7 @@ export function normalizeEmail(email: string): string {
  *   +91-98765-43210
  *
  * Returns null when the value is empty/missing after normalization.
- * Returns the digit string (possibly shorter than 10) when present but invalid —
+ * Returns the digit string (possibly shorter than 10) when present but invalid -
  * callers should validate length separately if needed.
  */
 export function normalizePhone(phone: string | null | undefined): string | null {

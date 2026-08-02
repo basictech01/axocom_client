@@ -1,5 +1,5 @@
 /**
- * Problem Detail Page — Kinetic Dark design
+ * Problem Detail Page - Kinetic Dark design
  * Shows full problem info, accepted solutions for this problem, and CTA to register
  */
 import { useEffect, useState } from "react";
@@ -109,17 +109,6 @@ export default function ProblemDetail() {
         >
           <div className="flex flex-wrap items-center gap-3 mb-4">
             <span className="text-sm text-muted-foreground">{problem.category}</span>
-            <span
-              className={`px-3 py-1 rounded-full text-xs font-medium ${
-                problem.difficulty === "Advanced"
-                  ? "bg-destructive/10 text-destructive border border-destructive/20"
-                  : problem.difficulty === "Intermediate"
-                  ? "bg-chart-2/10 text-chart-2 border border-chart-2/20"
-                  : "bg-chart-4/10 text-chart-4 border border-chart-4/20"
-              }`}
-            >
-              {problem.difficulty}
-            </span>
           </div>
           <h1 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-foreground mb-6">
             {problem.title}

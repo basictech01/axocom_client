@@ -1,5 +1,5 @@
 /**
- * Mentors Page — Kinetic Dark design
+ * Mentors Page - Kinetic Dark design
  * Public listing of accepted mentors from the API
  */
 import { useEffect, useMemo, useState } from "react";

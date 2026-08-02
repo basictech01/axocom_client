@@ -1,5 +1,5 @@
 /**
- * useScrollReveal — Intersection Observer hook for scroll-triggered animations
+ * useScrollReveal - Intersection Observer hook for scroll-triggered animations
  * Returns isInView boolean and a ref to attach to the target element
  */
 import { useState, useEffect, useRef } from "react";

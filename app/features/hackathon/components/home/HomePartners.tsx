@@ -26,7 +26,7 @@ export default function HomePartners() {
                 key={partner.abbr}
                 className="flex flex-col items-center justify-center gap-1 py-3 border border-dashed border-border rounded-lg bg-surface-subtle/40"
               >
-                {/* Logo placeholder — replace with official partner mark when provided */}
+                {/* Logo placeholder - replace with official partner mark when provided */}
                 <span className="font-display font-bold text-xl text-foreground tracking-wide">
                   {partner.abbr}
                 </span>

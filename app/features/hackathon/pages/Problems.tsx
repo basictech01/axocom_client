@@ -1,36 +1,71 @@
 /**
- * Problems Page — Kinetic Dark design
- * Lists all published problems with filters, search, and animated card reveals
+ * Problems Page - Kinetic Dark design
+ * Lists all published problems with search and live accepted-solution counts
  */
-import { useState, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useApolloClient } from "@apollo/client/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "~/features/hackathon/lib/router";
-import { Search, ArrowRight, Filter } from "lucide-react";
+import { Search, ArrowRight, Loader2 } from "lucide-react";
 import { problems } from "~/features/hackathon/lib/data";
 import { useScrollReveal } from "~/features/hackathon/hooks/useScrollReveal";
+import { PUBLIC_SOLUTIONS_QUERY } from "~/features/hackathon/services";
 
 export default function Problems() {
   const [search, setSearch] = useState("");
-  const [difficultyFilter, setDifficultyFilter] = useState<string>("all");
+  const [solutionCounts, setSolutionCounts] = useState<Record<string, number>>({});
+  const [countsLoading, setCountsLoading] = useState(true);
+  const client = useApolloClient();
   const { ref, isInView } = useScrollReveal(0.05);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const loadCounts = async () => {
+      setCountsLoading(true);
+      try {
+        const results = await Promise.all(
+          problems.map(async (problem) => {
+            const { data } = await client.query({
+              query: PUBLIC_SOLUTIONS_QUERY,
+              variables: { problemCode: problem.id, page: 1, limit: 1 },
+              fetchPolicy: "network-only",
+            });
+            return [problem.id, data.publicSolutions.pagination.total] as const;
+          }),
+        );
+        if (!cancelled) {
+          setSolutionCounts(Object.fromEntries(results));
+        }
+      } catch {
+        if (!cancelled) {
+          setSolutionCounts({});
+        }
+      } finally {
+        if (!cancelled) setCountsLoading(false);
+      }
+    };
+
+    void loadCounts();
+    return () => {
+      cancelled = true;
+    };
+  }, [client]);
 
   const filtered = useMemo(() => {
     return problems.filter((p) => {
-      const matchesSearch =
+      return (
         !search ||
         p.title.toLowerCase().includes(search.toLowerCase()) ||
         p.category.toLowerCase().includes(search.toLowerCase()) ||
-        p.description.toLowerCase().includes(search.toLowerCase());
-      const matchesDifficulty =
-        difficultyFilter === "all" || p.difficulty === difficultyFilter;
-      return matchesSearch && matchesDifficulty;
+        p.description.toLowerCase().includes(search.toLowerCase())
+      );
     });
-  }, [search, difficultyFilter]);
+  }, [search]);
 
   return (
     <div className="pt-28 pb-20">
       <div className="container">
-        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -46,14 +81,13 @@ export default function Problems() {
           </p>
         </motion.div>
 
-        {/* Search & Filter */}
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.2 }}
-          className="flex flex-col sm:flex-row gap-4 mb-10"
+          className="mb-10"
         >
-          <div className="relative flex-1">
+          <div className="relative max-w-xl">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <input
               type="text"
@@ -63,27 +97,8 @@ export default function Problems() {
               className="w-full pl-11 pr-4 py-3 rounded-xl bg-card border border-border text-foreground placeholder:text-muted-foreground focus:border-primary/50 focus:ring-1 focus:ring-primary/30 transition-all outline-none"
             />
           </div>
-          <div className="flex items-center gap-2">
-            <Filter className="w-4 h-4 text-muted-foreground" />
-            <div className="flex gap-1.5">
-              {["all", "Beginner", "Intermediate", "Advanced"].map((level) => (
-                <button
-                  key={level}
-                  onClick={() => setDifficultyFilter(level)}
-                  className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
-                    difficultyFilter === level
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-secondary text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  {level === "all" ? "All" : level}
-                </button>
-              ))}
-            </div>
-          </div>
         </motion.div>
 
-        {/* Results */}
         <div ref={ref}>
           <AnimatePresence mode="popLayout">
             {filtered.length === 0 ? (
@@ -95,60 +110,58 @@ export default function Problems() {
                 <p className="text-lg">No problems found matching your criteria.</p>
               </motion.div>
             ) : (
-              filtered.map((problem, i) => (
-                <motion.div
-                  key={problem.id}
-                  layout
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={isInView ? { opacity: 1, y: 0 } : {}}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{
-                    delay: i * 0.06,
-                    duration: 0.4,
-                    ease: [0.23, 1, 0.32, 1],
-                  }}
-                >
-                  <Link href={`/problems/${problem.id}`}>
-                    <motion.div
-                      whileHover={{ y: -2 }}
-                      className="p-6 rounded-2xl bg-card border border-border hover:border-primary/30 transition-all duration-300 mb-4 group"
-                    >
-                      <div className="flex flex-col sm:flex-row sm:items-start gap-4">
-                        <div className="flex-1">
-                          <div className="flex items-center gap-3 mb-3 flex-wrap">
-                            <span className="text-xs text-muted-foreground">
-                              {problem.category}
-                            </span>
-                            <span
-                              className={`px-3 py-1 rounded-full text-xs font-medium ${
-                                problem.difficulty === "Advanced"
-                                  ? "bg-destructive/10 text-destructive border border-destructive/20"
-                                  : problem.difficulty === "Intermediate"
-                                  ? "bg-chart-2/10 text-chart-2 border border-chart-2/20"
-                                  : "bg-chart-4/10 text-chart-4 border border-chart-4/20"
-                              }`}
-                            >
-                              {problem.difficulty}
-                            </span>
+              filtered.map((problem, i) => {
+                const count = solutionCounts[problem.id] ?? 0;
+                return (
+                  <motion.div
+                    key={problem.id}
+                    layout
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={isInView ? { opacity: 1, y: 0 } : {}}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{
+                      delay: i * 0.06,
+                      duration: 0.4,
+                      ease: [0.23, 1, 0.32, 1],
+                    }}
+                  >
+                    <Link href={`/problems/${problem.id}`}>
+                      <motion.div
+                        whileHover={{ y: -2 }}
+                        className="p-6 rounded-2xl bg-card border border-border hover:border-primary/30 transition-all duration-300 mb-4 group"
+                      >
+                        <div className="flex flex-col sm:flex-row sm:items-start gap-4">
+                          <div className="flex-1">
+                            <div className="mb-3">
+                              <span className="text-xs text-muted-foreground">
+                                {problem.category}
+                              </span>
+                            </div>
+                            <h3 className="font-display font-semibold text-xl text-foreground mb-2 group-hover:text-primary transition-colors">
+                              {problem.title}
+                            </h3>
+                            <p className="text-sm text-muted-foreground line-clamp-2">
+                              {problem.description}
+                            </p>
                           </div>
-                          <h3 className="font-display font-semibold text-xl text-foreground mb-2 group-hover:text-primary transition-colors">
-                            {problem.title}
-                          </h3>
-                          <p className="text-sm text-muted-foreground line-clamp-2">
-                            {problem.description}
-                          </p>
+                          <div className="flex sm:flex-col items-center sm:items-end gap-3 sm:gap-2 shrink-0">
+                            <span className="text-sm text-muted-foreground inline-flex items-center gap-1.5">
+                              {countsLoading ? (
+                                <Loader2 className="w-3.5 h-3.5 animate-spin text-primary" />
+                              ) : (
+                                <span className="font-mono font-bold text-primary">{count}</span>
+                              )}
+                              {" "}
+                              solution{count !== 1 ? "s" : ""}
+                            </span>
+                            <ArrowRight className="w-4 h-4 text-primary opacity-0 group-hover:opacity-100 transition-opacity" />
+                          </div>
                         </div>
-                        <div className="flex sm:flex-col items-center sm:items-end gap-3 sm:gap-2 shrink-0">
-                          <span className="text-sm text-muted-foreground">
-                            <span className="font-mono font-bold text-primary">{problem.solutionCount}</span> solution{problem.solutionCount !== 1 ? "s" : ""}
-                          </span>
-                          <ArrowRight className="w-4 h-4 text-primary opacity-0 group-hover:opacity-100 transition-opacity" />
-                        </div>
-                      </div>
-                    </motion.div>
-                  </Link>
-                </motion.div>
-              ))
+                      </motion.div>
+                    </Link>
+                  </motion.div>
+                );
+              })
             )}
           </AnimatePresence>
         </div>

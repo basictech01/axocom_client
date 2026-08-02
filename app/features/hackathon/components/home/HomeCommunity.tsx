@@ -9,13 +9,13 @@ export default function HomeCommunity() {
   const reduceMotion = useReducedMotion();
 
   return (
-    <section className="pb-20 lg:pb-28" ref={ref}>
+    <section className="pt-2 pb-8 sm:pb-10" ref={ref}>
       <div className="container">
         <motion.div
           initial={reduceMotion ? false : { opacity: 0, y: 12 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.45 }}
-          className="flex flex-col lg:flex-row lg:items-center gap-6 lg:gap-10 border border-border rounded-xl bg-surface px-6 py-8 sm:px-10 sm:py-10"
+          className="flex flex-col lg:flex-row lg:items-center gap-6 lg:gap-10 border border-border rounded-xl bg-surface px-6 py-6 sm:px-8 sm:py-7"
         >
           <div className="flex items-center gap-4 shrink-0">
             <div

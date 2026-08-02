@@ -9,8 +9,8 @@ export default function HomeFinalCta() {
   const reduceMotion = useReducedMotion();
 
   return (
-    <section className="ukis-section" ref={ref}>
-      <div className="container space-y-10">
+    <section className="py-10 sm:py-12 lg:py-14" ref={ref}>
+      <div className="container space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <motion.div
             initial={reduceMotion ? false : { opacity: 0, y: 12 }}
@@ -60,9 +60,9 @@ export default function HomeFinalCta() {
               {FINAL_CTA.body}
             </p>
             <div className="flex flex-col sm:flex-row gap-3 items-start">
-              <Link href="/register/solution">
+              <Link href="/problems">
                 <span className="inline-flex items-center gap-2 px-6 py-3.5 bg-primary text-primary-foreground font-semibold text-sm rounded-lg hover:bg-primary-hover transition-colors min-h-11 shadow-md">
-                  Register Now
+                  Explore Problems
                   <ArrowRight className="w-4 h-4" aria-hidden />
                 </span>
               </Link>

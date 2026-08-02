@@ -12,7 +12,7 @@ export default function HomeHero() {
       <div className="ukis-contour" />
       <div className="ukis-jaali" />
 
-      {/* Full-bleed editorial image — right ~55% on desktop */}
+      {/* Full-bleed editorial image - right ~55% on desktop */}
       <div className="absolute inset-y-0 right-0 w-full lg:w-[86%] pointer-events-none">
         <img
           src="/hackathon/logos/prop.webp"
@@ -42,15 +42,15 @@ export default function HomeHero() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 mb-10">
-              <Link href="/register/solution">
+              <Link href="/problems">
                 <span className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-primary text-primary-foreground font-semibold text-sm rounded-lg hover:bg-primary-hover transition-colors min-h-11">
-                  Register Now
+                  Explore Problems
                   <ArrowRight className="w-4 h-4" aria-hidden />
                 </span>
               </Link>
-              <Link href="/problems">
+              <Link href="/mentors">
                 <span className="inline-flex items-center justify-center gap-2 px-6 py-3.5 border border-border bg-transparent text-foreground font-semibold text-sm rounded-lg hover:bg-surface-subtle transition-colors min-h-11">
-                  View Problems
+                  Meet Mentors
                 </span>
               </Link>
             </div>
