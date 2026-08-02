@@ -24,7 +24,7 @@ interface EditorialImagePlaceholderProps {
   label: string;
   aspect?: Aspect;
   className?: string;
-  /** Developer note — intended final asset */
+  /** Developer note - intended final asset */
   note?: string;
   rounded?: "none" | "sm" | "md" | "lg";
 }
@@ -38,7 +38,7 @@ const radiusClass = {
 
 /**
  * Drop-in people/photo placeholder for editorial layouts.
- * Replace with a normal <img> when final assets arrive — keep the same aspect wrapper.
+ * Replace with a normal <img> when final assets arrive - keep the same aspect wrapper.
  */
 export default function EditorialImagePlaceholder({
   label,
@@ -59,7 +59,7 @@ export default function EditorialImagePlaceholder({
         className
       )}
     >
-      {/* Contour / mountain line art — brand-tinted, not a stock photo */}
+      {/* Contour / mountain line art - brand-tinted, not a stock photo */}
       <div className="ukis-contour absolute inset-0 opacity-[0.18]" />
       <div
         className="absolute inset-0"

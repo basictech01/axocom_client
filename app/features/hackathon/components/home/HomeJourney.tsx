@@ -1,6 +1,6 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { useScrollReveal } from "~/features/hackathon/hooks/useScrollReveal";
-import { PHASES, OFFLINE_ROUNDS } from "./data";
+import { PHASES } from "./data";
 
 export default function HomeJourney() {
   const { ref, isInView } = useScrollReveal();
@@ -48,14 +48,6 @@ export default function HomeJourney() {
 
               <div className="flex flex-wrap items-center gap-2 mb-2">
                 <span className="ukis-eyebrow !text-[0.6rem]">{phase.phase}</span>
-                {phase.status && (
-                  <span className="px-2 py-0.5 rounded text-[11px] font-medium border border-primary/30 bg-surface-subtle text-primary">
-                    {phase.status}
-                  </span>
-                )}
-                <span className="text-xs text-muted-foreground ml-auto sm:ml-0">
-                  {phase.dateLabel}
-                </span>
               </div>
 
               <h3 className="font-display font-semibold text-xl sm:text-2xl text-foreground mb-3">
@@ -77,28 +69,6 @@ export default function HomeJourney() {
             </motion.li>
           ))}
         </ol>
-
-        <motion.div
-          initial={reduceMotion ? false : { opacity: 0, y: 12 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ delay: 0.4, duration: 0.45 }}
-          className="mt-16 pt-10 border-t border-border max-w-3xl"
-        >
-          <h3 className="font-display font-semibold text-lg text-foreground mb-4">
-            {OFFLINE_ROUNDS.title}
-          </h3>
-          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5">
-            {OFFLINE_ROUNDS.points.map((point) => (
-              <li key={point} className="text-sm text-muted-foreground flex gap-2">
-                <span className="text-primary mt-0.5" aria-hidden>
-                  —
-                </span>
-                {point}
-              </li>
-            ))}
-          </ul>
-          <p className="text-sm text-foreground leading-relaxed">{OFFLINE_ROUNDS.closing}</p>
-        </motion.div>
       </div>
     </section>
   );

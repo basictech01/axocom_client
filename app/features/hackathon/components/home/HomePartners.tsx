@@ -17,21 +17,28 @@ export default function HomePartners() {
           initial={reduceMotion ? false : { opacity: 0, y: 12 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.45 }}
-          className="rounded-xl border border-border bg-surface/95 backdrop-blur-md px-5 py-5 sm:px-8 sm:py-6"
+          className="rounded-xl bg-[#12263F] dark:bg-surface/95 backdrop-blur-md px-5 py-3.5 sm:px-8 sm:py-4"
         >
-          <p className="ukis-eyebrow text-center mb-5">In Association With</p>
-          <ul className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
+          <p className="ukis-eyebrow text-center mb-3 !text-white dark:!text-primary">In Association With</p>
+          <ul className="mx-auto grid max-w-md grid-cols-1 sm:grid-cols-2 sm:divide-x sm:divide-white/15 dark:divide-border/60">
             {PARTNERS.map((partner) => (
               <li
-                key={partner.abbr}
-                className="flex flex-col items-center justify-center gap-1 py-3 border border-dashed border-border rounded-lg bg-surface-subtle/40"
+                key={partner.name}
+                className="flex flex-col items-center justify-center gap-0.5 px-6 py-1 text-center"
               >
-                {/* Logo placeholder — replace with official partner mark when provided */}
-                <span className="font-display font-bold text-xl text-foreground tracking-wide">
-                  {partner.abbr}
-                </span>
-                <span className="text-[11px] text-muted-foreground text-center px-2">
-                  {partner.name}
+                <div className="flex items-center justify-center gap-2.5">
+                  <img
+                    src={partner.logo}
+                    alt=""
+                    aria-hidden="true"
+                    className="h-8 w-8 sm:h-9 sm:w-9 object-contain shrink-0"
+                  />
+                  <span className="font-display font-bold text-xl text-white dark:text-foreground tracking-wide">
+                    {partner.name}
+                  </span>
+                </div>
+                <span className="text-xs text-white/70 dark:text-muted-foreground leading-snug max-w-[11rem]">
+                  {partner.role}
                 </span>
               </li>
             ))}

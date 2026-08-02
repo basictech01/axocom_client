@@ -1,6 +1,7 @@
 /**
  * Shared catalogue and types for the hackathon programme.
- * Problems remain static. Public mentors/solutions are loaded from the API.
+ * Problems remain static. Public solutions are loaded from the API.
+ * Public mentors are maintained in lib/mentors.ts.
  */
 
 export interface Problem {
@@ -11,9 +12,21 @@ export interface Problem {
   difficulty: "Beginner" | "Intermediate" | "Advanced";
   publishedAt: string;
   solutionCount: number;
+  /**
+   * Optional problem sponsor shown above the title.
+   * Government body that shared the problem, or a company that sponsored it.
+   * Leave unset when there is no sponsor yet.
+   */
+  sponsor?: string;
   whatsappGroup?: string;
 }
 
+/**
+ * Static problem catalogue.
+ * To attach a sponsor for a problem, set `sponsor` to the organisation or company name, e.g.:
+ *   sponsor: "ITDA Uttarakhand"
+ * Omit `sponsor` when none is assigned yet.
+ */
 export const problems: Problem[] = [
   {
     id: "P-001",

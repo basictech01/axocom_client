@@ -3,13 +3,13 @@ import EditorialImagePlaceholder from "~/features/hackathon/components/home/Edit
 interface RegisterAsideImageProps {
   label: string;
   note: string;
-  /** Optional final asset path — falls back to editorial placeholder */
+  /** Optional final asset path - falls back to editorial placeholder */
   src?: string;
 }
 
 /**
  * Full-page right visual for registration layouts (hero-style).
- * Pins to the viewport right edge — not limited to the form height.
+ * Pins to the viewport right edge - not limited to the form height.
  */
 export default function RegisterAsideImage({
   label,
@@ -29,7 +29,7 @@ export default function RegisterAsideImage({
             className="h-full w-full object-cover object-center"
           />
         ) : (
-          /* DEV: {note} — pass src when the final asset is ready */
+          /* DEV: {note} - pass src when the final asset is ready */
           <EditorialImagePlaceholder
             label={label}
             note={note}
@@ -38,7 +38,7 @@ export default function RegisterAsideImage({
             className="h-full w-full !aspect-auto border-0"
           />
         )}
-        {/* Fade into page from the left — same language as homepage hero */}
+        {/* Fade into page from the left - same language as homepage hero */}
         <div
           className="absolute inset-0"
           style={{

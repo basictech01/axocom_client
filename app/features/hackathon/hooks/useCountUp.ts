@@ -1,5 +1,5 @@
 /**
- * useCountUp — Animated counter that counts from 0 to target value
+ * useCountUp - Animated counter that counts from 0 to target value
  * Triggers when element enters viewport
  */
 import { useState, useEffect, useRef } from "react";

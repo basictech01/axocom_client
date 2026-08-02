@@ -3,7 +3,6 @@ import type {
   ApplyMentorInput,
   MentorApplication,
   Pagination,
-  PublicMentor,
   PublicSolution,
   ReviewStatus,
   SolutionSubmission,
@@ -23,34 +22,6 @@ export const PUBLIC_SOLUTIONS_QUERY: TypedDocumentNode<
         solutionTitle
         solutionDescription
         prototypeUrl
-        createdAt
-        status
-      }
-      pagination {
-        total
-        page
-        limit
-        totalPages
-      }
-    }
-  }
-`;
-
-export const PUBLIC_MENTORS_QUERY: TypedDocumentNode<
-  { publicMentors: { data: PublicMentor[]; pagination: Pagination } },
-  { page?: number; limit?: number }
-> = gql`
-  query PublicMentors($page: Int, $limit: Int) {
-    publicMentors(page: $page, limit: $limit) {
-      data {
-        id
-        fullName
-        currentRole
-        organisation
-        expertise
-        experienceSummary
-        motivation
-        profileUrl
         createdAt
         status
       }

@@ -235,7 +235,7 @@
     background-color: var(--color-selection);
   }
 
-  /* Visited colour applies to plain content links only — not nav/buttons */
+  /* Visited colour applies to plain content links only - not nav/buttons */
   .hackathon-app .prose a:visited,
   .hackathon-app main a.visited-aware:visited {
     color: var(--color-visited);
@@ -339,7 +339,7 @@
     opacity: 0.55;
   }
 
-  /* Restrained brand accent for headings — adjacent colours only */
+  /* Restrained brand accent for headings - adjacent colours only */
   .hackathon-app .text-brand-accent {
     background: linear-gradient(
       135deg,
@@ -461,7 +461,7 @@
   }
 }
 
-/* Final CTA photo panel — same treatment in day + night (dark scrim, light copy) */
+/* Final CTA photo panel - same treatment in day + night (dark scrim, light copy) */
 .hackathon-app .final-cta-scrim {
   background:
     linear-gradient(
@@ -507,7 +507,7 @@
   text-decoration: underline;
 }
 
-/* Custom scrollbar — theme-aware */
+/* Custom scrollbar - theme-aware */
 .hackathon-app::-webkit-scrollbar,
 .hackathon-app *::-webkit-scrollbar {
   width: 8px;

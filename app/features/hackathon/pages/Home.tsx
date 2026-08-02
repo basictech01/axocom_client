@@ -1,14 +1,15 @@
 /**
- * Home — editorial UKIS composition.
+ * Home - editorial UKIS composition.
  * Section components live in ~/features/hackathon/components/home.
  */
 import {
   HomeHero,
   HomePartners,
   HomeWhatIs,
-  HomeDomains,
   HomeJourney,
   HomeParticipants,
+  HomeLeadership,
+  HomeOrgSections,
   HomeFeaturedProblems,
   HomeContrastCta,
   HomeSpeakers,
@@ -21,10 +22,11 @@ export default function Home() {
     <div className="overflow-x-hidden">
       <HomeHero />
       <HomePartners />
+      <HomeLeadership />
       <HomeWhatIs />
-      <HomeDomains />
       <HomeJourney />
       <HomeParticipants />
+      <HomeOrgSections />
       <HomeFeaturedProblems />
       <HomeContrastCta />
       <HomeSpeakers />

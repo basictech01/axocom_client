@@ -1,14 +1,16 @@
 /**
- * Register Solution Page — Kinetic Dark design
+ * Register Solution Page - Kinetic Dark design
  * Multi-step animated form with progress indicator
- * Fields: select problem, solution title, description, prototype URL, owner details, consent
+ * Fields: select problem (skipped when arriving from a problem page),
+ * solution title, description, prototype URL, owner details, consent
  */
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useMutation } from "@apollo/client/react";
+import { useSearchParams } from "react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "~/features/hackathon/lib/router";
-import { ArrowLeft, ArrowRight, Check, AlertCircle, Loader2 } from "lucide-react";
-import { problems } from "~/features/hackathon/lib/data";
+import { ArrowRight, Check, AlertCircle, Loader2 } from "lucide-react";
+import { getProblemById, problems } from "~/features/hackathon/lib/data";
 import { useScrollReveal } from "~/features/hackathon/hooks/useScrollReveal";
 import { toast } from "sonner";
 import { normalizePhone, isValidNormalizedPhone } from "~/features/hackathon/lib/normalize";
@@ -24,14 +26,23 @@ const steps = [
 ];
 
 export default function RegisterSolution() {
+  const [searchParams] = useSearchParams();
+  const problemFromQuery = searchParams.get("problem")?.trim() || "";
+  const preselectedProblem = useMemo(
+    () => (problemFromQuery ? getProblemById(problemFromQuery) : undefined),
+    [problemFromQuery],
+  );
+  const hasPreselectedProblem = Boolean(preselectedProblem);
+  const minStep = hasPreselectedProblem ? 2 : 1;
+
   const [submitSolution] = useMutation(SUBMIT_SOLUTION_MUTATION);
-  const [currentStep, setCurrentStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState(minStep);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const { ref } = useScrollReveal();
 
   const [formData, setFormData] = useState({
-    problemId: "",
+    problemId: preselectedProblem?.id ?? "",
     solutionTitle: "",
     description: "",
     prototypeUrl: "",
@@ -42,6 +53,22 @@ export default function RegisterSolution() {
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    if (preselectedProblem) {
+      setFormData((prev) => ({ ...prev, problemId: preselectedProblem.id }));
+      setCurrentStep((step) => Math.max(step, 2));
+      setErrors({});
+      return;
+    }
+
+    // Arrived without a problem (or chose "different problem"): show picker
+    if (!problemFromQuery) {
+      setFormData((prev) => ({ ...prev, problemId: "" }));
+      setCurrentStep(1);
+      setErrors({});
+    }
+  }, [preselectedProblem, problemFromQuery]);
 
   function validateStep(step: number): boolean {
     const newErrors: Record<string, string> = {};
@@ -73,7 +100,7 @@ export default function RegisterSolution() {
   }
 
   function prevStep() {
-    setCurrentStep((s) => Math.max(s - 1, 1));
+    setCurrentStep((s) => Math.max(s - 1, minStep));
     setErrors({});
   }
 
@@ -146,7 +173,7 @@ export default function RegisterSolution() {
     <div className="relative min-h-screen overflow-x-hidden pt-28 pb-20">
       <RegisterAsideImage
         label="Uttarakhand hillside landscape"
-        note="Solution registration — misty terraced hills of Uttarakhand"
+        note="Solution registration: misty terraced hills of Uttarakhand"
         src="/hackathon/logos/prop12.webp"
       />
 
@@ -162,9 +189,42 @@ export default function RegisterSolution() {
               Register Your <span className="text-brand-accent">Solution</span>
             </h1>
             <p className="text-muted-foreground max-w-2xl text-lg">
-              Pick a problem and describe your approach. Our team will review your submission.
+              {hasPreselectedProblem
+                ? "Describe your approach for this problem. Our team will review your submission."
+                : "Pick a problem and describe your approach. Our team will review your submission."}
             </p>
           </motion.div>
+
+          {preselectedProblem && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.35 }}
+              className="mb-8 p-4 rounded-xl bg-primary/5 border border-primary/20"
+            >
+              <p className="text-xs font-medium uppercase tracking-wide text-primary mb-1">
+                Solving
+              </p>
+              <p className="font-display font-semibold text-foreground">
+                {preselectedProblem.title}
+              </p>
+              <div className="mt-2 flex flex-wrap items-center gap-3 text-sm">
+                <Link
+                  href={`/problems/${preselectedProblem.id}`}
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  View problem
+                </Link>
+                <span className="text-border">·</span>
+                <Link
+                  href="/register/solution"
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  Choose a different problem
+                </Link>
+              </div>
+            </motion.div>
+          )}
 
           {/* Progress Steps */}
           <div className="mb-10 flex items-center gap-2">
@@ -172,18 +232,34 @@ export default function RegisterSolution() {
               <div key={step.id} className="flex items-center gap-2">
                 <div
                   className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold transition-all duration-300 ${
-                    currentStep >= step.id
+                    currentStep >= step.id || (hasPreselectedProblem && step.id === 1)
                       ? "bg-primary text-primary-foreground"
                       : "bg-secondary text-muted-foreground border border-border"
                   }`}
                 >
-                  {currentStep > step.id ? <Check className="w-4 h-4" /> : step.id}
+                  {currentStep > step.id || (hasPreselectedProblem && step.id === 1) ? (
+                    <Check className="w-4 h-4" />
+                  ) : (
+                    step.id
+                  )}
                 </div>
-                <span className={`text-sm font-medium hidden sm:inline ${currentStep >= step.id ? "text-foreground" : "text-muted-foreground"}`}>
+                <span
+                  className={`text-sm font-medium hidden sm:inline ${
+                    currentStep >= step.id || (hasPreselectedProblem && step.id === 1)
+                      ? "text-foreground"
+                      : "text-muted-foreground"
+                  }`}
+                >
                   {step.label}
                 </span>
                 {i < steps.length - 1 && (
-                  <div className={`w-8 sm:w-16 h-0.5 rounded transition-colors duration-300 ${currentStep > step.id ? "bg-primary" : "bg-border"}`} />
+                  <div
+                    className={`w-8 sm:w-16 h-0.5 rounded transition-colors duration-300 ${
+                      currentStep > step.id || (hasPreselectedProblem && step.id === 1)
+                        ? "bg-primary"
+                        : "bg-border"
+                    }`}
+                  />
                 )}
               </div>
             ))}
@@ -332,7 +408,7 @@ export default function RegisterSolution() {
                 <div className="flex items-center justify-between mt-8 pt-6 border-t border-border">
                   <button
                     onClick={prevStep}
-                    disabled={currentStep === 1 || isSubmitting}
+                    disabled={currentStep === minStep || isSubmitting}
                     className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground disabled:opacity-50 transition-colors"
                   >
                     Back

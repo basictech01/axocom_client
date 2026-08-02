@@ -34,7 +34,7 @@ export default function HomeParticipants() {
               <div className="mb-5 aspect-[4/5] w-full overflow-hidden rounded-xl border border-border transition-transform duration-500 group-hover:scale-[1.01]">
                 <img
                   src={item.image}
-                  alt={`${item.category} — UKIS participants`}
+                  alt={`${item.category}, UKIS participants`}
                   className="h-full w-full object-cover"
                 />
               </div>

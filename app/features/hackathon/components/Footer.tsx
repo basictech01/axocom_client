@@ -1,10 +1,13 @@
 /**
- * Footer — Uttarakhand Innovation & Solutions Hackathon
+ * Footer - Uttarakhand Innovation & Solutions Hackathon
  */
 import { Link } from "~/features/hackathon/lib/router";
 import { useTheme } from "~/features/hackathon/contexts/ThemeContext";
 import { WHATSAPP_COMMUNITY_URL } from "~/features/hackathon/components/WhatsAppCommunityCta";
 import { WhatsAppLogo } from "~/features/hackathon/components/WhatsAppLogo";
+import { InstagramLogo } from "~/features/hackathon/components/InstagramLogo";
+
+const INSTAGRAM_URL = "https://www.instagram.com/ukis.hackathon/";
 
 export default function Footer() {
   const { theme } = useTheme();
@@ -12,7 +15,7 @@ export default function Footer() {
   return (
     <footer className="relative border-t border-border bg-surface">
       <div className="absolute top-0 left-0 right-0 h-[2px] brand-gradient opacity-40" />
-      <div className="container py-12">
+      <div className="container py-8 sm:py-10">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
             <Link href="/" className="inline-block mb-4">
@@ -25,8 +28,8 @@ export default function Footer() {
               />
             </Link>
             <p className="text-sm text-muted-foreground max-w-xs">
-              Uttarakhand Innovation & Solutions Hackathon — connecting problems
-              with solutions for Devbhoomi.
+              Connecting Uttarakhand problems with builders and solutions for
+              Devbhoomi.
             </p>
           </div>
 
@@ -67,13 +70,20 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-10 pt-6 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="mt-10 pt-6 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-xs text-muted-foreground">
             &copy; {new Date().getFullYear()} Uttarakhand Innovation & Solutions Hackathon. All rights reserved.
           </p>
-          <p className="text-xs text-muted-foreground">
-            Official public information and corrections published through this programme website.
-          </p>
+          <a
+            href={INSTAGRAM_URL}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-[#E4405F] transition-colors"
+            aria-label="UKIS Hackathon on Instagram"
+          >
+            <InstagramLogo className="w-3.5 h-3.5 text-[#E4405F]" />
+            @ukis.hackathon
+          </a>
         </div>
       </div>
     </footer>

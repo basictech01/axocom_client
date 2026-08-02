@@ -1,5 +1,5 @@
 /**
- * Navbar — Uttarakhand Innovation & Solutions Hackathon
+ * Navbar - Uttarakhand Innovation & Solutions Hackathon
  * Theme-aware bar with brand logo tile and day/night toggle
  */
 import { useState, useEffect } from "react";
@@ -13,7 +13,6 @@ const navLinks = [
   { href: "/problems", label: "Problems" },
   { href: "/solutions", label: "Solutions" },
   { href: "/mentors", label: "Mentors" },
-  { href: "/register/solution", label: "Register Solution" },
   { href: "/register/mentor", label: "Register Mentor" },
 ];
 
@@ -77,14 +76,14 @@ export default function Navbar() {
           >
             {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
           </button>
-          <Link href="/register/solution">
+          <Link href="/problems">
             <motion.button
               type="button"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.97 }}
               className="relative px-5 py-2.5 bg-primary text-primary-foreground font-semibold text-sm rounded-lg hover:bg-primary-hover transition-colors overflow-hidden"
             >
-              <span className="relative z-10">Join Now</span>
+              <span className="relative z-10">Explore Problems</span>
             </motion.button>
           </Link>
         </div>
