@@ -92,7 +92,7 @@ export default function Mentors() {
                 <p className="text-lg">No mentors found matching your criteria.</p>
               </motion.div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {filtered.map((mentor, i) => {
                   const expertiseList = parseExpertise(mentor.expertise);
                   const hasPhoto = Boolean(mentor.image?.trim());
@@ -111,23 +111,40 @@ export default function Mentors() {
                     >
                       <motion.div
                         whileHover={{ y: -4 }}
-                        className="p-6 rounded-2xl bg-card border border-border hover:border-primary/30 transition-all duration-300 h-full"
+                        className="p-5 sm:p-6 rounded-2xl bg-card border border-border hover:border-primary/30 transition-all duration-300 h-full flex flex-col"
                       >
-                        {hasPhoto ? (
-                          <div className="w-14 h-14 rounded-full overflow-hidden border border-border mb-4">
+                        <div className="aspect-square w-full rounded-lg border border-border bg-surface-subtle mb-4 overflow-hidden relative shrink-0">
+                          {hasPhoto ? (
                             <img
                               src={mentor.image}
                               alt={mentor.name}
                               className="h-full w-full object-cover object-center"
                             />
-                          </div>
-                        ) : (
-                          <div className="w-14 h-14 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center border border-border mb-4">
-                            <span className="font-display font-bold text-primary text-xl">
-                              {mentorInitials(mentor.name, mentor.initials)}
-                            </span>
-                          </div>
-                        )}
+                          ) : (
+                            <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary/20 to-primary/5">
+                              <span className="font-display font-bold text-primary text-2xl">
+                                {mentorInitials(mentor.name, mentor.initials)}
+                              </span>
+                            </div>
+                          )}
+                          {mentor.linkedinUrl ? (
+                            <a
+                              href={mentor.linkedinUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              aria-label={`${mentor.name} on LinkedIn`}
+                              title={`${mentor.name} on LinkedIn`}
+                              className="absolute right-2.5 bottom-2.5 inline-flex h-[22px] w-[22px] items-center justify-center transition-transform hover:-translate-y-0.5 z-10"
+                            >
+                              <img
+                                src="/images/linkedin.png"
+                                alt=""
+                                aria-hidden="true"
+                                className="h-full w-full object-contain rounded-[7px] grayscale opacity-60 hover:opacity-90 transition-opacity"
+                              />
+                            </a>
+                          ) : null}
+                        </div>
 
                         <h3 className="font-display font-semibold text-xl text-foreground mb-1">
                           {mentor.name}
@@ -142,7 +159,7 @@ export default function Mentors() {
                           {mentor.bio}
                         </p>
 
-                        <div className="flex flex-wrap gap-1.5 mb-4">
+                        <div className="flex flex-wrap gap-1.5 mt-auto">
                           {expertiseList.map((exp) => (
                             <span
                               key={exp}
@@ -152,17 +169,6 @@ export default function Mentors() {
                             </span>
                           ))}
                         </div>
-
-                        {mentor.linkedinUrl ? (
-                          <a
-                            href={mentor.linkedinUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-sm font-medium text-primary hover:underline underline-offset-2"
-                          >
-                            Meet them
-                          </a>
-                        ) : null}
                       </motion.div>
                     </motion.div>
                   );

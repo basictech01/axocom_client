@@ -55,6 +55,23 @@ export default function HomeSpeakers() {
                       </span>
                     </div>
                   )}
+                  {speaker.linkedin ? (
+                    <a
+                      href={speaker.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`${speaker.name} on LinkedIn`}
+                      title={`${speaker.name} on LinkedIn`}
+                      className="absolute right-2.5 bottom-2.5 inline-flex h-[22px] w-[22px] items-center justify-center transition-transform hover:-translate-y-0.5 z-10"
+                    >
+                      <img
+                        src="/images/linkedin.png"
+                        alt=""
+                        aria-hidden="true"
+                        className="h-full w-full object-contain rounded-[7px] grayscale opacity-60 hover:opacity-90 transition-opacity"
+                      />
+                    </a>
+                  ) : null}
                 </div>
 
                 <div className="flex flex-1 flex-col min-h-0">
@@ -67,16 +84,6 @@ export default function HomeSpeakers() {
                   <p className="text-xs font-bold text-foreground leading-tight truncate mt-0.5">
                     {speaker.organisation}
                   </p>
-                  {speaker.linkedin ? (
-                    <a
-                      href={speaker.linkedin}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="mt-auto pt-1.5 text-xs font-medium text-primary hover:underline underline-offset-2"
-                    >
-                      Meet them
-                    </a>
-                  ) : null}
                 </div>
               </motion.article>
             );

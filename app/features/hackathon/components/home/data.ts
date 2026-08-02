@@ -19,10 +19,12 @@ export const PARTNERS = [
   {
     name: "PACE",
     role: "Hiring & Mentorship Partner",
+    logo: "/paceLogo.png",
   },
   {
     name: "AxoCom",
     role: "Media Partner",
+    logo: "/axocomLogo.png",
   },
 ] as const;
 

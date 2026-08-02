@@ -6,14 +6,13 @@ import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@apollo/client/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "~/features/hackathon/lib/router";
-import { Search, ArrowRight, Clock, Filter, Loader2 } from "lucide-react";
+import { Search, ArrowRight, Clock, Loader2 } from "lucide-react";
 import { problems } from "~/features/hackathon/lib/data";
 import { useScrollReveal } from "~/features/hackathon/hooks/useScrollReveal";
 import { PUBLIC_SOLUTIONS_QUERY } from "~/features/hackathon/services";
 
 export default function Solutions() {
   const [search, setSearch] = useState("");
-  const [problemFilter, setProblemFilter] = useState<string>("all");
   const { data, loading: isInitialLoading, error, fetchMore } = useQuery(PUBLIC_SOLUTIONS_QUERY, {
     variables: { limit: 100 },
   });
@@ -68,22 +67,23 @@ export default function Solutions() {
     };
   }, [fetchMore, hasFirstPage, totalPages]);
 
-  const filtered = useMemo(() => {
-    return solutions.filter((s) => {
-      const matchesSearch =
-        !search ||
-        s.solutionTitle.toLowerCase().includes(search.toLowerCase()) ||
-        s.fullName.toLowerCase().includes(search.toLowerCase()) ||
-        s.solutionDescription.toLowerCase().includes(search.toLowerCase());
-      const matchesProblem =
-        problemFilter === "all" || s.problemCode === problemFilter;
-      return matchesSearch && matchesProblem;
-    });
-  }, [search, problemFilter, solutions]);
-
   function getProblemTitle(problemId: string) {
     return problems.find((p) => p.id === problemId)?.title || problemId;
   }
+
+  const filtered = useMemo(() => {
+    const query = search.trim().toLowerCase();
+    if (!query) return solutions;
+
+    return solutions.filter((s) => {
+      return (
+        s.solutionTitle.toLowerCase().includes(query) ||
+        s.fullName.toLowerCase().includes(query) ||
+        s.solutionDescription.toLowerCase().includes(query) ||
+        getProblemTitle(s.problemCode).toLowerCase().includes(query)
+      );
+    });
+  }, [search, solutions]);
 
   return (
     <div className="pt-28 pb-20">
@@ -103,14 +103,13 @@ export default function Solutions() {
           </p>
         </motion.div>
 
-        {/* Search & Filter */}
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.2 }}
-          className="flex flex-col sm:flex-row gap-4 mb-10"
+          className="mb-10 max-w-xl"
         >
-          <div className="relative flex-1">
+          <div className="relative">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <input
               type="text"
@@ -119,33 +118,6 @@ export default function Solutions() {
               onChange={(e) => setSearch(e.target.value)}
               className="w-full pl-11 pr-4 py-3 rounded-xl bg-card border border-border text-foreground placeholder:text-muted-foreground focus:border-primary/50 focus:ring-1 focus:ring-primary/30 transition-all outline-none"
             />
-          </div>
-          <div className="flex items-center gap-2 overflow-x-auto pb-1">
-            <Filter className="w-4 h-4 text-muted-foreground shrink-0" />
-            <button
-              onClick={() => setProblemFilter("all")}
-              className={`px-3 py-2 rounded-lg text-sm font-medium transition-all shrink-0 ${
-                problemFilter === "all"
-                  ? "bg-primary text-primary-foreground"
-                  : "bg-secondary text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              All
-            </button>
-            {problems.map((p) => (
-              <button
-                key={p.id}
-                onClick={() => setProblemFilter(p.id)}
-                className={`px-3 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap shrink-0 max-w-[14rem] truncate ${
-                  problemFilter === p.id
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-secondary text-muted-foreground hover:text-foreground"
-                }`}
-                title={p.title}
-              >
-                {p.title}
-              </button>
-            ))}
           </div>
         </motion.div>
 
