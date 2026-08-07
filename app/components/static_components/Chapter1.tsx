@@ -1,120 +1,27 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
+import { ArrowDown } from 'lucide-react';
+import { Reveal } from './Reveal';
 
-interface Chapter1Props {
-  onNext: () => void;
-}
+interface Chapter1Props { onNext: () => void; }
+const disciplines = ['Journalists', 'Engineers', 'Creators', 'Strategists', 'Lawyers', 'Researchers'];
 
-const Chapter1: React.FC<Chapter1Props> = ({ onNext }) => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    let animId: number;
-
-    const resize = () => {
-      canvas.width = canvas.offsetWidth;
-      canvas.height = canvas.offsetHeight;
-    };
-    resize();
-
-    // Horizontal data-stream lines moving left → right, representing media flow
-    const LINE_COUNT = 18;
-    interface Stream {
-      y: number;
-      segments: { x: number; len: number; speed: number; alpha: number }[];
-    }
-
-    const streams: Stream[] = Array.from({ length: LINE_COUNT }, (_, i) => ({
-      y: (canvas.height / LINE_COUNT) * i + (canvas.height / LINE_COUNT) * 0.5,
-      segments: Array.from({ length: Math.floor(Math.random() * 3) + 2 }, () => ({
-        x: Math.random() * canvas.width,
-        len: 40 + Math.random() * 120,
-        speed: 0.3 + Math.random() * 0.5,
-        alpha: 0.18 + Math.random() * 0.18,
-      })),
-    }));
-
-    const PRIMARY = '79, 70, 229';
-
-    const draw = () => {
-      const W = canvas.width;
-      const H = canvas.height;
-      ctx.clearRect(0, 0, W, H);
-
-      streams.forEach(stream => {
-        stream.segments.forEach(seg => {
-          // Gradient trail
-          const grad = ctx.createLinearGradient(seg.x, 0, seg.x + seg.len, 0);
-          grad.addColorStop(0, `rgba(${PRIMARY}, 0)`);
-          grad.addColorStop(0.4, `rgba(${PRIMARY}, ${seg.alpha})`);
-          grad.addColorStop(1, `rgba(${PRIMARY}, 0)`);
-          ctx.beginPath();
-          ctx.moveTo(seg.x, stream.y);
-          ctx.lineTo(seg.x + seg.len, stream.y);
-          ctx.strokeStyle = grad;
-          ctx.lineWidth = 1;
-          ctx.stroke();
-
-          // Leading dot
-          ctx.beginPath();
-          ctx.arc(seg.x + seg.len, stream.y, 1.2, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(${PRIMARY}, ${seg.alpha * 3.5})`;
-          ctx.fill();
-
-          seg.x += seg.speed;
-          if (seg.x > W) seg.x = -seg.len - Math.random() * 200;
-        });
-      });
-
-      animId = requestAnimationFrame(draw);
-    };
-
-    draw();
-    window.addEventListener('resize', resize);
-    return () => {
-      cancelAnimationFrame(animId);
-      window.removeEventListener('resize', resize);
-    };
-  }, []);
-
-  return (
-    <div className="relative flex min-h-screen w-full flex-col items-center bg-white pt-24 pb-8 px-4 text-gray-900 font-work">
-      {/* Animated data-stream canvas */}
-      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
-
-      {/* Subtle center glow */}
-      <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse 70% 60% at 50% 45%, rgba(79,70,229,0.05) 0%, transparent 70%)' }} />
-      
-      {/* Main Content Area - Flex Grow to push button down */}
-      <div className="flex-grow flex flex-col justify-center items-center z-10 w-full max-w-6xl text-center gap-8 md:gap-12">
-        <div className="flex flex-col gap-6 animate-fade-in-up items-center">
-          <h1 className="text-4xl sm:text-5xl md:text-7xl font-work font-black leading-tight tracking-tighter uppercase text-gray-900">
-             Our Story
-          </h1>
-          <div className="h-1 w-32 bg-primary mx-auto"></div>
-          <h2 className="text-lg md:text-2xl font-medium leading-relaxed text-gray-700 max-w-4xl mx-auto">
-            AxoCom is not just a media company. We are a <span className="text-primary-accent font-bold rounded">Tech-First Media Company</span> building the future of communication.
-          </h2>
-          <p className="text-sm md:text-base font-light leading-relaxed text-gray-500 max-w-3xl mx-auto">
-            We are the intersection of media and deep technology. AxoCom is where journalists, engineers, creators, strategists, lawyers, and researchers unite to reimagine how stories are built, spread, and scaled using The AI Core our proprietary engine powered by advanced data analytics. We are here to engineer the future of how stories are told and consumed.
-          </p>
+const Chapter1: React.FC<Chapter1Props> = ({ onNext }) => (
+  <div className="relative overflow-hidden bg-[#f4f6fa] py-24 text-[#101116] md:py-36">
+    <div className="absolute left-[8%] right-[8%] top-1/2 hidden h-px bg-[#4f95e8]/25 lg:block"><span className="axo-signal-dot absolute -top-1 size-2 rounded-full bg-[#4f95e8]" /></div>
+    <div className="landing-shell relative">
+      <Reveal>
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[220px_1fr]">
+          <div><p className="text-xs font-bold uppercase tracking-[.14em] text-[#4f95e8]">Our story</p><p className="axo-serif mt-8 max-w-[12rem] text-2xl italic leading-7 text-black/55">Media, rebuilt from the inside out.</p></div>
+          <h2 className="max-w-5xl text-[clamp(3rem,6vw,6.2rem)] font-semibold leading-[.98] tracking-[-.045em]">Not just a media company. A <span className="axo-serif italic text-[#4f95e8]">connected intelligence practice</span> for communication.</h2>
         </div>
-      </div>
-      
-      {/* Footer Navigation Button */}
-      <div 
-        onClick={onNext}
-        className="relative z-10 mt-12 flex items-center gap-3 px-5 py-3 rounded-full bg-gray-100 border border-gray-200 cursor-pointer group hover:bg-primary hover:border-primary transition-all duration-300 shadow-sm"
-      >
-        <span className="text-xs font-semibold uppercase tracking-[0.25em] text-gray-500 group-hover:text-white transition-colors">Scroll to Continue</span>
-        <span className="material-symbols-outlined text-sm text-gray-400 group-hover:text-white transition-colors animate-bounce">expand_more</span>
+      </Reveal>
+
+      <div className="mt-20 grid grid-cols-1 gap-10 lg:grid-cols-[.8fr_1.2fr] lg:gap-20">
+        <Reveal><div className="rounded-[32px] bg-white p-8 shadow-[0_22px_55px_-42px_rgba(79,149,232,.35)] md:p-10"><p className="text-[10px] font-bold uppercase tracking-[.14em] text-[#4f95e8]">Our belief</p><p className="axo-serif mt-8 text-3xl italic leading-9">Stories travel further when editorial judgment, cultural instinct and technology share the same room.</p></div></Reveal>
+        <Reveal delay={80}><div><p className="text-lg leading-9 text-black/65">AxoCom is where journalists, engineers, creators, strategists, lawyers and researchers unite to reimagine how stories are built, spread and scaled using The AI Core—our proprietary engine powered by advanced data analytics.</p><div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3">{disciplines.map((discipline,index)=><div key={discipline} className="flex items-center gap-3 rounded-full border border-[#4f95e8]/15 bg-white px-4 py-3 text-sm font-semibold"><span className="size-2 rounded-full bg-[#4f95e8]" />{discipline}</div>)}</div><button type="button" onClick={onNext} className="group mt-10 flex items-center gap-1 rounded-full bg-[#101116] p-1 pl-6 text-sm font-bold text-white">Explore our practice <span className="flex size-11 items-center justify-center rounded-full bg-[#4f95e8] transition-transform group-hover:translate-y-1"><ArrowDown className="size-4" /></span></button></div></Reveal>
       </div>
     </div>
-  );
-};
+  </div>
+);
 
 export default Chapter1;

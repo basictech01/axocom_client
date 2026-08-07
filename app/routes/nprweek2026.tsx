@@ -285,36 +285,6 @@ const NPRWeek2026: React.FC = () => {
                         </p>
                     </div>
 
-                    {/* Schedule */}
-                    <div className="flex flex-col gap-6">
-                        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center">Event Schedule</h2>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            {schedule.map((item, i) => (
-                                <div
-                                    key={i}
-                                    className={`group flex flex-col gap-3 bg-white border border-gray-200 rounded-2xl p-6 hover:border-primary/30 hover:shadow-md transition-all`}
-                                >
-                                    <div className="flex items-center justify-between gap-3 flex-wrap">
-                                        <div className="shrink-0 bg-primary/10 text-primary font-mono font-bold text-sm px-4 py-2 rounded-lg border border-primary/20 w-fit">
-                                            {item.date}
-                                        </div>
-                                        {item.college && (
-                                            <span className="text-xs text-gray-500 bg-gray-100 border border-gray-200 px-3 py-1 rounded-full font-medium">
-                                                {item.college}
-                                            </span>
-                                        )}
-                                    </div>
-                                    <h3 className="text-gray-900 font-bold text-lg group-hover:text-primary transition-colors leading-snug">{item.title}</h3>
-                                    <p className="text-gray-500 text-sm leading-relaxed italic">"{item.topic}"</p>
-                                    <div className="flex flex-col gap-0.5 pt-1 border-t border-gray-100">
-                                        <span className="text-gray-900 font-semibold text-sm">{item.speaker}</span>
-                                        <span className="text-gray-500 text-xs">{item.designation}, {item.org}</span>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-
                     {/* Collaborators */}
                     <div className="flex flex-col items-center gap-6 bg-white border border-gray-200 rounded-3xl p-8 md:p-12">
                         <h2 className="text-2xl md:text-3xl font-bold text-gray-900">Organized By</h2>
@@ -369,6 +339,49 @@ const NPRWeek2026: React.FC = () => {
                             ))}
                         </div>
                     </div>
+
+                    {/* Schedule */}
+                    <section className="flex flex-col gap-8 bg-white border border-gray-200 rounded-3xl p-8 md:p-12">
+                        <div className="text-center flex flex-col gap-2">
+                            <span className="text-xs font-semibold uppercase tracking-[0.25em] text-primary">April 16&ndash;21, 2026</span>
+                            <h2 className="text-2xl md:text-3xl font-bold text-gray-900">Event Schedule</h2>
+                            <p className="text-gray-500 text-sm max-w-xl mx-auto">
+                                Six conversations on public trust, reputation and strategic communication across Uttarakhand.
+                            </p>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+                            {schedule.map((item, i) => {
+                                const [month, day] = item.date.split(' ');
+
+                                return (
+                                    <article
+                                        key={item.date}
+                                        className="group flex gap-5 bg-gray-50 border border-gray-200 rounded-2xl p-5 md:p-6 transition-all duration-300 hover:border-primary/30 hover:shadow-md"
+                                    >
+                                        <div className="w-14 shrink-0 border-r border-gray-200 pr-4 text-center">
+                                            <span className="block text-[10px] font-semibold uppercase tracking-[0.16em] text-primary">{month}</span>
+                                            <span className="mt-1 block text-3xl font-bold leading-none text-gray-900">{day}</span>
+                                            <span className="mt-2 block text-[10px] font-medium uppercase tracking-[0.12em] text-gray-400">Day {i + 1}</span>
+                                        </div>
+
+                                        <div className="min-w-0 flex-1">
+                                            <h3 className="text-lg font-bold leading-snug text-gray-900 transition-colors group-hover:text-primary">
+                                                {item.title}
+                                            </h3>
+                                            <p className="mt-2 text-sm leading-relaxed text-gray-500">{item.topic}</p>
+                                            <div className="mt-4 border-t border-gray-200 pt-3">
+                                                <p className="text-sm font-semibold text-gray-900">{item.speaker}</p>
+                                                <p className="mt-0.5 text-xs leading-snug text-gray-500">
+                                                    {item.designation} &middot; {item.org}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </article>
+                                );
+                            })}
+                        </div>
+                    </section>
 
                     {/* Certificate Download Section */}
                     <div id="certificate" className="flex flex-col items-center gap-8 bg-gradient-to-br from-primary/5 to-primary/10 border border-primary/20 rounded-3xl p-8 md:p-12">

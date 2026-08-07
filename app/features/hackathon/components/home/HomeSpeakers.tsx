@@ -1,6 +1,6 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { useScrollReveal } from "~/features/hackathon/hooks/useScrollReveal";
-import { SPEAKERS } from "./data";
+import { MENTOR_GUIDES } from "./data";
 
 export default function HomeSpeakers() {
   const { ref, isInView } = useScrollReveal();
@@ -26,7 +26,7 @@ export default function HomeSpeakers() {
         </motion.div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-7 gap-5 lg:gap-4">
-          {SPEAKERS.map((speaker, i) => {
+          {MENTOR_GUIDES.map((speaker, i) => {
             const hasPhoto = Boolean(speaker.image?.trim());
             return (
               <motion.article

@@ -7,7 +7,7 @@ export const HERO = {
   headlineLead: "Not just a hackathon.",
   headlineAccent: "A journey.",
   support:
-    "A state-wide innovation series bringing builders from across Uttarakhand together to solve real-world problems through multi-stage collaboration.",
+    "A state-wide innovation series bringing builders from across the world together to solve real-world problems — from Uttarakhand and beyond.",
   meta: [
     { label: "Format", value: "Online and on-ground" },
     { label: "Cities", value: "Dehradun · Roorkee · Rudrapur" },
@@ -20,11 +20,13 @@ export const PARTNERS = [
     name: "PACE",
     role: "Hiring & Mentorship Partner",
     logo: "/paceLogo.png",
+    logoIncludesName: true,
   },
   {
     name: "AxoCom",
     role: "Media Partner",
     logo: "/axocomLogo.png",
+    logoIncludesName: false,
   },
 ] as const;
 
@@ -32,8 +34,8 @@ export const WHAT_UKIS = {
   eyebrow: "About the series",
   title: "What UKIS Is",
   body: [
-    "The Uttarakhand Innovation & Solutions Hackathon is designed as a multi-stage innovation series, bringing together builders from across the state to solve real-world problems.",
-    "It includes an online stage and on-ground hackathons across key cities of Uttarakhand.",
+    "UKIS surfaces real-world problems and invites builders from across the world to work on them — backed by mentors and hands-on support at every stage.",
+    "The strongest solutions move beyond the hackathon toward pilots, implementation, incubation, and funding. In doing so, UKIS becomes the bridge between industry, problem solvers, and government.",
   ],
   principles: [
     {
@@ -227,8 +229,8 @@ export const ORG_SECTIONS = [
     eyebrow: "Hiring opportunity",
     title: "Hire the best talent of Uttarakhand",
     body: [
-      "This section is for people or companies who want to hire the best talent of Uttarakhand. They can come here, participate in the programme, and get a chance to hire the best talents of Uttarakhand.",
-      "Builders are evaluated through real work on published problems. Participant data will never be sold or shared outside the participant's consent. Participation and judging will never depend on joining a hiring database, and no company receives a guaranteed hire or control over judging.",
+      "For students and professionals, UKIS is a chance to showcase real talent through work, not résumés. By solving published problems in the open, you build a track record that speaks for itself.",
+      "Through our hiring partners and PACE, we give standout builders visibility across an industry actively looking for real-world problem solvers. UKIS becomes the bridge between that talent and the companies that need it.",
     ],
     pointsLabel: "How hiring works here",
     points: [
@@ -251,6 +253,8 @@ export const SPEAKERS = MENTORS.map((mentor) => ({
   image: mentor.image ?? "",
   linkedin: mentor.linkedinUrl ?? "",
 }));
+
+export const MENTOR_GUIDES = SPEAKERS;
 
 export const FINAL_CTA = {
   title: "Join the journey",

@@ -8,6 +8,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "~/features/hackathon/lib/router";
 import { Search, ArrowRight, Loader2 } from "lucide-react";
 import { problems } from "~/features/hackathon/lib/data";
+import { getProblemOwner } from "~/features/hackathon/lib/problem-owners";
+import { ProblemOwner } from "~/features/hackathon/components/ProblemOwner";
 import { useScrollReveal } from "~/features/hackathon/hooks/useScrollReveal";
 import { PUBLIC_SOLUTIONS_QUERY } from "~/features/hackathon/services";
 
@@ -59,6 +61,7 @@ export default function Problems() {
         p.title.toLowerCase().includes(search.toLowerCase()) ||
         p.category.toLowerCase().includes(search.toLowerCase()) ||
         p.description.toLowerCase().includes(search.toLowerCase()) ||
+        getProblemOwner(p.problemOwnerId).name.toLowerCase().includes(search.toLowerCase()) ||
         (p.sponsor?.toLowerCase().includes(search.toLowerCase()) ?? false)
       );
     });
@@ -129,8 +132,9 @@ export default function Problems() {
                     <Link href={`/problems/${problem.id}`}>
                       <motion.div
                         whileHover={{ y: -2 }}
-                        className="p-6 rounded-2xl bg-card border border-border hover:border-primary/30 transition-all duration-300 mb-4 group"
+                        className="relative p-6 pt-7 rounded-2xl bg-card border border-border hover:border-primary/30 transition-all duration-300 mb-4 group overflow-hidden"
                       >
+                        <div className="absolute inset-x-0 top-0 h-1 brand-gradient" aria-hidden />
                         <div className="flex flex-col sm:flex-row sm:items-start gap-4">
                           <div className="flex-1">
                             <div className="mb-3 flex flex-wrap items-center gap-2">
@@ -146,6 +150,12 @@ export default function Problems() {
                             <h3 className="font-display font-semibold text-xl text-foreground mb-2 group-hover:text-primary transition-colors">
                               {problem.title}
                             </h3>
+                            <p className="text-xs font-medium text-primary mb-3">
+                              {problem.theme}
+                            </p>
+                            <div className="mb-4">
+                              <ProblemOwner ownerId={problem.problemOwnerId} />
+                            </div>
                             <p className="text-sm text-muted-foreground line-clamp-2">
                               {problem.description}
                             </p>

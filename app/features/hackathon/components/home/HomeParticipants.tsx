@@ -18,7 +18,7 @@ export default function HomeParticipants() {
           <p className="ukis-eyebrow mb-4">Who can participate</p>
           <h2 className="font-display font-bold text-3xl sm:text-4xl text-foreground leading-tight">
             Built for <span className="ukis-accent-word">builders</span> across
-            Uttarakhand
+            the world
           </h2>
         </motion.div>
 

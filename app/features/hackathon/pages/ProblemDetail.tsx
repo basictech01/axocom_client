@@ -6,8 +6,9 @@ import { useEffect, useState } from "react";
 import { useQuery } from "@apollo/client/react";
 import { motion } from "framer-motion";
 import { Link, useRoute } from "~/features/hackathon/lib/router";
-import { ArrowLeft, ArrowRight, Users, Loader2 } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle2, Lightbulb, ListChecks, Loader2, Target, Users } from "lucide-react";
 import { getProblemById } from "~/features/hackathon/lib/data";
+import { ProblemOwner } from "~/features/hackathon/components/ProblemOwner";
 import { useScrollReveal } from "~/features/hackathon/hooks/useScrollReveal";
 import { WHATSAPP_COMMUNITY_URL } from "~/features/hackathon/components/WhatsAppCommunityCta";
 import { WhatsAppLogo } from "~/features/hackathon/components/WhatsAppLogo";
@@ -107,6 +108,7 @@ export default function ProblemDetail() {
           transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
           className="mb-12"
         >
+          <div className="brand-gradient h-1 w-24 mb-6" aria-hidden />
           <div className="flex flex-wrap items-center gap-3 mb-4">
             {problem.sponsor ? (
               <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-primary/10 text-primary border border-primary/20">
@@ -121,6 +123,15 @@ export default function ProblemDetail() {
           <p className="text-muted-foreground text-lg leading-relaxed max-w-3xl mb-8">
             {problem.description}
           </p>
+
+          <div className="max-w-3xl border-l-2 border-brand-glacier-blue pl-4 mb-8">
+            <p className="text-xs font-semibold uppercase text-primary mb-1">Theme</p>
+            <p className="text-foreground font-medium">{problem.theme}</p>
+          </div>
+
+          <div className="max-w-4xl mb-8">
+            <ProblemOwner ownerId={problem.problemOwnerId} linked />
+          </div>
 
           <div className="flex flex-wrap gap-6 mb-8">
             <div className="flex items-center gap-2">
@@ -145,6 +156,61 @@ export default function ProblemDetail() {
             </motion.button>
           </Link>
         </motion.div>
+
+        <section className="grid grid-cols-1 lg:grid-cols-3 gap-10 border-y border-border py-10 mb-16">
+          <div>
+            <div className="flex items-center gap-2 mb-5">
+              <ListChecks className="w-5 h-5 text-primary" />
+              <h2 className="font-display font-semibold text-xl text-foreground">
+                Proposed Capabilities
+              </h2>
+            </div>
+            <ul className="space-y-3">
+              {problem.capabilities.map((capability) => (
+                <li key={capability} className="flex items-start gap-3 text-sm leading-relaxed text-muted-foreground">
+                  <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                  <span>{capability}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {problem.applications ? (
+            <div>
+              <div className="flex items-center gap-2 mb-5">
+                <Lightbulb className="w-5 h-5 text-primary" />
+                <h2 className="font-display font-semibold text-xl text-foreground">
+                  Potential Applications
+                </h2>
+              </div>
+              <ul className="space-y-3">
+                {problem.applications.map((application) => (
+                  <li key={application} className="flex items-start gap-3 text-sm leading-relaxed text-muted-foreground">
+                    <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                    <span>{application}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
+
+          <div>
+            <div className="flex items-center gap-2 mb-5">
+              <Target className="w-5 h-5 text-primary" />
+              <h2 className="font-display font-semibold text-xl text-foreground">
+                Expected Outcomes
+              </h2>
+            </div>
+            <ul className="space-y-3">
+              {problem.outcomes.map((outcome) => (
+                <li key={outcome} className="flex items-start gap-3 text-sm leading-relaxed text-muted-foreground">
+                  <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                  <span>{outcome}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
 
         <section className="mb-16" ref={solutionsReveal.ref}>
           <h2 className="font-display font-bold text-2xl text-foreground mb-6">
