@@ -1,138 +1,67 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
+import { ArrowDown } from 'lucide-react';
+import { Reveal } from './Reveal';
 
-interface PrologueProps {
-  onNext: () => void;
-}
+interface PrologueProps { onNext: () => void; }
 
-const Prologue: React.FC<PrologueProps> = ({ onNext }) => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+const Prologue: React.FC<PrologueProps> = ({ onNext }) => (
+  <div className="relative min-h-[100svh] overflow-hidden bg-white pb-14 pt-28 text-[#101116]">
+    <div className="axo-signal-path pointer-events-none -right-[12vw] top-[4vh] h-[88vh] w-[62vw] rotate-[-18deg]" />
+    <div className="axo-signal-path pointer-events-none -left-[25vw] bottom-[-42vh] h-[86vh] w-[74vw] rotate-[12deg] opacity-70" />
+    <div className="pointer-events-none absolute left-1/2 top-20 h-[calc(100%-5rem)] w-px bg-gradient-to-b from-transparent via-[#4f95e8]/15 to-transparent" />
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    let animId: number;
-
-    const resize = () => {
-      canvas.width = canvas.offsetWidth;
-      canvas.height = canvas.offsetHeight;
-    };
-    resize();
-
-    const NODE_COUNT = Math.max(40, Math.floor((canvas.width * canvas.height) / 18000));
-    const MAX_DIST = 170;
-    const PRIMARY = '79, 70, 229';
-
-    interface Node {
-      x: number; y: number;
-      vx: number; vy: number;
-      r: number; pulse: number; pulseSpeed: number;
-    }
-
-    const nodes: Node[] = Array.from({ length: NODE_COUNT }, () => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      vx: (Math.random() - 0.5) * 0.35,
-      vy: (Math.random() - 0.5) * 0.35,
-      r: Math.random() * 1.5 + 0.8,
-      pulse: Math.random() * Math.PI * 2,
-      pulseSpeed: 0.015 + Math.random() * 0.01,
-    }));
-
-    const draw = () => {
-      const W = canvas.width;
-      const H = canvas.height;
-      ctx.clearRect(0, 0, W, H);
-
-      // Connections
-      for (let i = 0; i < nodes.length; i++) {
-        for (let j = i + 1; j < nodes.length; j++) {
-          const dx = nodes[i].x - nodes[j].x;
-          const dy = nodes[i].y - nodes[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < MAX_DIST) {
-            const alpha = (1 - dist / MAX_DIST) * 0.14;
-            ctx.beginPath();
-            ctx.moveTo(nodes[i].x, nodes[i].y);
-            ctx.lineTo(nodes[j].x, nodes[j].y);
-            ctx.strokeStyle = `rgba(${PRIMARY}, ${alpha})`;
-            ctx.lineWidth = 0.7;
-            ctx.stroke();
-          }
-        }
-      }
-
-      // Nodes
-      nodes.forEach(node => {
-        node.pulse += node.pulseSpeed;
-        const glow = 0.35 + Math.sin(node.pulse) * 0.15;
-        const r = node.r + Math.sin(node.pulse) * 0.4;
-
-        // Soft halo
-        const grad = ctx.createRadialGradient(node.x, node.y, 0, node.x, node.y, r * 5);
-        grad.addColorStop(0, `rgba(${PRIMARY}, ${glow * 0.18})`);
-        grad.addColorStop(1, `rgba(${PRIMARY}, 0)`);
-        ctx.beginPath();
-        ctx.arc(node.x, node.y, r * 5, 0, Math.PI * 2);
-        ctx.fillStyle = grad;
-        ctx.fill();
-
-        // Core dot
-        ctx.beginPath();
-        ctx.arc(node.x, node.y, r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${PRIMARY}, ${glow})`;
-        ctx.fill();
-
-        node.x += node.vx;
-        node.y += node.vy;
-        if (node.x < 0 || node.x > W) node.vx *= -1;
-        if (node.y < 0 || node.y > H) node.vy *= -1;
-      });
-
-      animId = requestAnimationFrame(draw);
-    };
-
-    draw();
-
-    window.addEventListener('resize', resize);
-    return () => {
-      cancelAnimationFrame(animId);
-      window.removeEventListener('resize', resize);
-    };
-  }, []);
-
-  return (
-    <div className="relative flex min-h-screen w-full flex-col items-center justify-center bg-white pt-24">
-      {/* Animated network canvas */}
-      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
-
-      {/* Subtle radial glow at center */}
-      <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse 60% 50% at 50% 50%, rgba(79,70,229,0.06) 0%, transparent 70%)' }} />
-
-      <div className="flex flex-col gap-8 items-center justify-center text-center px-6 max-w-5xl z-10 animate-fade-in-up">
-        <div className="flex flex-col items-center">
-          <h1 className="font-sans text-gray-900 text-3xl sm:text-5xl md:text-6xl lg:text-8xl font-medium leading-none tracking-tight" >
-            AxoCom
+    <div className="landing-shell relative z-10 grid min-h-[calc(100svh-10rem)] grid-cols-1 items-center gap-12 lg:grid-cols-[1.1fr_.9fr]">
+      <div>
+        <Reveal>
+          <div className="flex items-center gap-3 text-xs font-bold uppercase tracking-[.15em] text-[#4f95e8]"><span className="size-2 rounded-full bg-[#4f95e8]" />Independent tech × media company</div>
+        </Reveal>
+        <Reveal delay={70}>
+          <h1 className="mt-8 max-w-[800px] text-[clamp(3.4rem,6.8vw,7.2rem)] font-semibold leading-[.93] tracking-[-.05em]">
+            Intelligence gives stories <span className="axo-serif italic text-[#4f95e8]">direction.</span><br />
+            Media gives them <span className="axo-serif italic">distance.</span>
           </h1>
-        </div>
-
-        <div className="h-1 w-24 bg-primary mx-auto rounded-full mt-4"></div>
-
-        <p className="mx-auto max-w-2xl text-base md:text-xl font-light text-gray-600 leading-relaxed">
-          <span className="italic">&ldquo;The medium is the message&rdquo;</span> and AI is taking over the pen. AI is reshaping the entire media universe. AxoCom isn't adapting to this future. We're engineering it.
-        </p>
+        </Reveal>
+        <Reveal delay={140}>
+          <p className="mt-9 max-w-xl text-base leading-7 text-[#101116]/65">AxoCom brings editorial judgment, brand strategy, owned distribution and proprietary technology into one connected communication practice.</p>
+        </Reveal>
+        <Reveal delay={210}>
+          <button type="button" onClick={onNext} className="group mt-10 flex items-center gap-1 rounded-full bg-[#101116] p-1 pl-6 text-sm font-bold text-white">Follow the signal <span className="flex size-11 items-center justify-center rounded-full bg-[#4f95e8] transition-transform group-hover:translate-y-1"><ArrowDown className="size-4" /></span></button>
+        </Reveal>
       </div>
 
-      <button
-        onClick={onNext}
-        className="z-10 mt-6 px-8 py-3 sm:px-10 sm:py-4 bg-primary hover:bg-indigo-600 text-white rounded-xl font-semibold text-base sm:text-lg transition-all transform hover:scale-105 shadow-[0_0_30px_5px_rgba(79,70,229,0.3)] ring-1 ring-white/20"
-      >
-        Begin the Story
-      </button>
+      <div className="relative min-h-[520px] lg:min-h-[650px]">
+        <Reveal className="absolute inset-0" delay={100}>
+          <div className="relative h-full min-h-[520px] lg:min-h-[650px]">
+            <div className="pointer-events-none absolute left-1/2 top-1/2 z-0 w-full -translate-x-1/2 -translate-y-1/2 select-none text-center text-[clamp(4rem,8vw,8rem)] font-black leading-[.78] tracking-[-.06em] text-[#4f95e8]/[.055]">
+              NARRATIVE<br />ENGINE
+            </div>
+            <div className="axo-engine-glow" />
+            <div className="axo-engine-ring axo-engine-ring-outer" />
+            <div className="axo-engine-ring axo-engine-ring-middle" />
+            <div className="axo-engine-ring axo-engine-ring-inner" />
+
+            {[0, 72, 144, 216, 288].map((angle) => (
+              <span key={angle} className="axo-engine-line" style={{ transform: `rotate(${angle}deg)` }} />
+            ))}
+
+            <div className="axo-engine-core absolute left-1/2 top-1/2 z-20 flex size-36 -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full border border-[#4f95e8]/25 bg-white/85 text-center backdrop-blur md:size-44">
+              <strong className="axo-serif block max-w-[8rem] text-xl italic leading-5 md:text-2xl">The medium is the message.</strong>
+            </div>
+
+            <div className="absolute left-[8%] top-[12%] rounded-full bg-white px-4 py-2 text-xs font-bold shadow-sm">Signal</div>
+            <div className="absolute right-[4%] top-[22%] rounded-full bg-white px-4 py-2 text-xs font-bold shadow-sm">Insight</div>
+            <div className="absolute right-[3%] bottom-[18%] rounded-full bg-white px-4 py-2 text-xs font-bold shadow-sm">Impact</div>
+            <div className="absolute bottom-[8%] left-[22%] rounded-full bg-white px-4 py-2 text-xs font-bold shadow-sm">Media</div>
+            <div className="absolute left-[2%] top-[55%] rounded-full bg-[#4f95e8] px-4 py-2 text-xs font-bold text-[#101116] shadow-sm">Story</div>
+
+            <p className="axo-serif absolute bottom-[1%] right-[8%] max-w-[12rem] text-right text-lg italic leading-5 text-black/55">From raw attention to directed influence.</p>
+          </div>
+        </Reveal>
+      </div>
     </div>
-  );
-};
+
+    <div className="landing-shell relative z-10 mt-6 grid grid-cols-2 gap-3 border-t border-black/10 pt-5 text-xs font-bold uppercase tracking-[.12em] text-black/45 sm:grid-cols-5"><span>Public Relations</span><span>Brand Building</span><span>Campaigns</span><span>Owned Media</span><span>AI Systems</span></div>
+  </div>
+);
 
 export default Prologue;

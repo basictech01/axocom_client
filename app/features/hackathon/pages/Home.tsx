@@ -26,10 +26,10 @@ export default function Home() {
       <HomeWhatIs />
       <HomeJourney />
       <HomeParticipants />
-      <HomeOrgSections />
-      <HomeFeaturedProblems />
-      <HomeContrastCta />
       <HomeSpeakers />
+      <HomeFeaturedProblems />
+      <HomeOrgSections />
+      <HomeContrastCta />
       <HomeFinalCta />
       <HomeCommunity />
     </div>

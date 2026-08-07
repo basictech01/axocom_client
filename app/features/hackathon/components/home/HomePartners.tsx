@@ -29,13 +29,19 @@ export default function HomePartners() {
                 <div className="flex items-center justify-center gap-2.5">
                   <img
                     src={partner.logo}
-                    alt=""
-                    aria-hidden="true"
-                    className="h-8 w-8 sm:h-9 sm:w-9 object-contain shrink-0"
+                    alt={partner.logoIncludesName ? partner.name : ""}
+                    aria-hidden={partner.logoIncludesName ? undefined : true}
+                    className={
+                      partner.logoIncludesName
+                        ? "h-[34px] w-auto max-w-[6.3rem] object-contain shrink-0 sm:h-[39px] sm:max-w-[7rem]"
+                        : "h-8 w-8 object-contain shrink-0 sm:h-9 sm:w-9"
+                    }
                   />
-                  <span className="font-display font-bold text-xl text-white dark:text-foreground tracking-wide">
-                    {partner.name}
-                  </span>
+                  {!partner.logoIncludesName && (
+                    <span className="font-display font-bold text-xl text-white dark:text-foreground tracking-wide">
+                      {partner.name}
+                    </span>
+                  )}
                 </div>
                 <span className="text-xs text-white/70 dark:text-muted-foreground leading-snug max-w-[11rem]">
                   {partner.role}

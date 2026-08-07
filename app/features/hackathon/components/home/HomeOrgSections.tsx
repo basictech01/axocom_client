@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import type { Icon } from "@phosphor-icons/react";
 import {
@@ -7,7 +8,7 @@ import {
   Trophy,
   UsersThree,
 } from "@phosphor-icons/react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 import { WHATSAPP_COMMUNITY_URL } from "~/features/hackathon/components/WhatsAppCommunityCta";
 import { useScrollReveal } from "~/features/hackathon/hooks/useScrollReveal";
 import { ORG_SECTIONS } from "./data";
@@ -37,6 +38,43 @@ const HIRING_MODES = [
   "Jobs",
 ] as const;
 
+const PARTNER_SECTION_IDS = [
+  "challenge-sponsors",
+  "technology-partners",
+  "hiring-partners",
+  "knowledge-partners",
+] as const;
+
+const PARTNER_ICONS: Record<(typeof PARTNER_SECTION_IDS)[number], Icon> = {
+  "challenge-sponsors": Trophy,
+  "technology-partners": Circuitry,
+  "hiring-partners": UsersThree,
+  "knowledge-partners": GraduationCap,
+};
+
+const PARTNER_PRESENTATION = {
+  "challenge-sponsors": {
+    label: "Challenge Partner",
+    shortLabel: "Challenge Partner",
+    description: "Bring one real problem into focus",
+  },
+  "technology-partners": {
+    label: "Technology Partners",
+    shortLabel: "Technology",
+    description: "Equip builders with tools and expertise",
+  },
+  "hiring-partners": {
+    label: "Hiring Partners",
+    shortLabel: "Hiring",
+    description: "Meet talent through demonstrated work",
+  },
+  "knowledge-partners": {
+    label: "Knowledge & University Partners",
+    shortLabel: "Knowledge",
+    description: "Connect research, campuses and communities",
+  },
+} as const;
+
 function slotSrc(image: string) {
   return image.trim() ? image : undefined;
 }
@@ -61,6 +99,181 @@ function SectionEyebrow({
         {label}
       </p>
     </div>
+  );
+}
+
+function PartnershipOpportunitiesSection() {
+  const { ref, isInView } = useScrollReveal(0.08);
+  const reduceMotion = useReducedMotion();
+  const [activeId, setActiveId] = useState<(typeof PARTNER_SECTION_IDS)[number]>(
+    PARTNER_SECTION_IDS[0],
+  );
+
+  return (
+    <section
+      id="partnership-opportunities"
+      ref={ref}
+      className="relative overflow-hidden border-t border-border bg-page py-16 sm:py-20 lg:py-24"
+    >
+      <div className="ukis-contour !opacity-[0.04]" aria-hidden />
+      <div className="container relative z-10">
+        <motion.div
+          initial={reduceMotion ? false : { opacity: 0, y: 14 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.45 }}
+          className="mb-10 grid gap-7 lg:grid-cols-12 lg:items-end"
+        >
+          <div className="lg:col-span-8">
+            <p className="ukis-eyebrow mb-4">Partnership opportunities</p>
+            <h2 className="mb-4 max-w-3xl font-display text-3xl font-bold leading-tight text-foreground sm:text-4xl lg:text-5xl">
+              Four ways to move good ideas <span className="text-primary">forward</span>
+            </h2>
+            <p className="max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+              Bring a challenge, technology, talent opportunity, or knowledge network into one
+              programme built around real outcomes for Uttarakhand.
+            </p>
+          </div>
+          <div className="lg:col-span-4 lg:text-right">
+            <a
+              href={WHATSAPP_COMMUNITY_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex min-h-11 items-center gap-2 rounded-lg bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-hover"
+            >
+              Discuss a partnership
+              <ArrowRight className="h-4 w-4" aria-hidden />
+            </a>
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={reduceMotion ? false : { opacity: 0, y: 18 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ delay: 0.08, duration: 0.5 }}
+          className="grid overflow-hidden rounded-xl border border-border bg-surface shadow-[0_20px_60px_rgba(16,33,58,0.08)] lg:grid-cols-[minmax(260px,0.82fr)_minmax(0,2fr)]"
+        >
+          <div
+            role="tablist"
+            aria-label="Partnership pathways"
+            className="grid grid-cols-2 border-b border-border bg-surface-subtle lg:grid-cols-1 lg:border-b-0 lg:border-r"
+          >
+            {PARTNER_SECTION_IDS.map((sectionId, sectionIndex) => {
+              const presentation = PARTNER_PRESENTATION[sectionId];
+              const IconComp = PARTNER_ICONS[sectionId];
+              const isActive = sectionId === activeId;
+
+              return (
+                <button
+                  key={sectionId}
+                  id={`partner-tab-${sectionId}`}
+                  type="button"
+                  role="tab"
+                  aria-selected={isActive}
+                  aria-controls={`partner-pathway-panel-${sectionId}`}
+                  onClick={() => setActiveId(sectionId)}
+                  className={`group relative min-h-[132px] border-b border-border p-4 text-left transition-colors last:border-b-0 sm:p-5 lg:min-h-[142px] lg:p-6 ${
+                    sectionIndex % 2 === 0 ? "max-lg:border-r" : ""
+                  } ${isActive ? "bg-page" : "hover:bg-page/65"}`}
+                >
+                  <span
+                    aria-hidden
+                    className={`absolute inset-x-0 top-0 h-1 bg-primary transition-opacity lg:inset-y-0 lg:left-0 lg:right-auto lg:h-auto lg:w-1 ${
+                      isActive ? "opacity-100" : "opacity-0"
+                    }`}
+                  />
+                  <div className="mb-3 flex items-center justify-between gap-3">
+                    <span className="flex h-9 w-9 items-center justify-center rounded-lg border border-primary/30 bg-primary/10 text-primary">
+                      <IconComp className="h-5 w-5" weight="duotone" aria-hidden />
+                    </span>
+                    <span className="font-mono text-[0.65rem] text-muted-foreground">
+                      {String(sectionIndex + 1).padStart(2, "0")}
+                    </span>
+                  </div>
+                  <span className="block font-display text-sm font-bold leading-snug text-foreground sm:text-base">
+                    {presentation.shortLabel}
+                  </span>
+                  <span className="mt-1 hidden text-xs leading-relaxed text-muted-foreground lg:block">
+                    {presentation.description}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="relative overflow-hidden bg-page p-6 sm:p-8 lg:p-10">
+            <div className="absolute inset-x-0 top-0 h-1 bg-primary" aria-hidden />
+            <div className="grid">
+              {PARTNER_SECTION_IDS.map((panelId) => {
+                const panelSection = byId[panelId];
+                const panelPresentation = PARTNER_PRESENTATION[panelId];
+                const PanelIcon = PARTNER_ICONS[panelId];
+                const isActive = panelId === activeId;
+
+                return (
+                  <motion.div
+                    id={`partner-pathway-panel-${panelId}`}
+                    key={panelId}
+                    role="tabpanel"
+                    aria-labelledby={`partner-tab-${panelId}`}
+                    aria-hidden={!isActive}
+                    tabIndex={isActive ? 0 : -1}
+                    initial={false}
+                    animate={
+                      isActive
+                        ? { opacity: 1, y: 0 }
+                        : { opacity: 0, y: reduceMotion ? 0 : 8 }
+                    }
+                    transition={{ duration: reduceMotion ? 0 : 0.25 }}
+                    className={`col-start-1 row-start-1 ${
+                      isActive ? "relative z-10" : "pointer-events-none relative z-0"
+                    }`}
+                  >
+                    <div className="mb-8 grid gap-5 border-b border-border pb-8 sm:grid-cols-[auto_1fr] sm:items-start">
+                      <span className="flex h-14 w-14 items-center justify-center rounded-lg border border-primary/30 bg-primary/10 text-primary">
+                        <PanelIcon className="h-8 w-8" weight="duotone" aria-hidden />
+                      </span>
+                      <div>
+                        <p className="mb-2 font-mono text-[0.68rem] uppercase tracking-[0.14em] text-muted-foreground">
+                          Partnership pathway
+                        </p>
+                        <h3 className="mb-2 font-display text-2xl font-bold leading-tight text-foreground sm:text-3xl">
+                          {panelPresentation.label}
+                        </h3>
+                        <p className="text-base font-medium text-primary">{panelSection.title}</p>
+                      </div>
+                    </div>
+
+                    <div className="grid gap-8 xl:grid-cols-[0.86fr_1.14fr] xl:gap-10">
+                      <div>
+                        {panelSection.body.map((paragraph) => (
+                          <p key={paragraph} className="mb-4 text-sm leading-relaxed text-muted-foreground last:mb-0 sm:text-base">
+                            {paragraph}
+                          </p>
+                        ))}
+                      </div>
+
+                      <div>
+                        <p className="mb-4 font-mono text-[0.68rem] uppercase tracking-[0.14em] text-muted-foreground">
+                          {panelSection.pointsLabel}
+                        </p>
+                        <ul className="grid gap-x-6 sm:grid-cols-2">
+                          {panelSection.points.map((point) => (
+                            <li key={point} className="flex items-start gap-3 border-t border-border py-3.5 text-sm leading-relaxed text-foreground/90">
+                              <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden />
+                              <span>{point}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    </section>
   );
 }
 
@@ -463,10 +676,7 @@ function HiringOpportunitySection() {
 export default function HomeOrgSections() {
   return (
     <>
-      <ChallengeSponsorsSection />
-      <TechnologyPartnersSection />
-      <HiringPartnersSection />
-      <KnowledgePartnersSection />
+      <PartnershipOpportunitiesSection />
       <HiringOpportunitySection />
     </>
   );

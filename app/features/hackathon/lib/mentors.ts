@@ -51,6 +51,17 @@ export const MENTORS: ProgrammeMentor[] = [
     linkedinUrl: "https://www.linkedin.com/in/kevinpatel20/",
   },
   {
+    id: "mentor-himanshu-rawat",
+    name: "Himanshu Rawat",
+    designation: "Software Engineer",
+    organization: "Google Warsaw",
+    expertise: "Software Engineering, Systems",
+    bio: "Mentors teams on software engineering, scalable systems, and building reliable products.",
+    initials: "HR",
+    image: "/hackathon/mentors/himanshu_rawat.jpeg",
+    linkedinUrl: "https://www.linkedin.com/in/himanshu998/",
+  },
+  {
     id: "mentor-anmol-dixit",
     name: "Anmol Dixit",
     designation: "Senior Software Engineer",

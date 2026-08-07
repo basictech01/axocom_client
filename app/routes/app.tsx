@@ -38,7 +38,7 @@ const App: React.FC = () => {
     };
 
     return (
-        <div className="landing-page bg-background-dark min-h-screen w-full relative">
+        <div className="landing-page min-h-screen w-full relative">
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{
@@ -53,35 +53,35 @@ const App: React.FC = () => {
 
             {/* Main Content Sections */}
             <main>
-                <section id="prologue" className="min-h-screen relative">
+                <section id="prologue" className="relative">
                     <Prologue onNext={() => scrollTo('chapter1')} />
                 </section>
 
-                <section id="chapter1" className="min-h-screen relative">
+                <section id="chapter1" className="relative">
                     <Chapter1 onNext={() => scrollTo('chapter2')} />
                 </section>
 
-                <section id="chapter2" className="min-h-screen relative">
+                <section id="chapter2" className="relative">
                     <Chapter2 />
                 </section>
 
-                <section id="chapter3" className="min-h-screen relative">
+                <section id="chapter3" className="relative">
                     <Chapter3 onNext={() => scrollTo('chapter4')} />
                 </section>
 
-                <section id="chapter4" className="min-h-screen relative">
+                <section id="chapter4" className="relative">
                     <Chapter4 />
                 </section>
 
-                <section id="chapter5" className="min-h-screen relative">
+                <section id="chapter5" className="relative">
                     <Chapter5 />
                 </section>
 
-                <section id="chapter6" className="min-h-screen relative">
+                <section id="chapter6" className="relative">
                     <Chapter6 onPrev={() => scrollTo('chapter5')} onNext={() => scrollTo('finale')} />
                 </section>
 
-                <section id="finale" className="min-h-screen relative">
+                <section id="finale" className="relative">
                     <Finale />
                 </section>
             </main>

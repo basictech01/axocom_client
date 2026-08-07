@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { WhatsAppLogo } from "~/features/hackathon/components/WhatsAppLogo";
 
 export const WHATSAPP_COMMUNITY_URL =
-  "https://whatsapp.com/channel/0029Vb8WkigB4hdJCmbNZS0g";
+  "https://chat.whatsapp.com/JJXuUPgtexo7ZhwLim7hh3";
 
 interface WhatsAppCommunityCtaProps {
   className?: string;

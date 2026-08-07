@@ -1,74 +1,78 @@
 import React from 'react';
+import { ArrowDown, BrainCircuit, Database, GitBranch, PanelsTopLeft, Share2 } from 'lucide-react';
+import { Reveal } from './Reveal';
 
-const Chapter4: React.FC = () => {
-  const pipeline = [
-    { icon: 'database', label: 'Inputs', desc: 'News feeds, social signals, real-time data streams', color: 'from-blue-500 to-cyan-400' },
-    { icon: 'filter_alt', label: 'Pipelines', desc: 'Processing, tagging, clustering & enrichment', color: 'from-cyan-400 to-indigo-400' },
-    { icon: 'share', label: 'Knowledge Graph', desc: 'Entity relationships, context maps & ontologies', color: 'from-indigo-400 to-violet-400' },
-    { icon: 'psychology', label: 'AI Engines', desc: 'Sentiment analysis, creative generation & NLP', color: 'from-violet-400 to-purple-400' },
-    { icon: 'dashboard', label: 'Outputs', desc: 'Assets, dashboards, campaigns & narratives', color: 'from-purple-400 to-pink-400' },
-  ];
+interface Chapter3Props { onNext: () => void; }
 
-  return (
-    <div className="min-h-screen w-full bg-[#0c0f1a] flex items-center justify-center px-4 pt-24 pb-6 md:px-10 font-space overflow-hidden relative">
-      
-      {/* Ambient glow effects */}
-      <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-indigo-600/10 rounded-full blur-[120px] pointer-events-none"></div>
-      <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-violet-600/8 rounded-full blur-[100px] pointer-events-none"></div>
-      
-      <div className="max-w-5xl w-full flex flex-col items-center gap-8 md:gap-12 relative z-10">
-        
-        {/* Header */}
-        <div className="text-center flex flex-col items-center gap-3">
-          <p className="text-indigo-400 text-xs font-semibold uppercase tracking-[0.3em]">Proprietary Technology</p>
-          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-work font-black leading-[0.95] tracking-tighter uppercase text-white">
-            The AI Core
-          </h2>
-          <p className="text-gray-400 text-sm md:text-base max-w-xl leading-relaxed">
-            From raw data ingestion to narrative creation. Our end-to-end intelligence engine.
-          </p>
+const pipeline = [
+  { icon: Database, title: 'Signals In', description: 'News feeds, social signals and real-time data streams.', offset: 'lg:translate-y-10' },
+  { icon: GitBranch, title: 'Intelligent Pipelines', description: 'Processing, tagging, clustering and enrichment.', offset: 'lg:-translate-y-8' },
+  { icon: Share2, title: 'Knowledge Graph', description: 'Entity relationships, context maps and ontologies.', offset: 'lg:translate-y-4' },
+  { icon: BrainCircuit, title: 'AI Engines', description: 'Sentiment analysis, creative generation and natural language processing.', offset: 'lg:-translate-y-10' },
+  { icon: PanelsTopLeft, title: 'Narratives Out', description: 'Assets, dashboards, campaigns and narratives.', offset: 'lg:translate-y-8' },
+];
+
+const Chapter3: React.FC<Chapter3Props> = ({ onNext }) => (
+  <div className="axo-ai-field relative overflow-hidden py-24 text-[#101116] md:py-36">
+    <div className="axo-ai-glow left-[-8%] top-[12%] size-[340px]" />
+    <div className="axo-ai-glow bottom-[4%] right-[-5%] size-[420px]" />
+    <span className="axo-ai-dot left-[8%] top-[30%]" />
+    <span className="axo-ai-dot right-[12%] top-[19%] [animation-delay:-1.4s]" />
+    <span className="axo-ai-dot bottom-[18%] left-[34%] [animation-delay:-2.5s]" />
+    <span className="axo-ai-dot bottom-[30%] right-[31%] [animation-delay:-.7s]" />
+
+    <div className="landing-shell relative">
+      <Reveal>
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_480px] lg:items-end">
+          <div>
+            <p className="inline-flex items-center gap-2 rounded-full border border-[#4f95e8]/15 bg-white/65 px-4 py-2 text-xs font-bold shadow-[0_14px_35px_-24px_rgba(79,149,232,.35)] backdrop-blur">
+              <span className="size-1.5 rounded-full bg-[#4f95e8]" />The AI Core
+            </p>
+            <h2 className="mt-8 max-w-2xl text-[clamp(2.9rem,5.5vw,5.7rem)] font-semibold leading-[.98] tracking-[-.045em]">
+              Intelligence that turns <span className="axo-serif italic text-[#4f95e8]">signals into stories.</span>
+            </h2>
+          </div>
+          <div>
+            <p className="axo-serif text-2xl italic leading-8 text-[#101116]/65">Our proprietary engine connects data, context, creativity and distribution—so every narrative begins with insight and ends with action.</p>
+            <button type="button" onClick={onNext} className="group mt-8 flex items-center gap-1 rounded-full bg-[#101116] p-1 pl-6 text-sm font-bold text-white">
+              See where stories live
+              <span className="flex size-11 items-center justify-center rounded-full bg-[#4f95e8] transition-transform group-hover:translate-y-1"><ArrowDown className="size-4" /></span>
+            </button>
+          </div>
         </div>
+      </Reveal>
 
-        {/* Pipeline Flow */}
-        <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 md:gap-4">
-          {pipeline.map((step, idx) => (
-            <div key={idx} className="group relative flex flex-col items-center text-center gap-3 p-5 md:p-6 rounded-2xl border border-white/[0.06] bg-white/[0.03] backdrop-blur-sm hover:bg-white/[0.07] hover:border-indigo-400/20 transition-all duration-500 cursor-default">
-              
-              {/* Step number */}
-              <span className="absolute top-3 right-3 text-[10px] font-mono text-white/20 group-hover:text-indigo-400/40 transition-colors">
-                0{idx + 1}
-              </span>
+      <Reveal delay={100}>
+        <div className="relative mt-24 lg:pb-12 lg:pt-12">
+          <div className="axo-ai-line hidden lg:block" />
 
-              {/* Icon with gradient ring */}
-              <div className={`flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br ${step.color} p-[1px] group-hover:shadow-lg group-hover:shadow-indigo-500/20 transition-all duration-500`}>
-                <div className="flex items-center justify-center w-full h-full rounded-[calc(1rem-1px)] bg-[#0c0f1a]">
-                  <span className="material-symbols-outlined text-2xl text-white/80 group-hover:text-white transition-colors">{step.icon}</span>
-                </div>
-              </div>
-
-              <h3 className="text-white font-semibold text-sm md:text-base leading-tight">{step.label}</h3>
-              <p className="text-gray-500 text-xs leading-relaxed group-hover:text-gray-400 transition-colors">{step.desc}</p>
-
-              {/* Connector arrow — hidden on last item and on mobile (stacked) */}
-              {idx < pipeline.length - 1 && (
-                <span className="hidden lg:flex absolute -right-3 top-1/2 -translate-y-1/2 z-20 material-symbols-outlined text-white/10 text-lg group-hover:text-indigo-400/30 transition-colors">
-                  chevron_right
-                </span>
-              )}
-            </div>
-          ))}
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5 lg:gap-3">
+            {pipeline.map((step, index) => {
+              const Icon = step.icon;
+              return (
+                <article key={step.title} className={`group relative z-10 min-h-[285px] rounded-[26px] border border-white/80 bg-white/62 p-6 shadow-[0_24px_60px_-42px_rgba(79,149,232,.5)] backdrop-blur-xl transition-all duration-500 hover:-translate-y-2 hover:bg-white/88 ${step.offset}`}>
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-[10px] font-bold text-[#4f95e8]">0{index + 1}</span>
+                    <span className="flex size-11 items-center justify-center rounded-full border border-[#4f95e8]/20 bg-[#eef7ff] text-[#4f95e8] transition-transform duration-500 group-hover:rotate-12 group-hover:scale-110"><Icon className="size-5" strokeWidth={1.5} /></span>
+                  </div>
+                  <h3 className="mt-12 text-xl font-semibold leading-tight">{step.title}</h3>
+                  <p className="axo-serif mt-4 text-lg italic leading-6 text-[#101116]/58">{step.description}</p>
+                  {index < pipeline.length - 1 && <span className="absolute -right-2 top-1/2 hidden size-4 rounded-full border-4 border-[#edf6ff] bg-[#4f95e8] lg:block" />}
+                </article>
+              );
+            })}
+          </div>
         </div>
+      </Reveal>
 
-        {/* Bottom accent bar */}
-        <div className="flex items-center gap-3 text-gray-500 text-xs">
-          <div className="h-px flex-1 bg-gradient-to-r from-transparent via-indigo-500/20 to-transparent"></div>
-          <span className="uppercase tracking-[0.2em] font-mono">Data In → Intelligence Out</span>
-          <div className="h-px flex-1 bg-gradient-to-r from-transparent via-indigo-500/20 to-transparent"></div>
+      <Reveal delay={160}>
+        <div className="mt-16 flex flex-col gap-5 border-t border-[#4f95e8]/12 pt-7 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-xs font-bold uppercase tracking-[.12em] text-[#4f95e8]">Signal → Context → Intelligence → Narrative → Distribution</p>
+          <p className="text-sm text-black/45">One connected workflow. Clearer decisions at every stage.</p>
         </div>
-
-      </div>
+      </Reveal>
     </div>
-  );
-};
+  </div>
+);
 
-export default Chapter4;
+export default Chapter3;
