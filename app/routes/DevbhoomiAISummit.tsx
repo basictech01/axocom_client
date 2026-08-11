@@ -158,6 +158,11 @@ const speakers: SummitSpeaker[] = [
     linkedin: "https://www.linkedin.com/in/ashishiitk22/",
   },
   {
+    name: "Shri Ravi Shankar Singh",
+    role: "GM - AI & Emerging Tech",
+    image: "/images/Ravi_Shankar.jpeg",
+  },
+  {
     name: "Manoj Kumar",
     role: "Co-founder, MatterCodeAI | IIT Kanpur",
     image: "/images/manoj_kumar.jpeg",
