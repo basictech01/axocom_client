@@ -13,6 +13,7 @@ import {
   HomeFeaturedProblems,
   HomeContrastCta,
   HomeSpeakers,
+  HomeHiringPartners,
   HomeFinalCta,
   HomeCommunity,
 } from "~/features/hackathon/components/home";
@@ -27,6 +28,7 @@ export default function Home() {
       <HomeJourney />
       <HomeParticipants />
       <HomeSpeakers />
+      <HomeHiringPartners />
       <HomeFeaturedProblems />
       <HomeOrgSections />
       <HomeContrastCta />

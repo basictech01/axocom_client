@@ -8,6 +8,7 @@ export { default as HomeOrgSections } from "./HomeOrgSections";
 export { default as HomeFeaturedProblems } from "./HomeFeaturedProblems";
 export { default as HomeContrastCta } from "./HomeContrastCta";
 export { default as HomeSpeakers } from "./HomeSpeakers";
+export { default as HomeHiringPartners } from "./HomeHiringPartners";
 export { default as HomeFinalCta } from "./HomeFinalCta";
 export { default as HomeCommunity } from "./HomeCommunity";
 export { default as EditorialImagePlaceholder } from "./EditorialImagePlaceholder";

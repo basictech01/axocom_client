@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  Building,
   Building2,
   Bus,
   CalendarDays,
@@ -7,6 +8,8 @@ import {
   Check,
   Church,
   Cpu,
+  Database,
+  Gauge,
   GraduationCap,
   Handshake,
   Headphones,
@@ -17,6 +20,9 @@ import {
   Mountain,
   Rocket,
   Satellite,
+  ShieldCheck,
+  Siren,
+  Trees,
   type LucideIcon,
 } from "lucide-react";
 import {
@@ -90,6 +96,18 @@ const attendees = [
   { icon: Rocket, label: "AI startups and solution providers" },
   { icon: GraduationCap, label: "Academia and research institutions" },
   { icon: Megaphone, label: "Media and civil society representatives" },
+];
+
+const agenda = [
+  { icon: Landmark, label: "AI for Governance" },
+  { icon: Building, label: "AI for Public Administration" },
+  { icon: Siren, label: "AI for Disaster Management" },
+  { icon: Trees, label: "AI for Environment & Forests" },
+  { icon: Building2, label: "AI for Smart Cities" },
+  { icon: ShieldCheck, label: "AI for Public Safety" },
+  { icon: Headphones, label: "AI for Citizen Services" },
+  { icon: Database, label: "AI for Data Governance" },
+  { icon: Gauge, label: "AI for Administrative Efficiency" },
 ];
 
 interface SummitSpeaker {
@@ -571,6 +589,7 @@ const DevbhoomiAISummit: React.FC = () => {
             <a href="#about">About</a>
             <a href="#speakers">Speakers</a>
             <a href="#themes">Focus Areas</a>
+            <a href="#agenda">Agenda</a>
             <a href="#attend">Who Should Attend</a>
             <a href="#venue">Venue</a>
             <a className="summit-btn summit-btn-primary" href="#sponsor">Partner With Us</a>
@@ -635,6 +654,25 @@ const DevbhoomiAISummit: React.FC = () => {
                 </article>
               ))}
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="agenda" className="summit-section">
+        <div className="summit-shell">
+          <p className="summit-kicker">What we will explore</p>
+          <h2 className="summit-title">Summit <span>Agenda</span></h2>
+          <p className="summit-copy" style={{ marginTop: 12, maxWidth: 760 }}>
+            A focused agenda on how Artificial Intelligence can transform governance and
+            public service delivery across Uttarakhand.
+          </p>
+          <div className="summit-attendee-grid" style={{ marginTop: 40 }}>
+            {agenda.map((item) => (
+              <div className="summit-card summit-attendee" key={item.label}>
+                <BrandIcon icon={item.icon} />
+                <span>{item.label}</span>
+              </div>
+            ))}
           </div>
         </div>
       </section>
