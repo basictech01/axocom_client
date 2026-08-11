@@ -153,7 +153,7 @@ const speakers: SummitSpeaker[] = [
   },
   {
     name: "Shri Ashish Upadhyaya",
-    role: "General Manager (AI)",
+    role: "DGM - Cyber Security",
     image: "/images/ashish_upadhyay.jpg.jpeg",
     linkedin: "https://www.linkedin.com/in/ashishiitk22/",
   },
