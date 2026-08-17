@@ -138,4 +138,15 @@ export const MENTORS: ProgrammeMentor[] = [
     image: "/hackathon/mentors/AnkitJain.jpeg",
     linkedinUrl: "https://www.linkedin.com/in/anki2jain/",
   },
+  {
+    id: "mentor-niraj-kamdar",
+    name: "Niraj Kamdar",
+    designation: "Blockchain Technical Lead",
+    organization: "dOrg & Zenchain",
+    expertise: "Blockchain, Protocol Engineering",
+    bio: "Ex-founding engineer at AITV (prev. Polywrap) with 4+ years building blockchain protocols and infrastructure across 5+ networks. Mentors teams on Rust, Solidity, and taking secure protocol systems from first principles to mainnet.",
+    initials: "NK",
+    image: "/hackathon/mentors/niraj.jpeg",
+    linkedinUrl: "https://www.linkedin.com/in/niraj-kamdar-5ab13a1a9/",
+  },
 ];

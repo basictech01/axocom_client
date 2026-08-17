@@ -1,6 +1,7 @@
 /**
  * Footer - Uttarakhand Innovation & Solutions Hackathon
  */
+import { Facebook, Instagram, Linkedin, Youtube, type LucideIcon } from "lucide-react";
 import { Link } from "~/features/hackathon/lib/router";
 import { useTheme } from "~/features/hackathon/contexts/ThemeContext";
 import { WHATSAPP_COMMUNITY_URL } from "~/features/hackathon/components/WhatsAppCommunityCta";
@@ -8,6 +9,33 @@ import { WhatsAppLogo } from "~/features/hackathon/components/WhatsAppLogo";
 import { InstagramLogo } from "~/features/hackathon/components/InstagramLogo";
 
 const INSTAGRAM_URL = "https://www.instagram.com/ukis.hackathon/";
+
+const SOCIAL_LINKS: { icon: LucideIcon; label: string; href: string; hoverClass: string }[] = [
+  {
+    icon: Linkedin,
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/company/devbhoomi-ai-summit/",
+    hoverClass: "hover:text-[#0A66C2]",
+  },
+  {
+    icon: Instagram,
+    label: "Instagram",
+    href: "https://www.instagram.com/devbhoomi_ai_summit/",
+    hoverClass: "hover:text-[#E4405F]",
+  },
+  {
+    icon: Facebook,
+    label: "Facebook",
+    href: "https://www.facebook.com/profile.php?id=61591908117967",
+    hoverClass: "hover:text-[#1877F2]",
+  },
+  {
+    icon: Youtube,
+    label: "YouTube",
+    href: "https://www.youtube.com/channel/UCo2Gq0ZKw3m0_cDf_conEsQ",
+    hoverClass: "hover:text-[#FF0000]",
+  },
+];
 
 export default function Footer() {
   const { theme } = useTheme();
@@ -66,6 +94,23 @@ export default function Footer() {
                 <WhatsAppLogo className="w-4 h-4 text-[#25D366]" />
                 Join WhatsApp Community
               </a>
+            </div>
+
+            <h4 className="font-display font-semibold text-sm text-foreground mt-6 mb-3">Follow Us</h4>
+            <div className="flex items-center gap-3">
+              {SOCIAL_LINKS.map((social) => (
+                <a
+                  key={social.label}
+                  href={social.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={`Devbhoomi AI Summit on ${social.label}`}
+                  title={social.label}
+                  className={`inline-flex items-center justify-center w-9 h-9 rounded-lg border border-border text-muted-foreground transition-colors ${social.hoverClass}`}
+                >
+                  <social.icon className="w-4 h-4" strokeWidth={1.8} />
+                </a>
+              ))}
             </div>
           </div>
         </div>

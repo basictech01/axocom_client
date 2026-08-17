@@ -26,4 +26,11 @@ export const HIRING_PARTNERS: HiringPartner[] = [
     logo: "/images/cruv.png",
     url: "https://cruv.org/",
   },
+  {
+    id: "hiring-metasquare",
+    name: "MetaSquare",
+    role: "Hiring Partner",
+    logo: "/hackathon/metasquare.png",
+    url: "https://metasquare.tech/",
+  },
 ];
