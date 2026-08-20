@@ -461,6 +461,161 @@
   }
 }
 
+/* Prize Arena - light by day, championship-dark by night */
+.hackathon-app .prize-arena {
+  --arena-text: #10213A;
+  --arena-muted: #526174;
+  --arena-subtle: #718096;
+  --arena-accent: #0058D4;
+  --arena-accent-bright: #168FED;
+  --arena-accent-soft: rgba(22, 143, 237, 0.09);
+  --arena-line: rgba(0, 88, 212, 0.16);
+  --arena-watermark: rgba(0, 88, 212, 0.055);
+  --arena-card: rgba(255, 255, 255, 0.88);
+  --arena-card-border: rgba(0, 88, 212, 0.19);
+  --arena-card-hover-border: rgba(0, 88, 212, 0.38);
+  --arena-card-shadow: 0 14px 36px rgba(5, 48, 117, 0.08);
+  --arena-card-hover-shadow: 0 20px 46px rgba(5, 48, 117, 0.13);
+  --arena-state: linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(225, 242, 255, 0.98));
+  --arena-state-border: rgba(0, 88, 212, 0.38);
+  --arena-state-hover-border: rgba(0, 88, 212, 0.58);
+  --arena-state-shadow: 0 22px 54px rgba(5, 88, 212, 0.13);
+  --arena-state-hover-shadow: 0 26px 62px rgba(5, 88, 212, 0.18);
+
+  background: linear-gradient(
+    180deg,
+    #E4F3FF 0%,
+    #F5FAFF 12%,
+    #F5FAFF 88%,
+    #EAF5FD 100%
+  );
+  box-shadow:
+    inset 0 1px 0 rgba(0, 88, 212, 0.14),
+    inset 0 -1px 0 rgba(0, 88, 212, 0.12),
+    inset 0 28px 60px rgba(56, 181, 242, 0.05),
+    inset 0 -28px 60px rgba(56, 181, 242, 0.04);
+}
+
+.hackathon-app[data-theme='dark'] .prize-arena {
+  --arena-text: #F3F7FB;
+  --arena-muted: #B7C5D4;
+  --arena-subtle: #8FA4BA;
+  --arena-accent: #38B5F2;
+  --arena-accent-bright: #35DCF5;
+  --arena-accent-soft: rgba(56, 181, 242, 0.1);
+  --arena-line: rgba(125, 217, 250, 0.16);
+  --arena-watermark: rgba(255, 255, 255, 0.045);
+  --arena-card: rgba(13, 27, 46, 0.9);
+  --arena-card-border: rgba(125, 217, 250, 0.18);
+  --arena-card-hover-border: rgba(125, 217, 250, 0.38);
+  --arena-card-shadow: 0 16px 42px rgba(0, 0, 0, 0.2);
+  --arena-card-hover-shadow: 0 20px 52px rgba(0, 0, 0, 0.26);
+  --arena-state: linear-gradient(145deg, rgba(19, 42, 68, 0.98), rgba(9, 24, 43, 0.98));
+  --arena-state-border: rgba(53, 220, 245, 0.42);
+  --arena-state-hover-border: rgba(53, 220, 245, 0.64);
+  --arena-state-shadow: 0 24px 68px rgba(0, 0, 0, 0.3);
+  --arena-state-hover-shadow: 0 28px 76px rgba(0, 0, 0, 0.34);
+
+  background: linear-gradient(
+    180deg,
+    #0B1D31 0%,
+    #07111F 10%,
+    #07111F 90%,
+    #0B1D31 100%
+  );
+  box-shadow:
+    inset 0 1px 0 rgba(53, 220, 245, 0.2),
+    inset 0 -1px 0 rgba(53, 220, 245, 0.16),
+    inset 0 32px 70px rgba(56, 181, 242, 0.035),
+    inset 0 -32px 70px rgba(56, 181, 242, 0.035);
+}
+
+.hackathon-app .prize-arena-text {
+  color: var(--arena-text);
+}
+
+.hackathon-app .prize-arena-copy {
+  color: var(--arena-muted);
+}
+
+.hackathon-app .prize-arena-subtle {
+  color: var(--arena-subtle);
+}
+
+.hackathon-app .prize-arena-accent {
+  color: var(--arena-accent);
+}
+
+.hackathon-app .prize-arena-accent-bright {
+  color: var(--arena-accent-bright);
+}
+
+.hackathon-app .prize-arena-accent-bg {
+  background-color: var(--arena-accent);
+}
+
+.hackathon-app .prize-arena-watermark {
+  color: var(--arena-watermark);
+}
+
+.hackathon-app .prize-arena-line {
+  border-color: var(--arena-line);
+}
+
+.hackathon-app .prize-arena-icon {
+  color: var(--arena-accent);
+  background-color: var(--arena-accent-soft);
+  border: 1px solid var(--arena-line);
+}
+
+.hackathon-app .prize-arena-card {
+  background-color: var(--arena-card);
+  border: 1px solid var(--arena-card-border);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.055),
+    var(--arena-card-shadow);
+  transition:
+    border-color 220ms ease,
+    box-shadow 220ms ease;
+}
+
+.hackathon-app .prize-arena-card:hover {
+  border-color: var(--arena-card-hover-border);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.07),
+    var(--arena-card-hover-shadow);
+}
+
+.hackathon-app .prize-arena-state {
+  background: var(--arena-state);
+  border-color: var(--arena-state-border);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    var(--arena-state-shadow);
+}
+
+.hackathon-app .prize-arena-state:hover {
+  border-color: var(--arena-state-hover-border);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    var(--arena-state-hover-shadow);
+}
+
+.hackathon-app .prize-arena-link {
+  color: var(--arena-accent);
+}
+
+.hackathon-app .prize-arena-link:hover {
+  color: var(--arena-text);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hackathon-app .prize-arena-card,
+  .hackathon-app .prize-arena-card * {
+    transition: none !important;
+  }
+}
+
 /* Final CTA photo panel - same treatment in day + night (dark scrim, light copy) */
 .hackathon-app .final-cta-scrim {
   background:

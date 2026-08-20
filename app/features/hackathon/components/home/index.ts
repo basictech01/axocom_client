@@ -1,5 +1,6 @@
 export { default as HomeHero } from "./HomeHero";
 export { default as HomePartners } from "./HomePartners";
+export { default as HomePrizes } from "./HomePrizes";
 export { default as HomeWhatIs } from "./HomeWhatIs";
 export { default as HomeJourney } from "./HomeJourney";
 export { default as HomeParticipants } from "./HomeParticipants";

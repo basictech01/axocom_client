@@ -9,7 +9,7 @@ export default function HomePartners() {
   return (
     <section
       ref={ref}
-      className="relative z-20 -mt-6 lg:-mt-10 mb-4"
+      className="relative z-30 -mt-12 -mb-24 sm:-mt-14 sm:-mb-20 lg:-mt-16 lg:-mb-16"
       aria-label="In association with"
     >
       <div className="container">
@@ -17,14 +17,14 @@ export default function HomePartners() {
           initial={reduceMotion ? false : { opacity: 0, y: 12 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.45 }}
-          className="rounded-xl bg-[#12263F] dark:bg-surface/95 backdrop-blur-md px-5 py-3.5 sm:px-8 sm:py-4"
+          className="mx-auto max-w-5xl rounded-xl border border-primary/20 bg-white/95 px-4 py-3.5 shadow-[0_18px_45px_rgba(5,88,212,0.16)] backdrop-blur-md sm:px-8 sm:py-4 dark:border-white/10 dark:bg-[#12263F]/95 dark:shadow-[0_18px_48px_rgba(0,0,0,0.3)]"
         >
-          <p className="ukis-eyebrow text-center mb-3 !text-white dark:!text-primary">In Association With</p>
-          <ul className="mx-auto grid max-w-md grid-cols-1 sm:grid-cols-2 sm:divide-x sm:divide-white/15 dark:divide-border/60">
+          <p className="ukis-eyebrow mb-2.5 text-center !text-primary dark:!text-brand-himalayan-cyan">In Association With</p>
+          <ul className="mx-auto grid max-w-xl grid-cols-2 divide-x divide-border dark:divide-white/15">
             {PARTNERS.map((partner) => (
               <li
                 key={partner.name}
-                className="flex flex-col items-center justify-center gap-0.5 px-6 py-1 text-center"
+                className="flex min-w-0 flex-col items-center justify-center gap-0.5 px-2 py-1 text-center sm:px-6"
               >
                 <div className="flex items-center justify-center gap-2.5">
                   <img
@@ -33,17 +33,17 @@ export default function HomePartners() {
                     aria-hidden={partner.logoIncludesName ? undefined : true}
                     className={
                       partner.logoIncludesName
-                        ? "h-[34px] w-auto max-w-[6.3rem] object-contain shrink-0 sm:h-[39px] sm:max-w-[7rem]"
-                        : "h-8 w-8 object-contain shrink-0 sm:h-9 sm:w-9"
+                        ? "h-7 w-auto max-w-[5rem] shrink-0 object-contain sm:h-[39px] sm:max-w-[7rem]"
+                        : "h-7 w-7 shrink-0 object-contain sm:h-9 sm:w-9"
                     }
                   />
                   {!partner.logoIncludesName && (
-                    <span className="font-display font-bold text-xl text-white dark:text-foreground tracking-wide">
+                    <span className="font-display text-base font-bold text-foreground sm:text-xl dark:text-white">
                       {partner.name}
                     </span>
                   )}
                 </div>
-                <span className="text-xs text-white/70 dark:text-muted-foreground leading-snug max-w-[11rem]">
+                <span className="max-w-[9rem] text-[0.65rem] leading-snug text-muted-foreground sm:max-w-[11rem] sm:text-xs dark:text-white/70">
                   {partner.role}
                 </span>
               </li>

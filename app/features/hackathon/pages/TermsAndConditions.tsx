@@ -187,32 +187,40 @@ const terms: TermSectionData[] = [
     "blocks": [
       {
         "type": "text",
-        "text": "8.1 One winner will be selected for each of the following tiers. There are no runner-up, second-place, or consolation prizes at any tier."
+        "text": "8.1 The Hackathon has a total prize pool of \u20B910 lakh, with prize categories and benefits as listed below."
       },
       {
         "type": "table",
         "rows": [
           [
-            "State",
-            "\u20B951,000 cash + \u20B950,000 worth of the PACE Mentorship Programme"
+            "State Level",
+            "\u20B951,000 cash + exclusive benefits worth \u20B91,00,000"
           ],
           [
-            "Garhwal",
-            "\u20B921,000 cash + \u20B925,000 worth of the PACE Mentorship Programme"
+            "Kumaon Level",
+            "\u20B921,000 cash + exclusive benefits worth \u20B950,000"
           ],
           [
-            "Kumaon",
-            "\u20B921,000 cash + \u20B925,000 worth of the PACE Mentorship Programme"
+            "Garhwal Level",
+            "\u20B921,000 cash + exclusive benefits worth \u20B950,000"
+          ],
+          [
+            "Problem Level",
+            "\u20B910,000 cash + exclusive benefits worth \u20B925,000"
+          ],
+          [
+            "AI Credit",
+            "\u20B95,000 in UNIUN AI credit"
           ]
         ]
       },
       {
         "type": "text",
-        "text": "8.2 The \"PACE Mentorship Programme\" component of a prize is a scholarship-style enrolment in the mentorship and training programme operated by PACE, and its use is subject to PACE's own onboarding process and terms, which will be provided separately to winners upon selection."
+        "text": "8.2 The exclusive benefits and opportunities highlighted for the Hackathon may include mentorship, internships, certificates, and job opportunities, as applicable. The AI Credit prize consists of \u20B95,000 in credit from UNIUN."
       },
       {
         "type": "text",
-        "text": "8.3 In addition to the prizes set out above, winning and shortlisted Participants may, on a consent basis, be given access to the Organiser's mentor and hiring-partner network. Such access is provided as a benefit of participation, is not guaranteed, is extended entirely at the discretion of the relevant mentor or hiring partner, and is not separately valued as, or treated as forming part of, the prize amounts stated above."
+        "text": "8.3 Non-cash benefits and opportunities are subject to the relevant provider's availability, eligibility requirements, onboarding process, and terms. Access to an internship, mentorship, or job opportunity is not guaranteed solely by participation or selection as a winner unless expressly confirmed by the relevant provider."
       },
       {
         "type": "text",
@@ -435,7 +443,7 @@ export default function TermsAndConditions() {
               UKIS Hackathon <span className="text-brand-accent">Terms & Conditions</span>
             </h1>
             <p className="mt-5 text-sm text-muted-foreground">
-              Last revised: 18 August 2026
+              Last revised: 20 August 2026
             </p>
           </motion.div>
         </div>
@@ -485,4 +493,3 @@ export default function TermsAndConditions() {
     </div>
   );
 }
-
