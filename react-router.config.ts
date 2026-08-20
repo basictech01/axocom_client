@@ -5,6 +5,8 @@ export default {
   prerender: [
     "/",
     "/DevbhoomiAISummit",
+    "/DevbhoomiAISummit/nomination",
+    "/DevbhoomiAISummit/delegate-pass",
     "/UKISHackathon",
     "/nprweek2026",
     "/election-management",
