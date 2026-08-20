@@ -41,7 +41,14 @@ export default function Navbar() {
       }`}
     >
       <nav className="container flex items-center justify-between h-16 lg:h-20">
-        <Link href="/" className="flex items-center shrink-0 group">
+        <Link href="/" className="w-fit flex items-center gap-1.5 shrink-0 group">
+          <img
+            src="/itda_without_background.png"
+            alt="Information Technology Development Agency"
+            className="h-[29px] sm:h-[34px] lg:h-[39px] w-auto shrink-0 object-contain"
+            width={39}
+            height={39}
+          />
           <img
             src="/hackathon/logo.png"
             alt="Uttarakhand Innovation & Solutions Hackathon"

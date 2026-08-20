@@ -395,7 +395,9 @@ const DevbhoomiAISummit: React.FC = () => {
           border-bottom:1px solid rgba(217,217,217,.65); backdrop-filter:blur(18px);
         }
         .summit-nav-inner { height:86px; display:flex; align-items:center; justify-content:space-between; gap:24px; }
-        .summit-nav-logo { width:190px; height:70px; object-fit:contain; object-position:left center; }
+        .summit-nav-brand { width:fit-content; display:flex; align-items:center; gap:6px; flex-shrink:0; }
+        .summit-nav-logo { width:auto; height:70px; object-fit:contain; }
+        .summit-nav-itda-logo { width:39px; height:39px; object-fit:contain; }
         .summit-nav-links { display:flex; align-items:center; gap:28px; color:#333; font-size:13px; font-weight:600; }
         .summit-nav-links a { position:relative; }
         .summit-nav-links a:not(.summit-btn)::after {
@@ -667,8 +669,10 @@ const DevbhoomiAISummit: React.FC = () => {
         @media (max-width:720px) {
           .summit-shell { width:min(100% - 32px,1180px); }
           .summit-section { padding:64px 0; }
-          .summit-nav-inner { height:74px; }
-          .summit-nav-logo { width:150px; height:60px; }
+          .summit-nav-inner { height:74px; gap:10px; }
+          .summit-nav-brand { gap:4px; }
+          .summit-nav-logo { width:auto; height:56px; }
+          .summit-nav-itda-logo { width:29px; height:29px; }
           .summit-nav .summit-btn { min-height:40px; padding:0 16px; font-size:12px; }
           .summit-hero-grid { padding:48px 0 92px; }
           .summit-hero h1 { font-size:clamp(42px,14vw,60px); }
@@ -726,7 +730,8 @@ const DevbhoomiAISummit: React.FC = () => {
 
       <nav className="summit-nav" aria-label="Summit navigation">
         <div className="summit-shell summit-nav-inner">
-          <a href="#top" aria-label="Devbhoomi AI Summit home">
+          <a className="summit-nav-brand" href="#top" aria-label="Devbhoomi AI Summit home">
+            <img className="summit-nav-itda-logo" src="/itda_without_background.png" alt="Information Technology Development Agency" />
             <img className="summit-nav-logo" src="/images/devbhoomi-ai/summit-logo.png" alt="Devbhoomi AI Summit 2026" />
           </a>
           <div className="summit-nav-links">
@@ -1052,7 +1057,7 @@ const DevbhoomiAISummit: React.FC = () => {
               </div>
             </div>
             <div className="summit-gov-logos">
-              <img src="/images/itda.jpg" alt="Information Technology Development Agency" />
+              <img src="/itda_without_background.png" alt="Information Technology Development Agency" />
               <img src="/images/uttarakhand_government.svg" alt="Government of Uttarakhand" />
             </div>
           </div>
