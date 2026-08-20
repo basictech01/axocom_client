@@ -257,11 +257,6 @@ const DevbhoomiAISummit: React.FC = () => {
   const [submitted, setSubmitted] = useState(false);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [isDelegateModalOpen, setIsDelegateModalOpen] = useState(false);
-  const [delegateForm, setDelegateForm] = useState({ name: "", designation: "", org: "", email: "", phone: "" });
-  const [delegateSubmitted, setDelegateSubmitted] = useState(false);
-  const [delegateSending, setDelegateSending] = useState(false);
-  const [delegateError, setDelegateError] = useState<string | null>(null);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -297,46 +292,6 @@ const DevbhoomiAISummit: React.FC = () => {
     setRole(null);
     setSubmitted(false);
     setError(null);
-  };
-
-  const handleDelegateSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-    if (!(delegateForm.name.trim() && delegateForm.email.trim()) || delegateSending) return;
-
-    setDelegateSending(true);
-    setDelegateError(null);
-    try {
-      const response = await fetch("https://formsubmit.co/ajax/sponsorship@axocom.in", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({
-          name: delegateForm.name,
-          designation: delegateForm.designation || "Not provided",
-          organisation: delegateForm.org || "Not provided",
-          email: delegateForm.email,
-          phone: delegateForm.phone || "Not provided",
-          _subject: "Devbhoomi AI Summit 2026 - Delegate registration",
-          _template: "table",
-        }),
-      });
-      if (!response.ok) throw new Error("Request failed");
-      setDelegateSubmitted(true);
-    } catch {
-      setDelegateError("Something went wrong. Please email sponsorship@axocom.in directly.");
-    } finally {
-      setDelegateSending(false);
-    }
-  };
-
-  const resetDelegateForm = () => {
-    setDelegateForm({ name: "", designation: "", org: "", email: "", phone: "" });
-    setDelegateSubmitted(false);
-    setDelegateError(null);
-  };
-
-  const closeDelegateModal = () => {
-    setIsDelegateModalOpen(false);
-    resetDelegateForm();
   };
 
   return (
@@ -526,61 +481,6 @@ const DevbhoomiAISummit: React.FC = () => {
         .summit-success .summit-icon { margin:0 auto; }
         .summit-success h3 { margin:20px 0 0; font-size:28px; }
         .summit-success p { max-width:480px; margin:12px auto 22px; }
-        .summit-modal-backdrop {
-          position:fixed; inset:0; z-index:120;
-          display:grid; place-items:center;
-          padding:24px;
-          background:rgba(16, 22, 34, 0.52);
-        }
-        .summit-modal {
-          width:min(680px, 100%);
-          max-height:min(90vh, 760px);
-          overflow:auto;
-          position:relative;
-          padding:30px;
-          border-radius:18px;
-          background:#fff;
-          border:1px solid rgba(23, 182, 184, 0.2);
-          box-shadow:0 18px 44px rgba(0, 0, 0, 0.2);
-        }
-        .summit-modal-close {
-          position:absolute;
-          top:14px;
-          right:14px;
-          width:36px;
-          height:36px;
-          border-radius:999px;
-          border:1px solid #d9d9d9;
-          background:#fff;
-          color:#4b5563;
-          display:grid;
-          place-items:center;
-          cursor:pointer;
-        }
-        .summit-modal-close:hover { color:#111; border-color:#c6c6c6; }
-        .summit-modal-title {
-          margin:8px 0 6px;
-          font-size:clamp(24px, 3vw, 32px);
-          line-height:1.15;
-          font-weight:800;
-          letter-spacing:-.03em;
-        }
-        .summit-modal-copy { margin:0 0 20px; color:var(--muted); font-size:14px; line-height:1.6; }
-        .summit-modal-note {
-          margin:0 0 20px;
-          padding:12px 14px;
-          display:flex;
-          align-items:flex-start;
-          gap:10px;
-          border-radius:10px;
-          border:1px solid rgba(23, 182, 184, 0.24);
-          background:rgba(23, 182, 184, 0.07);
-          color:#127F88;
-          font-size:13px;
-          font-weight:600;
-          line-height:1.5;
-        }
-        .summit-modal-note .material-symbols-rounded { font-size:19px; }
         .summit-opportunities {
           padding:72px 0; position:relative; overflow:hidden;
           background:
@@ -692,8 +592,6 @@ const DevbhoomiAISummit: React.FC = () => {
           .summit-opportunity-grid { grid-template-columns:1fr; }
           .summit-role, .summit-form-submit, .summit-error { grid-column:auto; }
           .summit-form { padding:24px; }
-          .summit-modal-backdrop { padding:16px; }
-          .summit-modal { padding:24px 18px 18px; }
           .summit-cta-actions { flex-direction:column; align-items:stretch; }
           .summit-opportunity-card { min-height:auto; padding:28px; }
           .summit-checks { grid-template-columns:1fr; }
@@ -765,13 +663,12 @@ const DevbhoomiAISummit: React.FC = () => {
               <a className="summit-btn summit-btn-primary" href="#sponsor">
                 Partner With Us <span className="material-symbols-rounded">arrow_forward</span>
               </a>
-              <button
-                className="summit-btn summit-btn-outline"
-                type="button"
-                onClick={() => setIsDelegateModalOpen(true)}
-              >
+              <a className="summit-btn summit-btn-outline" href="/DevbhoomiAISummit/delegate-pass">
                 Register as Delegate
-              </button>
+              </a>
+              <a className="summit-btn summit-btn-outline" href="/DevbhoomiAISummit/nomination">
+                Submit Award Nomination
+              </a>
             </div>
             <div className="summit-event-meta">
               <span><span className="material-symbols-rounded">calendar_month</span>October 9, 2026</span>
@@ -1021,13 +918,9 @@ const DevbhoomiAISummit: React.FC = () => {
             <p>Join Uttarakhand's largest AI gathering.</p>
             <div className="summit-cta-actions">
               <a className="summit-btn summit-btn-primary" href="#sponsor">Partner Today <span className="material-symbols-rounded">arrow_forward</span></a>
-              <button
-                className="summit-btn summit-btn-outline"
-                type="button"
-                onClick={() => setIsDelegateModalOpen(true)}
-              >
+              <a className="summit-btn summit-btn-outline" href="/DevbhoomiAISummit/delegate-pass">
                 Register as Delegate
-              </button>
+              </a>
             </div>
           </div>
         </div>
@@ -1068,62 +961,6 @@ const DevbhoomiAISummit: React.FC = () => {
         </div>
       </footer>
 
-      {isDelegateModalOpen && (
-        <div className="summit-modal-backdrop" role="presentation" onClick={closeDelegateModal}>
-          <div className="summit-modal" role="dialog" aria-modal="true" aria-labelledby="delegate-form-title" onClick={(event) => event.stopPropagation()}>
-            <button className="summit-modal-close" type="button" aria-label="Close delegate registration form" onClick={closeDelegateModal}>
-              <span className="material-symbols-rounded">close</span>
-            </button>
-
-            {delegateSubmitted ? (
-              <div className="summit-success">
-                <BrandIcon icon={Check} />
-                <h3>Registration submitted</h3>
-                <p className="summit-copy">Thank you for registering. Our team will connect with you soon.</p>
-                <button className="summit-btn summit-btn-outline" type="button" onClick={closeDelegateModal}>Close</button>
-              </div>
-            ) : (
-              <>
-                <p className="summit-kicker">Devbhoomi AI Summit 2026</p>
-                <h2 id="delegate-form-title" className="summit-modal-title">Register as Delegate</h2>
-                <p className="summit-modal-copy">Share your details and our team will confirm your participation.</p>
-                <p className="summit-modal-note">
-                  <span className="material-symbols-rounded">confirmation_number</span>
-                  Complimentary access to the Summit, with seating allocated based on designation.
-                </p>
-
-                <form className="summit-form-grid" onSubmit={handleDelegateSubmit}>
-                  <div className="summit-field">
-                    <label htmlFor="delegate-name">Full name</label>
-                    <input id="delegate-name" required value={delegateForm.name} onChange={(event) => setDelegateForm({ ...delegateForm, name: event.target.value })} placeholder="Your full name" />
-                  </div>
-                  <div className="summit-field">
-                    <label htmlFor="delegate-designation">Designation</label>
-                    <input id="delegate-designation" value={delegateForm.designation} onChange={(event) => setDelegateForm({ ...delegateForm, designation: event.target.value })} placeholder="Your designation" />
-                  </div>
-                  <div className="summit-field">
-                    <label htmlFor="delegate-org">Organisation</label>
-                    <input id="delegate-org" value={delegateForm.org} onChange={(event) => setDelegateForm({ ...delegateForm, org: event.target.value })} placeholder="Your organisation" />
-                  </div>
-                  <div className="summit-field">
-                    <label htmlFor="delegate-email">Work email</label>
-                    <input id="delegate-email" type="email" required value={delegateForm.email} onChange={(event) => setDelegateForm({ ...delegateForm, email: event.target.value })} placeholder="you@organisation.com" />
-                  </div>
-                  <div className="summit-field">
-                    <label htmlFor="delegate-phone">Phone number</label>
-                    <input id="delegate-phone" type="tel" required value={delegateForm.phone} onChange={(event) => setDelegateForm({ ...delegateForm, phone: event.target.value })} placeholder="+91 00000 00000" />
-                  </div>
-                  <button className="summit-btn summit-btn-primary summit-form-submit" type="submit" disabled={delegateSending}>
-                    {delegateSending ? "Submitting..." : "Submit Delegate Registration"}
-                    <span className="material-symbols-rounded">arrow_forward</span>
-                  </button>
-                  {delegateError && <p className="summit-error">{delegateError}</p>}
-                </form>
-              </>
-            )}
-          </div>
-        </div>
-      )}
     </div>
   );
 };
