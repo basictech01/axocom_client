@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router';
 const events = [
   { to: '/nprweek2026', label: 'NPR Week 2026' },
   { to: '/DevbhoomiAISummit', label: 'Devbhoomi AI Summit' },
-  { to: '/UKISHackathon', label: 'UI Solutions Hackathon' },
+  { to: '/UKISHackathon', label: 'UKIS Hackathon' },
 ];
 
 const Navbar: React.FC = () => {
