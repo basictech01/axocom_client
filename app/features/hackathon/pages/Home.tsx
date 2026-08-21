@@ -5,6 +5,7 @@
 import {
   HomeHero,
   HomePartners,
+  HomePrizes,
   HomeWhatIs,
   HomeJourney,
   HomeParticipants,
@@ -23,6 +24,7 @@ export default function Home() {
     <div className="overflow-x-hidden">
       <HomeHero />
       <HomePartners />
+      <HomePrizes />
       <HomeLeadership />
       <HomeWhatIs />
       <HomeJourney />

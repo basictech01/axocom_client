@@ -14,6 +14,7 @@ const navLinks = [
   { href: "/solutions", label: "Solutions" },
   { href: "/mentors", label: "Mentors" },
   { href: "/register/mentor", label: "Register Mentor" },
+  { href: "/terms-and-conditions", label: "Terms & Conditions" },
 ];
 
 export default function Navbar() {
@@ -58,7 +59,7 @@ export default function Navbar() {
           />
         </Link>
 
-        <div className="hidden lg:flex items-center gap-1">
+        <div className="hidden xl:flex items-center gap-1">
           {navLinks.map((link) => (
             <Link key={link.href} href={link.href}>
               <span
@@ -74,7 +75,7 @@ export default function Navbar() {
           ))}
         </div>
 
-        <div className="hidden lg:flex items-center gap-2">
+        <div className="hidden xl:flex items-center gap-2">
           <button
             type="button"
             onClick={toggleTheme}
@@ -95,7 +96,7 @@ export default function Navbar() {
           </Link>
         </div>
 
-        <div className="flex lg:hidden items-center gap-2">
+        <div className="flex xl:hidden items-center gap-2">
           <button
             type="button"
             onClick={toggleTheme}
@@ -122,7 +123,7 @@ export default function Navbar() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.25, ease: [0.23, 1, 0.32, 1] }}
-            className="lg:hidden bg-page/95 backdrop-blur-xl border-b border-border overflow-hidden"
+            className="xl:hidden bg-page/95 backdrop-blur-xl border-b border-border overflow-hidden"
           >
             <div className="container py-4 flex flex-col gap-1">
               {navLinks.map((link, i) => (
