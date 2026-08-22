@@ -163,8 +163,8 @@ const speakers: SummitSpeaker[] = [
   },
   {
     name: "Shri Ravi Shankar Singh",
-    role: "GM - AI & Emerging Tech",
-    image: "/images/Ravi_Shankar.jpeg",
+    role: "CTO and GM AI and Emerging Tech ITDA, Head SeMT",
+    image: "/images/rai-shankar-singh2.jpeg",
   },
   {
     name: "Manoj Kumar",
