@@ -37,6 +37,12 @@ import {
   structuredData,
   webPageSchema,
 } from "~/lib/seo";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+} from "~/components/ui/select";
 
 const seo = {
   title: "Devbhoomi AI Summit 2026",
@@ -190,6 +196,23 @@ const roleChips = [
   "Media / Civil society",
 ];
 
+const partnershipCategories = [
+  { category: "Associate Partner", investment: "₹1,50,000", deliverables: "Partner recognition, website/collateral branding, digital visibility, delegate passes & networking." },
+  { category: "Media Partner", investment: "₹2,00,000", deliverables: "Media Partner recognition, prominent branding, digital visibility, stakeholder access & event recognition." },
+  { category: "Mobility Partner", investment: "₹2,50,000", deliverables: "Mobility showcase, relevant panel opportunity, branding, exhibition & networking." },
+  { category: "Infrastructure Partner", investment: "₹3,00,000", deliverables: "Infrastructure showcase, relevant panel opportunity, branding, exhibition & stakeholder networking." },
+  { category: "Industrial Partner", investment: "₹3,00,000", deliverables: "Industry-use-case showcase, panel opportunity, branding, exhibition & industry networking." },
+  { category: "FinTech Partner", investment: "₹5,00,000", deliverables: "Academic recognition, student/faculty engagement, panel/mentor opportunity, branding & networking." },
+  { category: "Cloud Partner", investment: "₹5,00,000", deliverables: "Cloud showcase, panel opportunity, prominent branding, exhibition & stakeholder networking." },
+  { category: "Innovation Partner", investment: "₹5,00,000", deliverables: "Innovation showcase, panel opportunity, branding, exhibition & startup networking." },
+  { category: "Technology Partner", investment: "₹5,00,000", deliverables: "Technology showcase, panel/demo opportunity, prominent branding, exhibition & networking." },
+  { category: "Knowledge Partner", investment: "₹5,00,000", deliverables: "Panel opportunity, prominent branding, knowledge-session association, exhibition & networking." },
+  { category: "AI Partner", investment: "₹7,50,000", deliverables: "AI Partner recognition, panel opportunity, logo visibility, AI showcase & exhibition space." },
+  { category: "Co-Powered By", investment: "₹10,00,000", deliverables: "Premium branding, senior leadership panel seat, exhibition space, media coverage & stakeholder networking." },
+  { category: "Powered By", investment: "₹12,00,000", deliverables: "Prominent branding, keynote/panel opportunity, exhibition space, media visibility & stakeholder networking." },
+  { category: "Presented By", investment: "₹15,00,000", deliverables: "Naming rights, keynote, premium panel seat, premium branding, exhibition space, media features & VIP networking." },
+];
+
 const socialLinks = [
   {
     icon: Linkedin,
@@ -255,13 +278,15 @@ const SpeakerProfileLinks = ({ speaker }: { speaker: SummitSpeaker }) => {
 const DevbhoomiAISummit: React.FC = () => {
   const [form, setForm] = useState({ name: "", org: "", email: "", phone: "" });
   const [role, setRole] = useState<string | null>(null);
+  const [partnershipCategory, setPartnershipCategory] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const selectedPartnership = partnershipCategories.find(({ category }) => category === partnershipCategory);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    if (!(form.name.trim() && form.email.trim()) || sending) return;
+    if (!(form.name.trim() && form.email.trim() && partnershipCategory) || sending) return;
 
     setSending(true);
     setError(null);
@@ -275,6 +300,9 @@ const DevbhoomiAISummit: React.FC = () => {
           email: form.email,
           phone: form.phone || "Not provided",
           role: role ?? "Not specified",
+          partnership_category: selectedPartnership?.category,
+          investment: selectedPartnership?.investment,
+          key_deliverables: selectedPartnership?.deliverables,
           _subject: "Devbhoomi AI Summit 2026 - Sponsorship request",
           _template: "table",
         }),
@@ -291,6 +319,7 @@ const DevbhoomiAISummit: React.FC = () => {
   const resetForm = () => {
     setForm({ name: "", org: "", email: "", phone: "" });
     setRole(null);
+    setPartnershipCategory("");
     setSubmitted(false);
     setError(null);
   };
@@ -472,6 +501,31 @@ const DevbhoomiAISummit: React.FC = () => {
           width:100%; min-height:48px; padding:0 15px; border:1px solid #d9d9d9; border-radius:8px; color:var(--ink); background:#fff; outline:0;
         }
         .summit-field input:focus { border-color:var(--teal); box-shadow:0 0 0 3px rgba(23,182,184,.12); }
+        .summit-partnership { grid-column:1/-1; }
+        .summit-partnership-trigger {
+          width:100%; height:auto; min-height:58px; padding:10px 14px; border-color:#d9d9d9; border-radius:8px;
+          color:var(--ink); background:#fff; box-shadow:none; white-space:normal;
+        }
+        .summit-partnership-trigger:focus-visible { border-color:var(--teal); box-shadow:0 0 0 3px rgba(23,182,184,.12); }
+        .summit-partnership-trigger-copy { min-width:0; flex:1; display:flex; align-items:center; justify-content:space-between; gap:16px; text-align:left; }
+        .summit-partnership-placeholder { color:var(--muted); font-size:13px; font-weight:500; }
+        .summit-partnership-name { font-size:13px; font-weight:700; }
+        .summit-partnership-price { flex:0 0 auto; color:#128F9D; font-size:13px; font-weight:800; }
+        .summit-partnership-menu {
+          width:var(--radix-select-trigger-width); max-width:calc(100vw - 32px); max-height:min(470px,var(--radix-select-content-available-height));
+          border:1px solid #d9e4e4; border-radius:8px; background:#fff; box-shadow:0 18px 44px rgba(17,17,17,.16);
+        }
+        .summit-partnership-option { align-items:flex-start; padding:12px 38px 12px 12px; border-radius:6px; white-space:normal; }
+        .summit-partnership-option:focus { background:#eef9f8; }
+        .summit-partnership-option > span:last-child { width:100%; display:block; }
+        .summit-partnership-option-copy { width:100%; min-width:0; display:block; }
+        .summit-partnership-option-head { width:100%; display:grid; grid-template-columns:minmax(0,1fr) max-content; align-items:baseline; gap:16px; }
+        .summit-partnership-option-name { color:var(--ink); font-size:12px; font-weight:800; }
+        .summit-partnership-option-price { color:#128F9D; font-size:12px; font-weight:800; text-align:right; }
+        .summit-partnership-option-details { display:block; margin-top:5px; color:var(--muted); font-size:10px; line-height:1.45; }
+        .summit-partnership-summary { padding:14px 16px; border-left:3px solid var(--teal); border-radius:0 7px 7px 0; background:#f3faf9; }
+        .summit-partnership-summary-label { margin:0; color:#128F9D; font-size:9px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; }
+        .summit-deliverables { margin:5px 0 0; color:var(--muted); font-size:11px; line-height:1.55; }
         .summit-role { grid-column:1/-1; }
         .summit-chips { display:flex; flex-wrap:wrap; gap:8px; }
         .summit-chip { padding:9px 13px; border:1px solid #d9d9d9; border-radius:999px; background:#fff; color:var(--muted); font-size:11px; cursor:pointer; }
@@ -847,6 +901,40 @@ const DevbhoomiAISummit: React.FC = () => {
                 <div className="summit-field">
                   <label htmlFor="summit-phone">Phone number</label>
                   <input id="summit-phone" type="tel" required value={form.phone} onChange={(event) => setForm({ ...form, phone: event.target.value })} placeholder="+91 00000 00000" />
+                </div>
+                <div className="summit-field summit-partnership">
+                  <label htmlFor="summit-partnership-category">Partnership category</label>
+                  <Select required value={partnershipCategory} onValueChange={setPartnershipCategory}>
+                    <SelectTrigger id="summit-partnership-category" className="summit-partnership-trigger" aria-label="Partnership category">
+                      {selectedPartnership ? (
+                        <span className="summit-partnership-trigger-copy">
+                          <span className="summit-partnership-name">{selectedPartnership.category}</span>
+                          <span className="summit-partnership-price">{selectedPartnership.investment}</span>
+                        </span>
+                      ) : (
+                        <span className="summit-partnership-placeholder">Select a partnership category</span>
+                      )}
+                    </SelectTrigger>
+                    <SelectContent className="summit-partnership-menu" position="popper" align="start" sideOffset={6}>
+                      {partnershipCategories.map(({ category, investment, deliverables }) => (
+                        <SelectItem className="summit-partnership-option" key={category} value={category} textValue={category}>
+                          <span className="summit-partnership-option-copy">
+                            <span className="summit-partnership-option-head">
+                              <span className="summit-partnership-option-name">{category}</span>
+                              <span className="summit-partnership-option-price">{investment}</span>
+                            </span>
+                            <span className="summit-partnership-option-details">{deliverables}</span>
+                          </span>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  {selectedPartnership && (
+                    <div className="summit-partnership-summary" aria-live="polite">
+                      <p className="summit-partnership-summary-label">Included with this partnership</p>
+                      <p className="summit-deliverables">{selectedPartnership.deliverables}</p>
+                    </div>
+                  )}
                 </div>
                 <div className="summit-field summit-role">
                   <label>Your role</label>
