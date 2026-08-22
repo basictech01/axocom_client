@@ -156,15 +156,16 @@ const speakers: SummitSpeaker[] = [
     officialProfile: "https://sad.uk.gov.in/alok-kumar-pandey/",
   },
   {
+    name: "Shri Ravi Shankar Singh",
+    role: "CTO and GM AI and Emerging Tech ITDA, Head SeMT",
+    image: "/images/rai-shankar-singh2.jpeg",
+    linkedin: "https://www.linkedin.com/in/singh-ravishankar/"
+  },
+  {
     name: "Shri Ashish Upadhyaya",
     role: "DGM Cyber Security",
     image: "/images/ashish_upadhyay.jpg.jpeg",
     linkedin: "https://www.linkedin.com/in/ashishiitk22/",
-  },
-  {
-    name: "Shri Ravi Shankar Singh",
-    role: "CTO and GM AI and Emerging Tech ITDA, Head SeMT",
-    image: "/images/rai-shankar-singh2.jpeg",
   },
   {
     name: "Manoj Kumar",
