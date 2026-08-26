@@ -11,5 +11,9 @@ export default {
     "/nprweek2026",
     "/election-management",
     "/careers",
+    "/support",
+    "/privacy-policy",
+    "/terms-and-conditions",
+    "/refund-policy",
   ],
 } satisfies Config;

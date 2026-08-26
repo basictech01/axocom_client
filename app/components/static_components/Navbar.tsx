@@ -52,6 +52,7 @@ const Navbar: React.FC = () => {
               )}
             </div>
             <Link to="/careers" className="text-sm font-medium text-black/60 transition-colors hover:text-black">Careers</Link>
+            <Link to="/support" className="text-sm font-medium text-black/60 transition-colors hover:text-black">Support</Link>
           </div>
 
           <button type="button" onClick={partnerUp} className="hidden rounded-full bg-[#101116] px-6 py-3 text-sm font-bold text-white transition-transform hover:scale-[1.03] lg:block">Partner Up</button>
@@ -70,6 +71,7 @@ const Navbar: React.FC = () => {
           {isMobileEventsOpen && <div className="mt-4 border-l border-black/30 pl-5">{events.map((event) => <Link key={event.to} to={event.to} onClick={() => setIsMenuOpen(false)} className="block py-2 text-lg text-black/65">{event.label}</Link>)}</div>}
         </div>
         <Link to="/careers" onClick={() => setIsMenuOpen(false)} className="border-b border-black/20 py-5 text-4xl font-black">Careers</Link>
+        <Link to="/support" onClick={() => setIsMenuOpen(false)} className="border-b border-black/20 py-5 text-4xl font-black">Support</Link>
         <button type="button" onClick={partnerUp} className="mt-auto bg-[#101116] py-4 text-lg font-bold text-white">Partner Up</button>
       </div>
     </>
