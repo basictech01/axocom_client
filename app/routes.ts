@@ -11,6 +11,7 @@ export default [
     route("nprweek2026", "routes/nprweek2026.tsx"),
     route("DevbhoomiAISummit", "routes/DevbhoomiAISummit.tsx"),
     route("UISHackathon", "routes/hackathon-legacy-redirect.tsx"),
+    route("UKISHackathon/hackathon-proposal-slides", "routes/hackathon-proposal-slides.tsx"),
     route("DevbhoomiAISummit/nomination", "routes/devbhoomi-ai-nomination.tsx"),
     route("DevbhoomiAISummit/delegate-pass", "routes/devbhoomi-ai-delegate-pass.tsx"),
     route("UKISHackathon", "features/hackathon/Layout.tsx", [

@@ -43,13 +43,18 @@ export default function Navbar() {
     >
       <nav className="container flex items-center justify-between h-16 lg:h-20">
         <Link href="/" className="w-fit flex items-center gap-1.5 shrink-0 group">
-          <img
-            src="/itda_without_background.png"
-            alt="Information Technology Development Agency"
-            className="h-[29px] sm:h-[34px] lg:h-[39px] w-auto shrink-0 object-contain"
-            width={39}
-            height={39}
-          />
+          <span className="order-first flex w-[29px] sm:w-[34px] lg:w-[39px] shrink-0 flex-col items-center leading-none">
+            <img
+              src="/itda_without_background.png"
+              alt="Information Technology Development Agency"
+              className="block h-[29px] sm:h-[34px] lg:h-[39px] w-full object-contain"
+              width={39}
+              height={39}
+            />
+            <span aria-hidden="true" className="mt-0.5 text-[7px] sm:text-[8px] font-bold tracking-[0.08em] text-[#2118b8]">
+              ITDA
+            </span>
+          </span>
           <img
             src="/hackathon/logo.png"
             alt="Uttarakhand Innovation & Solutions Hackathon"

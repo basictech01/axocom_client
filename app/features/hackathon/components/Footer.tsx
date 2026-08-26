@@ -1,7 +1,7 @@
 /**
  * Footer - Uttarakhand Innovation & Solutions Hackathon
  */
-import { Facebook, Instagram, Linkedin, Youtube, type LucideIcon } from "lucide-react";
+import { Facebook, Instagram, Linkedin, Phone, Youtube, type LucideIcon } from "lucide-react";
 import { Link } from "~/features/hackathon/lib/router";
 import { useTheme } from "~/features/hackathon/contexts/ThemeContext";
 import { WHATSAPP_COMMUNITY_URL } from "~/features/hackathon/components/WhatsAppCommunityCta";
@@ -85,6 +85,13 @@ export default function Footer() {
               <Link href="/register/mentor" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                 Become a Mentor
               </Link>
+              <a
+                href="tel:+916399910916"
+                className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
+              >
+                <Phone className="w-4 h-4" strokeWidth={1.8} />
+                +91 63999 10916
+              </a>
               <a
                 href={WHATSAPP_COMMUNITY_URL}
                 target="_blank"

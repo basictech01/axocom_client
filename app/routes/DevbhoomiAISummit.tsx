@@ -197,6 +197,7 @@ const roleChips = [
 ];
 
 const partnershipCategories = [
+  { category: "River Conversation Partner (Booked)", investment: "₹5,00,000", deliverables: "River Conversation Partner recognition, session association, prominent branding & stakeholder networking.", booked: true },
   { category: "Associate Partner", investment: "₹1,50,000", deliverables: "Partner recognition, website/collateral branding, digital visibility, delegate passes & networking." },
   { category: "Media Partner", investment: "₹2,00,000", deliverables: "Media Partner recognition, prominent branding, digital visibility, stakeholder access & event recognition." },
   { category: "Mobility Partner", investment: "₹2,50,000", deliverables: "Mobility showcase, relevant panel opportunity, branding, exhibition & networking." },
@@ -382,7 +383,9 @@ const DevbhoomiAISummit: React.FC = () => {
         .summit-nav-inner { height:86px; display:flex; align-items:center; justify-content:space-between; gap:24px; }
         .summit-nav-brand { width:fit-content; display:flex; align-items:center; gap:6px; flex-shrink:0; }
         .summit-nav-logo { width:auto; height:70px; object-fit:contain; }
+        .summit-nav-itda { width:39px; flex:0 0 auto; display:flex; flex-direction:column; align-items:center; line-height:1; }
         .summit-nav-itda-logo { width:39px; height:39px; object-fit:contain; }
+        .summit-nav-itda-label { margin-top:2px; color:#2118B8; font-size:8px; font-weight:700; letter-spacing:.08em; }
         .summit-nav-links { display:flex; align-items:center; gap:28px; color:#333; font-size:13px; font-weight:600; }
         .summit-nav-links a { position:relative; }
         .summit-nav-links a:not(.summit-btn)::after {
@@ -521,11 +524,12 @@ const DevbhoomiAISummit: React.FC = () => {
         .summit-partnership-option-copy { width:100%; min-width:0; display:block; }
         .summit-partnership-option-head { width:100%; display:grid; grid-template-columns:minmax(0,1fr) max-content; align-items:baseline; gap:16px; }
         .summit-partnership-option-name { color:var(--ink); font-size:12px; font-weight:800; }
+        .summit-partnership-booked { color:#C62828; }
         .summit-partnership-option-price { color:#128F9D; font-size:12px; font-weight:800; text-align:right; }
-        .summit-partnership-option-details { display:block; margin-top:5px; color:var(--muted); font-size:10px; line-height:1.45; }
+        .summit-partnership-option-details { display:block; margin-top:6px; color:#4F5559; font-size:12px; font-weight:500; line-height:1.5; }
         .summit-partnership-summary { padding:14px 16px; border-left:3px solid var(--teal); border-radius:0 7px 7px 0; background:#f3faf9; }
         .summit-partnership-summary-label { margin:0; color:#128F9D; font-size:9px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; }
-        .summit-deliverables { margin:5px 0 0; color:var(--muted); font-size:11px; line-height:1.55; }
+        .summit-deliverables { margin:5px 0 0; color:#4F5559; font-size:12px; font-weight:500; line-height:1.6; }
         .summit-role { grid-column:1/-1; }
         .summit-chips { display:flex; flex-wrap:wrap; gap:8px; }
         .summit-chip { padding:9px 13px; border:1px solid #d9d9d9; border-radius:999px; background:#fff; color:var(--muted); font-size:11px; cursor:pointer; }
@@ -627,7 +631,9 @@ const DevbhoomiAISummit: React.FC = () => {
           .summit-nav-inner { height:74px; gap:10px; }
           .summit-nav-brand { gap:4px; }
           .summit-nav-logo { width:auto; height:56px; }
+          .summit-nav-itda { width:29px; }
           .summit-nav-itda-logo { width:29px; height:29px; }
+          .summit-nav-itda-label { font-size:7px; }
           .summit-nav .summit-btn { min-height:40px; padding:0 16px; font-size:12px; }
           .summit-hero-grid { padding:48px 0 92px; }
           .summit-hero h1 { font-size:clamp(42px,14vw,60px); }
@@ -684,7 +690,10 @@ const DevbhoomiAISummit: React.FC = () => {
       <nav className="summit-nav" aria-label="Summit navigation">
         <div className="summit-shell summit-nav-inner">
           <a className="summit-nav-brand" href="#top" aria-label="Devbhoomi AI Summit home">
-            <img className="summit-nav-itda-logo" src="/itda_without_background.png" alt="Information Technology Development Agency" />
+            <span className="summit-nav-itda">
+              <img className="summit-nav-itda-logo" src="/itda_without_background.png" alt="Information Technology Development Agency" />
+              <span className="summit-nav-itda-label" aria-hidden="true">ITDA</span>
+            </span>
             <img className="summit-nav-logo" src="/images/devbhoomi-ai/summit-logo.png" alt="Devbhoomi AI Summit 2026" />
           </a>
           <div className="summit-nav-links">
@@ -908,7 +917,7 @@ const DevbhoomiAISummit: React.FC = () => {
                     <SelectTrigger id="summit-partnership-category" className="summit-partnership-trigger" aria-label="Partnership category">
                       {selectedPartnership ? (
                         <span className="summit-partnership-trigger-copy">
-                          <span className="summit-partnership-name">{selectedPartnership.category}</span>
+                          <span className={`summit-partnership-name${selectedPartnership.booked ? " summit-partnership-booked" : ""}`}>{selectedPartnership.category}</span>
                           <span className="summit-partnership-price">{selectedPartnership.investment}</span>
                         </span>
                       ) : (
@@ -916,11 +925,11 @@ const DevbhoomiAISummit: React.FC = () => {
                       )}
                     </SelectTrigger>
                     <SelectContent className="summit-partnership-menu" position="popper" align="start" sideOffset={6}>
-                      {partnershipCategories.map(({ category, investment, deliverables }) => (
+                      {partnershipCategories.map(({ category, investment, deliverables, booked }) => (
                         <SelectItem className="summit-partnership-option" key={category} value={category} textValue={category}>
                           <span className="summit-partnership-option-copy">
                             <span className="summit-partnership-option-head">
-                              <span className="summit-partnership-option-name">{category}</span>
+                              <span className={`summit-partnership-option-name${booked ? " summit-partnership-booked" : ""}`}>{category}</span>
                               <span className="summit-partnership-option-price">{investment}</span>
                             </span>
                             <span className="summit-partnership-option-details">{deliverables}</span>
