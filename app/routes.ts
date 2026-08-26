@@ -3,6 +3,10 @@ import { type RouteConfig, index, layout, route } from "@react-router/dev/routes
 export default [
     route("login", "routes/login.tsx"),
     route("careers", "routes/careers.tsx"),
+    route("support", "routes/support.tsx"),
+    route("privacy-policy", "routes/privacy-policy.tsx"),
+    route("terms-and-conditions", "routes/terms-and-conditions.tsx"),
+    route("refund-policy", "routes/refund-policy.tsx"),
     route("election-management", "routes/election-page.tsx"),
     route("nprweek2026", "routes/nprweek2026.tsx"),
     route("DevbhoomiAISummit", "routes/DevbhoomiAISummit.tsx"),
