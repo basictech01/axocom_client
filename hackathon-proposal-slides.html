@@ -1,0 +1,792 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#073b66">
+  <title>Uttarakhand Innovation &amp; Solutions Hackathon 2026</title>
+  <style>
+    :root {
+      --navy: #053075;
+      --blue: #0058d4;
+      --cyan: #35dcf5;
+      --teal: #38b5f2;
+      --lime: #35dcf5;
+      --ink: #10213a;
+      --muted: #526174;
+      --pale: #f6f8fb;
+      --line: #cbd6e2;
+      --white: #fff;
+      --gold: #168fed;
+      --surface: #fff;
+      --surface-subtle: #edf5fb;
+      --slide: 0;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; overflow: hidden; }
+    body {
+      color: var(--ink);
+      font-family: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--navy);
+    }
+    button { font: inherit; }
+
+    .deck {
+      display: flex;
+      width: 1000vw;
+      transform: translateX(calc(var(--slide) * -100vw));
+      transition: transform 560ms cubic-bezier(.22,.78,.18,1);
+    }
+
+    .slide {
+      position: relative;
+      width: 100vw;
+      min-width: 100vw;
+      height: 100svh;
+      overflow: hidden;
+      padding: clamp(2.2rem, 5vw, 5.5rem) clamp(1.25rem, 6vw, 6.5rem) clamp(5.2rem, 8vh, 6.2rem);
+      background: var(--white);
+    }
+    .slide.pale { background: var(--pale); }
+    .slide.dark { background: #07111f; color: var(--white); }
+    .slide::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: .075;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='600' viewBox='0 0 800 600' fill='none'%3E%3Cpath d='M0 420C80 380 140 360 220 370C320 382 380 440 480 430C580 420 640 350 720 340C760 335 780 338 800 345' stroke='%230058D4' stroke-width='1.2'/%3E%3Cpath d='M0 460C100 430 160 410 250 425C340 440 400 490 500 480C600 470 680 410 800 400' stroke='%23168FED' stroke-width='1'/%3E%3Cpath d='M0 500C90 470 180 455 270 470C360 485 430 520 530 510C630 500 710 455 800 450' stroke='%2338B5F2' stroke-width='0.8'/%3E%3Cpath d='M40 80C120 100 180 140 260 120C340 100 400 60 480 70C560 80 620 130 700 110' stroke='%230058D4' stroke-width='0.9'/%3E%3Cpath d='M0 200C60 180 140 170 220 190C300 210 360 250 440 230C520 210 600 160 700 170C740 174 770 180 800 186' stroke='%2335DCF5' stroke-width='0.7' opacity='0.8'/%3E%3C/svg%3E");
+      background-position: center;
+      background-size: cover;
+    }
+    .slide::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: .03;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Ccircle cx='30' cy='30' r='8' fill='none' stroke='%230058D4' stroke-width='0.6'/%3E%3Ccircle cx='0' cy='0' r='8' fill='none' stroke='%230058D4' stroke-width='0.6'/%3E%3Ccircle cx='60' cy='0' r='8' fill='none' stroke='%230058D4' stroke-width='0.6'/%3E%3Ccircle cx='0' cy='60' r='8' fill='none' stroke='%230058D4' stroke-width='0.6'/%3E%3Ccircle cx='60' cy='60' r='8' fill='none' stroke='%230058D4' stroke-width='0.6'/%3E%3C/svg%3E");
+      background-size: 60px 60px;
+    }
+    .slide > * { position: relative; z-index: 2; }
+    .dark::before { opacity: .13; }
+    .dark::after { opacity: .05; }
+
+    .eyebrow {
+      margin: 0 0 .65rem;
+      color: var(--blue);
+      font-family: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
+      font-size: clamp(.7rem, 1vw, .9rem);
+      font-weight: 500;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+    .dark .eyebrow { color: var(--cyan); }
+    h1, h2, h3, p { margin-top: 0; }
+    h1, h2, h3 { font-family: "Space Grotesk", "Inter", ui-sans-serif, system-ui, sans-serif; }
+    h1 {
+      max-width: 14ch;
+      margin-bottom: 1.3rem;
+      font-size: clamp(2.6rem, 6vw, 6.2rem);
+      line-height: .95;
+      letter-spacing: 0;
+    }
+    h2 {
+      margin-bottom: .8rem;
+      font-size: clamp(2rem, 4.1vw, 4.5rem);
+      line-height: 1;
+      letter-spacing: 0;
+    }
+    h3 {
+      margin-bottom: .5rem;
+      font-size: clamp(1.05rem, 1.7vw, 1.55rem);
+      line-height: 1.12;
+    }
+    .lede {
+      max-width: 68ch;
+      color: var(--muted);
+      font-size: clamp(1rem, 1.6vw, 1.38rem);
+      line-height: 1.45;
+    }
+    .dark .lede { color: #c6dde7; }
+    .accent { color: var(--blue); }
+    .blue { color: var(--blue); }
+
+    .page-number {
+      position: absolute;
+      top: 1.35rem;
+      right: clamp(1.25rem, 3vw, 3rem);
+      color: var(--muted);
+      font-size: .85rem;
+      font-weight: 800;
+    }
+    .dark .page-number { color: #a9c5d1; }
+    .footer {
+      position: absolute;
+      right: clamp(1.25rem, 6vw, 6.5rem);
+      bottom: 1.7rem;
+      left: clamp(10.5rem, 18vw, 15rem);
+      display: flex;
+      justify-content: space-between;
+      color: #718a96;
+      font-size: clamp(.58rem, .8vw, .74rem);
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+    .dark .footer { color: #9dbbc8; }
+    .institution-lockup { position: absolute; z-index: 5; bottom: .78rem; left: clamp(1.25rem, 3vw, 3rem); display: flex; height: 2.65rem; align-items: center; gap: .45rem; padding: .3rem .5rem; border: 1px solid var(--line); border-radius: .55rem; background: rgba(255,255,255,.94); box-shadow: 0 8px 24px rgba(16,33,58,.09); backdrop-filter: blur(8px); }
+    .institution-lockup img { width: 2rem; height: 2rem; object-fit: contain; }
+    .institution-lockup span { width: 1px; height: 1.5rem; background: var(--line); }
+
+    .cover { padding-top: clamp(2.5rem, 7vh, 5.5rem); background: var(--pale); }
+    .cover-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(0, .9fr) minmax(25rem, 1.1fr);
+      gap: 5vw;
+      height: 100%;
+      align-items: center;
+    }
+    .cover-logo { width: min(28rem, 88%); max-height: 24vh; padding: .65rem; border: 1px solid var(--line); border-radius: .75rem; background: rgba(255,255,255,.94); object-fit: contain; object-position: left; }
+    .cover h1 { margin: 1.8rem 0 1rem; font-size: clamp(2.2rem, 4.6vw, 5rem); }
+    .brand-panel {
+      position: absolute;
+      inset: 0 0 0 auto;
+      z-index: 0;
+      width: 72vw;
+      background:
+        linear-gradient(90deg, var(--pale) 0%, rgba(246,248,251,.88) 18%, rgba(246,248,251,.26) 48%, rgba(246,248,251,.04) 100%),
+        linear-gradient(0deg, rgba(246,248,251,.34), rgba(246,248,251,.08)),
+        url("public/hackathon/logos/prop.webp") center/cover no-repeat;
+      mask-image: linear-gradient(to left, #000 58%, transparent 100%);
+    }
+    .brand-stack { align-self: end; position: relative; display: grid; width: min(25rem, 100%); justify-self: end; justify-items: center; margin-bottom: 2rem; padding: 1.15rem; border: 1px solid var(--line); border-radius: .75rem; color: var(--ink); background: rgba(255,255,255,.92); box-shadow: 0 20px 60px rgba(16,33,58,.08); backdrop-filter: blur(8px); }
+    .partners { display: flex; gap: 2.2rem; align-items: center; justify-content: center; }
+    .partners figure { margin: 0; text-align: center; }
+    .partners img { width: 4rem; height: 4rem; object-fit: contain; }
+    .partners figcaption { margin-top: .35rem; color: var(--muted); font-family: "JetBrains Mono", monospace; font-size: .62rem; font-weight: 500; }
+    .year { display: none; }
+
+    .metric-grid, .path-grid, .sponsor-grid {
+      display: grid;
+      gap: clamp(.75rem, 1.5vw, 1.35rem);
+      margin-top: clamp(1.4rem, 4vh, 3rem);
+    }
+    .cycle-diagram {
+      position: relative;
+      width: min(67rem, 92vw);
+      height: min(53vh, 31rem);
+      min-height: 25rem;
+      margin: clamp(1rem, 2.5vh, 1.7rem) auto 0;
+    }
+    .cycle-ring { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+    .cycle-ring path {
+      fill: none;
+      stroke: var(--blue);
+      stroke-width: 3;
+      stroke-linecap: round;
+      filter: drop-shadow(0 4px 9px rgba(0,88,212,.15));
+    }
+    .cycle-center {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      display: grid;
+      width: clamp(8rem, 12vw, 10.5rem);
+      aspect-ratio: 1;
+      padding: 1rem;
+      border: .42rem solid #d8f8fc;
+      border-radius: 50%;
+      color: white;
+      background: linear-gradient(135deg, var(--blue), var(--navy));
+      box-shadow: 0 20px 60px rgba(0,88,212,.24);
+      place-content: center;
+      text-align: center;
+      transform: translate(-50%, -50%);
+    }
+    .cycle-center strong { display: block; font-family: "Space Grotesk", sans-serif; font-size: clamp(2rem, 3.5vw, 3.5rem); line-height: .9; }
+    .cycle-center span { display: block; margin-top: .45rem; color: var(--cyan); font-family: "JetBrains Mono", monospace; font-size: .68rem; font-weight: 700; letter-spacing: .12em; }
+    .cycle-node {
+      position: absolute;
+      width: clamp(13rem, 19vw, 16rem);
+      min-height: 6.5rem;
+      padding: 1rem 1.1rem;
+      border: 1px solid var(--line);
+      border-radius: .75rem;
+      background: white;
+      box-shadow: 0 20px 60px rgba(16,33,58,.08);
+    }
+    .cycle-node small { display: block; margin-bottom: .4rem; color: var(--blue); font-family: "JetBrains Mono", monospace; font-size: .62rem; font-weight: 700; letter-spacing: .13em; }
+    .cycle-node h3 { margin: 0 0 .3rem; font-size: clamp(1rem, 1.45vw, 1.3rem); }
+    .cycle-node p { margin: 0; color: var(--muted); font-size: clamp(.75rem, 1vw, .9rem); line-height: 1.35; }
+    .cycle-government { top: 0; left: 50%; transform: translateX(-50%); }
+    .cycle-build { top: 50%; right: 0; transform: translateY(-50%); }
+    .cycle-experts { bottom: 0; left: 50%; transform: translateX(-50%); }
+    .cycle-demo { top: 50%; left: 0; transform: translateY(-50%); }
+
+    .outcome-layout { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(1rem, 2vw, 1.6rem); margin-top: clamp(2rem, 6vh, 4rem); }
+    .outcome {
+      min-height: clamp(17rem, 42vh, 23rem);
+      padding: clamp(1.4rem, 2.5vw, 2.2rem);
+      border: 1px solid var(--line);
+      border-radius: .75rem;
+      background: white;
+      box-shadow: 0 20px 60px rgba(16,33,58,.08);
+    }
+    .outcome-icon {
+      display: grid;
+      width: clamp(3.4rem, 5vw, 4.6rem);
+      aspect-ratio: 1;
+      margin-bottom: clamp(2rem, 6vh, 3.8rem);
+      place-items: center;
+      border-radius: .75rem;
+      color: white;
+      background: var(--blue);
+      font-family: "Space Grotesk", sans-serif;
+      font-size: clamp(1.25rem, 2.2vw, 2rem);
+      font-weight: 800;
+    }
+    .outcome-icon.logo-icon { padding: .45rem; border: 1px solid var(--line); background: white; }
+    .outcome-icon.logo-icon img { width: 100%; height: 100%; object-fit: contain; }
+    .outcome h3 { font-size: clamp(1.25rem, 2vw, 1.8rem); }
+    .outcome p { margin: 0; color: var(--muted); font-size: clamp(.9rem, 1.15vw, 1.05rem); line-height: 1.55; }
+    .outcome-tag { display: block; margin-top: 1.25rem; color: var(--blue); font-family: "JetBrains Mono", monospace; font-size: .66rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+    .clean-list { margin: 1rem 0 0; padding-left: 1.2rem; line-height: 1.75; }
+    .note { color: var(--muted); font-size: .78rem; font-style: italic; line-height: 1.35; }
+    .dark .note { color: #a9c4d0; }
+
+    .metric-grid { grid-template-columns: repeat(3, 1fr); }
+    .metric {
+      padding: clamp(1rem, 2.2vw, 2rem);
+      border-top: .38rem solid var(--blue);
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      border-left: 1px solid var(--line);
+      border-radius: .75rem;
+      background: white;
+      box-shadow: 0 20px 60px rgba(16,33,58,.08);
+    }
+    .metric:nth-child(2) { border-color: var(--teal); }
+    .metric:nth-child(3) { border-color: var(--lime); }
+    .metric strong { display: block; color: var(--blue); font-size: clamp(1.9rem, 3.7vw, 3.8rem); line-height: 1; }
+    .metric:nth-child(2) strong { color: var(--teal); }
+    .metric:nth-child(3) strong { color: var(--blue); }
+    .metric span { display: block; margin-top: .85rem; color: var(--muted); font-size: .82rem; font-weight: 800; letter-spacing: .07em; }
+    .benefit-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3vw; margin-top: clamp(1.5rem, 5vh, 3.6rem); }
+    .benefit-row p { color: var(--muted); line-height: 1.4; }
+
+    .mentor-layout { display: grid; grid-template-columns: .92fr 1.08fr; gap: 4vw; margin-top: 1.8rem; align-items: stretch; }
+    .photo { min-height: 45vh; background: center/cover no-repeat; }
+    .mentor-wall {
+      position: relative;
+      display: grid;
+      height: 49vh;
+      min-height: 25rem;
+      grid-template-columns: 1fr 1fr;
+      gap: .8rem;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: .75rem;
+      background: var(--surface-subtle);
+      box-shadow: 0 20px 60px rgba(16,33,58,.08);
+      mask-image: linear-gradient(to bottom, transparent 0, #000 9%, #000 91%, transparent 100%);
+    }
+    .mentor-column { min-width: 0; overflow: hidden; }
+    .mentor-track {
+      display: grid;
+      gap: .8rem;
+      padding: .8rem 0 0 .8rem;
+      animation: mentor-wall-up 24s linear infinite;
+      will-change: transform;
+    }
+    .mentor-column:nth-child(2) .mentor-track {
+      padding-right: .8rem;
+      padding-left: 0;
+      animation-name: mentor-wall-down;
+      animation-duration: 28s;
+    }
+    .mentor-wall:hover .mentor-track { animation-play-state: paused; }
+    .mentor-card {
+      position: relative;
+      aspect-ratio: 1 / 1.08;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: .65rem;
+      background: white;
+    }
+    .mentor-card img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+    .mentor-card span {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      padding: 1.6rem .65rem .55rem;
+      color: white;
+      background: linear-gradient(transparent, rgba(5,48,117,.94));
+      font-size: clamp(.65rem, .9vw, .8rem);
+      font-weight: 800;
+      line-height: 1.15;
+    }
+    @keyframes mentor-wall-up {
+      from { transform: translateY(0); }
+      to { transform: translateY(-50%); }
+    }
+    @keyframes mentor-wall-down {
+      from { transform: translateY(-50%); }
+      to { transform: translateY(0); }
+    }
+    .session-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .session { padding: 1.3rem; border: 1px solid var(--line); border-radius: .75rem; background: var(--surface-subtle); }
+    .pill { display: inline-block; margin-bottom: .9rem; padding: .35rem .8rem; color: white; background: var(--blue); border-radius: .5rem; font-family: "JetBrains Mono", monospace; font-size: .72rem; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; }
+    .session:nth-child(2) .pill { color: white; background: var(--navy); }
+    .session ul { margin: 0; padding-left: 1.1rem; line-height: 1.65; font-weight: 700; }
+    .session li::marker { color: var(--blue); }
+    .domain-list { columns: 2; margin-top: 1.2rem; padding-left: 1.2rem; color: var(--muted); line-height: 1.7; }
+
+    .career-layout { display: grid; grid-template-columns: 1fr .88fr; gap: 6vw; align-items: center; height: 75%; }
+    .career-flow { display: grid; gap: .8rem; margin-top: 2rem; }
+    .career-step { display: grid; grid-template-columns: 2.5rem 7rem 1fr; gap: .85rem; align-items: center; }
+    .career-step b:first-child { display: grid; aspect-ratio: 1; place-items: center; border: 1px solid #314964; border-radius: 50%; color: var(--cyan); background: #0d1b2e; }
+    .career-step strong { color: var(--cyan); font-family: "JetBrains Mono", monospace; font-size: .8rem; letter-spacing: .1em; }
+    .career-step span { color: white; font-size: 1.08rem; font-weight: 700; }
+    .hiring-panel { padding: 2rem; border: 1px solid var(--line); border-radius: .75rem; color: var(--ink); background: white; box-shadow: 0 20px 60px rgba(0,0,0,.16); }
+    .hiring-panel .lede { font-size: clamp(.88rem, 1.15vw, 1rem); }
+    .hiring-logo-grid { display: grid; gap: .8rem; margin-top: 1.4rem; }
+    .hiring-partner {
+      display: grid;
+      min-height: 5.2rem;
+      grid-template-columns: 7.5rem 1fr;
+      align-items: center;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: .7rem;
+      background: var(--pale);
+    }
+    .hiring-partner-logo { display: grid; align-self: stretch; padding: .75rem; border-right: 1px solid var(--line); background: white; place-items: center; }
+    .hiring-partner img { width: 100%; max-width: 6rem; max-height: 3.4rem; object-fit: contain; }
+    .hiring-partner div:last-child { padding: .7rem 1rem; }
+    .hiring-partner strong { display: block; font-family: "Space Grotesk", "Inter", sans-serif; font-size: 1rem; }
+    .hiring-partner span { display: block; margin-top: .2rem; color: var(--muted); font-size: .74rem; font-weight: 700; }
+
+    .path-grid { grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: clamp(1.5rem, 4vh, 2.8rem); }
+    .partner-path { position: relative; display: grid; min-height: clamp(9.2rem, 21vh, 12rem); grid-template-columns: 4.3rem 1fr; gap: 1rem; overflow: hidden; padding: 1.2rem; border: 1px solid var(--line); border-radius: .75rem; background: white; box-shadow: 0 20px 60px rgba(16,33,58,.06); }
+    .partner-path::after { content: ""; position: absolute; inset: auto 0 0; height: .28rem; background: var(--blue); }
+    .partner-path:nth-child(2)::after { background: var(--cyan); }
+    .partner-path:nth-child(3)::after { background: var(--teal); }
+    .partner-path:nth-child(4)::after { background: var(--navy); }
+    .path-icon { display: grid; width: 4.1rem; aspect-ratio: 1; border-radius: .7rem; color: white; background: linear-gradient(135deg, var(--blue), var(--navy)); place-items: center; }
+    .path-icon svg { width: 2rem; height: 2rem; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+    .partner-path h3 { margin: 0 0 .35rem; font-size: clamp(1rem, 1.5vw, 1.3rem); }
+    .partner-path p { margin-bottom: .6rem; color: var(--muted); font-size: clamp(.72rem, .9vw, .84rem); line-height: 1.35; }
+    .partner-path ul { display: flex; margin: 0; padding: 0; gap: .35rem; flex-wrap: wrap; list-style: none; }
+    .partner-path li { padding: .22rem .48rem; border: 1px solid var(--line); border-radius: .35rem; color: var(--ink); background: var(--pale); font-size: clamp(.58rem, .72vw, .68rem); font-weight: 700; }
+
+    .ask { padding-left: 39vw; }
+    .ask-panel {
+      position: absolute;
+      inset: .48rem auto 0 0;
+      display: flex;
+      width: 36vw;
+      padding: clamp(2rem, 5vw, 5rem);
+      color: white;
+      background: #07111f;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .ask-panel h2 { color: white; }
+    .ask-panel .eyebrow { color: var(--cyan); }
+    .ask-panel .lede { color: #b7c5d4; }
+    .date { color: var(--cyan); font-family: "JetBrains Mono", monospace; font-size: clamp(1.1rem, 2vw, 1.65rem); font-weight: 700; letter-spacing: .08em; }
+    .ask-content { display: flex; height: 100%; flex-direction: column; justify-content: center; }
+    .request-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin: 1.8rem 0; }
+    .request { padding: 1.4rem; border: 1px solid var(--line); border-radius: .75rem; background: white; box-shadow: 0 20px 60px rgba(16,33,58,.08); }
+    .request strong { display: block; color: var(--blue); font-size: clamp(1.8rem, 3vw, 3.1rem); }
+    .request span { color: var(--muted); font-size: .8rem; font-weight: 800; }
+    .request.request-copy strong { font-size: clamp(1.25rem, 2vw, 1.9rem); }
+    .request.request-copy span { display: block; margin-top: .55rem; font-size: clamp(.74rem, .9vw, .86rem); font-weight: 600; line-height: 1.45; }
+
+    .sponsor-grid { grid-template-columns: 4fr 3fr 2.5fr 2.5fr; gap: 1rem; margin-top: clamp(1.4rem, 4vh, 2.7rem); }
+    .sponsor { position: relative; min-height: clamp(17rem, 40vh, 22rem); overflow: hidden; padding: 1.4rem; border: 1px solid var(--line); border-radius: .75rem; background: white; box-shadow: 0 20px 60px rgba(16,33,58,.07); }
+    .sponsor-title { background: linear-gradient(145deg, #07111f, var(--navy)); }
+    .sponsor-title small, .sponsor-title h3 { color: white; }
+    .sponsor-title h3 { font-size: clamp(1.45rem, 2.3vw, 2.2rem); }
+    .sponsor-cotitle h3 { font-size: clamp(1.2rem, 1.8vw, 1.65rem); }
+    .sponsor::after { content: ""; position: absolute; inset: auto 0 0; height: .38rem; background: linear-gradient(90deg, var(--cyan), var(--blue)); }
+    .sponsor-mark { display: grid; width: 4.5rem; aspect-ratio: 1; margin-bottom: clamp(2rem, 6vh, 4rem); border: 1px solid #314964; border-radius: 50%; color: var(--cyan); background: #07111f; place-items: center; }
+    .sponsor-title .sponsor-mark { width: 5.5rem; border-color: rgba(53,220,245,.45); background: rgba(53,220,245,.1); }
+    .sponsor-icon { display: block; width: 2.25rem; height: 2.25rem; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+    .sponsor small { color: var(--blue); font-family: "JetBrains Mono", monospace; font-weight: 700; letter-spacing: .1em; }
+    .sponsor h3 { margin-top: .55rem; font-size: clamp(1.05rem, 1.5vw, 1.35rem); }
+    .sponsor p { margin: .65rem 0 0; color: var(--muted); font-size: clamp(.76rem, .95vw, .9rem); line-height: 1.45; }
+    .sponsor.sponsor-title p { color: #fff; }
+    .sponsor-prize small, .sponsor-merchandise small { font-size: clamp(.52rem, .62vw, .66rem); letter-spacing: .06em; }
+    .sponsor-prize h3, .sponsor-merchandise h3 { font-size: clamp(.92rem, 1.18vw, 1.14rem); overflow-wrap: break-word; }
+
+    .questions::after {
+      content: "";
+      position: absolute;
+      right: -7vw;
+      bottom: -18vw;
+      width: 42vw;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--cyan), var(--blue));
+    }
+    .questions h2 { margin-top: 6vh; font-size: clamp(4rem, 10vw, 10rem); }
+    .questions .lede { max-width: 38ch; font-size: clamp(1.2rem, 2.2vw, 2rem); }
+    .contact { margin-top: clamp(2rem, 7vh, 5rem); }
+    .contact strong { display: block; margin-bottom: .35rem; font-size: 1.35rem; }
+    .contact a { display: block; width: max-content; color: var(--cyan); font-size: 1.2rem; font-weight: 800; text-decoration: none; }
+
+    .controls {
+      position: fixed;
+      z-index: 20;
+      right: 1.15rem;
+      bottom: 1rem;
+      display: flex;
+      gap: .5rem;
+      align-items: center;
+      padding: .45rem;
+      border: 1px solid rgba(255,255,255,.45);
+      border-radius: .75rem;
+      background: rgba(5,48,117,.94);
+      box-shadow: 0 .6rem 2rem rgba(0,0,0,.2);
+      backdrop-filter: blur(12px);
+    }
+    .nav-button {
+      display: grid;
+      width: 2.65rem;
+      aspect-ratio: 1;
+      border: 0;
+      color: white;
+      background: transparent;
+      place-items: center;
+      font-size: 1.35rem;
+      cursor: pointer;
+    }
+    .nav-button:hover, .nav-button:focus-visible { color: #061626; outline: none; background: var(--cyan); }
+    .nav-button:disabled { opacity: .28; cursor: default; }
+    .counter { min-width: 4rem; color: white; font-size: .78rem; font-weight: 800; text-align: center; }
+    .progress { position: fixed; z-index: 21; bottom: 0; left: 0; width: 100%; height: .28rem; background: rgba(255,255,255,.16); }
+    .progress span { display: block; width: 10%; height: 100%; background: linear-gradient(90deg, var(--cyan), var(--teal), var(--blue)); transition: width 420ms ease; }
+
+    @media (max-width: 820px) {
+      html, body { overflow: hidden; }
+      .slide { overflow-y: auto; padding-top: 3.5rem; }
+      .cover-grid, .mentor-layout, .career-layout { grid-template-columns: 1fr; height: auto; }
+      .brand-panel { width: 100%; height: 42%; inset: auto 0 0; }
+      .cover-grid { align-content: start; }
+      .brand-stack { margin-top: 1rem; align-items: center; }
+      .year { display: none; }
+      .partners { gap: .75rem; }
+      .partners img { width: 3.2rem; height: 3.2rem; }
+      .metric-grid, .benefit-row, .path-grid { grid-template-columns: 1fr 1fr; }
+      .partner-path { min-height: 0; }
+      .cycle-diagram { width: 100%; height: 32rem; }
+      .cycle-node { width: 12.5rem; }
+      .photo { min-height: 35vh; }
+      .ask { padding-left: 1.25rem; padding-top: 44vh; }
+      .ask-panel { width: 100%; height: 41vh; padding: 2rem 1.25rem; }
+      .ask-content { justify-content: flex-start; }
+      .questions::after { opacity: .35; }
+      .footer { display: none; }
+      .institution-lockup { bottom: .65rem; }
+    }
+
+    @media (max-width: 520px) {
+      .slide { padding-right: 1rem; padding-left: 1rem; }
+      .metric-grid, .benefit-row, .session-grid, .path-grid, .sponsor-grid, .request-metrics { grid-template-columns: 1fr; }
+      .partner-path { grid-template-columns: 3.6rem 1fr; }
+      .path-icon { width: 3.4rem; }
+      .sponsor { min-height: 0; }
+      .sponsor-title, .sponsor-cotitle, .sponsor-prize, .sponsor-merchandise { grid-column: auto; }
+      .sponsor-mark { margin-bottom: 1rem; }
+      .cycle-diagram { display: grid; height: auto; min-height: 0; gap: .65rem; padding-bottom: 4rem; }
+      .cycle-ring { display: none; }
+      .cycle-center { position: relative; top: auto; left: auto; width: 7.5rem; margin: 0 auto .3rem; transform: none; }
+      .cycle-node { position: relative; top: auto; right: auto; bottom: auto; left: auto; width: 100%; min-height: 0; transform: none; }
+      .outcome-layout { grid-template-columns: 1fr; padding-bottom: 4rem; }
+      .outcome { min-height: 0; }
+      .outcome-icon { margin-bottom: 1.2rem; }
+      .domain-list { columns: 1; }
+      .career-step { grid-template-columns: 2.2rem 5.5rem 1fr; }
+      .ask { padding-top: 47vh; }
+      .ask-panel { height: 44vh; }
+      .controls { right: .6rem; bottom: .55rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .deck, .progress span { transition: none; }
+      .mentor-wall { overflow-y: auto; mask-image: none; }
+      .mentor-track { animation: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="deck" id="deck" aria-live="polite">
+    <section class="slide cover" aria-label="Slide 1: Hackathon proposal">
+      <div class="brand-panel" aria-hidden="true"></div>
+      <div class="cover-grid">
+        <div>
+          <img class="cover-logo" src="public/hackathon/logo.png" alt="Uttarakhand Innovation and Solutions Hackathon">
+          <p class="eyebrow">Institutional partnership proposal</p>
+          <h1>90 days to turn real problems into real solutions.</h1>
+          <p class="lede">Government challenges. Industry mentorship. Student innovation.</p>
+        </div>
+        <div class="brand-stack">
+          <div class="partners">
+            <figure>
+              <img src="public/itda_without_background.png" alt="ITDA logo">
+              <figcaption>ITDA</figcaption>
+            </figure>
+            <figure>
+              <img src="public/images/uttarakhand_government.svg" alt="Government of Uttarakhand logo">
+              <figcaption>Government of Uttarakhand</figcaption>
+            </figure>
+          </div>
+          <div class="year">2026</div>
+        </div>
+      </div>
+      <span class="page-number">01</span>
+    </section>
+
+    <section class="slide pale" aria-label="Slide 2: Hackathon format">
+      <p class="eyebrow">The format</p>
+      <h2>A 90-day innovation journey</h2>
+      <p class="lede">A complete cycle that takes live government challenges from problem statement to student-built demonstration.</p>
+      <div class="cycle-diagram" aria-label="The 90-day Hackathon cycle">
+        <svg class="cycle-ring" viewBox="0 0 1000 500" aria-hidden="true">
+          <defs>
+            <marker id="cycle-arrow" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto" markerUnits="strokeWidth">
+              <path d="M0,0 L8,4.5 L0,9 Z" fill="#0058d4"></path>
+            </marker>
+          </defs>
+          <path d="M565 78 C735 92 820 142 849 210" marker-end="url(#cycle-arrow)"></path>
+          <path d="M849 290 C817 364 728 412 565 425" marker-end="url(#cycle-arrow)"></path>
+          <path d="M435 425 C272 412 183 364 151 290" marker-end="url(#cycle-arrow)"></path>
+          <path d="M151 210 C180 142 265 92 435 78" marker-end="url(#cycle-arrow)"></path>
+        </svg>
+        <div class="cycle-center"><strong>90</strong><span>DAYS</span></div>
+        <article class="cycle-node cycle-government"><small>01 · GOVERNMENT</small><h3>Problems are identified</h3><p>Departments share direct, real-world challenges from Uttarakhand.</p></article>
+        <article class="cycle-node cycle-build"><small>02 · STUDENTS</small><h3>Teams build solutions</h3><p>Students research, prototype and develop practical products.</p></article>
+        <article class="cycle-node cycle-experts"><small>03 · INDUSTRY</small><h3>Experts guide the build</h3><p>Mentors support teams through reviews, workshops and technical clinics.</p></article>
+        <article class="cycle-node cycle-demo"><small>04 · DEMO</small><h3>Solutions are demonstrated</h3><p>Working prototypes are presented to government and industry stakeholders.</p></article>
+      </div>
+      <span class="page-number">02</span><div class="footer"><span>Uttarakhand Innovation &amp; Solutions Hackathon 2026</span><span>Axolotl Emprise LLP</span></div>
+    </section>
+
+    <section class="slide" aria-label="Slide 3: Student outcomes">
+      <p class="eyebrow">Student outcomes</p>
+      <h2>More than a competition</h2>
+      <p class="lede">Students leave with practical experience, official recognition and a route to take strong projects further.</p>
+      <div class="outcome-layout">
+        <article class="outcome"><span class="outcome-icon" aria-hidden="true">&lt;/&gt;</span><h3>Industry experience</h3><p>Build, test and present a real product with direct guidance from working technology professionals.</p><span class="outcome-tag">Build real products</span></article>
+        <article class="outcome"><span class="outcome-icon logo-icon"><img src="public/itda_without_background.png" alt="ITDA"></span><h3>ITDA (Government of Uttarakhand)</h3><p>Receive formal recognition and certification through the ITDA-supported Hackathon ecosystem.</p><span class="outcome-tag">Official recognition</span></article>
+        <article class="outcome"><span class="outcome-icon logo-icon"><img src="public/images/uttarakhand_government.svg" alt="Government of Uttarakhand"></span><h3>Government funding opportunity</h3><p>Strong projects may be considered for government funding, incubation or further implementation.</p><span class="outcome-tag">Subject to evaluation &amp; approval</span></article>
+      </div>
+      <span class="page-number">03</span><div class="footer"><span>Uttarakhand Innovation &amp; Solutions Hackathon 2026</span><span>Axolotl Emprise LLP</span></div>
+    </section>
+
+    <section class="slide pale" aria-label="Slide 4: Prizes and resources">
+      <p class="eyebrow">What students get</p>
+      <h2>Prizes, resources and a statewide stage</h2>
+      <p class="lede">Tangible support for building, testing and showcasing ambitious ideas.</p>
+      <div class="metric-grid">
+        <article class="metric"><strong>₹10,00,000</strong><span>TOTAL PRIZE POOL</span></article>
+        <article class="metric"><strong>₹5,000</strong><span>AI CREDITS*</span></article>
+        <article class="metric"><strong>90 DAYS</strong><span>OF BUILDING, LEARNING AND EXPOSURE</span></article>
+      </div>
+      <div class="benefit-row">
+        <article><h3>Statewide visibility</h3><p>Showcase solutions before academic, industry and government stakeholders.</p></article>
+        <article><h3>Recognition</h3><p>Prizes, certificates, medals and selected Hackathon merchandise.</p></article>
+        <article><h3>Real resources</h3><p>AI credits, expert access and a structured environment to build.</p></article>
+      </div>
+      <span class="page-number">04</span><div class="footer"><span>Uttarakhand Innovation &amp; Solutions Hackathon 2026</span><span>Axolotl Emprise LLP</span></div>
+    </section>
+
+    <section class="slide" aria-label="Slide 5: Mentorship">
+      <p class="eyebrow">What students get</p>
+      <h2>Mentorship that meets students where they are</h2>
+      <p class="lede">A blended programme of online access and high-value campus engagement.</p>
+      <div class="mentor-layout">
+        <div class="mentor-wall" aria-label="Programme mentor portraits">
+          <div class="mentor-column">
+            <div class="mentor-track">
+              <article class="mentor-card"><img src="public/hackathon/mentors/RohanP.jpeg" alt="Rohan Pant"><span>Rohan Pant · Amazon</span></article>
+              <article class="mentor-card"><img src="public/hackathon/mentors/kevinP.jpeg" alt="Kevin Patel"><span>Kevin Patel · Google</span></article>
+              <article class="mentor-card"><img src="public/hackathon/mentors/anmolD.jpeg" alt="Anmol Dixit"><span>Anmol Dixit · Rubrik</span></article>
+              <article class="mentor-card"><img src="public/hackathon/mentors/AyushG.jpeg" alt="Ayush Gupta"><span>Ayush Gupta · Zeta</span></article>
+              <article class="mentor-card" aria-hidden="true"><img src="public/hackathon/mentors/RohanP.jpeg" alt=""><span>Rohan Pant · Amazon</span></article>
+              <article class="mentor-card" aria-hidden="true"><img src="public/hackathon/mentors/kevinP.jpeg" alt=""><span>Kevin Patel · Google</span></article>
+              <article class="mentor-card" aria-hidden="true"><img src="public/hackathon/mentors/anmolD.jpeg" alt=""><span>Anmol Dixit · Rubrik</span></article>
+              <article class="mentor-card" aria-hidden="true"><img src="public/hackathon/mentors/AyushG.jpeg" alt=""><span>Ayush Gupta · Zeta</span></article>
+            </div>
+          </div>
+          <div class="mentor-column">
+            <div class="mentor-track">
+              <article class="mentor-card"><img src="public/hackathon/mentors/himanshu_rawat.jpeg" alt="Himanshu Rawat"><span>Himanshu Rawat · Google</span></article>
+              <article class="mentor-card"><img src="public/hackathon/mentors/SagarS.jpeg" alt="Sagar Singh"><span>Sagar Singh · Scapia</span></article>
+              <article class="mentor-card"><img src="public/hackathon/mentors/SparshG.png" alt="Sparsh Goil"><span>Sparsh Goil · ThoughtSpot</span></article>
+              <article class="mentor-card"><img src="public/hackathon/mentors/AnkitJain.jpeg" alt="Ankit Jain"><span>Ankit Jain · Stripe</span></article>
+              <article class="mentor-card" aria-hidden="true"><img src="public/hackathon/mentors/himanshu_rawat.jpeg" alt=""><span>Himanshu Rawat · Google</span></article>
+              <article class="mentor-card" aria-hidden="true"><img src="public/hackathon/mentors/SagarS.jpeg" alt=""><span>Sagar Singh · Scapia</span></article>
+              <article class="mentor-card" aria-hidden="true"><img src="public/hackathon/mentors/SparshG.png" alt=""><span>Sparsh Goil · ThoughtSpot</span></article>
+              <article class="mentor-card" aria-hidden="true"><img src="public/hackathon/mentors/AnkitJain.jpeg" alt=""><span>Ankit Jain · Stripe</span></article>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="session-grid">
+            <article class="session"><span class="pill">Online</span><ul><li>Mentor office hours</li><li>Technical reviews</li><li>Expert masterclasses</li></ul></article>
+            <article class="session"><span class="pill">On campus</span><ul><li>Seminars and workshops</li><li>Founder and engineer Q&amp;A</li></ul></article>
+          </div>
+          <ul class="domain-list"><li>AI &amp; machine learning</li><li>Data, cloud and cybersecurity</li><li>Software and product engineering</li><li>Entrepreneurship and business strategy</li></ul>
+          <p class="note">Experts may include professionals associated with <strong>Amazon, Google, LinkedIn, Rubrik, Zeta, Seapia and ThoughtSpot</strong>, subject to availability and confirmation.</p>
+        </div>
+      </div>
+      <span class="page-number">05</span><div class="footer"><span>Uttarakhand Innovation &amp; Solutions Hackathon 2026</span><span>Axolotl Emprise LLP</span></div>
+    </section>
+
+    <section class="slide dark" aria-label="Slide 6: Hiring opportunities">
+      <div class="career-layout">
+        <div>
+          <p class="eyebrow">Direct hiring opportunities</p>
+          <h2>Our hiring partners will hire selected students directly</h2>
+          <p class="lede">Partners will evaluate students through their Hackathon work and directly recruit suitable candidates for internships and full-time roles.</p>
+          <div class="career-flow">
+            <div class="career-step"><b>1</b><strong>PERFORM</strong><span>Build and present a working solution</span></div>
+            <div class="career-step"><b>2</b><strong>INTERVIEW</strong><span>Meet hiring teams through the programme</span></div>
+            <div class="career-step"><b>3</b><strong>GET HIRED</strong><span>Join directly as an intern or full-time employee</span></div>
+          </div>
+          <p class="note">Direct hiring applies to students selected by each partner through its recruitment requirements and interview process.</p>
+        </div>
+        <aside class="hiring-panel">
+          <p class="eyebrow">Our hiring partners</p>
+          <h3>Companies Currently Hiring Through UKIS</h3>
+          <p class="lede">Standout students move from demonstrated work to direct recruitment conversations. We are also onboarding additional hiring partners.</p>
+          <div class="hiring-logo-grid">
+            <article class="hiring-partner"><div class="hiring-partner-logo"><img src="public/paceLogo.png" alt="PACE"></div><div><strong>PACE</strong><span>Hiring &amp; Mentorship Partner</span></div></article>
+            <article class="hiring-partner"><div class="hiring-partner-logo"><img src="public/images/cruv.png" alt="Cruv Dimension"></div><div><strong>Cruv Dimension</strong><span>Hiring Partner</span></div></article>
+            <article class="hiring-partner"><div class="hiring-partner-logo"><img src="public/hackathon/metasquare.png" alt="MetaSquare"></div><div><strong>MetaSquare</strong><span>Hiring Partner</span></div></article>
+          </div>
+        </aside>
+      </div>
+      <span class="page-number">06</span><div class="footer"><span>Uttarakhand Innovation &amp; Solutions Hackathon 2026</span><span>Axolotl Emprise LLP</span></div>
+    </section>
+
+    <section class="slide ask" aria-label="Slide 7: Inaugural event venue request">
+      <aside class="ask-panel">
+        <p class="eyebrow">Immediate partnership request</p>
+        <h2>Host the inaugural</h2>
+        <p class="date">9 September 2026</p>
+        <p class="lede">A visible opportunity to welcome government, technology, academic and student stakeholders to your campus.</p>
+      </aside>
+      <div class="ask-content">
+        <p class="eyebrow">Proposed inaugural event</p>
+        <h2>What we need from the host</h2>
+        <div class="request-metrics">
+          <article class="request"><strong>Venue</strong><span>EVENT SPACE &amp; ON-GROUND SUPPORT</span></article>
+          <article class="request request-copy"><strong>Official Guest Protocol</strong><span>Kindly make the arrangements you consider appropriate for hosting government ministers and senior bureaucrats.</span></article>
+        </div>
+        <h3>Expected programme</h3>
+        <ul class="clean-list"><li>Formal inauguration and Hackathon announcement</li><li>Address by the Hon'ble IT Minister and invited dignitaries</li><li>Government challenge and student participation briefing</li><li>Institution recognition across event communication</li></ul>
+        <p class="note">Hon'ble IT Minister and other invited guests: subject to official confirmation and protocol.</p>
+      </div>
+      <span class="page-number">07</span>
+    </section>
+
+    <section class="slide pale" aria-label="Slide 8: Collaboration pathways">
+      <p class="eyebrow">Partnership pathways</p>
+      <h2>How we can collaborate</h2>
+      <p class="lede">Choose the level of engagement that best fits your institution's academic and visibility goals.</p>
+      <div class="path-grid">
+        <article class="partner-path"><span class="path-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></span><div><h3>Participation Partner</h3><p>Mobilise students and unlock the full Hackathon learning journey.</p><ul><li>Registrations</li><li>Mentorship</li><li>Prize access</li></ul></div></article>
+        <article class="partner-path"><span class="path-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m2 10 10-5 10 5-10 5L2 10Z"></path><path d="M6 12v5c3 2 9 2 12 0v-5"></path><path d="M22 10v6"></path></svg></span><div><h3>Academic Partner</h3><p>Bring deeper industry-academia engagement directly to campus.</p><ul><li>Masterclasses</li><li>Faculty engagement</li><li>Recognition</li></ul></div></article>
+        <article class="partner-path"><span class="path-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="2" width="6" height="12" rx="3"></rect><path d="M5 10a7 7 0 0 0 14 0"></path><path d="M12 17v5"></path><path d="M8 22h8"></path></svg></span><div><h3>Seminar Sponsor</h3><p>Choose a location and theme; we coordinate an available expert.</p><ul><li>Branded seminar</li><li>Student Q&amp;A</li><li>Digital visibility</li></ul></div></article>
+      </div>
+      <span class="page-number">08</span><div class="footer"><span>Uttarakhand Innovation &amp; Solutions Hackathon 2026</span><span>Axolotl Emprise LLP</span></div>
+    </section>
+
+    <section class="slide pale" aria-label="Slide 9: Sponsorship opportunities">
+      <p class="eyebrow">Sponsorship menu</p>
+      <h2>Other sponsorship opportunities</h2>
+      <p class="lede">A modular set of options that can be tailored through discussion.</p>
+      <div class="sponsor-grid">
+        <article class="sponsor sponsor-title"><span class="sponsor-mark"><svg class="sponsor-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="6"></circle><path d="m8.5 13-1 9 4.5-2 4.5 2-1-9"></path><path d="m9.8 8 1.4 1.4L14.5 6"></path></svg></span><small>TITLE SPONSOR</small><h3>Lead statewide visibility</h3><p>Prominent “Powered by” association across agreed Hackathon activity.</p></article>
+        <article class="sponsor sponsor-cotitle"><span class="sponsor-mark"><svg class="sponsor-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="8.5" cy="12" r="5.5"></circle><circle cx="15.5" cy="12" r="5.5"></circle><path d="m12 8.7 1 2 2.2.3-1.6 1.6.4 2.2-2-1-2 1 .4-2.2L8.8 11l2.2-.3 1-2Z"></path></svg></span><small>CO-TITLE SPONSOR</small><h3>Own campus-level visibility</h3><p>Prominent “Co-Powered by” branding for your institution's Hackathon engagement.</p></article>
+        <article class="sponsor sponsor-prize"><span class="sponsor-mark"><svg class="sponsor-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 21h8"></path><path d="M12 17v4"></path><path d="M7 4h10v5a5 5 0 0 1-10 0V4Z"></path><path d="M7 6H4v2a4 4 0 0 0 4 4"></path><path d="M17 6h3v2a4 4 0 0 1-4 4"></path></svg></span><small>PRIZE SPONSOR</small><h3>Associate with achievement</h3><p>Sponsor a major award category.</p></article>
+        <article class="sponsor sponsor-merchandise"><span class="sponsor-mark"><svg class="sponsor-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 3 2 6l3 5 3-2v12h8V9l3 2 3-5-4.5-3A6 6 0 0 1 12 6a6 6 0 0 1-5.5-3Z"></path></svg></span><small>MERCHANDISE</small><h3>Stay visible</h3><p>T-shirts, caps, kits and certificates.</p></article>
+      </div>
+      <p class="note" style="text-align:center; margin-top:1.25rem">Final scope, branding, category and commercials can be mutually agreed.</p>
+      <span class="page-number">09</span><div class="footer"><span>Uttarakhand Innovation &amp; Solutions Hackathon 2026</span><span>Axolotl Emprise LLP</span></div>
+    </section>
+
+    <section class="slide dark questions" aria-label="Slide 10: Questions and contact">
+      <p class="eyebrow">Let's discuss</p>
+      <h2>Questions?</h2>
+      <p class="lede">Let's build a partnership that gives Uttarakhand's students a real problem, a real platform and a real route forward.</p>
+      <div class="contact">
+        <a href="tel:+916399906916">+91 63999 06916</a>
+        <a href="mailto:info@axocom.in">info@axocom.in</a>
+      </div>
+      <span class="page-number">10</span><div class="footer"><span>Uttarakhand Innovation &amp; Solutions Hackathon 2026</span><span>Thank you</span></div>
+    </section>
+  </main>
+
+  <nav class="controls" aria-label="Slide controls">
+    <button class="nav-button" id="previous" type="button" aria-label="Previous slide">←</button>
+    <span class="counter" id="counter" aria-live="polite">01 / 10</span>
+    <button class="nav-button" id="next" type="button" aria-label="Next slide">→</button>
+  </nav>
+  <div class="progress" aria-hidden="true"><span id="progress"></span></div>
+
+  <script>
+    const slides = [...document.querySelectorAll(".slide")];
+    const previous = document.querySelector("#previous");
+    const next = document.querySelector("#next");
+    const counter = document.querySelector("#counter");
+    const progress = document.querySelector("#progress");
+    let current = Math.max(0, Math.min(slides.length - 1, Number(location.hash.slice(1)) - 1 || 0));
+    let touchStart = 0;
+
+    slides.forEach((slide) => {
+      const lockup = document.createElement("div");
+      lockup.className = "institution-lockup";
+      lockup.setAttribute("aria-label", "ITDA and Government of Uttarakhand");
+      lockup.innerHTML = '<img src="public/itda_without_background.png" alt="ITDA"><span aria-hidden="true"></span><img src="public/images/uttarakhand_government.svg" alt="Government of Uttarakhand">';
+      slide.append(lockup);
+    });
+
+    function showSlide(index, updateHash = true) {
+      current = Math.max(0, Math.min(slides.length - 1, index));
+      document.documentElement.style.setProperty("--slide", current);
+      counter.textContent = `${String(current + 1).padStart(2, "0")} / ${String(slides.length).padStart(2, "0")}`;
+      progress.style.width = `${((current + 1) / slides.length) * 100}%`;
+      previous.disabled = current === 0;
+      next.disabled = current === slides.length - 1;
+      slides.forEach((slide, slideIndex) => slide.setAttribute("aria-hidden", String(slideIndex !== current)));
+      if (updateHash) history.replaceState(null, "", `#${current + 1}`);
+    }
+
+    previous.addEventListener("click", () => showSlide(current - 1));
+    next.addEventListener("click", () => showSlide(current + 1));
+    addEventListener("keydown", (event) => {
+      if (["ArrowRight", "PageDown", " "].includes(event.key)) { event.preventDefault(); showSlide(current + 1); }
+      if (["ArrowLeft", "PageUp"].includes(event.key)) { event.preventDefault(); showSlide(current - 1); }
+      if (event.key === "Home") showSlide(0);
+      if (event.key === "End") showSlide(slides.length - 1);
+    });
+    addEventListener("hashchange", () => showSlide(Number(location.hash.slice(1)) - 1, false));
+    addEventListener("touchstart", (event) => { touchStart = event.changedTouches[0].clientX; }, { passive: true });
+    addEventListener("touchend", (event) => {
+      const distance = event.changedTouches[0].clientX - touchStart;
+      if (Math.abs(distance) > 60) showSlide(current + (distance < 0 ? 1 : -1));
+    }, { passive: true });
+
+    showSlide(current, false);
+  </script>
+</body>
+</html>
