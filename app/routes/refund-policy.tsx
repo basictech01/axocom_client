@@ -15,7 +15,7 @@ export const meta = () => buildSeoMeta(seo);
 export const links = () => buildSeoLinks(seo);
 
 const RefundPolicy: React.FC = () => (
-  <LegalLayout eyebrow="Legal" title="Refund & Cancellation Policy" lastUpdated="26 August 2026">
+  <LegalLayout seo={seo} eyebrow="Legal" title="Refund & Cancellation Policy" lastUpdated="26 August 2026">
     <p>
       This Refund &amp; Cancellation Policy applies to payments made on www.axocom.in to Axolotl Emprise LLP,
       operating as <strong>AxoCom</strong>, for event registrations, delegate passes, sponsorships, or other paid

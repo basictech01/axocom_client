@@ -1,16 +1,22 @@
 import React from 'react';
 import Navbar from './Navbar';
 import LegalFooter from './LegalFooter';
+import { organizationSchema, structuredData, webPageSchema, type SeoConfig } from '~/lib/seo';
 
 interface LegalLayoutProps {
+  seo: SeoConfig;
   eyebrow: string;
   title: string;
   lastUpdated: string;
   children: React.ReactNode;
 }
 
-const LegalLayout: React.FC<LegalLayoutProps> = ({ eyebrow, title, lastUpdated, children }) => (
+const LegalLayout: React.FC<LegalLayoutProps> = ({ seo, eyebrow, title, lastUpdated, children }) => (
   <div className="landing-page min-h-screen w-full bg-white text-[#101116]">
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: structuredData([organizationSchema, webPageSchema(seo)]) }}
+    />
     <Navbar />
 
     <main>

@@ -15,7 +15,7 @@ export const meta = () => buildSeoMeta(seo);
 export const links = () => buildSeoLinks(seo);
 
 const PrivacyPolicy: React.FC = () => (
-  <LegalLayout eyebrow="Legal" title="Privacy Policy" lastUpdated="26 August 2026">
+  <LegalLayout seo={seo} eyebrow="Legal" title="Privacy Policy" lastUpdated="26 August 2026">
     <p>
       Axolotl Emprise LLP, operating as <strong>AxoCom</strong> (&quot;AxoCom&quot;, &quot;we&quot;, &quot;us&quot;, or &quot;our&quot;), is committed to
       protecting the privacy of everyone who visits our website, uses our services, or interacts with our events and

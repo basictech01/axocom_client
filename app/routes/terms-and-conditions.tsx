@@ -15,7 +15,7 @@ export const meta = () => buildSeoMeta(seo);
 export const links = () => buildSeoLinks(seo);
 
 const TermsAndConditions: React.FC = () => (
-  <LegalLayout eyebrow="Legal" title="Terms & Conditions" lastUpdated="26 August 2026">
+  <LegalLayout seo={seo} eyebrow="Legal" title="Terms & Conditions" lastUpdated="26 August 2026">
     <p>
       These Terms &amp; Conditions (&quot;Terms&quot;) govern your access to and use of the website
       www.axocom.in and any services offered by Axolotl Emprise LLP, operating as <strong>AxoCom</strong>
