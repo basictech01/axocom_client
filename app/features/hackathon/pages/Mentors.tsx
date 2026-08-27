@@ -8,7 +8,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "~/features/hackathon/lib/router";
 import { Search, ArrowRight } from "lucide-react";
 import { MENTORS } from "~/features/hackathon/lib/mentors";
+import { buildMentorsSeoMeta } from "~/features/hackathon/lib/seo";
 import { useScrollReveal } from "~/features/hackathon/hooks/useScrollReveal";
+
+export const meta = buildMentorsSeoMeta;
 
 function parseExpertise(expertise: string): string[] {
   return expertise
@@ -56,10 +59,11 @@ export default function Mentors() {
           className="mb-12"
         >
           <h1 className="font-display font-bold text-4xl sm:text-5xl text-foreground mb-4">
-            Programme <span className="text-brand-accent">Mentors</span>
+            UKIS 2026 <span className="text-brand-accent">Mentors</span>
           </h1>
           <p className="text-muted-foreground max-w-2xl text-lg">
-            Selected mentors guiding builders through the UKIS innovation series.
+            Meet selected programme mentors guiding students, developers and working professionals
+            as they build solutions for the UKIS innovation series.
           </p>
         </motion.div>
 
@@ -118,6 +122,11 @@ export default function Mentors() {
                             <img
                               src={mentor.image}
                               alt={mentor.name}
+                              width={mentor.imageWidth}
+                              height={mentor.imageHeight}
+                              sizes="(min-width: 1280px) 22vw, (min-width: 1024px) 30vw, (min-width: 640px) 46vw, 100vw"
+                              loading="lazy"
+                              decoding="async"
                               className="h-full w-full object-cover object-center"
                             />
                           ) : (
@@ -140,6 +149,10 @@ export default function Mentors() {
                                 src="/images/linkedin.png"
                                 alt=""
                                 aria-hidden="true"
+                                width={512}
+                                height={512}
+                                loading="lazy"
+                                decoding="async"
                                 className="h-full w-full object-contain rounded-[7px] grayscale opacity-60 hover:opacity-90 transition-opacity"
                               />
                             </a>

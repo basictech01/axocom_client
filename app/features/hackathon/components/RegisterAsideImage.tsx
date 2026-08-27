@@ -5,6 +5,8 @@ interface RegisterAsideImageProps {
   note: string;
   /** Optional final asset path - falls back to editorial placeholder */
   src?: string;
+  imageWidth?: number;
+  imageHeight?: number;
 }
 
 /**
@@ -15,6 +17,8 @@ export default function RegisterAsideImage({
   label,
   note,
   src,
+  imageWidth,
+  imageHeight,
 }: RegisterAsideImageProps) {
   return (
     <div
@@ -26,6 +30,10 @@ export default function RegisterAsideImage({
           <img
             src={src}
             alt={label}
+            width={imageWidth}
+            height={imageHeight}
+            sizes="(min-width: 1280px) 48vw, 66vw"
+            decoding="async"
             className="h-full w-full object-cover object-center"
           />
         ) : (

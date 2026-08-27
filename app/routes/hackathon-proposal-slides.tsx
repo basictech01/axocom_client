@@ -1,4 +1,5 @@
 import proposalSlidesHtml from "../../hackathon-proposal-slides.html?raw";
+import { buildHackathonNoIndexMeta } from "~/features/hackathon/lib/seo";
 
 const embeddedProposalSlidesHtml = proposalSlidesHtml
   .replaceAll('src="public/', 'src="/')
@@ -14,13 +15,10 @@ const embeddedProposalSlidesHtml = proposalSlidesHtml
   );
 
 export function meta() {
-  return [
-    { title: "Uttarakhand Innovation & Solutions Hackathon 2026" },
-    {
-      name: "description",
-      content: "Uttarakhand Innovation & Solutions Hackathon 2026 proposal presentation.",
-    },
-  ];
+  return buildHackathonNoIndexMeta(
+    "UKIS Hackathon 2026 Proposal",
+    "Private UKIS Hackathon 2026 proposal presentation.",
+  );
 }
 
 export default function HackathonProposalSlides() {

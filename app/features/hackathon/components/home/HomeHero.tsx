@@ -16,7 +16,14 @@ export default function HomeHero() {
       <div className="absolute inset-y-0 right-0 w-full lg:w-[86%] pointer-events-none">
         <img
           src="/hackathon/logos/prop.webp"
-          alt="UKIS participants collaborating"
+          srcSet="/hackathon/logos/prop-ukis-hero-720.jpg 720w, /hackathon/logos/prop-ukis-hero-1200.jpg 1200w, /hackathon/logos/prop.webp 1448w"
+          alt="Illustrated Uttarakhand mountains, landmarks, farmer, workers, crowds and the UKIS mark"
+          width={1448}
+          height={1086}
+          sizes="(min-width: 1024px) 86vw, 100vw"
+          loading="eager"
+          decoding="async"
+          fetchPriority="high"
           className="h-full w-full object-cover object-center ukis-image-blend "
         />
         <div className="absolute inset-0 bg-gradient-to-t from-page via-page/40 to-transparent lg:bg-gradient-to-l lg:from-transparent lg:via-page/30 lg:to-page" />
@@ -30,12 +37,12 @@ export default function HomeHero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
           >
-            <p className="ukis-eyebrow mb-5">{HERO.eyebrow}</p>
+            <h1 className="ukis-eyebrow mb-5">{HERO.eyebrow}</h1>
 
-            <h1 className="font-display font-bold text-[2.35rem] sm:text-5xl lg:text-[3.4rem] xl:text-[3.75rem] leading-[1.08] tracking-tight text-foreground mb-6 max-w-xl">
+            <p className="font-display font-bold text-[2.35rem] sm:text-5xl lg:text-[3.4rem] xl:text-[3.75rem] leading-[1.08] tracking-tight text-foreground mb-6 max-w-xl">
               {HERO.headlineLead}{" "}
               <span className="ukis-accent-word">{HERO.headlineAccent}</span>
-            </h1>
+            </p>
 
             <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-md mb-8">
               {HERO.support}

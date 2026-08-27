@@ -19,6 +19,7 @@ import {
 import { toast } from "sonner";
 import { useTheme } from "~/features/hackathon/contexts/ThemeContext";
 import { useAuth } from "~/contexts/auth-context";
+import { buildHackathonNoIndexMeta } from "~/features/hackathon/lib/seo";
 import {
   ADMIN_MENTOR_APPLICATIONS_QUERY,
   ADMIN_SOLUTION_SUBMISSIONS_QUERY,
@@ -30,6 +31,12 @@ import type {
   ReviewStatus,
   SolutionSubmission,
 } from "~/features/hackathon/types";
+
+export const meta = () =>
+  buildHackathonNoIndexMeta(
+    "UKIS Hackathon Administration",
+    "Private administration area for UKIS Hackathon submissions and mentor applications.",
+  );
 
 type AdminItem = SolutionSubmission | MentorApplication;
 
@@ -172,8 +179,8 @@ export default function AdminDashboard() {
             src="/hackathon/logo.png"
             alt="Uttarakhand Innovation & Solutions Hackathon"
             className="w-full h-auto max-h-20 object-contain object-left"
-            width={220}
-            height={80}
+            width={2127}
+            height={1299}
           />
         </div>
         
@@ -298,7 +305,7 @@ export default function AdminDashboard() {
                     {isSolutionSubmission(item) ? item.solutionTitle : item.fullName}
                   </h3>
                   <p className="text-xs text-muted-foreground mb-4">
-                    {isSolutionSubmission(item) ? `by ${item.fullName}` : item.currentRole}
+                    {isSolutionSubmission(item) ? `Primary contact: ${item.fullName}` : item.currentRole}
                   </p>
                   
                   <div className="flex items-center justify-between text-[10px] text-muted-foreground pt-3 border-t border-border/50">
@@ -380,7 +387,9 @@ export default function AdminDashboard() {
                   {/* Content Sections */}
                   <div className="grid grid-cols-2 gap-6">
                     <div>
-                      <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">Applicant</h4>
+                      <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">
+                        {isSolutionSubmission(selectedItem) ? "Participant / Team Lead" : "Applicant"}
+                      </h4>
                       <p className="text-foreground font-medium">{selectedItem.fullName}</p>
                     </div>
                     <div>

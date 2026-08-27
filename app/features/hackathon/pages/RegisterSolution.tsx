@@ -16,7 +16,11 @@ import { toast } from "sonner";
 import { normalizePhone, isValidNormalizedPhone } from "~/features/hackathon/lib/normalize";
 import { WhatsAppCommunityCta } from "~/features/hackathon/components/WhatsAppCommunityCta";
 import RegisterAsideImage from "~/features/hackathon/components/RegisterAsideImage";
+import { PARTICIPATION_RULE_SUMMARY } from "~/features/hackathon/lib/participation";
+import { buildParticipantRegistrationSeoMeta } from "~/features/hackathon/lib/seo";
 import { SUBMIT_SOLUTION_MUTATION } from "~/features/hackathon/services";
+
+export const meta = buildParticipantRegistrationSeoMeta;
 
 const steps = [
   { id: 1, label: "Problem" },
@@ -132,7 +136,9 @@ export default function RegisterSolution() {
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : "Failed to submit solution.";
       if (message.toLowerCase().includes("already exists")) {
-        toast.error("An entry has already been submitted using this email address or mobile number.");
+        toast.error(
+          "An entry already exists using this email address or mobile number. Each person may participate only once.",
+        );
       } else {
         toast.error(message || "Failed to submit solution. Please try again.");
       }
@@ -155,7 +161,9 @@ export default function RegisterSolution() {
             </div>
             <h1 className="font-display font-bold text-3xl text-foreground mb-4">Submission Received</h1>
             <p className="text-muted-foreground text-lg mb-8">
-            Your solution has been received. Our team will review it before it is published. We may contact you through email or WhatsApp regarding the next steps.
+              Your solo or team entry has been received. Our team will review it before it is
+              published and may contact the primary participant through email or WhatsApp regarding
+              the next steps.
             </p>
             <Link href="/problems">
               <button className="px-6 py-3 bg-primary text-primary-foreground font-semibold rounded-xl hover:bg-primary-hover transition-all">
@@ -175,6 +183,8 @@ export default function RegisterSolution() {
         label="Uttarakhand hillside landscape"
         note="Solution registration: misty terraced hills of Uttarakhand"
         src="/hackathon/logos/prop12.webp"
+        imageWidth={941}
+        imageHeight={1672}
       />
 
       <div className="container relative z-10">
@@ -186,13 +196,19 @@ export default function RegisterSolution() {
             className="mb-10"
           >
             <h1 className="font-display font-bold text-4xl sm:text-5xl text-foreground mb-4">
-              Register Your <span className="text-brand-accent">Solution</span>
+              Register for <span className="text-brand-accent">UKIS 2026</span>
             </h1>
             <p className="text-muted-foreground max-w-2xl text-lg">
               {hasPreselectedProblem
-                ? "Describe your approach for this problem. Our team will review your submission."
-                : "Pick a problem and describe your approach. Our team will review your submission."}
+                ? "Registration is open. Describe your approach for this problem for review by the UKIS team."
+                : "Registration is open to students, developers and working professionals. Pick one problem and describe your approach for review by the UKIS team."}
             </p>
+            <div className="mt-5 max-w-2xl rounded-xl border border-primary/20 bg-primary/5 p-4">
+              <p className="text-sm font-semibold text-foreground">Participation rule</p>
+              <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+                {PARTICIPATION_RULE_SUMMARY}
+              </p>
+            </div>
           </motion.div>
 
           {preselectedProblem && (
@@ -345,9 +361,19 @@ export default function RegisterSolution() {
 
                 {currentStep === 3 && (
                   <div className="space-y-5">
-                    <h2 className="font-display font-semibold text-xl text-foreground">Solution Owner Details</h2>
                     <div>
-                      <label className="text-sm font-medium text-foreground mb-1.5 block">Full Name *</label>
+                      <h2 className="font-display font-semibold text-xl text-foreground">
+                        Participant / Team Lead Details
+                      </h2>
+                      <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                        If this is a team entry, the team lead should complete this form as the
+                        primary contact for the team of 2, 3, or 4 people.
+                      </p>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-foreground mb-1.5 block">
+                        Participant / Team Lead Full Name *
+                      </label>
                       <input
                         type="text"
                         value={formData.ownerName}
@@ -397,7 +423,10 @@ export default function RegisterSolution() {
                           />
                         </div>
                         <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">
-                          I consent to be contacted through email or WhatsApp regarding my solution submission. *
+                          I confirm that I am participating solo or as the primary contact for one
+                          team of 2, 3, or 4 people; every participant in this entry will participate
+                          only once. I also consent to be contacted through email or WhatsApp
+                          regarding this submission. *
                         </span>
                       </label>
                     </div>

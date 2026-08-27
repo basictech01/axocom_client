@@ -71,7 +71,11 @@ export default function HomeSpeakers() {
                     <img
                       src={speaker.image}
                       alt={speaker.name}
+                      width={speaker.imageWidth}
+                      height={speaker.imageHeight}
+                      sizes="184px"
                       loading="lazy"
+                      decoding="async"
                       className="h-full w-full object-cover object-center"
                     />
                   ) : (
@@ -100,6 +104,10 @@ export default function HomeSpeakers() {
                         src="/images/linkedin.png"
                         alt=""
                         aria-hidden="true"
+                        width={512}
+                        height={512}
+                        loading="lazy"
+                        decoding="async"
                         className="h-full w-full object-contain rounded-[7px] grayscale opacity-60 hover:opacity-90 transition-opacity"
                       />
                     </a>

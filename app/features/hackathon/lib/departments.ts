@@ -60,6 +60,7 @@ export const governmentDepartments = {
   },
   forest: {
     name: "Forest Department, Uttarakhand",
+    url: "https://forest.uk.gov.in/",
   },
   "higher-education": {
     name: "Higher Education Department, Uttarakhand",
@@ -67,6 +68,7 @@ export const governmentDepartments = {
   },
   itda: {
     name: "Information Technology Development Agency (I.T.D.A), Uttarakhand",
+    url: "https://itda.uk.gov.in/",
   },
   "information-public-relations": {
     name: "Information and Public Relation Department, Uttarakhand",
@@ -102,6 +104,7 @@ export const governmentDepartments = {
   },
   police: {
     name: "Police Department, Uttarakhand",
+    url: "https://uttarakhandpolice.uk.gov.in/",
   },
   prison: {
     name: "Prison Department, Uttarakhand",
@@ -173,6 +176,7 @@ export const governmentDepartments = {
   },
   tourism: {
     name: "Tourism Department, Uttarakhand",
+    url: "https://www.uttarakhandtourism.gov.in/",
   },
   "town-country-planning": {
     name: "Town and Country Planning Department, Uttarakhand",

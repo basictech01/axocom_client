@@ -10,9 +10,21 @@ import { ArrowLeft, ArrowRight, CheckCircle2, Lightbulb, ListChecks, Loader2, Ta
 import { getProblemById } from "~/features/hackathon/lib/data";
 import { ProblemOwner } from "~/features/hackathon/components/ProblemOwner";
 import { useScrollReveal } from "~/features/hackathon/hooks/useScrollReveal";
+import { PARTICIPATION_RULE_SUMMARY } from "~/features/hackathon/lib/participation";
 import { WHATSAPP_COMMUNITY_URL } from "~/features/hackathon/components/WhatsAppCommunityCta";
 import { WhatsAppLogo } from "~/features/hackathon/components/WhatsAppLogo";
 import { PUBLIC_SOLUTIONS_QUERY } from "~/features/hackathon/services";
+import { buildProblemSeoMeta } from "~/features/hackathon/lib/seo";
+import type { Route } from "./+types/ProblemDetail";
+
+export const meta: Route.MetaFunction = ({ params }) => buildProblemSeoMeta(params.id);
+
+const problemDateFormatter = new Intl.DateTimeFormat("en-IN", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+  timeZone: "UTC",
+});
 
 export default function ProblemDetail() {
   const [, params] = useRoute<{ id: string }>("/problems/:id");
@@ -110,12 +122,21 @@ export default function ProblemDetail() {
         >
           <div className="brand-gradient h-1 w-24 mb-6" aria-hidden />
           <div className="flex flex-wrap items-center gap-3 mb-4">
+            <span className="inline-flex items-center rounded-md border border-border bg-card px-2.5 py-1 font-mono text-xs font-semibold text-foreground">
+              {problem.id}
+            </span>
             {problem.sponsor ? (
               <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-primary/10 text-primary border border-primary/20">
                 {problem.sponsor}
               </span>
             ) : null}
             <span className="text-sm text-muted-foreground">{problem.category}</span>
+            <span className="text-sm text-muted-foreground">
+              Published{" "}
+              <time dateTime={problem.publishedAt}>
+                {problemDateFormatter.format(new Date(`${problem.publishedAt}T00:00:00Z`))}
+              </time>
+            </span>
           </div>
           <h1 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-foreground mb-6">
             {problem.title}
@@ -155,6 +176,9 @@ export default function ProblemDetail() {
               <ArrowRight className="w-4 h-4" />
             </motion.button>
           </Link>
+          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+            {PARTICIPATION_RULE_SUMMARY}
+          </p>
         </motion.div>
 
         <section className="grid grid-cols-1 lg:grid-cols-3 gap-10 border-y border-border py-10 mb-16">
@@ -265,7 +289,7 @@ export default function ProblemDetail() {
                     </p>
                     <div className="flex items-center justify-between text-xs text-muted-foreground">
                       <span>{new Date(solution.createdAt).toLocaleDateString()}</span>
-                      <span>Owner: {solution.fullName}</span>
+                      <span>Primary contact: {solution.fullName}</span>
                     </div>
                   </motion.div>
                 </motion.div>
