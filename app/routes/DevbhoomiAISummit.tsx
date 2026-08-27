@@ -162,6 +162,11 @@ const speakers: SummitSpeaker[] = [
     officialProfile: "https://sad.uk.gov.in/alok-kumar-pandey/",
   },
   {
+    name: "Tirth Pal Singh",
+    role: "Additional Director - ITDA",
+    image: "/images/tirth_pal_singh.jpeg",
+  },
+  {
     name: "Shri Ravi Shankar Singh",
     role: "CTO and GM AI and Emerging Tech ITDA, Head SeMT",
     image: "/images/rai-shankar-singh2.jpeg",
