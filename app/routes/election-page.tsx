@@ -72,7 +72,7 @@ const phases = [
         items: [
             { name: 'Press Strategy & Media Relations', desc: 'Strategic media engagement including press conferences, editorial placements, TV panel coordination, and relationship management with journalists across print, TV, and digital media.' },
             { name: 'Crisis Communication', desc: 'Rapid-response crisis management with predefined playbooks, real-time monitoring, and instant narrative correction when controversies arise during the campaign.' },
-            { name: 'Owned Media Amplification', desc: 'Leveraging AxoCom\'s network of 8+ media properties including Hillsquills, India7Live, Tehelka India News, AxoNews, and others for organic narrative amplification.' },
+            { name: 'Owned Media Amplification', desc: 'Leveraging AxoCom\'s network of 1700+ media properties across news platforms, digital channels, and regional outlets for organic narrative amplification.' },
             { name: 'Earned Media Engineering', desc: 'Creating newsworthy campaign events and moments that generate organic press coverage, turning campaign spending into earned media value.' },
         ],
     },
@@ -101,7 +101,7 @@ const phases = [
 ];
 
 const trackRecord = [
-    { metric: '8+', label: 'Media Properties', desc: 'Owned distribution network' },
+    { metric: '1700', label: 'Media Properties', desc: 'Owned distribution network' },
     { metric: '40+', label: 'Years Political Expertise', desc: 'In Indian media & politics' },
     { metric: 'AI', label: 'Proprietary Technology', desc: 'The AI Core, built in-house' },
     { metric: '360°', label: 'Full-Stack Capability', desc: 'Strategy to execution, end-to-end' },
@@ -268,7 +268,7 @@ const ElectionPage: React.FC = () => {
                             India's Most Technologically<br className="hidden md:block" /> Advanced Election Management
                         </h1>
                         <p className="relative z-10 text-gray-600 text-base md:text-lg max-w-3xl leading-relaxed mb-8">
-                            AxoCom combines proprietary AI technology, a network of 8+ media properties, decades of political communication expertise, and full-stack campaign capabilities to deliver election victories from Panchayat to Parliament.
+                            AxoCom combines proprietary AI technology, a network of 1700+ media properties, decades of political communication expertise, and full-stack campaign capabilities to deliver election victories from Panchayat to Parliament.
                         </p>
                         <div className="relative z-10 flex flex-col sm:flex-row gap-4 justify-center">
                             <a
@@ -323,7 +323,7 @@ const ElectionPage: React.FC = () => {
                                 </div>
                                 <div>
                                     <h4 className="text-gray-900 font-bold mb-1">Owned Media Network</h4>
-                                    <p className="text-gray-600 text-sm leading-relaxed">8+ media entities including Hillsquills, India7Live, Tehelka India News, AxoNews, Spotlight With Shruti, and regional channels. We don't rent media. We own the distribution.</p>
+                                    <p className="text-gray-600 text-sm leading-relaxed">1700+ media entities spanning news platforms, digital channels, and regional outlets. We don't rent media. We own the distribution.</p>
                                 </div>
                             </div>
                             <div className="bg-white border border-gray-200 rounded-2xl p-6 flex gap-4">

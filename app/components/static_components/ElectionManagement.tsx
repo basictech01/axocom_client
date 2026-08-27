@@ -29,7 +29,7 @@ const services = [
     {
         icon: 'newspaper',
         title: 'Media Management & PR',
-        desc: 'Press strategy, earned media placement, crisis communication, and narrative building across print, TV, digital, and our own media network of 8+ properties.',
+        desc: 'Press strategy, earned media placement, crisis communication, and narrative building across print, TV, digital, and our own media network of 1700+ properties.',
         axoLink: 'PR Communication + Media Properties',
     },
     {
@@ -85,7 +85,7 @@ const ElectionManagement: React.FC = () => {
                         </div>
                         <div className="bg-gray-50 rounded-2xl p-5 border border-gray-100">
                             <h4 className="text-gray-900 font-semibold text-base mb-2">Media Network Firepower</h4>
-                            <p className="text-gray-500 text-sm leading-relaxed">With 8+ owned media entities spanning news platforms to regional content channels, we don't just create the campaign narrative. We have the distribution infrastructure to amplify it across millions.</p>
+                            <p className="text-gray-500 text-sm leading-relaxed">With 1700+ owned media entities spanning news platforms to regional content channels, we don't just create the campaign narrative. We have the distribution infrastructure to amplify it across millions.</p>
                         </div>
                         <div className="bg-gray-50 rounded-2xl p-5 border border-gray-100">
                             <h4 className="text-gray-900 font-semibold text-base mb-2">Political Communication DNA</h4>
