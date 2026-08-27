@@ -8,8 +8,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "~/features/hackathon/lib/router";
 import { Search, ArrowRight, Clock, Loader2 } from "lucide-react";
 import { problems } from "~/features/hackathon/lib/data";
+import { buildSolutionsSeoMeta } from "~/features/hackathon/lib/seo";
 import { useScrollReveal } from "~/features/hackathon/hooks/useScrollReveal";
 import { PUBLIC_SOLUTIONS_QUERY } from "~/features/hackathon/services";
+
+export const meta = buildSolutionsSeoMeta;
 
 export default function Solutions() {
   const [search, setSearch] = useState("");
@@ -95,11 +98,11 @@ export default function Solutions() {
           className="mb-12"
         >
           <h1 className="font-display font-bold text-4xl sm:text-5xl text-foreground mb-4">
-            Registered <span className="text-brand-accent">Solutions</span>
+            UKIS 2026 <span className="text-brand-accent">Solutions</span>
           </h1>
           <p className="text-muted-foreground max-w-2xl text-lg">
-            Accepted solutions and their Solution Owners. Submissions are reviewed before
-            they are published on this page.
+            Browse accepted hackathon projects addressing UKIS 2026 problem statements from
+            Uttarakhand. Entries from solo participants and teams are reviewed before publication.
           </p>
         </motion.div>
 
@@ -190,7 +193,7 @@ export default function Solutions() {
                             {new Date(solution.createdAt).toLocaleDateString()}
                           </div>
                           <span className="text-xs text-muted-foreground">
-                            Owner:{" "}
+                            Primary contact:{" "}
                             <span className="text-foreground font-medium">{solution.fullName}</span>
                           </span>
                         </div>

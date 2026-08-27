@@ -5,8 +5,9 @@ import {
   useMatch,
   useNavigate,
 } from "react-router";
+import { HACKATHON_BASE_PATH } from "~/features/hackathon/lib/public-routes";
 
-export const HACKATHON_BASE_PATH = "/UKISHackathon";
+export { HACKATHON_BASE_PATH } from "~/features/hackathon/lib/public-routes";
 
 function resolveHackathonPath(path: string): string {
   if (path === "/") return HACKATHON_BASE_PATH;

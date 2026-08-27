@@ -12,7 +12,10 @@ import { toast } from "sonner";
 import { normalizePhone, isValidNormalizedPhone } from "~/features/hackathon/lib/normalize";
 import { WhatsAppCommunityCta } from "~/features/hackathon/components/WhatsAppCommunityCta";
 import RegisterAsideImage from "~/features/hackathon/components/RegisterAsideImage";
+import { buildMentorRegistrationSeoMeta } from "~/features/hackathon/lib/seo";
 import { APPLY_MENTOR_MUTATION } from "~/features/hackathon/services";
+
+export const meta = buildMentorRegistrationSeoMeta;
 
 const steps = [
   { id: 1, label: "Profile" },
@@ -158,6 +161,8 @@ export default function RegisterMentor() {
         label="UKIS mentor with a team photograph"
         note="Mentor registration: mentor speaking with a builder team"
         src="/hackathon/logos/prop11.webp"
+        imageWidth={941}
+        imageHeight={1672}
       />
 
       <div className="container relative z-10">
@@ -169,10 +174,11 @@ export default function RegisterMentor() {
             className="mb-10"
           >
             <h1 className="font-display font-bold text-4xl sm:text-5xl text-foreground mb-4">
-              Become a <span className="text-brand-accent">Mentor</span>
+              Apply as a <span className="text-brand-accent">UKIS 2026 Mentor</span>
             </h1>
             <p className="text-muted-foreground max-w-2xl text-lg">
-              Share your expertise and help builders ship faster. Apply to join our mentor network.
+              Mentor applications are open. Share your expertise and help UKIS builders turn
+              published Uttarakhand problem statements into practical solutions.
             </p>
           </motion.div>
 

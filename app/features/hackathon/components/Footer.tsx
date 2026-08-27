@@ -10,17 +10,22 @@ import { InstagramLogo } from "~/features/hackathon/components/InstagramLogo";
 
 const INSTAGRAM_URL = "https://www.instagram.com/ukis.hackathon/";
 
-const SOCIAL_LINKS: { icon: LucideIcon; label: string; href: string; hoverClass: string }[] = [
+const SOCIAL_LINKS: {
+  icon: LucideIcon;
+  label: string;
+  href: string;
+  hoverClass: string;
+}[] = [
   {
     icon: Linkedin,
     label: "LinkedIn",
-    href: "https://www.linkedin.com/company/devbhoomi-ai-summit/",
+    href: "https://www.linkedin.com/company/axocom-tech-x-media/",
     hoverClass: "hover:text-[#0A66C2]",
   },
   {
     icon: Instagram,
     label: "Instagram",
-    href: "https://www.instagram.com/devbhoomi_ai_summit/",
+    href: INSTAGRAM_URL,
     hoverClass: "hover:text-[#E4405F]",
   },
   {
@@ -32,7 +37,7 @@ const SOCIAL_LINKS: { icon: LucideIcon; label: string; href: string; hoverClass:
   {
     icon: Youtube,
     label: "YouTube",
-    href: "https://www.youtube.com/channel/UCo2Gq0ZKw3m0_cDf_conEsQ",
+    href: "https://www.youtube.com/@AxoComTechXMedia",
     hoverClass: "hover:text-[#FF0000]",
   },
 ];
@@ -51,8 +56,8 @@ export default function Footer() {
                 src="/hackathon/logo.png"
                 alt="Uttarakhand Innovation & Solutions Hackathon"
                 className={`h-12 w-auto max-w-[240px] object-contain object-left ${theme === "light" ? "brightness-0" : ""}`}
-                width={240}
-                height={48}
+                width={2127}
+                height={1299}
               />
             </Link>
             <p className="text-sm text-muted-foreground max-w-xs">
@@ -65,10 +70,10 @@ export default function Footer() {
             <h4 className="font-display font-semibold text-sm text-foreground mb-4">Programme</h4>
             <div className="flex flex-col gap-2">
               <Link href="/problems" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                Published Problems
+                Problem Statements
               </Link>
               <Link href="/solutions" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                Registered Solutions
+                Accepted Solutions
               </Link>
               <Link href="/mentors" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                 Mentors
@@ -103,7 +108,9 @@ export default function Footer() {
               </a>
             </div>
 
-            <h4 className="font-display font-semibold text-sm text-foreground mt-6 mb-3">Follow Us</h4>
+            <h4 className="font-display font-semibold text-sm text-foreground mt-6 mb-3">
+              Follow Us
+            </h4>
             <div className="flex items-center gap-3">
               {SOCIAL_LINKS.map((social) => (
                 <a
@@ -111,11 +118,11 @@ export default function Footer() {
                   href={social.href}
                   target="_blank"
                   rel="noreferrer"
-                  aria-label={`Devbhoomi AI Summit on ${social.label}`}
+                  aria-label={`Follow UKIS Hackathon on ${social.label}`}
                   title={social.label}
-                  className={`inline-flex items-center justify-center w-9 h-9 rounded-lg border border-border text-muted-foreground transition-colors ${social.hoverClass}`}
+                  className={`inline-flex h-9 w-9 items-center justify-center rounded-lg border border-border text-muted-foreground transition-colors ${social.hoverClass}`}
                 >
-                  <social.icon className="w-4 h-4" strokeWidth={1.8} />
+                  <social.icon className="h-4 w-4" strokeWidth={1.8} />
                 </a>
               ))}
             </div>
@@ -126,16 +133,24 @@ export default function Footer() {
           <p className="text-xs text-muted-foreground">
             &copy; {new Date().getFullYear()} Uttarakhand Innovation & Solutions Hackathon. All rights reserved.
           </p>
-          <a
-            href={INSTAGRAM_URL}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-[#E4405F] transition-colors"
-            aria-label="UKIS Hackathon on Instagram"
-          >
-            <InstagramLogo className="w-3.5 h-3.5 text-[#E4405F]" />
-            @ukis.hackathon
-          </a>
+          <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
+            <Link
+              href="/site-map"
+              className="text-xs text-muted-foreground transition-colors hover:text-primary"
+            >
+              Site Map
+            </Link>
+            <a
+              href={INSTAGRAM_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-[#E4405F] transition-colors"
+              aria-label="UKIS Hackathon on Instagram"
+            >
+              <InstagramLogo className="w-3.5 h-3.5 text-[#E4405F]" />
+              @ukis.hackathon
+            </a>
+          </div>
         </div>
       </div>
     </footer>

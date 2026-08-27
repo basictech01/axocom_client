@@ -13,6 +13,8 @@ export interface ProgrammeMentor {
   expertise: string;
   initials: string;
   image?: string;
+  imageWidth?: number;
+  imageHeight?: number;
   linkedinUrl?: string;
 }
 
@@ -26,6 +28,8 @@ export const MENTORS: ProgrammeMentor[] = [
     bio: "Guides teams on product thinking, delivery, and stakeholder alignment through the innovation series.",
     initials: "RP",
     image: "/hackathon/mentors/RohanP.jpeg",
+    imageWidth: 970,
+    imageHeight: 1076,
     linkedinUrl: "https://www.linkedin.com/in/pantrohan/",
   },
   {
@@ -37,6 +41,8 @@ export const MENTORS: ProgrammeMentor[] = [
     bio: "Supports builders on operational design, execution discipline, and scaling practical solutions.",
     initials: "VP",
     image: "/hackathon/mentors/virendraP.jpg",
+    imageWidth: 576,
+    imageHeight: 768,
     linkedinUrl: "https://www.linkedin.com/in/virendrapal0210/",
   },
   {
@@ -48,6 +54,8 @@ export const MENTORS: ProgrammeMentor[] = [
     bio: "Mentors teams on engineering quality, architecture choices, and shipping reliable products.",
     initials: "KP",
     image: "/hackathon/mentors/kevinP.jpeg",
+    imageWidth: 401,
+    imageHeight: 456,
     linkedinUrl: "https://www.linkedin.com/in/kevinpatel20/",
   },
   {
@@ -59,6 +67,8 @@ export const MENTORS: ProgrammeMentor[] = [
     bio: "IIT Roorkee alumnus mentoring teams on systems engineering, technical depth, and building reliable products.",
     initials: "PS",
     image: "/hackathon/mentors/prashant.jpeg",
+    imageWidth: 1493,
+    imageHeight: 1600,
     linkedinUrl: "https://www.linkedin.com/in/pssiitr/",
   },
   {
@@ -70,6 +80,8 @@ export const MENTORS: ProgrammeMentor[] = [
     bio: "IIT Roorkee and IIM Calcutta alumnus guiding builders on risk, strategy, and sound decision-making.",
     initials: "BS",
     image: "/hackathon/mentors/bhavesh.jpeg",
+    imageWidth: 1080,
+    imageHeight: 1079,
     linkedinUrl: "https://www.linkedin.com/in/bhavesh-saini-417684109/",
   },
   {
@@ -81,6 +93,8 @@ export const MENTORS: ProgrammeMentor[] = [
     bio: "Mentors teams on software engineering, scalable systems, and building reliable products.",
     initials: "HR",
     image: "/hackathon/mentors/himanshu_rawat.jpeg",
+    imageWidth: 592,
+    imageHeight: 592,
     linkedinUrl: "https://www.linkedin.com/in/himanshu998/",
   },
   {
@@ -92,6 +106,8 @@ export const MENTORS: ProgrammeMentor[] = [
     bio: "Helps teams strengthen technical depth, code quality, and production-ready implementation.",
     initials: "AD",
     image: "/hackathon/mentors/anmolD.jpeg",
+    imageWidth: 800,
+    imageHeight: 800,
     linkedinUrl: "https://www.linkedin.com/in/dixitanmol97/",
   },
   {
@@ -103,6 +119,8 @@ export const MENTORS: ProgrammeMentor[] = [
     bio: "Advises on data pipelines, analytics, and turning real-world signals into product insight.",
     initials: "AG",
     image: "/hackathon/mentors/AyushG.jpeg",
+    imageWidth: 800,
+    imageHeight: 800,
     linkedinUrl: "https://www.linkedin.com/in/ayush-gupta-870595175/",
   },
   {
@@ -114,6 +132,8 @@ export const MENTORS: ProgrammeMentor[] = [
     bio: "Works with builders on product development, rapid prototyping, and user-focused delivery.",
     initials: "SS",
     image: "/hackathon/mentors/SagarS.jpeg",
+    imageWidth: 675,
+    imageHeight: 675,
     linkedinUrl: "https://www.linkedin.com/in/sagar-singh-ba43001b3/",
   },
   {
@@ -125,6 +145,8 @@ export const MENTORS: ProgrammeMentor[] = [
     bio: "Mentors teams on engineering craft, analytics products, and shipping high-impact software.",
     initials: "SG",
     image: "/hackathon/mentors/SparshG.png",
+    imageWidth: 800,
+    imageHeight: 800,
     linkedinUrl: "https://www.linkedin.com/in/sparsh-goil-973973112/",
   },
   {
@@ -136,6 +158,8 @@ export const MENTORS: ProgrammeMentor[] = [
     bio: "Mentors teams on engineering excellence, scalable systems, and shipping production-ready software.",
     initials: "AJ",
     image: "/hackathon/mentors/AnkitJain.jpeg",
+    imageWidth: 800,
+    imageHeight: 800,
     linkedinUrl: "https://www.linkedin.com/in/anki2jain/",
   },
   {
@@ -147,6 +171,8 @@ export const MENTORS: ProgrammeMentor[] = [
     bio: "Ex-founding engineer at AITV (prev. Polywrap) with 4+ years building blockchain protocols and infrastructure across 5+ networks. Mentors teams on Rust, Solidity, and taking secure protocol systems from first principles to mainnet.",
     initials: "NK",
     image: "/hackathon/mentors/niraj.jpeg",
+    imageWidth: 670,
+    imageHeight: 920,
     linkedinUrl: "https://www.linkedin.com/in/niraj-kamdar-5ab13a1a9/",
   },
 ];

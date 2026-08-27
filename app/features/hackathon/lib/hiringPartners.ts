@@ -8,6 +8,8 @@ export interface HiringPartner {
   name: string;
   role: string;
   logo: string;
+  logoWidth: number;
+  logoHeight: number;
   /** External website. When omitted, the card renders without a link. */
   url?: string;
 }
@@ -18,12 +20,16 @@ export const HIRING_PARTNERS: HiringPartner[] = [
     name: "PACE",
     role: "Hiring & Mentorship Partner",
     logo: "/paceLogo.png",
+    logoWidth: 509,
+    logoHeight: 250,
   },
   {
     id: "hiring-cruv-dimension",
     name: "Cruv Dimension",
     role: "Hiring Partner",
     logo: "/images/cruv.png",
+    logoWidth: 214,
+    logoHeight: 164,
     url: "https://cruv.org/",
   },
   {
@@ -31,6 +37,8 @@ export const HIRING_PARTNERS: HiringPartner[] = [
     name: "MetaSquare",
     role: "Hiring Partner",
     logo: "/hackathon/metasquare.png",
+    logoWidth: 268,
+    logoHeight: 260,
     url: "https://metasquare.tech/",
   },
 ];

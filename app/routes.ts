@@ -22,6 +22,7 @@ export default [
         route("register/mentor", "features/hackathon/pages/RegisterMentor.tsx"),
         route("solutions", "features/hackathon/pages/Solutions.tsx"),
         route("mentors", "features/hackathon/pages/Mentors.tsx"),
+        route("site-map", "features/hackathon/pages/SiteMap.tsx"),
         route("terms-and-conditions", "features/hackathon/pages/TermsAndConditions.tsx"),
         route("admin/sign-in", "features/hackathon/pages/AdminSignIn.tsx"),
         route("admin", "features/hackathon/pages/AdminDashboard.tsx"),
