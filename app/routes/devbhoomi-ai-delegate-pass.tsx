@@ -9,6 +9,9 @@ import {
   Star,
 } from "lucide-react";
 import { buildSeoLinks, buildSeoMeta } from "~/lib/seo";
+import { apolloClient } from "~/lib/api";
+import { REGISTER_DELEGATE_PASS_MUTATION } from "~/features/summit/services";
+import { toPaise } from "~/features/summit/lib/money";
 
 const seo = {
   title: "Delegate Passes | Devbhoomi AI Summit 2026",
@@ -59,6 +62,7 @@ export default function DevbhoomiAIDelegatePass() {
   const [form, setForm] = useState(initialForm);
   const [sending, setSending] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [registrationId, setRegistrationId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const selected = delegatePasses.find((pass) => pass.name === selectedPass) ?? delegatePasses[1];
@@ -68,18 +72,17 @@ export default function DevbhoomiAIDelegatePass() {
     setForm((current) => ({ ...current, [field]: value }));
   };
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (sending) return;
-
-    setSending(true);
-    setError(null);
-
+  /**
+   * Notifies the summit inbox. Best-effort only: the registration is already
+   * persisted by the time this runs, so a failure here must not fail the flow.
+   */
+  const notifyByEmail = async (id: string) => {
     try {
-      const response = await fetch("https://formsubmit.co/ajax/sponsorship@axocom.in", {
+      await fetch("https://formsubmit.co/ajax/sponsorship@axocom.in", {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify({
+          registration_id: id,
           delegate_pass: `${selected.name} - ${formatPrice(selected.price)} per delegate + GST`,
           audience: selected.audience,
           quantity: form.quantity,
@@ -94,11 +97,50 @@ export default function DevbhoomiAIDelegatePass() {
           _template: "table",
         }),
       });
-
-      if (!response.ok) throw new Error("Request failed");
-      setSubmitted(true);
     } catch {
-      setError("We could not submit your registration. Please email sponsorship@axocom.in directly.");
+      // Swallowed on purpose - the record is safe in the database.
+    }
+  };
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (sending) return;
+
+    setSending(true);
+    setError(null);
+
+    try {
+      const response = await apolloClient.mutate({
+        mutation: REGISTER_DELEGATE_PASS_MUTATION,
+        variables: {
+          input: {
+            fullName: form.name,
+            designation: form.designation,
+            organisation: form.organisation,
+            email: form.email,
+            phone: form.phone,
+            passName: selected.name,
+            audience: selected.audience,
+            quantity: Number(form.quantity),
+            unitAmount: toPaise(selected.price),
+            gstNumber: form.gstNumber || null,
+            contactConsent: true,
+          },
+        },
+      });
+
+      const id = response.data?.registerDelegatePass.registrationId;
+      if (!id) throw new Error("Registration failed");
+
+      await notifyByEmail(id);
+      setRegistrationId(id);
+      setSubmitted(true);
+    } catch (submitError) {
+      const message =
+        submitError instanceof Error && submitError.message
+          ? submitError.message
+          : "We could not submit your registration. Please email sponsorship@axocom.in directly.";
+      setError(message);
     } finally {
       setSending(false);
     }
@@ -168,6 +210,8 @@ export default function DevbhoomiAIDelegatePass() {
         .delegate-success-icon { width:64px; height:64px; margin:0 auto; display:grid; place-items:center; border-radius:50%; color:#fff; background:var(--gradient); }
         .delegate-success h2 { margin:22px 0 0; font-size:32px; }
         .delegate-success p { max-width:480px; margin:12px auto 24px; color:var(--muted); line-height:1.7; }
+        .delegate-reference { display:grid; gap:4px; max-width:420px; margin:0 auto 24px!important; padding:14px 16px; border:1px dashed #C9D6D8; border-radius:8px; background:#F7FAFA; font-size:11px; }
+        .delegate-reference strong { color:var(--ink); font-size:15px; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing:.02em; }
         .delegate-footer { padding:26px 0; border-top:1px solid var(--line); color:var(--muted); background:#fff; font-size:11px; }
         .delegate-footer-inner { display:flex; justify-content:space-between; gap:20px; }
         @media (max-width:1080px) { .delegate-passes { grid-template-columns:repeat(3,1fr); } }
@@ -241,9 +285,15 @@ export default function DevbhoomiAIDelegatePass() {
             {submitted ? (
               <div className="delegate-success">
                 <span className="delegate-success-icon"><Sparkles /></span>
-                <h2>Pass request received</h2>
-                <p>Thank you. The Devbhoomi AI Summit team will contact you with availability and payment details.</p>
-                <button className="delegate-submit" type="button" onClick={() => { setSubmitted(false); setForm(initialForm); }}>Register another delegate</button>
+                <h2>Registration received</h2>
+                <p>Thank you. We will confirm your registration seat on your registered email address.</p>
+                {registrationId && (
+                  <p className="delegate-reference">
+                    Registration reference<strong>{registrationId}</strong>
+                    Keep this handy for any follow-up or refund request.
+                  </p>
+                )}
+                <button className="delegate-submit" type="button" onClick={() => { setSubmitted(false); setRegistrationId(null); setForm(initialForm); }}>Register another delegate</button>
               </div>
             ) : (
               <form className="delegate-form-grid" onSubmit={handleSubmit}>

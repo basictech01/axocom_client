@@ -1,6 +1,9 @@
 import { useState, type FormEvent } from "react";
 import { ArrowLeft, Award, Check, ShieldCheck, Sparkles, Trophy } from "lucide-react";
 import { buildSeoLinks, buildSeoMeta } from "~/lib/seo";
+import { apolloClient } from "~/lib/api";
+import { REGISTER_NOMINATION_MUTATION } from "~/features/summit/services";
+import { toPaise } from "~/features/summit/lib/money";
 
 const seo = {
   title: "Awards Nomination | Devbhoomi AI Summit 2026",
@@ -30,6 +33,7 @@ const nominationPlans = [
   {
     name: "Standard Nomination",
     price: "₹9,999",
+    amount: 9999,
     icon: ShieldCheck,
     features: [
       "One award category",
@@ -42,6 +46,7 @@ const nominationPlans = [
   {
     name: "Premium Nomination",
     price: "₹19,999",
+    amount: 19999,
     icon: Award,
     featured: true,
     features: [
@@ -57,6 +62,7 @@ const nominationPlans = [
   {
     name: "Platinum Nomination",
     price: "₹34,999",
+    amount: 34999,
     icon: Trophy,
     features: [
       "One award category",
@@ -88,24 +94,24 @@ export default function DevbhoomiAINomination() {
   const [form, setForm] = useState(initialForm);
   const [sending, setSending] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [registrationId, setRegistrationId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const updateField = (field: keyof typeof initialForm, value: string) => {
     setForm((current) => ({ ...current, [field]: value }));
   };
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (sending) return;
-
-    setSending(true);
-    setError(null);
-
+  /**
+   * Notifies the summit inbox. Best-effort only: the nomination is already
+   * persisted by the time this runs, so a failure here must not fail the flow.
+   */
+  const notifyByEmail = async (id: string) => {
     try {
-      const response = await fetch("https://formsubmit.co/ajax/sponsorship@axocom.in", {
+      await fetch("https://formsubmit.co/ajax/sponsorship@axocom.in", {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify({
+          registration_id: id,
           nomination_plan: `${selectedPlan} - ${selectedPlanDetails.price} + GST`,
           nominee_name: form.nomineeName,
           organisation: form.organisation,
@@ -118,11 +124,49 @@ export default function DevbhoomiAINomination() {
           _template: "table",
         }),
       });
-
-      if (!response.ok) throw new Error("Request failed");
-      setSubmitted(true);
     } catch {
-      setError("We could not submit your nomination. Please email sponsorship@axocom.in directly.");
+      // Swallowed on purpose - the record is safe in the database.
+    }
+  };
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (sending) return;
+
+    setSending(true);
+    setError(null);
+
+    try {
+      const response = await apolloClient.mutate({
+        mutation: REGISTER_NOMINATION_MUTATION,
+        variables: {
+          input: {
+            nomineeName: form.nomineeName,
+            organisation: form.organisation,
+            designation: form.designation,
+            email: form.email,
+            phone: form.phone,
+            website: form.website || null,
+            achievements: form.achievements,
+            planName: selectedPlanDetails.name,
+            totalAmount: toPaise(selectedPlanDetails.amount),
+            contactConsent: true,
+          },
+        },
+      });
+
+      const id = response.data?.registerNomination.registrationId;
+      if (!id) throw new Error("Nomination failed");
+
+      await notifyByEmail(id);
+      setRegistrationId(id);
+      setSubmitted(true);
+    } catch (submitError) {
+      const message =
+        submitError instanceof Error && submitError.message
+          ? submitError.message
+          : "We could not submit your nomination. Please email sponsorship@axocom.in directly.";
+      setError(message);
     } finally {
       setSending(false);
     }
@@ -195,6 +239,8 @@ export default function DevbhoomiAINomination() {
         .nomination-success-icon { width:64px; height:64px; margin:0 auto; display:grid; place-items:center; border-radius:50%; color:#fff; background:var(--gradient); }
         .nomination-success h2 { margin:22px 0 0; font-size:32px; }
         .nomination-success p { max-width:480px; margin:12px auto 24px; color:var(--muted); line-height:1.7; }
+        .nomination-reference { display:grid; gap:4px; max-width:420px; margin:0 auto 24px!important; padding:14px 16px; border:1px dashed #C9D6D8; border-radius:8px; background:#F7FAFA; font-size:11px; }
+        .nomination-reference strong { color:var(--ink); font-size:15px; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing:.02em; }
         .nomination-footer { padding:26px 0; border-top:1px solid var(--line); color:var(--muted); background:#fff; font-size:11px; }
         .nomination-footer-inner { display:flex; justify-content:space-between; gap:20px; }
         @media (max-width:900px) { .nomination-plans { grid-template-columns:1fr; } .nomination-form-section { grid-template-columns:1fr; } .nomination-form-copy { position:static; } }
@@ -267,8 +313,14 @@ export default function DevbhoomiAINomination() {
               <div className="nomination-success">
                 <span className="nomination-success-icon"><Sparkles /></span>
                 <h2>Nomination received</h2>
-                <p>Thank you. The Devbhoomi AI Summit team will review your submission and contact you with the next steps.</p>
-                <button className="nomination-submit" type="button" onClick={() => { setSubmitted(false); setForm(initialForm); }}>Submit another nomination</button>
+                <p>Thank you. We will confirm your nomination on your registered email address.</p>
+                {registrationId && (
+                  <p className="nomination-reference">
+                    Nomination reference<strong>{registrationId}</strong>
+                    Keep this handy for any follow-up or refund request.
+                  </p>
+                )}
+                <button className="nomination-submit" type="button" onClick={() => { setSubmitted(false); setRegistrationId(null); setForm(initialForm); }}>Submit another nomination</button>
               </div>
             ) : (
               <form className="nomination-form-grid" onSubmit={handleSubmit}>

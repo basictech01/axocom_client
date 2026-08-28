@@ -7,6 +7,8 @@ export default [
     route("privacy-policy", "routes/privacy-policy.tsx"),
     route("terms-and-conditions", "routes/terms-and-conditions.tsx"),
     route("refund-policy", "routes/refund-policy.tsx"),
+    route("refund-request", "routes/refund-request.tsx"),
+    route("refund-status", "routes/refund-status.tsx"),
     route("election-management", "routes/election-page.tsx"),
     route("nprweek2026", "routes/nprweek2026.tsx"),
     route("DevbhoomiAISummit", "routes/DevbhoomiAISummit.tsx"),
