@@ -33,11 +33,39 @@ export interface RazorpayOptions {
   image?: string;
   order_id: string;
   handler: (response: RazorpayHandlerResponse) => void;
-  prefill?: { name?: string; email?: string; contact?: string };
+  prefill?: { name?: string; email?: string; contact?: string; method?: string };
   notes?: Record<string, string>;
   theme?: { color?: string };
   modal?: { ondismiss?: () => void };
+  config?: {
+    display?: {
+      blocks?: Record<string, { name: string; instruments: Array<Record<string, unknown>> }>;
+      sequence?: string[];
+      preferences?: { show_default_blocks?: boolean };
+    };
+  };
 }
+
+/**
+ * Puts UPI first in the Checkout modal, with cards, netbanking and wallets
+ * still available underneath.
+ *
+ * `show_default_blocks: true` is what keeps those other methods visible - with
+ * it false the modal would show UPI only. Each listed method still has to be
+ * enabled on the Razorpay account itself; this only controls ordering.
+ */
+export const UPI_FIRST_CHECKOUT_CONFIG: RazorpayOptions["config"] = {
+  display: {
+    blocks: {
+      upi: {
+        name: "Pay using UPI",
+        instruments: [{ method: "upi" }],
+      },
+    },
+    sequence: ["block.upi"],
+    preferences: { show_default_blocks: true },
+  },
+};
 
 export interface RazorpayInstance {
   open: () => void;

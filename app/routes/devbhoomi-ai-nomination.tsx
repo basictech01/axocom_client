@@ -3,7 +3,7 @@ import { ArrowLeft, Award, Check, ShieldCheck, Sparkles, Trophy } from "lucide-r
 import { buildSeoLinks, buildSeoMeta } from "~/lib/seo";
 import { apolloClient } from "~/lib/api";
 import { REGISTER_NOMINATION_MUTATION } from "~/features/summit/services";
-import { toPaise } from "~/features/summit/lib/money";
+import { toPaise, formatPaise, calculateGst, formatGstRate } from "~/features/summit/lib/money";
 import { useRazorpayCheckout } from "~/features/summit/hooks/useRazorpayCheckout";
 
 const seo = {
@@ -98,6 +98,9 @@ export default function DevbhoomiAINomination() {
   const [registrationId, setRegistrationId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const checkout = useRazorpayCheckout();
+  // Mirrors the server calculation; the server recomputes it on submit and its
+  // figure is the one charged.
+  const gst = calculateGst(selectedPlanDetails.amount, 1);
 
   const updateField = (field: keyof typeof initialForm, value: string) => {
     setForm((current) => ({ ...current, [field]: value }));
@@ -115,6 +118,9 @@ export default function DevbhoomiAINomination() {
         body: JSON.stringify({
           registration_id: id,
           nomination_plan: `${selectedPlan} - ${selectedPlanDetails.price} + GST`,
+          subtotal: formatPaise(gst.subtotalAmount),
+          gst: `${formatGstRate(gst.gstRateBps)} - ${formatPaise(gst.gstAmount)}`,
+          total_price: formatPaise(gst.totalAmount),
           nominee_name: form.nomineeName,
           organisation: form.organisation,
           designation: form.designation,
@@ -151,7 +157,7 @@ export default function DevbhoomiAINomination() {
             website: form.website || null,
             achievements: form.achievements,
             planName: selectedPlanDetails.name,
-            totalAmount: toPaise(selectedPlanDetails.amount),
+            baseAmount: toPaise(selectedPlanDetails.amount),
             contactConsent: true,
           },
         },
@@ -220,6 +226,14 @@ export default function DevbhoomiAINomination() {
         .nomination-form-copy p:last-child { margin:18px 0 0; color:var(--muted); line-height:1.7; }
         .nomination-selected { margin-top:24px; padding:18px; border-left:4px solid #17A9AB; background:#fff; box-shadow:0 8px 24px rgba(44,79,150,.07); }
         .nomination-selected span { display:block; color:var(--muted); font-size:10px; font-weight:700; text-transform:uppercase; }
+        .nomination-selected-detail { margin:7px 0 0; color:var(--muted); font-size:11px; }
+        .nomination-breakdown { display:grid; gap:7px; margin:14px 0 0; padding-top:13px; border-top:1px solid #EDF0F1; }
+        .nomination-breakdown div { display:flex; align-items:baseline; justify-content:space-between; gap:12px; }
+        .nomination-breakdown dt { color:var(--muted); font-size:11px; }
+        .nomination-breakdown dd { margin:0; font-size:12px; font-weight:700; }
+        .nomination-breakdown-total { padding-top:7px; border-top:1px solid #EDF0F1; }
+        .nomination-breakdown-total dt { color:var(--ink)!important; font-weight:700; }
+        .nomination-breakdown-total dd { color:#168D9D; font-size:14px; }
         .nomination-selected strong { display:block; margin-top:5px; color:#168D9D; font-size:15px; }
         .nomination-selected-price { margin:6px 0 0; color:var(--ink); font-size:20px; font-weight:800; }
         .nomination-selected-price small { color:var(--muted); font-size:10px; font-weight:600; }
@@ -308,7 +322,22 @@ export default function DevbhoomiAINomination() {
             <div className="nomination-selected">
               <span>Selected package</span>
               <strong>{selectedPlan}</strong>
-              <p className="nomination-selected-price">{selectedPlanDetails.price} <small>+ GST</small></p>
+              <p className="nomination-selected-price">{formatPaise(gst.totalAmount)}</p>
+              <p className="nomination-selected-detail">Payable including GST</p>
+              <dl className="nomination-breakdown">
+                <div>
+                  <dt>{selectedPlanDetails.price} nomination fee</dt>
+                  <dd>{formatPaise(gst.subtotalAmount)}</dd>
+                </div>
+                <div>
+                  <dt>GST {formatGstRate(gst.gstRateBps)}</dt>
+                  <dd>{formatPaise(gst.gstAmount)}</dd>
+                </div>
+                <div className="nomination-breakdown-total">
+                  <dt>Total payable</dt>
+                  <dd>{formatPaise(gst.totalAmount)}</dd>
+                </div>
+              </dl>
             </div>
           </div>
 
@@ -348,7 +377,7 @@ export default function DevbhoomiAINomination() {
                       ? "Verifying payment..."
                       : checkout.isBusy
                         ? "Opening payment..."
-                        : `Pay ${selectedPlanDetails.price}`}
+                        : `Pay ${formatPaise(gst.totalAmount)}`}
                   </button>
                 )}
                 {checkout.error && <p className="nomination-error">{checkout.error}</p>}

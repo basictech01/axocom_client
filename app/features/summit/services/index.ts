@@ -30,6 +30,9 @@ export const REGISTER_DELEGATE_PASS_MUTATION: TypedDocumentNode<
   mutation RegisterDelegatePass($input: RegisterDelegatePassInput!) {
     registerDelegatePass(input: $input) {
       registrationId
+      subtotalAmount
+      gstAmount
+      gstRateBps
       totalAmount
       paymentStatus
     }
@@ -43,6 +46,9 @@ export const REGISTER_NOMINATION_MUTATION: TypedDocumentNode<
   mutation RegisterNomination($input: RegisterNominationInput!) {
     registerNomination(input: $input) {
       registrationId
+      subtotalAmount
+      gstAmount
+      gstRateBps
       totalAmount
       paymentStatus
     }
@@ -135,6 +141,10 @@ export const ADMIN_DELEGATE_PASS_REGISTRATIONS_QUERY: TypedDocumentNode<
         audience
         quantity
         unitAmount
+        unitGstAmount
+        subtotalAmount
+        gstRateBps
+        gstAmount
         totalAmount
         currency
         gstNumber
@@ -185,6 +195,9 @@ export const ADMIN_NOMINATION_REGISTRATIONS_QUERY: TypedDocumentNode<
         website
         achievements
         planName
+        baseAmount
+        gstRateBps
+        gstAmount
         totalAmount
         currency
         contactConsentAt

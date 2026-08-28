@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { toPaise, fromPaise, formatRupees, formatPaise } from "./money";
+import { toPaise, fromPaise, formatRupees, formatPaise, calculateGst, formatGstRate } from "./money";
 
 describe("toPaise", () => {
     it("converts the summit pass and nomination prices", () => {
@@ -65,5 +65,45 @@ describe("formatPaise", () => {
 
     it("renders a two pass total the same way the admin list does", () => {
         expect(formatPaise(toPaise(2999) * 2)).toBe("₹5,998");
+    });
+});
+
+describe("calculateGst (display mirror of the server calculation)", () => {
+    it("adds 18% per pass and multiplies by quantity", () => {
+        const gst = calculateGst(2999, 2);
+        expect(gst.subtotalAmount).toBe(599800);
+        expect(gst.unitGstAmount).toBe(53982);
+        expect(gst.gstAmount).toBe(107964);
+        expect(gst.totalAmount).toBe(707764);
+        expect(formatPaise(gst.totalAmount)).toBe("₹7,077.64");
+    });
+
+    it("charges GST per pass, not on the lumped subtotal", () => {
+        const gst = calculateGst(2999, 3);
+        expect(gst.gstAmount).toBe(53982 * 3);
+        expect(gst.totalAmount).toBe((299900 + 53982) * 3);
+    });
+
+    it("keeps total equal to subtotal plus GST for every listed price", () => {
+        for (const price of [1499, 2999, 7500, 14999, 24999, 9999, 19999, 34999]) {
+            for (const quantity of [1, 2, 10]) {
+                const gst = calculateGst(price, quantity);
+                expect(gst.subtotalAmount + gst.gstAmount).toBe(gst.totalAmount);
+                expect(Number.isInteger(gst.totalAmount)).toBe(true);
+            }
+        }
+    });
+
+    it("matches the nomination plan totals", () => {
+        expect(calculateGst(9999, 1).totalAmount).toBe(1179882);
+        expect(calculateGst(19999, 1).totalAmount).toBe(2359882);
+        expect(calculateGst(34999, 1).totalAmount).toBe(4129882);
+    });
+});
+
+describe("formatGstRate", () => {
+    it("renders the rate", () => {
+        expect(formatGstRate(1800)).toBe("18%");
+        expect(formatGstRate(500)).toBe("5%");
     });
 });

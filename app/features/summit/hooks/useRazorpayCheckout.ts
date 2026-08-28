@@ -7,6 +7,7 @@ import {
 import {
   describeRazorpayFailure,
   loadRazorpayCheckout,
+  UPI_FIRST_CHECKOUT_CONFIG,
   type RazorpayFailure,
   type RazorpayHandlerResponse,
 } from "~/features/summit/lib/razorpay";
@@ -71,7 +72,10 @@ export function useRazorpayCheckout() {
             name: order.prefillName,
             email: order.prefillEmail,
             contact: order.prefillContact,
+            // Opens the modal on UPI; the visitor can still switch method.
+            method: "upi",
           },
+          config: UPI_FIRST_CHECKOUT_CONFIG,
           notes: { registrationId, registrationType },
           theme: { color: "#17B6B8" },
           handler: (response: RazorpayHandlerResponse) => {

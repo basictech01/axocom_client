@@ -19,7 +19,7 @@ import {
   UPDATE_DELEGATE_PASS_PAYMENT_STATUS_MUTATION,
   UPDATE_NOMINATION_PAYMENT_STATUS_MUTATION,
 } from "~/features/summit/services";
-import { formatPaise } from "~/features/summit/lib/money";
+import { formatPaise, formatGstRate } from "~/features/summit/lib/money";
 import type {
   DelegatePassRegistration,
   NominationRegistration,
@@ -256,6 +256,7 @@ export function SummitRegistrationsPanel({
                     {isDelegate(item) && item.quantity > 1 ? ` · ${item.quantity} passes` : ""}
                   </p>
                   <p className="text-lg font-bold text-foreground">{formatPaise(item.totalAmount)}</p>
+                  <p className="text-[10px] text-muted-foreground">incl. GST {formatPaise(item.gstAmount)}</p>
 
                   <div className="flex items-center justify-between text-[10px] text-muted-foreground pt-3 mt-3 border-t border-border/50">
                     <span>{new Date(item.createdAt).toLocaleDateString()}</span>
@@ -342,11 +343,30 @@ export function SummitRegistrationsPanel({
                     <p className="text-3xl font-bold text-foreground">
                       {formatPaise(selectedItem.totalAmount)}
                     </p>
-                    {isDelegate(selectedItem) && (
-                      <p className="text-xs text-muted-foreground mt-1">
-                        {selectedItem.quantity} × {formatPaise(selectedItem.unitAmount)} per delegate
-                      </p>
-                    )}
+                    <dl className="mt-3 space-y-1.5 text-xs">
+                      <div className="flex items-baseline justify-between gap-3">
+                        <dt className="text-muted-foreground">
+                          {isDelegate(selectedItem)
+                            ? `${selectedItem.quantity} × ${formatPaise(selectedItem.unitAmount)} ex GST`
+                            : `Nomination fee ex GST`}
+                        </dt>
+                        <dd className="font-medium text-foreground">
+                          {formatPaise(
+                            isDelegate(selectedItem)
+                              ? selectedItem.subtotalAmount
+                              : selectedItem.baseAmount
+                          )}
+                        </dd>
+                      </div>
+                      <div className="flex items-baseline justify-between gap-3">
+                        <dt className="text-muted-foreground">
+                          GST {formatGstRate(selectedItem.gstRateBps)}
+                        </dt>
+                        <dd className="font-medium text-foreground">
+                          {formatPaise(selectedItem.gstAmount)}
+                        </dd>
+                      </div>
+                    </dl>
                     {selectedItem.paidAt && (
                       <p className="text-xs text-success mt-2">
                         Paid on {new Date(selectedItem.paidAt).toLocaleString()}

@@ -11,7 +11,7 @@ import {
 import { buildSeoLinks, buildSeoMeta } from "~/lib/seo";
 import { apolloClient } from "~/lib/api";
 import { REGISTER_DELEGATE_PASS_MUTATION } from "~/features/summit/services";
-import { toPaise } from "~/features/summit/lib/money";
+import { toPaise, formatPaise, calculateGst, formatGstRate } from "~/features/summit/lib/money";
 import { useRazorpayCheckout } from "~/features/summit/hooks/useRazorpayCheckout";
 
 const seo = {
@@ -68,7 +68,11 @@ export default function DevbhoomiAIDelegatePass() {
   const checkout = useRazorpayCheckout();
 
   const selected = delegatePasses.find((pass) => pass.name === selectedPass) ?? delegatePasses[1];
-  const totalPrice = selected.price * Number(form.quantity);
+  const quantity = Number(form.quantity);
+  const totalPrice = selected.price * quantity;
+  // Mirrors the server calculation so the visitor sees what will be charged
+  // before submitting; the server recomputes it and its figure is authoritative.
+  const gst = calculateGst(selected.price, quantity);
 
   const updateField = (field: keyof typeof initialForm, value: string) => {
     setForm((current) => ({ ...current, [field]: value }));
@@ -88,7 +92,9 @@ export default function DevbhoomiAIDelegatePass() {
           delegate_pass: `${selected.name} - ${formatPrice(selected.price)} per delegate + GST`,
           audience: selected.audience,
           quantity: form.quantity,
-          total_price: `${formatPrice(totalPrice)} + GST`,
+          subtotal: formatPaise(gst.subtotalAmount),
+          gst: `${formatGstRate(gst.gstRateBps)} - ${formatPaise(gst.gstAmount)}`,
+          total_price: formatPaise(gst.totalAmount),
           name: form.name,
           designation: form.designation,
           organisation: form.organisation,
@@ -196,6 +202,13 @@ export default function DevbhoomiAIDelegatePass() {
         .delegate-selected-price { margin:8px 0 0; color:var(--ink); font-size:30px; line-height:1.2; font-weight:800; }
         .delegate-selected-price small { color:var(--muted); font-size:11px; font-weight:600; }
         .delegate-selected-detail { margin:7px 0 0!important; color:var(--muted); font-size:11px; line-height:1.5!important; }
+        .delegate-breakdown { display:grid; gap:7px; margin:14px 0 0; padding-top:13px; border-top:1px solid #EDF0F1; }
+        .delegate-breakdown div { display:flex; align-items:baseline; justify-content:space-between; gap:12px; }
+        .delegate-breakdown dt { color:var(--muted); font-size:11px; }
+        .delegate-breakdown dd { margin:0; font-size:12px; font-weight:700; }
+        .delegate-breakdown-total { padding-top:7px; border-top:1px solid #EDF0F1; }
+        .delegate-breakdown-total dt { color:var(--ink)!important; font-weight:700; }
+        .delegate-breakdown-total dd { color:#168D9D; font-size:14px; }
         .delegate-form-card { padding:34px; border:1px solid var(--line); border-radius:8px; background:#fff; box-shadow:0 18px 48px rgba(44,79,150,.09); }
         .delegate-form-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:20px 18px; align-items:start; }
         .delegate-field { min-width:0; display:grid; grid-template-rows:18px auto; gap:8px; }
@@ -280,8 +293,22 @@ export default function DevbhoomiAIDelegatePass() {
             <div className="delegate-selected">
               <span>Selected pass</span>
               <strong>{selected.name}</strong>
-              <p className="delegate-selected-price">{formatPrice(totalPrice)} <small>+ GST</small></p>
-              <p className="delegate-selected-detail">{form.quantity} × {formatPrice(selected.price)} per delegate</p>
+              <p className="delegate-selected-price">{formatPaise(gst.totalAmount)}</p>
+              <p className="delegate-selected-detail">Payable including GST</p>
+              <dl className="delegate-breakdown">
+                <div>
+                  <dt>{form.quantity} × {formatPrice(selected.price)}</dt>
+                  <dd>{formatPaise(gst.subtotalAmount)}</dd>
+                </div>
+                <div>
+                  <dt>GST {formatGstRate(gst.gstRateBps)} ({formatPaise(gst.unitGstAmount)} per pass)</dt>
+                  <dd>{formatPaise(gst.gstAmount)}</dd>
+                </div>
+                <div className="delegate-breakdown-total">
+                  <dt>Total payable</dt>
+                  <dd>{formatPaise(gst.totalAmount)}</dd>
+                </div>
+              </dl>
             </div>
           </div>
 
@@ -321,7 +348,7 @@ export default function DevbhoomiAIDelegatePass() {
                       ? "Verifying payment..."
                       : checkout.isBusy
                         ? "Opening payment..."
-                        : `Pay ${formatPrice(totalPrice)}`}
+                        : `Pay ${formatPaise(gst.totalAmount)}`}
                   </button>
                 )}
                 {checkout.error && <p className="delegate-error">{checkout.error}</p>}

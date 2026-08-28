@@ -24,6 +24,10 @@ export interface DelegatePassRegistration {
   audience: string;
   quantity: number;
   unitAmount: number;
+  unitGstAmount: number;
+  subtotalAmount: number;
+  gstRateBps: number;
+  gstAmount: number;
   totalAmount: number;
   currency: string;
   gstNumber: string | null;
@@ -49,6 +53,9 @@ export interface NominationRegistration {
   website: string | null;
   achievements: string;
   planName: string;
+  baseAmount: number;
+  gstRateBps: number;
+  gstAmount: number;
   totalAmount: number;
   currency: string;
   contactConsentAt: string;
@@ -124,7 +131,8 @@ export interface RegisterNominationInput {
   website?: string | null;
   achievements: string;
   planName: string;
-  totalAmount: number;
+  /** Listed plan price in paise, exclusive of GST. The server adds GST. */
+  baseAmount: number;
   contactConsent: boolean;
 }
 
@@ -140,6 +148,9 @@ export interface CreateRefundRequestInput {
 
 export interface RegistrationResult {
   registrationId: string;
+  subtotalAmount: number;
+  gstAmount: number;
+  gstRateBps: number;
   totalAmount: number;
   paymentStatus: PaymentStatus;
 }
