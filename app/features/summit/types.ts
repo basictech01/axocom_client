@@ -114,10 +114,9 @@ export interface RegisterDelegatePassInput {
   organisation: string;
   email: string;
   phone: string;
+  /** Must match a pass name on the server's price list. */
   passName: string;
-  audience: string;
   quantity: number;
-  unitAmount: number;
   gstNumber?: string | null;
   contactConsent: boolean;
 }
@@ -130,9 +129,8 @@ export interface RegisterNominationInput {
   phone: string;
   website?: string | null;
   achievements: string;
+  /** Must match a plan name on the server's price list. */
   planName: string;
-  /** Listed plan price in paise, exclusive of GST. The server adds GST. */
-  baseAmount: number;
   contactConsent: boolean;
 }
 
@@ -141,7 +139,8 @@ export interface CreateRefundRequestInput {
   email: string;
   phone: string;
   registrationType: RefundRegistrationType;
-  registrationId?: string | null;
+  /** Required, and must belong to the email on the request. */
+  registrationId: string;
   paymentReference?: string | null;
   reason: string;
 }
@@ -173,6 +172,36 @@ export interface PaymentVerificationResult {
   verified: boolean;
   registrationId: string;
   paymentStatus: PaymentStatus;
+  razorpayPaymentId: string | null;
+  razorpayOrderId: string | null;
+}
+
+export interface GatewayPayment {
+  paymentId: string;
+  status: string;
+  amount: number;
+  method: string | null;
+  email: string | null;
+  contact: string | null;
+}
+
+export interface PaymentReconciliation {
+  registrationId: string;
+  ourPaymentStatus: PaymentStatus;
+  ourAmount: number;
+  orderId: string;
+  orderStatus: string;
+  orderAmount: number;
+  amountPaid: number;
+  payments: GatewayPayment[];
+  capturedPayment: GatewayPayment | null;
+  settleable: boolean;
+}
+
+export interface PaymentReceipt {
+  registrationId: string;
+  razorpayPaymentId: string | null;
+  razorpayOrderId: string | null;
 }
 
 export interface VerifyPaymentInput {

@@ -3,7 +3,7 @@ import { ArrowLeft, Award, Check, ShieldCheck, Sparkles, Trophy } from "lucide-r
 import { buildSeoLinks, buildSeoMeta } from "~/lib/seo";
 import { apolloClient } from "~/lib/api";
 import { REGISTER_NOMINATION_MUTATION } from "~/features/summit/services";
-import { toPaise, formatPaise, calculateGst, formatGstRate } from "~/features/summit/lib/money";
+import { formatPaise, calculateGst, formatGstRate } from "~/features/summit/lib/money";
 import { useRazorpayCheckout } from "~/features/summit/hooks/useRazorpayCheckout";
 
 const seo = {
@@ -157,7 +157,6 @@ export default function DevbhoomiAINomination() {
             website: form.website || null,
             achievements: form.achievements,
             planName: selectedPlanDetails.name,
-            baseAmount: toPaise(selectedPlanDetails.amount),
             contactConsent: true,
           },
         },
@@ -258,9 +257,13 @@ export default function DevbhoomiAINomination() {
         .nomination-reference { display:grid; gap:4px; max-width:420px; margin:0 auto 24px!important; padding:14px 16px; border:1px dashed #C9D6D8; border-radius:8px; background:#F7FAFA; font-size:11px; }
         .nomination-secondary { width:100%; min-height:46px; margin-top:12px; border:1px solid #D6DCDD; border-radius:8px; color:var(--muted); background:#fff; font:inherit; font-size:13px; font-weight:700; cursor:pointer; }
         .nomination-success .nomination-error { margin:14px auto 0; }
+        .nomination-reference-row { display:grid; gap:4px; margin-top:9px; padding-top:9px; border-top:1px solid #E4EAEB; }
         .nomination-reference strong { color:var(--ink); font-size:15px; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing:.02em; }
         .nomination-footer { padding:26px 0; border-top:1px solid var(--line); color:var(--muted); background:#fff; font-size:11px; }
-        .nomination-footer-inner { display:flex; justify-content:space-between; gap:20px; }
+        .nomination-footer-inner { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px 20px; }
+        .nomination-footer-links { display:flex; flex-wrap:wrap; gap:6px 18px; }
+        .nomination-footer-links a { color:#227684; font-weight:600; }
+        .nomination-footer-links a:hover { text-decoration:underline; }
         @media (max-width:900px) { .nomination-plans { grid-template-columns:1fr; } .nomination-form-section { grid-template-columns:1fr; } .nomination-form-copy { position:static; } }
         @media (max-width:640px) {
           .nomination-shell { width:min(100% - 32px,1180px); }
@@ -359,7 +362,19 @@ export default function DevbhoomiAINomination() {
                 {registrationId && (
                   <p className="nomination-reference">
                     Nomination reference<strong>{registrationId}</strong>
-                    Keep this handy for any follow-up or refund request.
+                    {checkout.receipt?.razorpayPaymentId ? (
+                      <>
+                        <span className="nomination-reference-row">
+                          Payment ID<strong>{checkout.receipt.razorpayPaymentId}</strong>
+                        </span>
+                        <span className="nomination-reference-row">
+                          Order ID<strong>{checkout.receipt.razorpayOrderId}</strong>
+                        </span>
+                        Keep these for any follow-up or refund request.
+                      </>
+                    ) : (
+                      "Keep this handy for any follow-up or refund request."
+                    )}
                   </p>
                 )}
                 {checkout.stage !== "paid" && registrationId && (
@@ -442,6 +457,14 @@ export default function DevbhoomiAINomination() {
       <footer className="nomination-footer">
         <div className="nomination-shell nomination-footer-inner">
           <span>© 2026 Devbhoomi AI Summit. All rights reserved.</span>
+          <nav className="nomination-footer-links" aria-label="Policies and support">
+            <a href="/refund-request">Request a refund</a>
+            <a href="/refund-status">Track a refund</a>
+            <a href="/refund-policy">Refund policy</a>
+            <a href="/terms-and-conditions">Terms</a>
+            <a href="/privacy-policy">Privacy</a>
+            <a href="/support">Support</a>
+          </nav>
           <span>Questions? sponsorship@axocom.in</span>
         </div>
       </footer>

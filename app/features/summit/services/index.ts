@@ -2,6 +2,7 @@ import { gql, type TypedDocumentNode } from "@apollo/client";
 import type {
   CreateRefundRequestInput,
   PaymentOrder,
+  PaymentReconciliation,
   PaymentRegistrationType,
   PaymentVerificationResult,
   VerifyPaymentInput,
@@ -355,6 +356,51 @@ export const VERIFY_PAYMENT_MUTATION: TypedDocumentNode<
       verified
       registrationId
       paymentStatus
+      razorpayPaymentId
+      razorpayOrderId
     }
+  }
+`;
+
+const RECONCILIATION_FIELDS = `
+  registrationId
+  ourPaymentStatus
+  ourAmount
+  orderId
+  orderStatus
+  orderAmount
+  amountPaid
+  settleable
+  payments { paymentId status amount method email contact }
+  capturedPayment { paymentId status amount method email contact }
+`;
+
+export const RECONCILE_PAYMENT_MUTATION: TypedDocumentNode<
+  { reconcilePayment: PaymentReconciliation },
+  { registrationType: PaymentRegistrationType; registrationId: string }
+> = gql`
+  mutation ReconcilePayment(
+    $registrationType: PaymentRegistrationType!
+    $registrationId: ID!
+  ) {
+    reconcilePayment(
+      registrationType: $registrationType
+      registrationId: $registrationId
+    ) { ${RECONCILIATION_FIELDS} }
+  }
+`;
+
+export const SETTLE_PAYMENT_FROM_GATEWAY_MUTATION: TypedDocumentNode<
+  { settlePaymentFromGateway: PaymentReconciliation },
+  { registrationType: PaymentRegistrationType; registrationId: string }
+> = gql`
+  mutation SettlePaymentFromGateway(
+    $registrationType: PaymentRegistrationType!
+    $registrationId: ID!
+  ) {
+    settlePaymentFromGateway(
+      registrationType: $registrationType
+      registrationId: $registrationId
+    ) { ${RECONCILIATION_FIELDS} }
   }
 `;

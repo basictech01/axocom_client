@@ -11,7 +11,7 @@ import {
   type RazorpayFailure,
   type RazorpayHandlerResponse,
 } from "~/features/summit/lib/razorpay";
-import type { PaymentRegistrationType } from "~/features/summit/types";
+import type { PaymentReceipt, PaymentRegistrationType } from "~/features/summit/types";
 
 export type CheckoutStage = "idle" | "starting" | "open" | "verifying" | "paid";
 
@@ -32,10 +32,14 @@ type StartOptions = {
 export function useRazorpayCheckout() {
   const [stage, setStage] = useState<CheckoutStage>("idle");
   const [error, setError] = useState<string | null>(null);
+  // Kept so the payer can be shown their gateway references, which is what
+  // makes a later support query answerable.
+  const [receipt, setReceipt] = useState<PaymentReceipt | null>(null);
 
   const reset = useCallback(() => {
     setStage("idle");
     setError(null);
+    setReceipt(null);
   }, []);
 
   const start = useCallback(async (options: StartOptions) => {
@@ -95,9 +99,15 @@ export function useRazorpayCheckout() {
                 },
               })
               .then((verifyResponse) => {
-                if (!verifyResponse.data?.verifyPayment.verified) {
+                const verified = verifyResponse.data?.verifyPayment;
+                if (!verified?.verified) {
                   throw new Error("We could not verify this payment.");
                 }
+                setReceipt({
+                  registrationId,
+                  razorpayPaymentId: verified.razorpayPaymentId,
+                  razorpayOrderId: verified.razorpayOrderId,
+                });
                 setStage("paid");
                 onPaid?.(registrationId);
               })
@@ -109,8 +119,11 @@ export function useRazorpayCheckout() {
                 // The money may well have left the account, so never tell the
                 // visitor it simply failed - point them at support with a
                 // reference instead.
+                // Give them the gateway reference even on failure - it is
+                // exactly what support needs to find the money.
                 setError(
-                  `${message} If your account was debited, email info@axocom.in quoting ${registrationId}.`
+                  `${message} If your account was debited, email info@axocom.in quoting `
+                  + `${registrationId} and payment ${response.razorpay_payment_id}.`
                 );
                 setStage("idle");
               })
@@ -144,5 +157,5 @@ export function useRazorpayCheckout() {
     }
   }, []);
 
-  return { start, reset, stage, error, isBusy: stage !== "idle" && stage !== "paid" };
+  return { start, reset, stage, error, receipt, isBusy: stage !== "idle" && stage !== "paid" };
 }
