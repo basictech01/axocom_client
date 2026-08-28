@@ -16,6 +16,8 @@ import { toast } from "sonner";
 import {
   ADMIN_DELEGATE_PASS_REGISTRATIONS_QUERY,
   ADMIN_NOMINATION_REGISTRATIONS_QUERY,
+  RECONCILE_PAYMENT_MUTATION,
+  SETTLE_PAYMENT_FROM_GATEWAY_MUTATION,
   UPDATE_DELEGATE_PASS_PAYMENT_STATUS_MUTATION,
   UPDATE_NOMINATION_PAYMENT_STATUS_MUTATION,
 } from "~/features/summit/services";
@@ -24,6 +26,7 @@ import type {
   DelegatePassRegistration,
   NominationRegistration,
   Pagination,
+  PaymentReconciliation,
   PaymentStatus,
 } from "~/features/summit/types";
 
@@ -79,6 +82,8 @@ export function SummitRegistrationsPanel({
   const [selectedItem, setSelectedItem] = useState<Registration | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [adminNote, setAdminNote] = useState("");
+  const [reconciliation, setReconciliation] = useState<PaymentReconciliation | null>(null);
+  const [isReconciling, setIsReconciling] = useState(false);
   const [page, setPage] = useState(1);
   const [statusFilter, setStatusFilter] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState("");
@@ -146,6 +151,48 @@ export function SummitRegistrationsPanel({
     event.preventDefault();
     if (page !== 1) setPage(1);
     else void fetchData(1);
+  };
+
+  /**
+   * Asks Razorpay what actually happened. Read-only, so it is safe to run on
+   * any claim - a payment that was never made simply is not there.
+   */
+  const handleReconcile = async () => {
+    if (!selectedItem) return;
+    setIsReconciling(true);
+    try {
+      const response = await client.mutate({
+        mutation: RECONCILE_PAYMENT_MUTATION,
+        variables: { registrationType: kind === "delegate" ? "delegate_pass" : "nomination", registrationId: selectedItem.id },
+      });
+      setReconciliation(response.data?.reconcilePayment ?? null);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Could not reach the gateway";
+      toast.error(message);
+      setReconciliation(null);
+    } finally {
+      setIsReconciling(false);
+    }
+  };
+
+  const handleSettleFromGateway = async () => {
+    if (!selectedItem) return;
+    if (!confirm("Mark this registration paid using the payment Razorpay has captured?")) return;
+    setIsReconciling(true);
+    try {
+      const response = await client.mutate({
+        mutation: SETTLE_PAYMENT_FROM_GATEWAY_MUTATION,
+        variables: { registrationType: kind === "delegate" ? "delegate_pass" : "nomination", registrationId: selectedItem.id },
+      });
+      setReconciliation(response.data?.settlePaymentFromGateway ?? null);
+      toast.success("Settled from the gateway record");
+      void fetchData();
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Could not settle this payment";
+      toast.error(message);
+    } finally {
+      setIsReconciling(false);
+    }
   };
 
   const handleUpdatePaymentStatus = async (paymentStatus: PaymentStatus) => {
@@ -231,6 +278,7 @@ export function SummitRegistrationsPanel({
                   onClick={() => {
                     setSelectedItem(item);
                     setAdminNote(item.adminNote || "");
+                    setReconciliation(null);
                   }}
                   className={`p-5 rounded-2xl border transition-all cursor-pointer hover:shadow-lg ${
                     selectedItem?.id === item.id
@@ -475,6 +523,74 @@ export function SummitRegistrationsPanel({
                   )}
 
                   <div className="pt-8 border-t border-border">
+                    <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-3">
+                      Gateway Record
+                    </h4>
+                    <p className="text-xs text-muted-foreground mb-3">
+                      Our record only reflects what the payer's browser reported back. If someone
+                      says they paid, this is what Razorpay actually holds.
+                    </p>
+                    <button
+                      onClick={() => void handleReconcile()}
+                      disabled={isReconciling}
+                      className="w-full py-2.5 mb-4 border border-border text-foreground font-bold rounded-xl flex items-center justify-center gap-2 hover:bg-secondary transition-all disabled:opacity-50 text-sm"
+                    >
+                      {isReconciling ? <Loader2 className="w-4 h-4 animate-spin" /> : <Search className="w-4 h-4" />}
+                      Verify with Razorpay
+                    </button>
+
+                    {reconciliation && (
+                      <div className="mb-6 p-4 rounded-xl border border-border bg-surface-subtle space-y-2 text-xs">
+                        <div className="flex justify-between gap-3">
+                          <span className="text-muted-foreground">Order</span>
+                          <span className="font-mono text-foreground break-all">{reconciliation.orderId}</span>
+                        </div>
+                        <div className="flex justify-between gap-3">
+                          <span className="text-muted-foreground">Gateway order status</span>
+                          <span className="font-medium text-foreground">{reconciliation.orderStatus}</span>
+                        </div>
+                        <div className="flex justify-between gap-3">
+                          <span className="text-muted-foreground">Amount paid at gateway</span>
+                          <span className="font-medium text-foreground">{formatPaise(reconciliation.amountPaid)}</span>
+                        </div>
+                        <div className="flex justify-between gap-3">
+                          <span className="text-muted-foreground">Our record</span>
+                          <span className="font-medium text-foreground">{reconciliation.ourPaymentStatus}</span>
+                        </div>
+
+                        {reconciliation.payments.length === 0 ? (
+                          <p className="pt-2 border-t border-border text-error font-medium">
+                            Razorpay holds no payment for this order. Nothing was paid.
+                          </p>
+                        ) : (
+                          <div className="pt-2 border-t border-border space-y-1.5">
+                            {reconciliation.payments.map((payment) => (
+                              <div key={payment.paymentId} className="flex justify-between gap-3">
+                                <span className="font-mono text-muted-foreground break-all">{payment.paymentId}</span>
+                                <span className={payment.status === "captured" ? "text-success font-medium" : "text-warning font-medium"}>
+                                  {payment.status} · {formatPaise(payment.amount)}
+                                </span>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+
+                        {reconciliation.settleable && (
+                          <button
+                            onClick={() => void handleSettleFromGateway()}
+                            disabled={isReconciling}
+                            className="w-full mt-2 py-2.5 bg-primary text-primary-foreground font-bold rounded-xl flex items-center justify-center gap-2 hover:opacity-90 disabled:opacity-50"
+                          >
+                            <CheckCircle2 className="w-4 h-4" />
+                            Settle as paid from gateway
+                          </button>
+                        )}
+                        {!reconciliation.settleable && reconciliation.capturedPayment && (
+                          <p className="pt-1 text-success">Gateway and our record agree.</p>
+                        )}
+                      </div>
+                    )}
+
                     <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-4">
                       Payment Review
                     </h4>

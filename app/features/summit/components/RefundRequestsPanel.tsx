@@ -3,6 +3,7 @@ import type { FormEvent } from "react";
 import { useApolloClient } from "@apollo/client/react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
+  AlertTriangle,
   CheckCircle2,
   ChevronRight,
   Clock,
@@ -14,10 +15,17 @@ import {
 import { toast } from "sonner";
 import {
   ADMIN_REFUND_REQUESTS_QUERY,
+  RECONCILE_PAYMENT_MUTATION,
   REPLY_TO_REFUND_REQUEST_MUTATION,
   UPDATE_REFUND_REQUEST_STATUS_MUTATION,
 } from "~/features/summit/services";
-import type { Pagination, RefundRequest, RefundStatus } from "~/features/summit/types";
+import { formatPaise } from "~/features/summit/lib/money";
+import type {
+  Pagination,
+  PaymentReconciliation,
+  RefundRequest,
+  RefundStatus,
+} from "~/features/summit/types";
 
 const STATUS_LABELS: Record<RefundStatus, string> = {
   open: "Open",
@@ -62,6 +70,9 @@ export function RefundRequestsPanel({
   const [selectedItem, setSelectedItem] = useState<RefundRequest | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [reply, setReply] = useState("");
+  const [reconciliation, setReconciliation] = useState<PaymentReconciliation | null>(null);
+  const [reconcileError, setReconcileError] = useState<string | null>(null);
+  const [isReconciling, setIsReconciling] = useState(false);
   const [page, setPage] = useState(1);
   const [statusFilter, setStatusFilter] = useState<string>("");
   const [typeFilter, setTypeFilter] = useState<string>("");
@@ -125,6 +136,37 @@ export function RefundRequestsPanel({
     event.preventDefault();
     if (page !== 1) setPage(1);
     else void fetchData(1);
+  };
+
+  /**
+   * Checks what Razorpay actually holds for the registration this ticket names.
+   *
+   * This matters more here than anywhere else: approving a refund moves real
+   * money out, and a payment that failed at the gateway is auto-reversed by the
+   * customer's bank - refunding it as well would pay them twice.
+   */
+  const handleReconcile = async () => {
+    if (!selectedItem) return;
+    setIsReconciling(true);
+    setReconcileError(null);
+    try {
+      const response = await client.mutate({
+        mutation: RECONCILE_PAYMENT_MUTATION,
+        variables: {
+          registrationType: selectedItem.registrationType === "delegate_pass" ? "delegate_pass" : "nomination",
+          registrationId: selectedItem.registrationId ?? "",
+        },
+      });
+      setReconciliation(response.data?.reconcilePayment ?? null);
+    } catch (error) {
+      // "No payment was ever started" is an answer, not a failure - it is
+      // exactly what an unpaid or fabricated claim looks like.
+      const message = error instanceof Error ? error.message : "Could not reach the gateway";
+      setReconcileError(message);
+      setReconciliation(null);
+    } finally {
+      setIsReconciling(false);
+    }
   };
 
   const handleReply = async (event: FormEvent) => {
@@ -234,6 +276,8 @@ export function RefundRequestsPanel({
                     onClick={() => {
                       setSelectedItem(item);
                       setReply("");
+                      setReconciliation(null);
+                      setReconcileError(null);
                     }}
                     className={`p-5 rounded-2xl border transition-all cursor-pointer hover:shadow-lg ${
                       selectedItem?.id === item.id
@@ -391,6 +435,90 @@ export function RefundRequestsPanel({
                         <p className="text-foreground font-mono text-xs break-all">
                           {selectedItem.paymentReference}
                         </p>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="pt-6 border-t border-border">
+                    <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">
+                      Gateway Record
+                    </h4>
+                    <p className="text-xs text-muted-foreground mb-3">
+                      Check what Razorpay actually holds before approving. A payment that failed at
+                      the gateway is auto-reversed by the customer's bank &mdash; refunding it here
+                      as well would pay them twice.
+                    </p>
+                    <button
+                      onClick={() => void handleReconcile()}
+                      disabled={isReconciling || !selectedItem.registrationId}
+                      className="w-full py-2.5 border border-border text-foreground font-bold rounded-xl flex items-center justify-center gap-2 hover:bg-secondary transition-all disabled:opacity-50 text-sm"
+                    >
+                      {isReconciling ? <Loader2 className="w-4 h-4 animate-spin" /> : <Search className="w-4 h-4" />}
+                      Verify with Razorpay
+                    </button>
+
+                    {reconcileError && (
+                      <div className="mt-3 p-3 rounded-xl border border-warning/40 bg-surface-subtle text-xs flex gap-2">
+                        <AlertTriangle className="w-4 h-4 text-warning shrink-0 mt-0.5" />
+                        <span className="text-foreground">
+                          {reconcileError} &mdash; there is nothing for us to refund.
+                        </span>
+                      </div>
+                    )}
+
+                    {reconciliation && (
+                      <div className="mt-3 p-4 rounded-xl border border-border bg-surface-subtle space-y-2 text-xs">
+                        <div className="flex justify-between gap-3">
+                          <span className="text-muted-foreground">Our record</span>
+                          <span className="font-medium text-foreground">{reconciliation.ourPaymentStatus}</span>
+                        </div>
+                        <div className="flex justify-between gap-3">
+                          <span className="text-muted-foreground">Charged</span>
+                          <span className="font-medium text-foreground">{formatPaise(reconciliation.ourAmount)}</span>
+                        </div>
+                        <div className="flex justify-between gap-3">
+                          <span className="text-muted-foreground">Received at gateway</span>
+                          <span className="font-medium text-foreground">{formatPaise(reconciliation.amountPaid)}</span>
+                        </div>
+
+                        {reconciliation.capturedPayment ? (
+                          <div className="pt-2 border-t border-border flex items-start gap-2">
+                            <CheckCircle2 className="w-4 h-4 text-success shrink-0 mt-0.5" />
+                            <div>
+                              <p className="text-success font-medium">
+                                Money received &mdash; safe to refund {formatPaise(reconciliation.capturedPayment.amount)}
+                              </p>
+                              <p className="font-mono text-muted-foreground break-all mt-0.5">
+                                {reconciliation.capturedPayment.paymentId}
+                              </p>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="pt-2 border-t border-border flex items-start gap-2">
+                            <AlertTriangle className="w-4 h-4 text-error shrink-0 mt-0.5" />
+                            <div>
+                              <p className="text-error font-medium">Do not refund.</p>
+                              <p className="text-muted-foreground mt-0.5">
+                                {reconciliation.payments.length === 0
+                                  ? "Razorpay holds no payment for this order, so no money reached us."
+                                  : "No payment was captured. Any debit the customer saw is auto-reversed by their bank."}
+                              </p>
+                            </div>
+                          </div>
+                        )}
+
+                        {reconciliation.payments.length > 0 && (
+                          <div className="pt-2 border-t border-border space-y-1">
+                            {reconciliation.payments.map((payment) => (
+                              <div key={payment.paymentId} className="flex justify-between gap-3">
+                                <span className="font-mono text-muted-foreground break-all">{payment.paymentId}</span>
+                                <span className={payment.status === "captured" ? "text-success font-medium" : "text-warning font-medium"}>
+                                  {payment.status} · {formatPaise(payment.amount)}
+                                </span>
+                              </div>
+                            ))}
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>
