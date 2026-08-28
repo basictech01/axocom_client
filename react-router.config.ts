@@ -21,6 +21,8 @@ const OTHER_PRERENDER_PATHS = [
   "/privacy-policy",
   "/terms-and-conditions",
   "/refund-policy",
+  "/refund-request",
+  "/refund-status",
 ] as const;
 
 const OTHER_SITEMAP_PATHS = [

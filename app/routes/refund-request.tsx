@@ -62,7 +62,7 @@ export default function RefundRequest() {
             email: form.email,
             phone: form.phone,
             registrationType: form.registrationType,
-            registrationId: form.registrationId || null,
+            registrationId: form.registrationId.trim(),
             paymentReference: form.paymentReference || null,
             reason: form.reason,
           },
@@ -129,13 +129,19 @@ export default function RefundRequest() {
               </select>
             </div>
             <div className="refund-field">
-              <label htmlFor="refund-registration">Registration reference (optional)</label>
-              <input id="refund-registration" value={form.registrationId} onChange={(event) => updateField("registrationId", event.target.value)} placeholder="e.g. dlg_XXXXXXXX" />
+              <label htmlFor="refund-registration">Registration reference</label>
+              <input id="refund-registration" required value={form.registrationId} onChange={(event) => updateField("registrationId", event.target.value)} placeholder="e.g. dlg_XXXXXXXX" />
             </div>
             <div className="refund-field">
-              <label htmlFor="refund-payment">Payment reference (optional)</label>
-              <input id="refund-payment" value={form.paymentReference} onChange={(event) => updateField("paymentReference", event.target.value)} placeholder="Transaction or order id" />
+              <label htmlFor="refund-payment">Payment ID (optional)</label>
+              <input id="refund-payment" value={form.paymentReference} onChange={(event) => updateField("paymentReference", event.target.value)} placeholder="e.g. pay_XXXXXXXX" />
             </div>
+            <p className="refund-hint" style={{ gridColumn: "1/-1" }}>
+              Your registration reference was shown when you registered and is in your
+              confirmation email &mdash; it starts with <code>dlg_</code> for a delegate pass or{" "}
+              <code>nom_</code> for a nomination. It must match the email address above. If you
+              cannot find it, email <a href="mailto:info@axocom.in" style={{ color: "#128F9D", fontWeight: 700, textDecoration: "underline" }}>info@axocom.in</a> and we will look it up for you.
+            </p>
             <div className="refund-field full">
               <label htmlFor="refund-reason">Reason for the refund</label>
               <textarea id="refund-reason" required value={form.reason} onChange={(event) => updateField("reason", event.target.value)} placeholder="Tell us why you are requesting a refund, and anything that helps us process it faster." />

@@ -81,7 +81,10 @@ export function RefundShell({
         .refund-alt { margin:22px 0 0; color:var(--muted); font-size:12px; text-align:center; }
         .refund-alt a { color:#128F9D; font-weight:700; text-decoration:underline; }
         .refund-footer { padding:26px 0; border-top:1px solid var(--line); color:var(--muted); background:#fff; font-size:11px; }
-        .refund-footer-inner { display:flex; justify-content:space-between; gap:20px; }
+        .refund-footer-inner { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px 20px; }
+        .refund-footer-links { display:flex; flex-wrap:wrap; gap:6px 18px; }
+        .refund-footer-links a { color:#227684; font-weight:600; }
+        .refund-footer-links a:hover { text-decoration:underline; }
         @media (max-width:640px) {
           .refund-shell { width:min(100% - 32px,1180px); }
           .refund-nav-inner { min-height:72px; gap:12px; }
@@ -119,6 +122,14 @@ export function RefundShell({
       <footer className="refund-footer">
         <div className="refund-shell refund-footer-inner">
           <span>© 2026 Devbhoomi AI Summit. All rights reserved.</span>
+          <nav className="refund-footer-links" aria-label="Policies and support">
+            <a href="/refund-request">Request a refund</a>
+            <a href="/refund-status">Track a refund</a>
+            <a href="/refund-policy">Refund policy</a>
+            <a href="/terms-and-conditions">Terms</a>
+            <a href="/privacy-policy">Privacy</a>
+            <a href="/support">Support</a>
+          </nav>
           <span>Questions? info@axocom.in</span>
         </div>
       </footer>
