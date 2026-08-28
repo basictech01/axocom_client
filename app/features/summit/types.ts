@@ -143,3 +143,31 @@ export interface RegistrationResult {
   totalAmount: number;
   paymentStatus: PaymentStatus;
 }
+
+export type PaymentRegistrationType = "delegate_pass" | "nomination";
+
+export interface PaymentOrder {
+  orderId: string;
+  amount: number;
+  currency: string;
+  keyId: string;
+  registrationId: string;
+  registrationType: PaymentRegistrationType;
+  prefillName: string;
+  prefillEmail: string;
+  prefillContact: string;
+}
+
+export interface PaymentVerificationResult {
+  verified: boolean;
+  registrationId: string;
+  paymentStatus: PaymentStatus;
+}
+
+export interface VerifyPaymentInput {
+  registrationType: PaymentRegistrationType;
+  registrationId: string;
+  razorpayOrderId: string;
+  razorpayPaymentId: string;
+  razorpaySignature: string;
+}

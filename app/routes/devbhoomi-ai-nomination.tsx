@@ -4,6 +4,7 @@ import { buildSeoLinks, buildSeoMeta } from "~/lib/seo";
 import { apolloClient } from "~/lib/api";
 import { REGISTER_NOMINATION_MUTATION } from "~/features/summit/services";
 import { toPaise } from "~/features/summit/lib/money";
+import { useRazorpayCheckout } from "~/features/summit/hooks/useRazorpayCheckout";
 
 const seo = {
   title: "Awards Nomination | Devbhoomi AI Summit 2026",
@@ -96,6 +97,7 @@ export default function DevbhoomiAINomination() {
   const [submitted, setSubmitted] = useState(false);
   const [registrationId, setRegistrationId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const checkout = useRazorpayCheckout();
 
   const updateField = (field: keyof typeof initialForm, value: string) => {
     setForm((current) => ({ ...current, [field]: value }));
@@ -240,6 +242,8 @@ export default function DevbhoomiAINomination() {
         .nomination-success h2 { margin:22px 0 0; font-size:32px; }
         .nomination-success p { max-width:480px; margin:12px auto 24px; color:var(--muted); line-height:1.7; }
         .nomination-reference { display:grid; gap:4px; max-width:420px; margin:0 auto 24px!important; padding:14px 16px; border:1px dashed #C9D6D8; border-radius:8px; background:#F7FAFA; font-size:11px; }
+        .nomination-secondary { width:100%; min-height:46px; margin-top:12px; border:1px solid #D6DCDD; border-radius:8px; color:var(--muted); background:#fff; font:inherit; font-size:13px; font-weight:700; cursor:pointer; }
+        .nomination-success .nomination-error { margin:14px auto 0; }
         .nomination-reference strong { color:var(--ink); font-size:15px; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing:.02em; }
         .nomination-footer { padding:26px 0; border-top:1px solid var(--line); color:var(--muted); background:#fff; font-size:11px; }
         .nomination-footer-inner { display:flex; justify-content:space-between; gap:20px; }
@@ -312,15 +316,49 @@ export default function DevbhoomiAINomination() {
             {submitted ? (
               <div className="nomination-success">
                 <span className="nomination-success-icon"><Sparkles /></span>
-                <h2>Nomination received</h2>
-                <p>Thank you. We will confirm your nomination on your registered email address.</p>
+                {checkout.stage === "paid" ? (
+                  <>
+                    <h2>Payment received</h2>
+                    <p>Thank you. We will confirm your nomination on your registered email address.</p>
+                  </>
+                ) : (
+                  <>
+                    <h2>Nomination saved</h2>
+                    <p>Your nomination is saved. Complete the payment below to submit it for evaluation.</p>
+                  </>
+                )}
                 {registrationId && (
                   <p className="nomination-reference">
                     Nomination reference<strong>{registrationId}</strong>
                     Keep this handy for any follow-up or refund request.
                   </p>
                 )}
-                <button className="nomination-submit" type="button" onClick={() => { setSubmitted(false); setRegistrationId(null); setForm(initialForm); }}>Submit another nomination</button>
+                {checkout.stage !== "paid" && registrationId && (
+                  <button
+                    className="nomination-submit"
+                    type="button"
+                    disabled={checkout.isBusy}
+                    onClick={() => void checkout.start({
+                      registrationType: "nomination",
+                      registrationId,
+                      description: selectedPlanDetails.name,
+                    })}
+                  >
+                    {checkout.stage === "verifying"
+                      ? "Verifying payment..."
+                      : checkout.isBusy
+                        ? "Opening payment..."
+                        : `Pay ${selectedPlanDetails.price}`}
+                  </button>
+                )}
+                {checkout.error && <p className="nomination-error">{checkout.error}</p>}
+                <button
+                  className="nomination-secondary"
+                  type="button"
+                  onClick={() => { setSubmitted(false); setRegistrationId(null); setForm(initialForm); checkout.reset(); }}
+                >
+                  Submit another nomination
+                </button>
               </div>
             ) : (
               <form className="nomination-form-grid" onSubmit={handleSubmit}>

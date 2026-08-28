@@ -12,6 +12,7 @@ import { buildSeoLinks, buildSeoMeta } from "~/lib/seo";
 import { apolloClient } from "~/lib/api";
 import { REGISTER_DELEGATE_PASS_MUTATION } from "~/features/summit/services";
 import { toPaise } from "~/features/summit/lib/money";
+import { useRazorpayCheckout } from "~/features/summit/hooks/useRazorpayCheckout";
 
 const seo = {
   title: "Delegate Passes | Devbhoomi AI Summit 2026",
@@ -64,6 +65,7 @@ export default function DevbhoomiAIDelegatePass() {
   const [submitted, setSubmitted] = useState(false);
   const [registrationId, setRegistrationId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const checkout = useRazorpayCheckout();
 
   const selected = delegatePasses.find((pass) => pass.name === selectedPass) ?? delegatePasses[1];
   const totalPrice = selected.price * Number(form.quantity);
@@ -211,6 +213,8 @@ export default function DevbhoomiAIDelegatePass() {
         .delegate-success h2 { margin:22px 0 0; font-size:32px; }
         .delegate-success p { max-width:480px; margin:12px auto 24px; color:var(--muted); line-height:1.7; }
         .delegate-reference { display:grid; gap:4px; max-width:420px; margin:0 auto 24px!important; padding:14px 16px; border:1px dashed #C9D6D8; border-radius:8px; background:#F7FAFA; font-size:11px; }
+        .delegate-secondary { width:100%; min-height:46px; margin-top:12px; border:1px solid #D6DCDD; border-radius:8px; color:var(--muted); background:#fff; font:inherit; font-size:13px; font-weight:700; cursor:pointer; }
+        .delegate-success .delegate-error { margin:14px auto 0; }
         .delegate-reference strong { color:var(--ink); font-size:15px; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing:.02em; }
         .delegate-footer { padding:26px 0; border-top:1px solid var(--line); color:var(--muted); background:#fff; font-size:11px; }
         .delegate-footer-inner { display:flex; justify-content:space-between; gap:20px; }
@@ -285,15 +289,49 @@ export default function DevbhoomiAIDelegatePass() {
             {submitted ? (
               <div className="delegate-success">
                 <span className="delegate-success-icon"><Sparkles /></span>
-                <h2>Registration received</h2>
-                <p>Thank you. We will confirm your registration seat on your registered email address.</p>
+                {checkout.stage === "paid" ? (
+                  <>
+                    <h2>Payment received</h2>
+                    <p>Thank you. We will confirm your registration seat on your registered email address.</p>
+                  </>
+                ) : (
+                  <>
+                    <h2>Registration saved</h2>
+                    <p>Your details are saved. Complete the payment below to confirm your seat.</p>
+                  </>
+                )}
                 {registrationId && (
                   <p className="delegate-reference">
                     Registration reference<strong>{registrationId}</strong>
                     Keep this handy for any follow-up or refund request.
                   </p>
                 )}
-                <button className="delegate-submit" type="button" onClick={() => { setSubmitted(false); setRegistrationId(null); setForm(initialForm); }}>Register another delegate</button>
+                {checkout.stage !== "paid" && registrationId && (
+                  <button
+                    className="delegate-submit"
+                    type="button"
+                    disabled={checkout.isBusy}
+                    onClick={() => void checkout.start({
+                      registrationType: "delegate_pass",
+                      registrationId,
+                      description: `${selected.name} × ${form.quantity}`,
+                    })}
+                  >
+                    {checkout.stage === "verifying"
+                      ? "Verifying payment..."
+                      : checkout.isBusy
+                        ? "Opening payment..."
+                        : `Pay ${formatPrice(totalPrice)}`}
+                  </button>
+                )}
+                {checkout.error && <p className="delegate-error">{checkout.error}</p>}
+                <button
+                  className="delegate-secondary"
+                  type="button"
+                  onClick={() => { setSubmitted(false); setRegistrationId(null); setForm(initialForm); checkout.reset(); }}
+                >
+                  Register another delegate
+                </button>
               </div>
             ) : (
               <form className="delegate-form-grid" onSubmit={handleSubmit}>

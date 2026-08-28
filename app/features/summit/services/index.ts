@@ -1,6 +1,10 @@
 import { gql, type TypedDocumentNode } from "@apollo/client";
 import type {
   CreateRefundRequestInput,
+  PaymentOrder,
+  PaymentRegistrationType,
+  PaymentVerificationResult,
+  VerifyPaymentInput,
   DelegatePassRegistration,
   NominationRegistration,
   Pagination,
@@ -297,5 +301,47 @@ export const UPDATE_REFUND_REQUEST_STATUS_MUTATION: TypedDocumentNode<
 > = gql`
   mutation UpdateRefundRequestStatus($id: ID!, $status: RefundStatus!) {
     updateRefundRequestStatus(id: $id, status: $status)
+  }
+`;
+
+/* -------------------------------------------------------------------------- */
+/* Payments                                                                    */
+/* -------------------------------------------------------------------------- */
+
+export const CREATE_PAYMENT_ORDER_MUTATION: TypedDocumentNode<
+  { createPaymentOrder: PaymentOrder },
+  { registrationType: PaymentRegistrationType; registrationId: string }
+> = gql`
+  mutation CreatePaymentOrder(
+    $registrationType: PaymentRegistrationType!
+    $registrationId: ID!
+  ) {
+    createPaymentOrder(
+      registrationType: $registrationType
+      registrationId: $registrationId
+    ) {
+      orderId
+      amount
+      currency
+      keyId
+      registrationId
+      registrationType
+      prefillName
+      prefillEmail
+      prefillContact
+    }
+  }
+`;
+
+export const VERIFY_PAYMENT_MUTATION: TypedDocumentNode<
+  { verifyPayment: PaymentVerificationResult },
+  { input: VerifyPaymentInput }
+> = gql`
+  mutation VerifyPayment($input: VerifyPaymentInput!) {
+    verifyPayment(input: $input) {
+      verified
+      registrationId
+      paymentStatus
+    }
   }
 `;
