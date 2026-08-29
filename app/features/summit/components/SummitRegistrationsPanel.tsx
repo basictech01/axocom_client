@@ -83,6 +83,7 @@ export function SummitRegistrationsPanel({
   const [isSaving, setIsSaving] = useState(false);
   const [adminNote, setAdminNote] = useState("");
   const [reconciliation, setReconciliation] = useState<PaymentReconciliation | null>(null);
+  const [reconcileError, setReconcileError] = useState<string | null>(null);
   const [isReconciling, setIsReconciling] = useState(false);
   const [page, setPage] = useState(1);
   const [statusFilter, setStatusFilter] = useState<string>("");
@@ -175,6 +176,7 @@ export function SummitRegistrationsPanel({
   const handleReconcile = async () => {
     if (!selectedItem) return;
     setIsReconciling(true);
+    setReconcileError(null);
     try {
       const response = await client.mutate({
         mutation: RECONCILE_PAYMENT_MUTATION,
@@ -182,8 +184,11 @@ export function SummitRegistrationsPanel({
       });
       setReconciliation(response.data?.reconcilePayment ?? null);
     } catch (error) {
+      // "No payment was ever started" is the answer to the question the admin
+      // asked, not a failure, so it belongs inline rather than in a toast that
+      // disappears and reads like something broke.
       const message = error instanceof Error ? error.message : "Could not reach the gateway";
-      toast.error(message);
+      setReconcileError(message);
       setReconciliation(null);
     } finally {
       setIsReconciling(false);
@@ -294,6 +299,7 @@ export function SummitRegistrationsPanel({
                     setSelectedItem(item);
                     setAdminNote(item.adminNote || "");
                     setReconciliation(null);
+                    setReconcileError(null);
                   }}
                   className={`p-5 rounded-2xl border transition-all cursor-pointer hover:shadow-lg ${
                     selectedItem?.id === item.id
@@ -553,6 +559,13 @@ export function SummitRegistrationsPanel({
                       {isReconciling ? <Loader2 className="w-4 h-4 animate-spin" /> : <Search className="w-4 h-4" />}
                       Verify with Razorpay
                     </button>
+
+                    {reconcileError && (
+                      <div className="mb-6 p-3 rounded-xl border border-warning/40 bg-surface-subtle text-xs flex gap-2">
+                        <Clock className="w-4 h-4 text-warning shrink-0 mt-0.5" />
+                        <span className="text-foreground">{reconcileError}</span>
+                      </div>
+                    )}
 
                     {reconciliation && (
                       <div className="mb-6 p-4 rounded-xl border border-border bg-surface-subtle space-y-2 text-xs">
