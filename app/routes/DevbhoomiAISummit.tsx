@@ -190,6 +190,12 @@ const speakers: SummitSpeaker[] = [
     image: "/images/umesh_joshi.jpeg",
     linkedin: "https://www.linkedin.com/in/umeshjoshi/",
   },
+  {
+    name: "Vinay Garg",
+    role: "Public Policy & AI Transformation Consultant",
+    image: "/images/vinay_garg.jpeg",
+    linkedin: "https://www.linkedin.com/in/vinaygarg653/",
+  },
 ];
 
 const roleChips = [
