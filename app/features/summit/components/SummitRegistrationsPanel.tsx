@@ -64,11 +64,8 @@ const statusTextClass = (status: PaymentStatus) =>
         ? "text-muted-foreground"
         : "text-warning";
 
-/**
- * Delegate pass and nomination registrations share every interaction (list,
- * search, payment status filter, detail drawer, mark paid/failed/refunded), so
- * one panel drives both and only the query and detail fields differ.
- */
+/** Drives both delegate pass and nomination registrations; only the query and
+ *  detail fields differ. */
 export function SummitRegistrationsPanel({
   kind,
   onUnauthorized,
@@ -133,11 +130,8 @@ export function SummitRegistrationsPanel({
       setData(rows);
       setPagination(nextPagination);
 
-      // Keep an open drawer in sync. Settling from the gateway leaves it open,
-      // so without this the header would still read "pending" next to a gateway
-      // box saying the payment was settled. If the row has dropped out of the
-      // active filter the drawer closes rather than showing a stale amount -
-      // on a payments screen, stale is worse than gone.
+      // Keep an open drawer in sync; settling leaves it open. Closes rather
+      // than showing a stale amount if the row left the active filter.
       setSelectedItem((current) =>
         current ? rows.find((row) => row.id === current.id) ?? null : null
       );
@@ -169,10 +163,7 @@ export function SummitRegistrationsPanel({
     else void fetchData(1);
   };
 
-  /**
-   * Asks Razorpay what actually happened. Read-only, so it is safe to run on
-   * any claim - a payment that was never made simply is not there.
-   */
+  /** Read-only check of what Razorpay holds for this registration. */
   const handleReconcile = async () => {
     if (!selectedItem) return;
     setIsReconciling(true);
@@ -184,9 +175,8 @@ export function SummitRegistrationsPanel({
       });
       setReconciliation(response.data?.reconcilePayment ?? null);
     } catch (error) {
-      // "No payment was ever started" is the answer to the question the admin
-      // asked, not a failure, so it belongs inline rather than in a toast that
-      // disappears and reads like something broke.
+      // "No payment was ever started" is an answer, not a failure, so it is
+      // shown inline rather than in a toast.
       const message = error instanceof Error ? error.message : "Could not reach the gateway";
       setReconcileError(message);
       setReconciliation(null);

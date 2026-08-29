@@ -23,17 +23,13 @@ type StartOptions = {
 };
 
 /**
- * Drives one payment: open an order for an existing registration, hand it to
- * Checkout, then verify the signature server-side.
- *
- * The amount is never passed in - the server reads it from the stored
- * registration - so nothing here can influence what is charged.
+ * Drives one payment: open an order, hand it to Checkout, verify server-side.
+ * Takes a registration id, never an amount.
  */
 export function useRazorpayCheckout() {
   const [stage, setStage] = useState<CheckoutStage>("idle");
   const [error, setError] = useState<string | null>(null);
-  // Kept so the payer can be shown their gateway references, which is what
-  // makes a later support query answerable.
+  // Gateway references, shown to the payer as a receipt.
   const [receipt, setReceipt] = useState<PaymentReceipt | null>(null);
 
   const reset = useCallback(() => {
@@ -76,7 +72,7 @@ export function useRazorpayCheckout() {
             name: order.prefillName,
             email: order.prefillEmail,
             contact: order.prefillContact,
-            // Opens the modal on UPI; the visitor can still switch method.
+            // Opens on UPI; the visitor can still switch.
             method: "upi",
           },
           config: UPI_FIRST_CHECKOUT_CONFIG,
@@ -116,11 +112,9 @@ export function useRazorpayCheckout() {
                   verifyError instanceof Error && verifyError.message
                     ? verifyError.message
                     : "We could not verify this payment.";
-                // The money may well have left the account, so never tell the
-                // visitor it simply failed - point them at support with a
-                // reference instead.
-                // Give them the gateway reference even on failure - it is
-                // exactly what support needs to find the money.
+                // The money may have left the account, so do not report a
+                // plain failure.
+                // Include the reference: support needs it to find the money.
                 setError(
                   `${message} If your account was debited, email info@axocom.in quoting `
                   + `${registrationId} and payment ${response.razorpay_payment_id}.`

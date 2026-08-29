@@ -1,10 +1,7 @@
 import type { ReactNode } from "react";
 import { ArrowLeft } from "lucide-react";
 
-/**
- * Page chrome shared by the refund request form and the ticket lookup, so both
- * match the delegate pass / nomination pages they follow on from.
- */
+/** Page chrome shared by the help form and the ticket lookup. */
 export function RefundShell({
   kicker,
   title,

@@ -1,7 +1,4 @@
-/**
- * Amounts cross the API in the smallest currency unit (paise), matching what
- * Razorpay expects, so no rounding can happen in transit.
- */
+/** Amounts cross the API in paise, matching Razorpay. */
 
 export const toPaise = (rupees: number) => Math.round(rupees * 100);
 
@@ -12,11 +9,8 @@ export const formatRupees = (rupees: number) => `₹${rupees.toLocaleString("en-
 export const formatPaise = (paise: number) => formatRupees(fromPaise(paise));
 
 /**
- * Display-side mirror of the server's GST calculation, used to show the
- * breakdown before a registration exists. The server recomputes it on submit
- * and its figure is the one charged, so these must agree.
- *
- * GST is charged per unit and then multiplied, matching an invoice line.
+ * Display mirror of the server's GST calculation. The server recomputes it on
+ * submit and its figure is charged, so the two must agree.
  */
 export const DEFAULT_GST_RATE_BPS = 1800;
 

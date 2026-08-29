@@ -1,9 +1,6 @@
 /**
- * Razorpay Checkout script loading.
- *
- * These pages are prerendered, so nothing here may touch `window` at module
- * load. The script is injected on demand instead of sitting in the document
- * head, so visitors who never start a payment do not download it.
+ * Razorpay Checkout script loading. Injected on demand, and never touching
+ * `window` at module load since these pages are prerendered.
  */
 
 const CHECKOUT_SCRIPT_SRC = "https://checkout.razorpay.com/v1/checkout.js";
@@ -47,12 +44,9 @@ export interface RazorpayOptions {
 }
 
 /**
- * Puts UPI first in the Checkout modal, with cards, netbanking and wallets
- * still available underneath.
- *
- * `show_default_blocks: true` is what keeps those other methods visible - with
- * it false the modal would show UPI only. Each listed method still has to be
- * enabled on the Razorpay account itself; this only controls ordering.
+ * Puts UPI first. `show_default_blocks: true` keeps cards, netbanking and
+ * wallets visible beneath it. Controls ordering only - each method must still
+ * be enabled on the Razorpay account.
  */
 export const UPI_FIRST_CHECKOUT_CONFIG: RazorpayOptions["config"] = {
   display: {
@@ -81,11 +75,8 @@ declare global {
 
 let loadPromise: Promise<void> | null = null;
 
-/**
- * Resolves once window.Razorpay is usable. The promise is cached so repeated
- * checkout attempts reuse one script tag, and cleared on failure so a later
- * attempt can retry after a transient network error.
- */
+/** Resolves once window.Razorpay is usable. Cached, and cleared on failure so
+ *  a later attempt can retry. */
 export function loadRazorpayCheckout(): Promise<void> {
   if (typeof window === "undefined") {
     return Promise.reject(new Error("Razorpay Checkout is only available in the browser."));
@@ -107,7 +98,7 @@ export function loadRazorpayCheckout(): Promise<void> {
     if (existing) {
       existing.addEventListener("load", () => resolve(), { once: true });
       existing.addEventListener("error", fail, { once: true });
-      // Already finished loading before we attached the listener.
+      // Loaded before the listener attached.
       if (window.Razorpay) resolve();
       return;
     }

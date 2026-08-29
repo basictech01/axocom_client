@@ -62,11 +62,8 @@ function statusIcon(status: RefundStatus) {
   }
 }
 
-/**
- * Refund tickets. Unlike the other tabs this is a conversation: the admin reads
- * the thread and replies, and the reply is what the requester sees on the
- * public ticket lookup page.
- */
+/** Support tickets. A conversation: admin replies appear on the requester's
+ *  public ticket page. */
 export function RefundRequestsPanel({
   onUnauthorized,
 }: {
@@ -120,7 +117,7 @@ export function RefundRequestsPanel({
       setData(requests);
       setPagination(nextPagination);
 
-      // Keep the open drawer in sync with the refreshed list.
+      // Keep the open drawer in sync.
       setSelectedItem((current) =>
         current ? requests.find((item) => item.id === current.id) ?? null : null
       );
@@ -153,11 +150,9 @@ export function RefundRequestsPanel({
   };
 
   /**
-   * Checks what Razorpay actually holds for the registration this ticket names.
-   *
-   * This matters more here than anywhere else: approving a refund moves real
-   * money out, and a payment that failed at the gateway is auto-reversed by the
-   * customer's bank - refunding it as well would pay them twice.
+   * Checks what Razorpay holds before a refund is approved. A payment that
+   * failed at the gateway is auto-reversed by the bank, so refunding it here
+   * would pay the customer twice.
    */
   const handleReconcile = async () => {
     if (!selectedItem) return;
@@ -173,8 +168,7 @@ export function RefundRequestsPanel({
       });
       setReconciliation(response.data?.reconcilePayment ?? null);
     } catch (error) {
-      // "No payment was ever started" is an answer, not a failure - it is
-      // exactly what an unpaid or fabricated claim looks like.
+      // "No payment was ever started" is an answer, not a failure.
       const message = error instanceof Error ? error.message : "Could not reach the gateway";
       setReconcileError(message);
       setReconciliation(null);
