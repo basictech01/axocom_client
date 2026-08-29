@@ -146,7 +146,7 @@ export default function RefundRequest() {
               <input id="refund-phone" type="tel" required value={form.phone} onChange={(event) => updateField("phone", event.target.value)} placeholder="+91 00000 00000" />
             </div>
             <div className="refund-field">
-              <label htmlFor="refund-type">What are you requesting a refund for?</label>
+              <label htmlFor="refund-type">Related to</label>
               <select id="refund-type" value={form.registrationType} onChange={(event) => updateField("registrationType", event.target.value)}>
                 <option value={REGISTRATION_TYPE.DELEGATE_PASS}>Delegate pass</option>
                 <option value={REGISTRATION_TYPE.NOMINATION}>Award nomination</option>
@@ -170,7 +170,7 @@ export default function RefundRequest() {
               <label htmlFor="refund-reason">
                 {form.requestType === "refund" ? "Reason for the refund" : "Tell us what happened"}
               </label>
-              <textarea id="refund-reason" required value={form.reason} onChange={(event) => updateField("reason", event.target.value)} placeholder="Tell us why you are requesting a refund, and anything that helps us process it faster." />
+              <textarea id="refund-reason" required value={form.reason} onChange={(event) => updateField("reason", event.target.value)} placeholder={form.requestType === "refund" ? "Tell us why you are requesting a refund, and anything that helps us process it faster." : "Tell us what happened, and anything that helps us look into it faster."} />
             </div>
             {form.requestType === "refund" && (
               <p className="refund-hint" style={{ gridColumn: "1/-1" }}>
