@@ -13,6 +13,7 @@ import { apolloClient } from "~/lib/api";
 import { REGISTER_DELEGATE_PASS_MUTATION } from "~/features/summit/services";
 import { formatPaise, calculateGst, formatGstRate } from "~/features/summit/lib/money";
 import { useRazorpayCheckout } from "~/features/summit/hooks/useRazorpayCheckout";
+import { REGISTRATION_TYPE } from "~/features/summit/types";
 
 const seo = {
   title: "Delegate Passes | Devbhoomi AI Summit 2026",
@@ -360,7 +361,7 @@ export default function DevbhoomiAIDelegatePass() {
                     type="button"
                     disabled={checkout.isBusy}
                     onClick={() => void checkout.start({
-                      registrationType: "delegate_pass",
+                      registrationType: REGISTRATION_TYPE.DELEGATE_PASS,
                       registrationId,
                       description: `${selected.name} × ${form.quantity}`,
                     })}

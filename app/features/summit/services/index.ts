@@ -239,7 +239,7 @@ export const ADMIN_REFUND_REQUESTS_QUERY: TypedDocumentNode<
   query AdminRefundRequests(
     $status: RefundStatus
     $requestType: SupportRequestType
-    $registrationType: RefundRegistrationType
+    $registrationType: RegistrationType
     $search: String
     $page: Int
     $limit: Int
@@ -334,7 +334,7 @@ export const CREATE_PAYMENT_ORDER_MUTATION: TypedDocumentNode<
   { registrationType: PaymentRegistrationType; registrationId: string }
 > = gql`
   mutation CreatePaymentOrder(
-    $registrationType: PaymentRegistrationType!
+    $registrationType: RegistrationType!
     $registrationId: ID!
   ) {
     createPaymentOrder(
@@ -387,7 +387,7 @@ export const RECONCILE_PAYMENT_MUTATION: TypedDocumentNode<
   { registrationType: PaymentRegistrationType; registrationId: string }
 > = gql`
   mutation ReconcilePayment(
-    $registrationType: PaymentRegistrationType!
+    $registrationType: RegistrationType!
     $registrationId: ID!
   ) {
     reconcilePayment(
@@ -402,7 +402,7 @@ export const SETTLE_PAYMENT_FROM_GATEWAY_MUTATION: TypedDocumentNode<
   { registrationType: PaymentRegistrationType; registrationId: string }
 > = gql`
   mutation SettlePaymentFromGateway(
-    $registrationType: PaymentRegistrationType!
+    $registrationType: RegistrationType!
     $registrationId: ID!
   ) {
     settlePaymentFromGateway(

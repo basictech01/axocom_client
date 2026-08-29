@@ -5,6 +5,7 @@ import { apolloClient } from "~/lib/api";
 import { REGISTER_NOMINATION_MUTATION } from "~/features/summit/services";
 import { formatPaise, calculateGst, formatGstRate } from "~/features/summit/lib/money";
 import { useRazorpayCheckout } from "~/features/summit/hooks/useRazorpayCheckout";
+import { REGISTRATION_TYPE } from "~/features/summit/types";
 
 const seo = {
   title: "Awards Nomination | Devbhoomi AI Summit 2026",
@@ -383,7 +384,7 @@ export default function DevbhoomiAINomination() {
                     type="button"
                     disabled={checkout.isBusy}
                     onClick={() => void checkout.start({
-                      registrationType: "nomination",
+                      registrationType: REGISTRATION_TYPE.NOMINATION,
                       registrationId,
                       description: selectedPlanDetails.name,
                     })}

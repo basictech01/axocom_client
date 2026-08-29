@@ -10,7 +10,19 @@ export type RefundStatus =
 
 export type SupportRequestType = "refund" | "payment_not_reflected" | "other";
 
-export type RefundRegistrationType = "delegate_pass" | "nomination";
+/**
+ * The one definition of which thing a payment, refund or query belongs to.
+ * Mirrors the RegistrationType enum in the API schema.
+ */
+export const REGISTRATION_TYPE = {
+  DELEGATE_PASS: "delegate_pass",
+  NOMINATION: "nomination",
+} as const;
+
+export type RegistrationType = (typeof REGISTRATION_TYPE)[keyof typeof REGISTRATION_TYPE];
+
+/** Alias kept so refund code reads in its own terms; one definition underneath. */
+export type RefundRegistrationType = RegistrationType;
 
 export type RefundMessageAuthor = "user" | "admin";
 
@@ -167,7 +179,8 @@ export interface RegistrationResult {
   paymentStatus: PaymentStatus;
 }
 
-export type PaymentRegistrationType = "delegate_pass" | "nomination";
+/** Alias kept so payment code reads in its own terms; one definition underneath. */
+export type PaymentRegistrationType = RegistrationType;
 
 export interface PaymentOrder {
   orderId: string;

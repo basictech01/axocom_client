@@ -25,7 +25,9 @@ import type {
   PaymentReconciliation,
   RefundRequest,
   RefundStatus,
+  RegistrationType,
 } from "~/features/summit/types";
+import { REGISTRATION_TYPE } from "~/features/summit/types";
 
 const STATUS_LABELS: Record<RefundStatus, string> = {
   open: "Open",
@@ -102,10 +104,7 @@ export function RefundRequestsPanel({
             | "payment_not_reflected"
             | "other"
             | undefined,
-          registrationType: (typeFilter || undefined) as
-            | "delegate_pass"
-            | "nomination"
-            | undefined,
+          registrationType: (typeFilter || undefined) as RegistrationType | undefined,
           search: searchQuery || undefined,
           page: pageOverride ?? page,
           limit: 20,
@@ -162,7 +161,7 @@ export function RefundRequestsPanel({
       const response = await client.mutate({
         mutation: RECONCILE_PAYMENT_MUTATION,
         variables: {
-          registrationType: selectedItem.registrationType === "delegate_pass" ? "delegate_pass" : "nomination",
+          registrationType: selectedItem.registrationType,
           registrationId: selectedItem.registrationId ?? "",
         },
       });
@@ -252,8 +251,8 @@ export function RefundRequestsPanel({
             className="px-3 py-1.5 rounded-lg bg-card border border-border text-sm outline-none focus:border-primary/50"
           >
             <option value="">All Types</option>
-            <option value="delegate_pass">Delegate pass</option>
-            <option value="nomination">Nomination</option>
+            <option value={REGISTRATION_TYPE.DELEGATE_PASS}>Delegate pass</option>
+            <option value={REGISTRATION_TYPE.NOMINATION}>Nomination</option>
           </select>
 
           <select
@@ -323,7 +322,7 @@ export function RefundRequestsPanel({
                     <p className="text-xs text-muted-foreground mb-3">
                       {REQUEST_TYPE_LABELS[item.requestType] ?? item.requestType}
                       {" · "}
-                      {item.registrationType === "delegate_pass" ? "Delegate pass" : "Nomination"}
+                      {item.registrationType === REGISTRATION_TYPE.DELEGATE_PASS ? "Delegate pass" : "Nomination"}
                       {item.registrationId ? ` · ${item.registrationId}` : ""}
                     </p>
                     <p className="text-sm text-muted-foreground line-clamp-2">{item.reason}</p>
@@ -434,7 +433,7 @@ export function RefundRequestsPanel({
                         Type
                       </h4>
                       <p className="text-foreground">
-                        {selectedItem.registrationType === "delegate_pass"
+                        {selectedItem.registrationType === REGISTRATION_TYPE.DELEGATE_PASS
                           ? "Delegate pass"
                           : "Nomination"}
                       </p>

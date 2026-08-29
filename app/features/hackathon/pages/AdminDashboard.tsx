@@ -36,6 +36,7 @@ import type {
 } from "~/features/hackathon/types";
 import { SummitRegistrationsPanel } from "~/features/summit/components/SummitRegistrationsPanel";
 import { RefundRequestsPanel } from "~/features/summit/components/RefundRequestsPanel";
+import { REGISTRATION_TYPE } from "~/features/summit/types";
 
 export const meta = () =>
   buildHackathonNoIndexMeta(
@@ -277,7 +278,10 @@ export default function AdminDashboard() {
       {/* Main Content */}
       <main className="flex-1 flex flex-col min-w-0">
         {activeTab === 'delegate' || activeTab === 'nominations' ? (
-          <SummitRegistrationsPanel kind={activeTab} onUnauthorized={handleSignOut} />
+          <SummitRegistrationsPanel
+            kind={activeTab === 'delegate' ? REGISTRATION_TYPE.DELEGATE_PASS : REGISTRATION_TYPE.NOMINATION}
+            onUnauthorized={handleSignOut}
+          />
         ) : activeTab === 'refunds' ? (
           <RefundRequestsPanel onUnauthorized={handleSignOut} />
         ) : (

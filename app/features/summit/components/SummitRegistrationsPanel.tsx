@@ -28,7 +28,9 @@ import type {
   Pagination,
   PaymentReconciliation,
   PaymentStatus,
+  RegistrationType,
 } from "~/features/summit/types";
+import { REGISTRATION_TYPE } from "~/features/summit/types";
 
 type Registration = DelegatePassRegistration | NominationRegistration;
 
@@ -70,7 +72,7 @@ export function SummitRegistrationsPanel({
   kind,
   onUnauthorized,
 }: {
-  kind: "delegate" | "nominations";
+  kind: RegistrationType;
   onUnauthorized: () => void | Promise<void>;
 }) {
   const client = useApolloClient();
@@ -92,7 +94,8 @@ export function SummitRegistrationsPanel({
     totalPages: 1,
   });
 
-  const label = kind === "delegate" ? "delegate pass registrations" : "nominations";
+  const isDelegateKind = kind === REGISTRATION_TYPE.DELEGATE_PASS;
+  const label = isDelegateKind ? "delegate pass registrations" : "nominations";
 
   const fetchData = async (pageOverride?: number) => {
     setIsLoading(true);
@@ -107,7 +110,7 @@ export function SummitRegistrationsPanel({
       let rows: Registration[];
       let nextPagination: Pagination;
 
-      if (kind === "delegate") {
+      if (isDelegateKind) {
         const response = await client.query({
           query: ADMIN_DELEGATE_PASS_REGISTRATIONS_QUERY,
           variables,
@@ -171,7 +174,7 @@ export function SummitRegistrationsPanel({
     try {
       const response = await client.mutate({
         mutation: RECONCILE_PAYMENT_MUTATION,
-        variables: { registrationType: kind === "delegate" ? "delegate_pass" : "nomination", registrationId: selectedItem.id },
+        variables: { registrationType: kind, registrationId: selectedItem.id },
       });
       setReconciliation(response.data?.reconcilePayment ?? null);
     } catch (error) {
@@ -192,7 +195,7 @@ export function SummitRegistrationsPanel({
     try {
       const response = await client.mutate({
         mutation: SETTLE_PAYMENT_FROM_GATEWAY_MUTATION,
-        variables: { registrationType: kind === "delegate" ? "delegate_pass" : "nomination", registrationId: selectedItem.id },
+        variables: { registrationType: kind, registrationId: selectedItem.id },
       });
       setReconciliation(response.data?.settlePaymentFromGateway ?? null);
       toast.success("Settled from the gateway record");
@@ -217,7 +220,7 @@ export function SummitRegistrationsPanel({
       };
       await client.mutate({
         mutation:
-          kind === "delegate"
+          isDelegateKind
             ? UPDATE_DELEGATE_PASS_PAYMENT_STATUS_MUTATION
             : UPDATE_NOMINATION_PAYMENT_STATUS_MUTATION,
         variables,
@@ -237,7 +240,7 @@ export function SummitRegistrationsPanel({
     <>
       <header className="h-16 border-b border-border bg-card/50 backdrop-blur-sm flex items-center justify-between px-6 sticky top-0 z-10">
         <h2 className="font-display font-bold text-lg text-foreground">
-          {kind === "delegate" ? "Delegate Passes" : "Nominations"}
+          {isDelegateKind ? "Delegate Passes" : "Nominations"}
         </h2>
 
         <div className="flex items-center gap-3">

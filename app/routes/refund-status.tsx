@@ -12,6 +12,7 @@ import {
   formatDateTime,
 } from "~/features/summit/components/RefundShell";
 import type { RefundTicket } from "~/features/summit/types";
+import { REGISTRATION_TYPE } from "~/features/summit/types";
 
 const seo = {
   title: "Track a Request | Devbhoomi AI Summit 2026",
@@ -134,7 +135,7 @@ export default function RefundStatus() {
             <div>
               <h2>{ticket.id}</h2>
               <p>
-                {ticket.registrationType === "delegate_pass" ? "Delegate pass" : "Award nomination"}
+                {ticket.registrationType === REGISTRATION_TYPE.DELEGATE_PASS ? "Delegate pass" : "Award nomination"}
                 {ticket.registrationId ? ` · ${ticket.registrationId}` : ""} · raised {formatDateTime(ticket.createdAt)}
               </p>
             </div>

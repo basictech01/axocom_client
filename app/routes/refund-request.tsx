@@ -5,6 +5,7 @@ import { apolloClient } from "~/lib/api";
 import { CREATE_REFUND_REQUEST_MUTATION } from "~/features/summit/services";
 import { RefundShell } from "~/features/summit/components/RefundShell";
 import type { RefundRegistrationType, SupportRequestType } from "~/features/summit/types";
+import { REGISTRATION_TYPE } from "~/features/summit/types";
 
 const REQUEST_TYPES: Array<{ value: SupportRequestType; label: string; hint: string }> = [
   { value: "refund", label: "Request a refund", hint: "You paid and would like the money back." },
@@ -41,7 +42,7 @@ const initialForm = {
   fullName: "",
   email: "",
   phone: "",
-  registrationType: "delegate_pass" as RefundRegistrationType,
+  registrationType: REGISTRATION_TYPE.DELEGATE_PASS as RefundRegistrationType,
   registrationId: "",
   paymentReference: "",
   reason: "",
@@ -147,8 +148,8 @@ export default function RefundRequest() {
             <div className="refund-field">
               <label htmlFor="refund-type">What are you requesting a refund for?</label>
               <select id="refund-type" value={form.registrationType} onChange={(event) => updateField("registrationType", event.target.value)}>
-                <option value="delegate_pass">Delegate pass</option>
-                <option value="nomination">Award nomination</option>
+                <option value={REGISTRATION_TYPE.DELEGATE_PASS}>Delegate pass</option>
+                <option value={REGISTRATION_TYPE.NOMINATION}>Award nomination</option>
               </select>
             </div>
             <div className="refund-field">
