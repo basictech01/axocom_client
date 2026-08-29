@@ -106,6 +106,9 @@ export function SummitRegistrationsPanel({
         limit: 20,
       };
 
+      let rows: Registration[];
+      let nextPagination: Pagination;
+
       if (kind === "delegate") {
         const response = await client.query({
           query: ADMIN_DELEGATE_PASS_REGISTRATIONS_QUERY,
@@ -113,8 +116,8 @@ export function SummitRegistrationsPanel({
           fetchPolicy: "network-only",
         });
         if (!response.data) throw new Error("Failed to fetch delegate pass registrations");
-        setData(response.data.adminDelegatePassRegistrations.data);
-        setPagination(response.data.adminDelegatePassRegistrations.pagination);
+        rows = response.data.adminDelegatePassRegistrations.data;
+        nextPagination = response.data.adminDelegatePassRegistrations.pagination;
       } else {
         const response = await client.query({
           query: ADMIN_NOMINATION_REGISTRATIONS_QUERY,
@@ -122,9 +125,21 @@ export function SummitRegistrationsPanel({
           fetchPolicy: "network-only",
         });
         if (!response.data) throw new Error("Failed to fetch nominations");
-        setData(response.data.adminNominationRegistrations.data);
-        setPagination(response.data.adminNominationRegistrations.pagination);
+        rows = response.data.adminNominationRegistrations.data;
+        nextPagination = response.data.adminNominationRegistrations.pagination;
       }
+
+      setData(rows);
+      setPagination(nextPagination);
+
+      // Keep an open drawer in sync. Settling from the gateway leaves it open,
+      // so without this the header would still read "pending" next to a gateway
+      // box saying the payment was settled. If the row has dropped out of the
+      // active filter the drawer closes rather than showing a stale amount -
+      // on a payments screen, stale is worse than gone.
+      setSelectedItem((current) =>
+        current ? rows.find((row) => row.id === current.id) ?? null : null
+      );
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : "Failed to fetch data";
       if (/unauthorized|admin access required/i.test(message)) {
