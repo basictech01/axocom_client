@@ -250,7 +250,7 @@ export default function AdminDashboard() {
             }`}
           >
             <ReceiptText className="w-4 h-4" />
-            Refund Requests
+            User Queries
           </button>
         </nav>
 

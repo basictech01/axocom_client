@@ -112,7 +112,7 @@ export function RefundRequestsPanel({
         },
         fetchPolicy: "network-only",
       });
-      if (!response.data) throw new Error("Failed to fetch refund requests");
+      if (!response.data) throw new Error("Failed to fetch user queries");
       const { data: requests, pagination: nextPagination } = response.data.adminRefundRequests;
       setData(requests);
       setPagination(nextPagination);
@@ -221,7 +221,7 @@ export function RefundRequestsPanel({
   return (
     <>
       <header className="h-16 border-b border-border bg-card/50 backdrop-blur-sm flex items-center justify-between px-6 sticky top-0 z-10">
-        <h2 className="font-display font-bold text-lg text-foreground">Support Requests</h2>
+        <h2 className="font-display font-bold text-lg text-foreground">User Queries</h2>
 
         <div className="flex items-center gap-3">
           <form onSubmit={handleSearch} className="relative">
@@ -282,7 +282,7 @@ export function RefundRequestsPanel({
             <div className="w-16 h-16 rounded-full bg-secondary flex items-center justify-center mb-4">
               <Search className="w-8 h-8 opacity-20" />
             </div>
-            <p>No refund requests found matching your criteria.</p>
+            <p>No queries found matching your criteria.</p>
           </div>
         ) : (
           <>
@@ -388,7 +388,7 @@ export function RefundRequestsPanel({
             >
               <div className="p-8">
                 <div className="flex items-center justify-between mb-8">
-                  <h2 className="font-display font-bold text-2xl text-foreground">Refund Ticket</h2>
+                  <h2 className="font-display font-bold text-2xl text-foreground">User Query</h2>
                   <button
                     onClick={() => setSelectedItem(null)}
                     className="p-2 rounded-lg hover:bg-secondary transition-colors"
