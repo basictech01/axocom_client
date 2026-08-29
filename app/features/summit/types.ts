@@ -39,6 +39,7 @@ export interface DelegatePassRegistration {
   totalAmount: number;
   currency: string;
   gstNumber: string | null;
+  startupDetails: string | null;
   contactConsentAt: string;
   paymentStatus: PaymentStatus;
   razorpayOrderId: string | null;
@@ -128,6 +129,7 @@ export interface RegisterDelegatePassInput {
   passName: string;
   quantity: number;
   gstNumber?: string | null;
+  startupDetails?: string | null;
   contactConsent: boolean;
 }
 

@@ -151,6 +151,7 @@ export const ADMIN_DELEGATE_PASS_REGISTRATIONS_QUERY: TypedDocumentNode<
         totalAmount
         currency
         gstNumber
+        startupDetails
         contactConsentAt
         paymentStatus
         razorpayOrderId

@@ -480,6 +480,20 @@ export function SummitRegistrationsPanel({
                     )}
                   </div>
 
+                  {isDelegate(selectedItem) && selectedItem.startupDetails && (
+                    <div>
+                      <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">
+                        Startup Details
+                      </h4>
+                      <p className="text-xs text-muted-foreground mb-2">
+                        Supplied to claim the discounted Startup Pass. Verify before confirming.
+                      </p>
+                      <div className="p-4 rounded-xl bg-card border border-border text-sm leading-relaxed text-muted-foreground whitespace-pre-wrap">
+                        {selectedItem.startupDetails}
+                      </div>
+                    </div>
+                  )}
+
                   {!isDelegate(selectedItem) && (
                     <>
                       <div>

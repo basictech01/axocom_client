@@ -39,7 +39,7 @@ export const links = () => [
 ];
 
 const delegatePasses = [
-  { name: "Startup Pass", audience: "Startups", price: 1499, icon: Rocket, note: "For founders and startup team members." },
+  { name: "Startup Pass", audience: "Startups", price: 1499, icon: Rocket, note: "For founders and startup team members.", requiresStartupDetails: true },
   { name: "Professional Pass", audience: "Professionals", price: 2999, icon: BriefcaseBusiness, note: "For independent professionals and specialists." },
   { name: "Delegate Pass", audience: "Delegates", price: 7500, icon: Building2, note: "For delegates and institutional representatives.", featured: true },
   { name: "Executive Pass", audience: "Executives", price: 14999, icon: Star, note: "For senior leaders and decision-makers." },
@@ -48,8 +48,11 @@ const delegatePasses = [
 
 const formatPrice = (price: number) => `₹${price.toLocaleString("en-IN")}`;
 
+const MIN_STARTUP_DETAILS = 20;
+
 const initialForm = {
   name: "",
+  startupDetails: "",
   designation: "",
   organisation: "",
   email: "",
@@ -130,6 +133,7 @@ export default function DevbhoomiAIDelegatePass() {
             passName: selected.name,
             quantity: Number(form.quantity),
             gstNumber: form.gstNumber || null,
+            startupDetails: selected.requiresStartupDetails ? form.startupDetails.trim() : null,
             contactConsent: true,
           },
         },
@@ -214,6 +218,9 @@ export default function DevbhoomiAIDelegatePass() {
         .delegate-field label { display:flex; align-items:center; font-size:12px; font-weight:700; line-height:18px; }
         .delegate-field input, .delegate-field select { width:100%; min-width:0; height:48px; margin:0; padding:0 14px; border:1px solid #D6DCDD; border-radius:7px; color:var(--ink); background:#fff; font:inherit; font-size:13px; outline:0; }
         .delegate-field input:focus, .delegate-field select:focus { border-color:#17A9AB; box-shadow:0 0 0 3px rgba(23,182,184,.11); }
+        .delegate-field textarea { width:100%; min-width:0; min-height:110px; margin:0; padding:13px 14px; border:1px solid #D6DCDD; border-radius:7px; color:var(--ink); background:#fff; font:inherit; font-size:13px; line-height:1.6; resize:vertical; outline:0; }
+        .delegate-field textarea:focus { border-color:#17A9AB; box-shadow:0 0 0 3px rgba(23,182,184,.11); }
+        .delegate-warning { grid-column:1/-1; margin:0; padding:12px 14px; border:1px solid #F3C0BB; border-left:3px solid #B42318; border-radius:7px; color:#8A1C15; background:#FDF3F2; font-size:11px; line-height:1.6; }
         .delegate-consent { grid-column:1/-1; display:flex; align-items:flex-start; gap:10px; color:var(--muted); font-size:11px; line-height:1.5; }
         .delegate-consent input { width:16px; height:16px; flex:0 0 16px; margin:1px 0 0; accent-color:#168D9D; }
         .delegate-submit { grid-column:1/-1; width:100%; min-height:52px; border:0; border-radius:8px; color:#fff; background:var(--gradient); font:inherit; font-size:14px; font-weight:800; cursor:pointer; }
@@ -414,6 +421,26 @@ export default function DevbhoomiAIDelegatePass() {
                   <label htmlFor="delegate-gst">GST number (optional)</label>
                   <input id="delegate-gst" value={form.gstNumber} onChange={(event) => updateField("gstNumber", event.target.value)} placeholder="For tax invoice" />
                 </div>
+                {selected.requiresStartupDetails && (
+                  <>
+                    <div className="delegate-field full">
+                      <label htmlFor="delegate-startup">Tell us about your startup</label>
+                      <textarea
+                        id="delegate-startup"
+                        required
+                        minLength={MIN_STARTUP_DETAILS}
+                        value={form.startupDetails}
+                        onChange={(event) => updateField("startupDetails", event.target.value)}
+                        placeholder="What you are building, how far along you are, your website or registration number, and your role."
+                      />
+                    </div>
+                    <p className="delegate-warning">
+                      The {selected.name} is discounted for genuine early-stage startups. Your pass
+                      may be cancelled and refunded if we cannot verify that your startup is
+                      legitimate. Please give enough detail for us to check.
+                    </p>
+                  </>
+                )}
                 <label className="delegate-consent">
                   <input type="checkbox" required />
                   <span>I confirm that the information provided is accurate and may be used by the Devbhoomi AI Summit team to process this delegate pass request.</span>
