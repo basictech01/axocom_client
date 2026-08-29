@@ -33,10 +33,17 @@ const STATUS_LABELS: Record<RefundStatus, string> = {
   approved: "Approved",
   rejected: "Rejected",
   refunded: "Refunded",
+  resolved: "Resolved",
+};
+
+const REQUEST_TYPE_LABELS: Record<string, string> = {
+  refund: "Refund",
+  payment_not_reflected: "Payment not showing",
+  other: "Other",
 };
 
 const statusTextClass = (status: RefundStatus) =>
-  status === "approved" || status === "refunded"
+  status === "approved" || status === "refunded" || status === "resolved"
     ? "text-success"
     : status === "rejected"
       ? "text-error"
@@ -46,6 +53,7 @@ function statusIcon(status: RefundStatus) {
   switch (status) {
     case "approved":
     case "refunded":
+    case "resolved":
       return <CheckCircle2 className="w-4 h-4 text-success" aria-hidden />;
     case "rejected":
       return <XCircle className="w-4 h-4 text-error" aria-hidden />;
@@ -76,6 +84,7 @@ export function RefundRequestsPanel({
   const [page, setPage] = useState(1);
   const [statusFilter, setStatusFilter] = useState<string>("");
   const [typeFilter, setTypeFilter] = useState<string>("");
+  const [requestTypeFilter, setRequestTypeFilter] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState("");
   const [pagination, setPagination] = useState<Pagination>({
     total: 0,
@@ -91,6 +100,11 @@ export function RefundRequestsPanel({
         query: ADMIN_REFUND_REQUESTS_QUERY,
         variables: {
           status: (statusFilter || undefined) as RefundStatus | undefined,
+          requestType: (requestTypeFilter || undefined) as
+            | "refund"
+            | "payment_not_reflected"
+            | "other"
+            | undefined,
           registrationType: (typeFilter || undefined) as
             | "delegate_pass"
             | "nomination"
@@ -125,12 +139,12 @@ export function RefundRequestsPanel({
   useEffect(() => {
     setPage(1);
     setSelectedItem(null);
-  }, [statusFilter, typeFilter]);
+  }, [statusFilter, typeFilter, requestTypeFilter]);
 
   useEffect(() => {
     void fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [statusFilter, typeFilter, page]);
+  }, [statusFilter, typeFilter, requestTypeFilter, page]);
 
   const handleSearch = (event: FormEvent) => {
     event.preventDefault();
@@ -192,7 +206,7 @@ export function RefundRequestsPanel({
 
   const handleUpdateStatus = async (status: RefundStatus) => {
     if (!selectedItem) return;
-    if (!confirm(`Set this refund request to "${STATUS_LABELS[status]}"?`)) return;
+    if (!confirm(`Set this request to "${STATUS_LABELS[status]}"?`)) return;
 
     setIsSaving(true);
     try {
@@ -213,7 +227,7 @@ export function RefundRequestsPanel({
   return (
     <>
       <header className="h-16 border-b border-border bg-card/50 backdrop-blur-sm flex items-center justify-between px-6 sticky top-0 z-10">
-        <h2 className="font-display font-bold text-lg text-foreground">Refund Requests</h2>
+        <h2 className="font-display font-bold text-lg text-foreground">Support Requests</h2>
 
         <div className="flex items-center gap-3">
           <form onSubmit={handleSearch} className="relative">
@@ -226,6 +240,17 @@ export function RefundRequestsPanel({
               className="pl-9 pr-4 py-1.5 rounded-lg bg-card border border-border text-sm outline-none focus:border-primary/50 w-36 sm:w-56"
             />
           </form>
+
+          <select
+            value={requestTypeFilter}
+            onChange={(event) => setRequestTypeFilter(event.target.value)}
+            className="px-3 py-1.5 rounded-lg bg-card border border-border text-sm outline-none focus:border-primary/50"
+          >
+            <option value="">All Requests</option>
+            <option value="refund">Refunds</option>
+            <option value="payment_not_reflected">Payment not showing</option>
+            <option value="other">Other</option>
+          </select>
 
           <select
             value={typeFilter}
@@ -248,6 +273,7 @@ export function RefundRequestsPanel({
             <option value="approved">Approved</option>
             <option value="rejected">Rejected</option>
             <option value="refunded">Refunded</option>
+            <option value="resolved">Resolved</option>
           </select>
         </div>
       </header>
@@ -301,6 +327,8 @@ export function RefundRequestsPanel({
                       {item.fullName}
                     </h3>
                     <p className="text-xs text-muted-foreground mb-3">
+                      {REQUEST_TYPE_LABELS[item.requestType] ?? item.requestType}
+                      {" · "}
                       {item.registrationType === "delegate_pass" ? "Delegate pass" : "Nomination"}
                       {item.registrationId ? ` · ${item.registrationId}` : ""}
                     </p>
@@ -610,6 +638,17 @@ export function RefundRequestsPanel({
                       >
                         <CheckCircle2 className="w-4 h-4" />
                         Mark Refunded
+                      </button>
+                      <button
+                        onClick={() => void handleUpdateStatus("resolved")}
+                        disabled={isSaving}
+                        className="col-span-2 py-3 border border-border text-foreground font-bold rounded-xl flex items-center justify-center gap-2 hover:bg-secondary transition-all disabled:opacity-50"
+                      >
+                        <CheckCircle2 className="w-4 h-4" />
+                        Mark Resolved
+                        <span className="font-normal text-muted-foreground">
+                          (closes a request where no money moves)
+                        </span>
                       </button>
                     </div>
                   </div>

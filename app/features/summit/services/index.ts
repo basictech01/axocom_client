@@ -15,6 +15,7 @@ import type {
   RefundRequestMessage,
   RefundStatus,
   RefundTicket,
+  SupportRequestType,
   RegisterDelegatePassInput,
   RegisterNominationInput,
   RegistrationResult,
@@ -79,6 +80,7 @@ export const REFUND_TICKET_QUERY: TypedDocumentNode<
   query RefundTicket($ticketId: ID!, $email: String!) {
     refundTicket(ticketId: $ticketId, email: $email) {
       id
+      requestType
       fullName
       registrationType
       registrationId
@@ -226,6 +228,7 @@ export const ADMIN_REFUND_REQUESTS_QUERY: TypedDocumentNode<
   { adminRefundRequests: { data: RefundRequest[]; pagination: Pagination } },
   {
     status?: RefundStatus;
+    requestType?: SupportRequestType;
     registrationType?: RefundRegistrationType;
     search?: string;
     page?: number;
@@ -234,6 +237,7 @@ export const ADMIN_REFUND_REQUESTS_QUERY: TypedDocumentNode<
 > = gql`
   query AdminRefundRequests(
     $status: RefundStatus
+    $requestType: SupportRequestType
     $registrationType: RefundRegistrationType
     $search: String
     $page: Int
@@ -241,6 +245,7 @@ export const ADMIN_REFUND_REQUESTS_QUERY: TypedDocumentNode<
   ) {
     adminRefundRequests(
       status: $status
+      requestType: $requestType
       registrationType: $registrationType
       search: $search
       page: $page
@@ -248,6 +253,7 @@ export const ADMIN_REFUND_REQUESTS_QUERY: TypedDocumentNode<
     ) {
       data {
         id
+        requestType
         fullName
         email
         phone

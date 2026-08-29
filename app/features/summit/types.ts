@@ -1,6 +1,14 @@
 export type PaymentStatus = "pending" | "paid" | "failed" | "refunded";
 
-export type RefundStatus = "open" | "in_review" | "approved" | "rejected" | "refunded";
+export type RefundStatus =
+  | "open"
+  | "in_review"
+  | "approved"
+  | "rejected"
+  | "refunded"
+  | "resolved";
+
+export type SupportRequestType = "refund" | "payment_not_reflected" | "other";
 
 export type RefundRegistrationType = "delegate_pass" | "nomination";
 
@@ -79,6 +87,7 @@ export interface RefundRequestMessage {
 
 export interface RefundRequest {
   id: string;
+  requestType: SupportRequestType;
   fullName: string;
   email: string;
   phone: string;
@@ -97,6 +106,7 @@ export interface RefundRequest {
 /** Public ticket view - no email/phone/reviewer fields. */
 export interface RefundTicket {
   id: string;
+  requestType: SupportRequestType;
   fullName: string;
   registrationType: RefundRegistrationType;
   registrationId: string | null;
@@ -135,6 +145,7 @@ export interface RegisterNominationInput {
 }
 
 export interface CreateRefundRequestInput {
+  requestType: SupportRequestType;
   fullName: string;
   email: string;
   phone: string;

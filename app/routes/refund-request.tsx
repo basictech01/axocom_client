@@ -4,7 +4,17 @@ import { buildSeoLinks, buildSeoMeta } from "~/lib/seo";
 import { apolloClient } from "~/lib/api";
 import { CREATE_REFUND_REQUEST_MUTATION } from "~/features/summit/services";
 import { RefundShell } from "~/features/summit/components/RefundShell";
-import type { RefundRegistrationType } from "~/features/summit/types";
+import type { RefundRegistrationType, SupportRequestType } from "~/features/summit/types";
+
+const REQUEST_TYPES: Array<{ value: SupportRequestType; label: string; hint: string }> = [
+  { value: "refund", label: "Request a refund", hint: "You paid and would like the money back." },
+  {
+    value: "payment_not_reflected",
+    label: "I paid but it is not showing",
+    hint: "Your payment went through but your registration still shows as unpaid.",
+  },
+  { value: "other", label: "Something else", hint: "Any other question about your registration." },
+];
 
 const seo = {
   title: "Request a Refund | Devbhoomi AI Summit 2026",
@@ -27,6 +37,7 @@ export const links = () => [
 ];
 
 const initialForm = {
+  requestType: "refund" as SupportRequestType,
   fullName: "",
   email: "",
   phone: "",
@@ -61,6 +72,7 @@ export default function RefundRequest() {
             fullName: form.fullName,
             email: form.email,
             phone: form.phone,
+            requestType: form.requestType,
             registrationType: form.registrationType,
             registrationId: form.registrationId.trim(),
             paymentReference: form.paymentReference || null,
@@ -86,14 +98,14 @@ export default function RefundRequest() {
   return (
     <RefundShell
       kicker="Refunds & cancellations"
-      title={<>Request a <span>refund</span></>}
-      intro="Raise a refund request for a delegate pass or award nomination. You will get a ticket reference you can use to track the request and read our replies."
+      title={<>Get <span>help</span> with a registration</>}
+      intro="Request a refund, tell us a payment has not shown up, or ask something else. You will get a ticket reference you can use to track it and read our replies."
     >
       <div className="refund-card">
         {ticketId ? (
           <div className="refund-success">
             <span className="refund-success-icon"><Sparkles /></span>
-            <h2>Refund request raised</h2>
+            <h2>Request raised</h2>
             <p>
               Our team will review your request and reply on this ticket. You can check the status
               and our replies at any time.
@@ -109,6 +121,17 @@ export default function RefundRequest() {
           </div>
         ) : (
           <form className="refund-grid" onSubmit={handleSubmit}>
+            <div className="refund-field full">
+              <label htmlFor="refund-request-type">What is this about?</label>
+              <select id="refund-request-type" value={form.requestType} onChange={(event) => updateField("requestType", event.target.value)}>
+                {REQUEST_TYPES.map((type) => (
+                  <option key={type.value} value={type.value}>{type.label}</option>
+                ))}
+              </select>
+              <p className="refund-hint" style={{ marginTop: 6 }}>
+                {REQUEST_TYPES.find((type) => type.value === form.requestType)?.hint}
+              </p>
+            </div>
             <div className="refund-field">
               <label htmlFor="refund-name">Full name</label>
               <input id="refund-name" required value={form.fullName} onChange={(event) => updateField("fullName", event.target.value)} placeholder="Your full name" />
@@ -143,7 +166,9 @@ export default function RefundRequest() {
               cannot find it, email <a href="mailto:info@axocom.in" style={{ color: "#128F9D", fontWeight: 700, textDecoration: "underline" }}>info@axocom.in</a> and we will look it up for you.
             </p>
             <div className="refund-field full">
-              <label htmlFor="refund-reason">Reason for the refund</label>
+              <label htmlFor="refund-reason">
+                {form.requestType === "refund" ? "Reason for the refund" : "Tell us what happened"}
+              </label>
               <textarea id="refund-reason" required value={form.reason} onChange={(event) => updateField("reason", event.target.value)} placeholder="Tell us why you are requesting a refund, and anything that helps us process it faster." />
             </div>
             <p className="refund-hint" style={{ gridColumn: "1/-1" }}>
