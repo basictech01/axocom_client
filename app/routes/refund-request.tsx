@@ -17,12 +17,12 @@ const REQUEST_TYPES: Array<{ value: SupportRequestType; label: string; hint: str
 ];
 
 const seo = {
-  title: "Request a Refund | Devbhoomi AI Summit 2026",
+  title: "Get Help | Devbhoomi AI Summit 2026",
   description:
-    "Raise a refund request for a Devbhoomi AI Summit 2026 delegate pass or award nomination and track it with your ticket reference.",
+    "Request a refund, report a payment that has not shown up, or ask about a Devbhoomi AI Summit 2026 delegate pass or nomination, and track it with your ticket reference.",
   path: "/refund-request",
   image: "/images/devbhoomi-ai/summit-logo.png",
-  imageAlt: "Devbhoomi AI Summit 2026 refund request",
+  imageAlt: "Devbhoomi AI Summit 2026 help and support",
 };
 
 export const meta = () => buildSeoMeta(seo);
@@ -82,13 +82,13 @@ export default function RefundRequest() {
       });
 
       const id = response.data?.createRefundRequest.ticketId;
-      if (!id) throw new Error("Refund request failed");
+      if (!id) throw new Error("Could not raise your request");
       setTicketId(id);
     } catch (submitError) {
       const message =
         submitError instanceof Error && submitError.message
           ? submitError.message
-          : "We could not raise your refund request. Please email info@axocom.in directly.";
+          : "We could not raise your request. Please email info@axocom.in directly.";
       setError(message);
     } finally {
       setSending(false);
@@ -97,7 +97,7 @@ export default function RefundRequest() {
 
   return (
     <RefundShell
-      kicker="Refunds & cancellations"
+      kicker="Help & support"
       title={<>Get <span>help</span> with a registration</>}
       intro="Request a refund, tell us a payment has not shown up, or ask something else. You will get a ticket reference you can use to track it and read our replies."
     >
@@ -107,8 +107,8 @@ export default function RefundRequest() {
             <span className="refund-success-icon"><Sparkles /></span>
             <h2>Request raised</h2>
             <p>
-              Our team will review your request and reply on this ticket. You can check the status
-              and our replies at any time.
+              Our team will look into it and reply on this ticket. You can check the status and our
+              replies at any time.
             </p>
             <div className="refund-ticket-box">
               Your ticket reference
@@ -171,12 +171,14 @@ export default function RefundRequest() {
               </label>
               <textarea id="refund-reason" required value={form.reason} onChange={(event) => updateField("reason", event.target.value)} placeholder="Tell us why you are requesting a refund, and anything that helps us process it faster." />
             </div>
-            <p className="refund-hint" style={{ gridColumn: "1/-1" }}>
-              Refunds are governed by our <a href="/refund-policy" style={{ color: "#128F9D", fontWeight: 700, textDecoration: "underline" }}>Refund &amp; Cancellation Policy</a>.
-              Requests raised at least 7 days before the event date are eligible for a full refund.
-            </p>
+            {form.requestType === "refund" && (
+              <p className="refund-hint" style={{ gridColumn: "1/-1" }}>
+                Refunds are governed by our <a href="/refund-policy" style={{ color: "#128F9D", fontWeight: 700, textDecoration: "underline" }}>Refund &amp; Cancellation Policy</a>.
+                Requests raised at least 7 days before the event date are eligible for a full refund.
+              </p>
+            )}
             <button className="refund-submit" type="submit" disabled={sending}>
-              {sending ? "Raising request..." : "Raise refund request"}
+              {sending ? "Raising request..." : "Raise request"}
             </button>
             {error && <p className="refund-error">{error}</p>}
           </form>
@@ -185,7 +187,7 @@ export default function RefundRequest() {
 
       {!ticketId && (
         <p className="refund-alt">
-          Already raised a request? <a href="/refund-status">Track it with your ticket reference</a>.
+          Already raised one? <a href="/refund-status">Track it with your ticket reference</a>.
         </p>
       )}
     </RefundShell>

@@ -53,7 +53,7 @@ const RefundPolicy: React.FC = () => (
 
     <h2>5. How to request a refund</h2>
     <p>
-      Raise your request on our <a href="/refund-request">refund request form</a>. You will receive a ticket
+      Raise your request on our <a href="/refund-request">help form</a>, choosing "Request a refund". You will receive a ticket
       reference you can use to <a href="/refund-status">track the request</a> and read our replies. Alternatively,
       write to us at <a href="mailto:info@axocom.in">info@axocom.in</a> or call{' '}
       <a href="tel:+917017451797">+91 70174 51797</a> with your name, registered email/phone, the event or service

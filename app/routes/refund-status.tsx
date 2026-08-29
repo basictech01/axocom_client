@@ -14,12 +14,12 @@ import {
 import type { RefundTicket } from "~/features/summit/types";
 
 const seo = {
-  title: "Track Refund Request | Devbhoomi AI Summit 2026",
+  title: "Track a Request | Devbhoomi AI Summit 2026",
   description:
-    "Check the status of your Devbhoomi AI Summit 2026 refund request and read replies from the team using your ticket reference.",
+    "Check the status of your Devbhoomi AI Summit 2026 request and read replies from the team using your ticket reference.",
   path: "/refund-status",
   image: "/images/devbhoomi-ai/summit-logo.png",
-  imageAlt: "Devbhoomi AI Summit 2026 refund status",
+  imageAlt: "Devbhoomi AI Summit 2026 request status",
 };
 
 export const meta = () => buildSeoMeta(seo);
@@ -107,8 +107,8 @@ export default function RefundStatus() {
 
   return (
     <RefundShell
-      kicker="Refunds & cancellations"
-      title={<>Track your <span>refund request</span></>}
+      kicker="Help & support"
+      title={<>Track your <span>request</span></>}
       intro="Enter the ticket reference you received along with the email address you filed the request with. Both are required so nobody else can open your request."
     >
       <div className="refund-card">

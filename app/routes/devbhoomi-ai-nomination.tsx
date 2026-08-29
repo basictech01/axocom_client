@@ -458,8 +458,8 @@ export default function DevbhoomiAINomination() {
         <div className="nomination-shell nomination-footer-inner">
           <span>© 2026 Devbhoomi AI Summit. All rights reserved.</span>
           <nav className="nomination-footer-links" aria-label="Policies and support">
-            <a href="/refund-request">Request a refund</a>
-            <a href="/refund-status">Track a refund</a>
+            <a href="/refund-request">Get help</a>
+            <a href="/refund-status">Track a request</a>
             <a href="/refund-policy">Refund policy</a>
             <a href="/terms-and-conditions">Terms</a>
             <a href="/privacy-policy">Privacy</a>
