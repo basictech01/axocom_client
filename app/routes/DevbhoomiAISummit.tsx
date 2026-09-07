@@ -882,6 +882,9 @@ const DevbhoomiAISummit: React.FC = () => {
               Connect your organisation with Uttarakhand's AI ecosystem. Submit your
               interest and our summit team will share partnership opportunities.
             </p>
+            <a className="summit-btn summit-btn-outline" href="/DevbhoomiAISummit/sponsorship">
+              Learn more <span className="material-symbols-rounded">arrow_forward</span>
+            </a>
             <div className="summit-card summit-contact-card">
               <BrandIcon icon={CalendarDays} />
               <div><h3>October 9, 2026</h3><p>A full day of keynotes, showcases and collaboration.</p></div>
