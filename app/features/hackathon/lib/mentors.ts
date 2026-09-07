@@ -149,4 +149,15 @@ export const MENTORS: ProgrammeMentor[] = [
     image: "/hackathon/mentors/niraj.jpeg",
     linkedinUrl: "https://www.linkedin.com/in/niraj-kamdar-5ab13a1a9/",
   },
+  {
+    id: "mentor-chandrakant-purohit",
+    name: "Chandrakant Purohit",
+    designation: "CEO",
+    organization: "TechYard Labs",
+    expertise: "Digital Marketing, SEO, PPC, SMM, ORM, Lead Generation, Website Development",
+    bio: "Guides teams on digital marketing, search visibility, lead generation, online reputation, and website development.",
+    initials: "CP",
+    image: "/hackathon/mentors/chandrakant.jpeg",
+    linkedinUrl: "https://www.linkedin.com/in/chandrakant-purohit-043a1019/",
+  },
 ];

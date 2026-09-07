@@ -208,21 +208,21 @@ const roleChips = [
 ];
 
 const partnershipCategories = [
+  { category: "Presented By (Booked)", investment: "₹15,00,000", deliverables: "Naming rights, keynote, premium panel seat, premium branding, exhibition space, media features & VIP networking.", booked: true },
   { category: "River Conversation Partner (Booked)", investment: "₹5,00,000", deliverables: "River Conversation Partner recognition, session association, prominent branding & stakeholder networking.", booked: true },
   { category: "Associate Partner", investment: "₹1,50,000", deliverables: "Partner recognition, website/collateral branding, digital visibility, delegate passes & networking." },
   { category: "Media Partner", investment: "₹2,00,000", deliverables: "Media Partner recognition, prominent branding, digital visibility, stakeholder access & event recognition." },
   { category: "Mobility Partner", investment: "₹2,50,000", deliverables: "Mobility showcase, relevant panel opportunity, branding, exhibition & networking." },
   { category: "Infrastructure Partner", investment: "₹3,00,000", deliverables: "Infrastructure showcase, relevant panel opportunity, branding, exhibition & stakeholder networking." },
   { category: "Industrial Partner", investment: "₹3,00,000", deliverables: "Industry-use-case showcase, panel opportunity, branding, exhibition & industry networking." },
-  { category: "FinTech Partner", investment: "₹5,00,000", deliverables: "Academic recognition, student/faculty engagement, panel/mentor opportunity, branding & networking." },
-  { category: "Cloud Partner", investment: "₹5,00,000", deliverables: "Cloud showcase, panel opportunity, prominent branding, exhibition & stakeholder networking." },
-  { category: "Innovation Partner", investment: "₹5,00,000", deliverables: "Innovation showcase, panel opportunity, branding, exhibition & startup networking." },
-  { category: "Technology Partner", investment: "₹5,00,000", deliverables: "Technology showcase, panel/demo opportunity, prominent branding, exhibition & networking." },
-  { category: "Knowledge Partner", investment: "₹5,00,000", deliverables: "Panel opportunity, prominent branding, knowledge-session association, exhibition & networking." },
-  { category: "AI Partner", investment: "₹7,50,000", deliverables: "AI Partner recognition, panel opportunity, logo visibility, AI showcase & exhibition space." },
-  { category: "Co-Powered By", investment: "₹10,00,000", deliverables: "Premium branding, senior leadership panel seat, exhibition space, media coverage & stakeholder networking." },
-  { category: "Powered By", investment: "₹12,00,000", deliverables: "Prominent branding, keynote/panel opportunity, exhibition space, media visibility & stakeholder networking." },
-  { category: "Presented By", investment: "₹15,00,000", deliverables: "Naming rights, keynote, premium panel seat, premium branding, exhibition space, media features & VIP networking." },
+  { category: "FinTech Partner", investment: "₹3,00,000", deliverables: "Academic recognition, student/faculty engagement, panel/mentor opportunity, branding & networking." },
+  { category: "Cloud Partner", investment: "₹3,00,000", deliverables: "Cloud showcase, panel opportunity, prominent branding, exhibition & stakeholder networking." },
+  { category: "Innovation Partner", investment: "₹3,00,000", deliverables: "Innovation showcase, panel opportunity, branding, exhibition & startup networking." },
+  { category: "Technology Partner", investment: "₹3,00,000", deliverables: "Technology showcase, panel/demo opportunity, prominent branding, exhibition & networking." },
+  { category: "Knowledge Partner", investment: "₹3,00,000", deliverables: "Panel opportunity, prominent branding, knowledge-session association, exhibition & networking." },
+  { category: "AI Partner", investment: "₹5,00,000", deliverables: "AI Partner recognition, panel opportunity, logo visibility, AI showcase & exhibition space." },
+  { category: "Co-Powered By", investment: "₹4,00,000", deliverables: "Premium branding, senior leadership panel seat, exhibition space, media coverage & stakeholder networking." },
+  { category: "Powered By", investment: "₹5,00,000", deliverables: "Prominent branding, keynote/panel opportunity, exhibition space, media visibility & stakeholder networking." },
 ];
 
 const socialLinks = [

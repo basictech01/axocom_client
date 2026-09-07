@@ -10,6 +10,7 @@ export default [
     route("election-management", "routes/election-page.tsx"),
     route("nprweek2026", "routes/nprweek2026.tsx"),
     route("DevbhoomiAISummit", "routes/DevbhoomiAISummit.tsx"),
+    route("DevbhoomiAISummit/proposal-slides", "routes/devbhoomi-ai-summit-proposal-slides.tsx"),
     route("UISHackathon", "routes/hackathon-legacy-redirect.tsx"),
     route("UKISHackathon/hackathon-proposal-slides", "routes/hackathon-proposal-slides.tsx"),
     route("DevbhoomiAISummit/nomination", "routes/devbhoomi-ai-nomination.tsx"),

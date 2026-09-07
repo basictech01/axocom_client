@@ -33,4 +33,11 @@ export const HIRING_PARTNERS: HiringPartner[] = [
     logo: "/hackathon/metasquare.png",
     url: "https://metasquare.tech/",
   },
+  {
+    id: "hiring-tekclap",
+    name: "Tekclap",
+    role: "Hiring Partner",
+    logo: "/hackathon/logos/tekclap_logo.jpg",
+    url: "https://tekclap.com/",
+  },
 ];
