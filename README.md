@@ -416,7 +416,7 @@ Election data and results tracking:
 **Data Operations**:
 
 - List all elections with metadata
-- Query election results by constituency/party
+- Query election results by constituency or party
 - Get candidate performance in elections
 
 **Components**:
