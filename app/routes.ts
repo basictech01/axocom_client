@@ -15,6 +15,7 @@ export default [
     route("UKISHackathon/hackathon-proposal-slides", "routes/hackathon-proposal-slides.tsx"),
     route("DevbhoomiAISummit/nomination", "routes/devbhoomi-ai-nomination.tsx"),
     route("DevbhoomiAISummit/delegate-pass", "routes/devbhoomi-ai-delegate-pass.tsx"),
+    route("DevbhoomiAISummit/sponsorship", "routes/devbhoomi-ai-sponsorship.tsx"),
     route("UKISHackathon", "features/hackathon/Layout.tsx", [
         index("features/hackathon/pages/Home.tsx"),
         route("problems", "features/hackathon/pages/Problems.tsx"),
