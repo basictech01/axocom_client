@@ -173,6 +173,12 @@ const speakers: SummitSpeaker[] = [
     linkedin: "https://www.linkedin.com/in/singh-ravishankar/"
   },
   {
+    name: "Amit Joshi",
+    role: "General Manager - Cyber Security",
+    image: "/images/amit_joshi.jpeg",
+    linkedin: "https://www.linkedin.com/in/amitjoshi26/",
+  },
+  {
     name: "Shri Ashish Upadhyaya",
     role: "DGM Cyber Security",
     image: "/images/ashish_upadhyay.jpg.jpeg",
