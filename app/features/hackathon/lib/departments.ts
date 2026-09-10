@@ -69,7 +69,7 @@ export const governmentDepartments = {
     name: "Information Technology Development Agency (I.T.D.A), Uttarakhand",
   },
   "information-public-relations": {
-    name: "Information and Public Relation Department, Uttarakhand",
+    name: "Information and Public Relations Department, Uttarakhand",
     url: "https://uttarainformation.gov.in/",
   },
   irrigation: {
