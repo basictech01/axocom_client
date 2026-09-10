@@ -29,6 +29,8 @@ When adding a problem:
 | P-010 Wildlife and Human-Conflict | Forest Department |
 | P-011 Mountain Disaster Early Warning | Disaster Mitigation and Management Centre (DMMC) |
 | P-012 Geospatial Urban Planning | Town and Country Planning Department |
+| P-013 Citizen-First Apuni Sarkar UI/UX Redesign | Information Technology Development Agency (I.T.D.A) |
+| P-014 Social Media Trends & Automated Public Communication | Information and Public Relations Department (nodal agency) |
 
 ## Uttarakhand department directory
 
@@ -53,7 +55,7 @@ This directory was supplied for use when categorising hackathon problems. Entrie
 | Forest Department, Uttarakhand | Not supplied |
 | Higher Education Department, Uttarakhand | https://he.uk.gov.in/ |
 | Information Technology Development Agency (I.T.D.A), Uttarakhand | Not supplied |
-| Information and Public Relation Department, Uttarakhand | https://uttarainformation.gov.in/ |
+| Information and Public Relations Department, Uttarakhand | https://uttarainformation.gov.in/ |
 | Irrigation Department, Uttarakhand | https://irrigation.uk.gov.in/ |
 | Labour Department, Uttarakhand | https://labour.uk.gov.in/ |
 | Medical Education Department, Uttarakhand | https://medicaleducation.uk.gov.in/ |

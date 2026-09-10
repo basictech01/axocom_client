@@ -340,6 +340,78 @@ export const problems: Problem[] = [
     publishedAt: "2026-08-06",
     solutionCount: 0,
   },
+  {
+    id: "P-013",
+    title: "Citizen-First UI/UX Redesign of Apuni Sarkar e-Services",
+    theme: "Making Uttarakhand's Digital Public Services Simple and Mobile-Friendly",
+    category: "Digital Public Services, Accessibility & UX",
+    problemOwnerId: "itda",
+    description:
+      "Redesign Uttarakhand's Apuni Sarkar e-services portal (https://eservices.uk.gov.in/) to address mobile usability and navigation challenges so everyday citizens, including people with limited digital literacy, can independently find and use government services. This ITDA challenge requires a detailed user-study report and comprehensive UI/UX research, not just a visual makeover. Validate the redesigned experience with citizens. As an optional enhancement, a conversational AI agent should let citizens access every citizen-facing function offered by the portal through voice or text and complete tasks end to end, not merely answer questions or navigate to pages. The conversational experience must complement, not replace, an intuitive accessible interface.",
+    capabilities: [
+      "Conduct consent-based interviews and task observations with a diverse mix of rural and urban citizens, older adults, people with disabilities and first-time digital-service users; document participant profiles, methodology and anonymised evidence",
+      "Audit existing mobile and desktop journeys, information architecture, content and accessibility; benchmark comparable public-service portals and prioritise issues by user impact",
+      "Use research-backed personas, journey maps and usability findings to simplify service discovery and organise navigation around citizen needs rather than requiring knowledge of departments",
+      "Design responsive, mobile-first journeys for registration, service applications, document uploads, application-status tracking and certificate downloads, including clear validation and error recovery",
+      "Provide plain-language Hindi and English content, clear document requirements and progress indicators, with layouts suitable for small screens and low-bandwidth connections",
+      "Design and test against WCAG 2.2 AA accessibility criteria, including keyboard navigation, screen-reader labels, readable contrast and touch-friendly controls",
+      "Run task-based usability tests on the existing experience and redesigned prototype; compare task completion, time on task, errors and user satisfaction, and iterate based on findings",
+      "Optional conversational AI: inventory every existing citizen-facing portal function and provide equivalent Hindi/English voice-and-text workflows, including service discovery, eligibility and document guidance, registration and account management, application completion and submission, document uploads, payments where offered, status tracking, certificate downloads and verification, and grievances or support",
+      "For the conversational AI enhancement, collect and validate information through dialogue, retain task context, let citizens review and correct details, execute authorised operations and return verifiable status, acknowledgements or downloadable results rather than only redirecting to pages; use secure embedded controls for uploads, authentication and payments where needed",
+      "For the conversational AI enhancement, enforce authentication and user permissions, protect personal data, keep passwords and OTPs out of chat, require explicit confirmation before submissions, payments or other consequential actions, and provide clear failure recovery and a usable non-AI fallback; use approved integrations or clearly labelled sandbox demonstrations without claiming simulated actions succeeded on the live portal",
+    ],
+    applications: [
+      "Find the right service and understand the requirements for income, domicile or caste certificates",
+      "Register and complete an application from a mobile phone with minimal assistance",
+      "Check application status, download or verify certificates, and find grievance or support channels",
+      "Optionally request a certificate in everyday language, provide application details conversationally, upload supporting documents, review and confirm submission, complete any applicable payment securely, and receive an acknowledgement through the same conversational workflow",
+      "Optionally manage an account, track an application, download or verify a certificate, or submit and follow up on a grievance through conversation, with equivalent access to every other citizen-facing portal function",
+    ],
+    outcomes: [
+      "Required detailed user-study report covering research questions, recruitment and participant profiles, methods, anonymised findings, pain points, personas, journey maps and study limitations",
+      "Required comprehensive UI/UX research report covering the current-site audit, comparative benchmarking, accessibility assessment, revised information architecture and evidence-linked design decisions",
+      "An interactive mobile-first prototype with desktop adaptations, key end-to-end citizen journeys and a reusable, accessible UI component system",
+      "If the AI enhancement is included, a conversational prototype with a function-by-function parity matrix covering every existing citizen-facing portal capability, end-to-end task demonstrations and usability evidence; document authentication and confirmation steps, integration dependencies and any mocked or unsupported operations explicitly",
+      "A usability-validation report comparing baseline and redesigned task performance, documenting design iterations and remaining issues without unsupported improvement claims",
+      "A prioritised implementation handoff for ITDA, including design specifications, accessibility recommendations, technical dependencies and a phased rollout plan",
+      "Easier independent access to government services, fewer navigation and form errors, and reduced reliance on intermediaries, supported by citizen-testing evidence",
+    ],
+    difficulty: "Advanced",
+    publishedAt: "2026-09-09",
+    solutionCount: 0,
+  },
+  {
+  "id": "P-014",
+  "title": "AI-Driven Social Media Trends & Automated Public Communication Pipeline",
+  "theme": "Scalable, Intelligent Government Communication",
+  "category": "Media & Communication AI",
+  "problemOwnerId": "information-public-relations",
+  "description": "Government departments need a unified AI engine to monitor social trends, identify citizen information gaps, and deploy factual, non-partisan public awareness campaigns. This solution must integrate NLP-driven trend analysis, AI content generation, and multi-channel distribution into a single, highly auditable workflow.",
+  "capabilities": [
+    "Monitor authorized social platforms using NLP to identify emerging civic topics, hashtags, and recurring citizen queries.",
+    "Convert trend data into actionable campaign briefs detailing objectives, verified sources, and publishing schedules.",
+    "Generate context-aware Hindi and English assets (social posts, video scripts, infographics) using a multilingual RAG engine grounded strictly in approved government data.",
+    "Provide an intuitive workspace with reusable templates and plain-language tools for non-technical communication officers.",
+    "Enforce strict role-based access control (RBAC), routing drafts for fact-checking and explicit officer approval prior to publication.",
+    "Schedule and publish across official channels via API integrations, featuring automated tracking, failure handling, and rollback controls.",
+    "Adhere strictly to platform policies and privacy laws, ensuring zero individual profiling, fabricated engagement, or partisan targeting."
+  ],
+  "applications": [
+    "Rapidly deploy scheme awareness campaigns explaining government services, eligibility, and application deadlines.",
+    "Publish coordinated public-health, weather, and disaster alerts using verified data.",
+    "Auto-generate dynamic, plain-language explainers and FAQs to answer trending citizen questions.",
+    "Sync departmental event announcements and citizen-service outreach across all official channels efficiently."
+  ],
+  "outcomes": [
+    "Drastic reduction in staff time required for content drafting and trend research.",
+    "Faster deployment of verified public advisories without bypassing strict accountability and approval chains.",
+    "Consistent, high-quality, and multilingual messaging across all government departments.",
+    "Delivery of an auditable, end-to-end prototype proving trend discovery, RAG-based generation, secure approvals, and automated publishing."
+  ],
+  "difficulty": "Advanced",
+  "publishedAt": "2026-09-09",
+  "solutionCount": 0
+}
 ];
 
 export function getProblemById(id: string): Problem | undefined {

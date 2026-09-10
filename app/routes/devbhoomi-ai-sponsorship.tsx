@@ -158,7 +158,7 @@ export default function DevbhoomiAISponsorship() {
         .sponsor-logo { width:auto; height:68px; object-fit:contain; }
         .sponsor-back { display:inline-flex; align-items:center; gap:8px; color:#227684; font-size:13px; font-weight:700; }
         .sponsor-back svg { width:18px; height:18px; }
-        .sponsor-hero { position:relative; overflow:hidden; padding:22px 0 20px; background:#fff; }
+        .sponsor-hero { position:relative; overflow:hidden; padding:18px 0 16px; background:#fff; }
         .sponsor-hero::after { content:""; position:absolute; inset:auto 0 -28% 0; height:84%; background:url("/images/devbhoomi-ai/summit-landscape.png") center/cover no-repeat; opacity:.07; pointer-events:none; }
         .sponsor-hero-inner { position:relative; z-index:1; }
         .sponsor-kicker { margin:0; color:#128F9D; font-size:12px; font-weight:800; letter-spacing:.14em; text-transform:uppercase; }
@@ -182,7 +182,7 @@ export default function DevbhoomiAISponsorship() {
         .sponsor-options-heading p { margin:0; color:var(--muted); font-size:11px; }
         .sponsor-compact-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); align-items:start; gap:9px; }
         .sponsor-compact { min-width:0; border:1px solid var(--line); border-radius:10px; background:#fff; }
-        .sponsor-compact summary { display:flex; align-items:center; gap:10px; min-height:78px; padding:12px; cursor:pointer; list-style:none; }
+        .sponsor-compact summary { display:flex; align-items:center; gap:10px; min-height:68px; padding:10px 12px; cursor:pointer; list-style:none; }
         .sponsor-compact summary::-webkit-details-marker { display:none; }
         .sponsor-compact summary:focus-visible { outline:2px solid #128F9D; outline-offset:3px; border-radius:10px; }
         .sponsor-compact:hover, .sponsor-compact[open] { border-color:#128F9D; }
