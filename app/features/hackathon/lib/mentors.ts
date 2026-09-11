@@ -186,4 +186,17 @@ export const MENTORS: ProgrammeMentor[] = [
     image: "/hackathon/mentors/chandrakant.jpeg",
     linkedinUrl: "https://www.linkedin.com/in/chandrakant-purohit-043a1019/",
   },
+  {
+    id: "mentor-anshul",
+    name: "Anshul",
+    designation: "Founder & CEO",
+    organization: "Nirikshan AI & AVR AI Technologies",
+    expertise: "Artificial Intelligence, Computer Vision, LLM Architectures, DevOps, Cloud",
+    bio: "Builds enterprise AI across real-time computer vision and LLM architectures. Serves on university boards aligning curricula with industry needs, and founded IECDBUU to mentor students and developers in DevOps and cloud.",
+    initials: "A",
+    image: "/hackathon/mentors/anshul.jpeg",
+    imageWidth: 1086,
+    imageHeight: 1448,
+    linkedinUrl: "https://www.linkedin.com/in/anshultech1/",
+  },
 ];
