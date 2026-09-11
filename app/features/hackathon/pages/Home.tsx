@@ -18,6 +18,9 @@ import {
   HomeFinalCta,
   HomeCommunity,
 } from "~/features/hackathon/components/home";
+import { buildHomeSeoMeta } from "~/features/hackathon/lib/seo";
+
+export const meta = buildHomeSeoMeta;
 
 export default function Home() {
   return (

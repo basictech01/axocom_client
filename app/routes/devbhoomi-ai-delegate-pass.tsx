@@ -9,6 +9,11 @@ import {
   Star,
 } from "lucide-react";
 import { buildSeoLinks, buildSeoMeta } from "~/lib/seo";
+import { apolloClient } from "~/lib/api";
+import { REGISTER_DELEGATE_PASS_MUTATION } from "~/features/summit/services";
+import { formatPaise, calculateGst, formatGstRate } from "~/features/summit/lib/money";
+import { useRazorpayCheckout } from "~/features/summit/hooks/useRazorpayCheckout";
+import { REGISTRATION_TYPE } from "~/features/summit/types";
 
 const seo = {
   title: "Delegate Passes | Devbhoomi AI Summit 2026",
@@ -35,7 +40,7 @@ export const links = () => [
 ];
 
 const delegatePasses = [
-  { name: "Startup Pass", audience: "Startups", price: 1499, icon: Rocket, note: "For founders and startup team members." },
+  { name: "Startup Pass", audience: "Startups", price: 1499, icon: Rocket, note: "For founders and startup team members.", requiresStartupDetails: true },
   { name: "Professional Pass", audience: "Professionals", price: 2999, icon: BriefcaseBusiness, note: "For independent professionals and specialists." },
   { name: "Delegate Pass", audience: "Delegates", price: 7500, icon: Building2, note: "For delegates and institutional representatives.", featured: true },
   { name: "Executive Pass", audience: "Executives", price: 14999, icon: Star, note: "For senior leaders and decision-makers." },
@@ -44,8 +49,11 @@ const delegatePasses = [
 
 const formatPrice = (price: number) => `₹${price.toLocaleString("en-IN")}`;
 
+const MIN_STARTUP_DETAILS = 20;
+
 const initialForm = {
   name: "",
+  startupDetails: "",
   designation: "",
   organisation: "",
   email: "",
@@ -59,31 +67,38 @@ export default function DevbhoomiAIDelegatePass() {
   const [form, setForm] = useState(initialForm);
   const [sending, setSending] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [registrationId, setRegistrationId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const checkout = useRazorpayCheckout();
 
   const selected = delegatePasses.find((pass) => pass.name === selectedPass) ?? delegatePasses[1];
-  const totalPrice = selected.price * Number(form.quantity);
+  const quantity = Number(form.quantity);
+  const totalPrice = selected.price * quantity;
+  // Mirrors the server calculation so the visitor sees what will be charged
+  // before submitting; the server recomputes it and its figure is authoritative.
+  const gst = calculateGst(selected.price, quantity);
 
   const updateField = (field: keyof typeof initialForm, value: string) => {
     setForm((current) => ({ ...current, [field]: value }));
   };
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (sending) return;
-
-    setSending(true);
-    setError(null);
-
+  /**
+   * Notifies the summit inbox. Best-effort only: the registration is already
+   * persisted by the time this runs, so a failure here must not fail the flow.
+   */
+  const notifyByEmail = async (id: string) => {
     try {
-      const response = await fetch("https://formsubmit.co/ajax/sponsorship@axocom.in", {
+      await fetch("https://formsubmit.co/ajax/sponsorship@axocom.in", {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify({
+          registration_id: id,
           delegate_pass: `${selected.name} - ${formatPrice(selected.price)} per delegate + GST`,
           audience: selected.audience,
           quantity: form.quantity,
-          total_price: `${formatPrice(totalPrice)} + GST`,
+          subtotal: formatPaise(gst.subtotalAmount),
+          gst: `${formatGstRate(gst.gstRateBps)} - ${formatPaise(gst.gstAmount)}`,
+          total_price: formatPaise(gst.totalAmount),
           name: form.name,
           designation: form.designation,
           organisation: form.organisation,
@@ -94,11 +109,49 @@ export default function DevbhoomiAIDelegatePass() {
           _template: "table",
         }),
       });
-
-      if (!response.ok) throw new Error("Request failed");
-      setSubmitted(true);
     } catch {
-      setError("We could not submit your registration. Please email sponsorship@axocom.in directly.");
+      // Swallowed on purpose - the record is safe in the database.
+    }
+  };
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (sending) return;
+
+    setSending(true);
+    setError(null);
+
+    try {
+      const response = await apolloClient.mutate({
+        mutation: REGISTER_DELEGATE_PASS_MUTATION,
+        variables: {
+          input: {
+            fullName: form.name,
+            designation: form.designation,
+            organisation: form.organisation,
+            email: form.email,
+            phone: form.phone,
+            passName: selected.name,
+            quantity: Number(form.quantity),
+            gstNumber: form.gstNumber || null,
+            startupDetails: selected.requiresStartupDetails ? form.startupDetails.trim() : null,
+            contactConsent: true,
+          },
+        },
+      });
+
+      const id = response.data?.registerDelegatePass.registrationId;
+      if (!id) throw new Error("Registration failed");
+
+      await notifyByEmail(id);
+      setRegistrationId(id);
+      setSubmitted(true);
+    } catch (submitError) {
+      const message =
+        submitError instanceof Error && submitError.message
+          ? submitError.message
+          : "We could not submit your registration. Please email sponsorship@axocom.in directly.";
+      setError(message);
     } finally {
       setSending(false);
     }
@@ -152,6 +205,13 @@ export default function DevbhoomiAIDelegatePass() {
         .delegate-selected-price { margin:8px 0 0; color:var(--ink); font-size:30px; line-height:1.2; font-weight:800; }
         .delegate-selected-price small { color:var(--muted); font-size:11px; font-weight:600; }
         .delegate-selected-detail { margin:7px 0 0!important; color:var(--muted); font-size:11px; line-height:1.5!important; }
+        .delegate-breakdown { display:grid; gap:7px; margin:14px 0 0; padding-top:13px; border-top:1px solid #EDF0F1; }
+        .delegate-breakdown div { display:flex; align-items:baseline; justify-content:space-between; gap:12px; }
+        .delegate-breakdown dt { color:var(--muted); font-size:11px; }
+        .delegate-breakdown dd { margin:0; font-size:12px; font-weight:700; }
+        .delegate-breakdown-total { padding-top:7px; border-top:1px solid #EDF0F1; }
+        .delegate-breakdown-total dt { color:var(--ink)!important; font-weight:700; }
+        .delegate-breakdown-total dd { color:#168D9D; font-size:14px; }
         .delegate-form-card { padding:34px; border:1px solid var(--line); border-radius:8px; background:#fff; box-shadow:0 18px 48px rgba(44,79,150,.09); }
         .delegate-form-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:20px 18px; align-items:start; }
         .delegate-field { min-width:0; display:grid; grid-template-rows:18px auto; gap:8px; }
@@ -159,6 +219,9 @@ export default function DevbhoomiAIDelegatePass() {
         .delegate-field label { display:flex; align-items:center; font-size:12px; font-weight:700; line-height:18px; }
         .delegate-field input, .delegate-field select { width:100%; min-width:0; height:48px; margin:0; padding:0 14px; border:1px solid #D6DCDD; border-radius:7px; color:var(--ink); background:#fff; font:inherit; font-size:13px; outline:0; }
         .delegate-field input:focus, .delegate-field select:focus { border-color:#17A9AB; box-shadow:0 0 0 3px rgba(23,182,184,.11); }
+        .delegate-field textarea { width:100%; min-width:0; min-height:110px; margin:0; padding:13px 14px; border:1px solid #D6DCDD; border-radius:7px; color:var(--ink); background:#fff; font:inherit; font-size:13px; line-height:1.6; resize:vertical; outline:0; }
+        .delegate-field textarea:focus { border-color:#17A9AB; box-shadow:0 0 0 3px rgba(23,182,184,.11); }
+        .delegate-warning { grid-column:1/-1; margin:0; padding:12px 14px; border:1px solid #F3C0BB; border-left:3px solid #B42318; border-radius:7px; color:#8A1C15; background:#FDF3F2; font-size:11px; line-height:1.6; }
         .delegate-consent { grid-column:1/-1; display:flex; align-items:flex-start; gap:10px; color:var(--muted); font-size:11px; line-height:1.5; }
         .delegate-consent input { width:16px; height:16px; flex:0 0 16px; margin:1px 0 0; accent-color:#168D9D; }
         .delegate-submit { grid-column:1/-1; width:100%; min-height:52px; border:0; border-radius:8px; color:#fff; background:var(--gradient); font:inherit; font-size:14px; font-weight:800; cursor:pointer; }
@@ -168,8 +231,16 @@ export default function DevbhoomiAIDelegatePass() {
         .delegate-success-icon { width:64px; height:64px; margin:0 auto; display:grid; place-items:center; border-radius:50%; color:#fff; background:var(--gradient); }
         .delegate-success h2 { margin:22px 0 0; font-size:32px; }
         .delegate-success p { max-width:480px; margin:12px auto 24px; color:var(--muted); line-height:1.7; }
+        .delegate-reference { display:grid; gap:4px; max-width:420px; margin:0 auto 24px!important; padding:14px 16px; border:1px dashed #C9D6D8; border-radius:8px; background:#F7FAFA; font-size:11px; }
+        .delegate-secondary { width:100%; min-height:46px; margin-top:12px; border:1px solid #D6DCDD; border-radius:8px; color:var(--muted); background:#fff; font:inherit; font-size:13px; font-weight:700; cursor:pointer; }
+        .delegate-success .delegate-error { margin:14px auto 0; }
+        .delegate-reference-row { display:grid; gap:4px; margin-top:9px; padding-top:9px; border-top:1px solid #E4EAEB; }
+        .delegate-reference strong { color:var(--ink); font-size:15px; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing:.02em; }
         .delegate-footer { padding:26px 0; border-top:1px solid var(--line); color:var(--muted); background:#fff; font-size:11px; }
-        .delegate-footer-inner { display:flex; justify-content:space-between; gap:20px; }
+        .delegate-footer-inner { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px 20px; }
+        .delegate-footer-links { display:flex; flex-wrap:wrap; gap:6px 18px; }
+        .delegate-footer-links a { color:#227684; font-weight:600; }
+        .delegate-footer-links a:hover { text-decoration:underline; }
         @media (max-width:1080px) { .delegate-passes { grid-template-columns:repeat(3,1fr); } }
         @media (max-width:900px) { .delegate-form-section { grid-template-columns:1fr; } .delegate-form-copy { position:static; } }
         @media (max-width:700px) { .delegate-passes { grid-template-columns:1fr; } .delegate-pass-note { min-height:0; } }
@@ -232,8 +303,22 @@ export default function DevbhoomiAIDelegatePass() {
             <div className="delegate-selected">
               <span>Selected pass</span>
               <strong>{selected.name}</strong>
-              <p className="delegate-selected-price">{formatPrice(totalPrice)} <small>+ GST</small></p>
-              <p className="delegate-selected-detail">{form.quantity} × {formatPrice(selected.price)} per delegate</p>
+              <p className="delegate-selected-price">{formatPaise(gst.totalAmount)}</p>
+              <p className="delegate-selected-detail">Payable including GST</p>
+              <dl className="delegate-breakdown">
+                <div>
+                  <dt>{form.quantity} × {formatPrice(selected.price)}</dt>
+                  <dd>{formatPaise(gst.subtotalAmount)}</dd>
+                </div>
+                <div>
+                  <dt>GST {formatGstRate(gst.gstRateBps)} ({formatPaise(gst.unitGstAmount)} per pass)</dt>
+                  <dd>{formatPaise(gst.gstAmount)}</dd>
+                </div>
+                <div className="delegate-breakdown-total">
+                  <dt>Total payable</dt>
+                  <dd>{formatPaise(gst.totalAmount)}</dd>
+                </div>
+              </dl>
             </div>
           </div>
 
@@ -241,9 +326,61 @@ export default function DevbhoomiAIDelegatePass() {
             {submitted ? (
               <div className="delegate-success">
                 <span className="delegate-success-icon"><Sparkles /></span>
-                <h2>Pass request received</h2>
-                <p>Thank you. The Devbhoomi AI Summit team will contact you with availability and payment details.</p>
-                <button className="delegate-submit" type="button" onClick={() => { setSubmitted(false); setForm(initialForm); }}>Register another delegate</button>
+                {checkout.stage === "paid" ? (
+                  <>
+                    <h2>Payment received</h2>
+                    <p>Thank you. We will confirm your registration seat on your registered email address.</p>
+                  </>
+                ) : (
+                  <>
+                    <h2>Registration saved</h2>
+                    <p>Your details are saved. Complete the payment below to confirm your seat.</p>
+                  </>
+                )}
+                {registrationId && (
+                  <p className="delegate-reference">
+                    Registration reference<strong>{registrationId}</strong>
+                    {checkout.receipt?.razorpayPaymentId ? (
+                      <>
+                        <span className="delegate-reference-row">
+                          Payment ID<strong>{checkout.receipt.razorpayPaymentId}</strong>
+                        </span>
+                        <span className="delegate-reference-row">
+                          Order ID<strong>{checkout.receipt.razorpayOrderId}</strong>
+                        </span>
+                        Keep these for any follow-up or refund request.
+                      </>
+                    ) : (
+                      "Keep this handy for any follow-up or refund request."
+                    )}
+                  </p>
+                )}
+                {checkout.stage !== "paid" && registrationId && (
+                  <button
+                    className="delegate-submit"
+                    type="button"
+                    disabled={checkout.isBusy}
+                    onClick={() => void checkout.start({
+                      registrationType: REGISTRATION_TYPE.DELEGATE_PASS,
+                      registrationId,
+                      description: `${selected.name} × ${form.quantity}`,
+                    })}
+                  >
+                    {checkout.stage === "verifying"
+                      ? "Verifying payment..."
+                      : checkout.isBusy
+                        ? "Opening payment..."
+                        : `Pay ${formatPaise(gst.totalAmount)}`}
+                  </button>
+                )}
+                {checkout.error && <p className="delegate-error">{checkout.error}</p>}
+                <button
+                  className="delegate-secondary"
+                  type="button"
+                  onClick={() => { setSubmitted(false); setRegistrationId(null); setForm(initialForm); checkout.reset(); }}
+                >
+                  Register another delegate
+                </button>
               </div>
             ) : (
               <form className="delegate-form-grid" onSubmit={handleSubmit}>
@@ -285,6 +422,26 @@ export default function DevbhoomiAIDelegatePass() {
                   <label htmlFor="delegate-gst">GST number (optional)</label>
                   <input id="delegate-gst" value={form.gstNumber} onChange={(event) => updateField("gstNumber", event.target.value)} placeholder="For tax invoice" />
                 </div>
+                {selected.requiresStartupDetails && (
+                  <>
+                    <div className="delegate-field full">
+                      <label htmlFor="delegate-startup">Tell us about your startup</label>
+                      <textarea
+                        id="delegate-startup"
+                        required
+                        minLength={MIN_STARTUP_DETAILS}
+                        value={form.startupDetails}
+                        onChange={(event) => updateField("startupDetails", event.target.value)}
+                        placeholder="What you are building, how far along you are, your website or registration number, and your role."
+                      />
+                    </div>
+                    <p className="delegate-warning">
+                      The {selected.name} is discounted for genuine early-stage startups. Your pass
+                      may be cancelled and refunded if we cannot verify that your startup is
+                      legitimate. Please give enough detail for us to check.
+                    </p>
+                  </>
+                )}
                 <label className="delegate-consent">
                   <input type="checkbox" required />
                   <span>I confirm that the information provided is accurate and may be used by the Devbhoomi AI Summit team to process this delegate pass request.</span>
@@ -300,6 +457,14 @@ export default function DevbhoomiAIDelegatePass() {
       <footer className="delegate-footer">
         <div className="delegate-shell delegate-footer-inner">
           <span>© 2026 Devbhoomi AI Summit. All rights reserved.</span>
+          <nav className="delegate-footer-links" aria-label="Policies and support">
+            <a href="/refund-request">Get help</a>
+            <a href="/refund-status">Track a request</a>
+            <a href="/refund-policy">Refund policy</a>
+            <a href="/terms-and-conditions">Terms</a>
+            <a href="/privacy-policy">Privacy</a>
+            <a href="/support">Support</a>
+          </nav>
           <span>Questions? sponsorship@axocom.in</span>
         </div>
       </footer>

@@ -42,6 +42,9 @@ export default function SectionImageSlot({
         <img
           src={src}
           alt=""
+          sizes="100vw"
+          loading="lazy"
+          decoding="async"
           className={cn(
             "absolute inset-0 h-full w-full object-cover object-center",
             blur && "scale-110 blur-sm",

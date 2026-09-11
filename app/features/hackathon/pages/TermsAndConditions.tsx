@@ -1,5 +1,8 @@
 import type { ReactNode } from "react";
 import { motion } from "framer-motion";
+import { buildTermsSeoMeta } from "~/features/hackathon/lib/seo";
+
+export const meta = buildTermsSeoMeta;
 
 type TextBlockData = {
   type: "text";
@@ -48,7 +51,7 @@ const terms: TermSectionData[] = [
     "blocks": [
       {
         "type": "text",
-        "text": "3.1 The Hackathon is open to individuals who are students, developers, or working professionals, participating either individually or as part of a team, subject to the conditions set out in this Section 3."
+        "text": "3.1 The Hackathon is open to individuals who are students, developers, or working professionals. A Participant may enter individually as a solo participant or as part of one team consisting of 2, 3, or 4 people. A team may not have more than four members, including its primary point of contact."
       },
       {
         "type": "text",
@@ -98,15 +101,15 @@ const terms: TermSectionData[] = [
     "blocks": [
       {
         "type": "text",
-        "text": "5.1 To participate, an individual or team must complete registration through the official channel designated on this website and provide all information requested therein."
+        "text": "5.1 To participate, an individual acting alone or a team of 2, 3, or 4 people must complete registration through the official channel designated on this website and provide all information requested therein."
       },
       {
         "type": "text",
-        "text": "5.2 Where participation is as a team, all information regarding team composition, and any limits on the number of members per team, will be specified on the registration page and forms part of these Rules by reference. Each team must designate one member as the primary point of contact for all communications relating to the Hackathon, including prize disbursement."
+        "text": "5.2 Where participation is as a team, the team must have at least two and no more than four members in total. Each team must designate one member as the primary point of contact for registration and all communications relating to the Hackathon, including eligibility verification and prize disbursement."
       },
       {
         "type": "text",
-        "text": "5.3 A Participant or team may submit more than one entry (\"Submission\"), provided that each Submission is unique and substantially different from any other Submission by the same Participant or team, as determined by the Organiser in its sole discretion. Submissions that are substantially similar or duplicative may be disqualified or treated as a single Submission at the Organiser's discretion."
+        "text": "5.3 Each person may participate in only one entry (\"Submission\") during the Hackathon. A Participant must not submit more than one entry, appear as a member of more than one team, or enter both individually and as part of a team. The Organiser may disqualify any Participant, team, or Submission that duplicates a Participant across entries or otherwise attempts to circumvent this one-entry-per-person rule."
       },
       {
         "type": "text",
@@ -440,10 +443,15 @@ export default function TermsAndConditions() {
               Official rules
             </p>
             <h1 className="font-display text-4xl font-bold text-foreground sm:text-5xl">
-              UKIS Hackathon <span className="text-brand-accent">Terms & Conditions</span>
+              UKIS 2026 <span className="text-brand-accent">Rules, Eligibility & Team Size</span>
             </h1>
+            <p className="mt-5 max-w-3xl text-base leading-relaxed text-muted-foreground">
+              These official rules cover eligibility, solo participation, teams of 2–4 people and
+              the one-entry-per-person requirement for the UKIS Hackathon organised by Axolotl
+              Emprise LLP.
+            </p>
             <p className="mt-5 text-sm text-muted-foreground">
-              Last revised: 20 August 2026
+              Last revised: 27 August 2026
             </p>
           </motion.div>
         </div>

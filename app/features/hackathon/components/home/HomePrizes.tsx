@@ -77,10 +77,18 @@ const benefits = [
 ];
 
 function useRewardCount(isInView: boolean, reduceMotion: boolean | null) {
-  const [value, setValue] = useState(0);
+  // Keep the real total in server-rendered HTML. Once hydrated, prepare the
+  // below-the-fold counter for its existing reveal animation.
+  const [value, setValue] = useState(TOTAL_REWARDS);
   const hasStarted = useRef(false);
+  const hasHydrated = useRef(false);
 
   useEffect(() => {
+    if (!hasHydrated.current) {
+      hasHydrated.current = true;
+      if (!isInView) setValue(0);
+    }
+
     if (!isInView || hasStarted.current) return;
 
     hasStarted.current = true;
@@ -88,6 +96,8 @@ function useRewardCount(isInView: boolean, reduceMotion: boolean | null) {
       setValue(TOTAL_REWARDS);
       return;
     }
+
+    setValue(0);
 
     const duration = 1_250;
     const startedAt = performance.now();

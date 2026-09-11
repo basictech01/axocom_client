@@ -46,6 +46,11 @@ export default function HomeFinalCta() {
             <img
               src="/hackathon/logos/prop1.webp"
               alt="UKIS youth audience at a programme presentation"
+              width={1200}
+              height={1600}
+              sizes="(min-width: 1280px) 1200px, 100vw"
+              loading="lazy"
+              decoding="async"
               className="h-full w-full object-cover"
             />
             <div className="final-cta-scrim absolute inset-0" aria-hidden />

@@ -41,6 +41,11 @@ export default function HomeLeadership() {
                 <img
                   src={person.image}
                   alt={person.name}
+                  width={person.imageWidth}
+                  height={person.imageHeight}
+                  sizes="(min-width: 640px) 28vw, 280px"
+                  loading="lazy"
+                  decoding="async"
                   className="w-full aspect-[1.08] object-cover object-top bg-surface-subtle"
                 />
                 {"linkedin" in person && person.linkedin ? (
@@ -56,6 +61,10 @@ export default function HomeLeadership() {
                       src="/images/linkedin.png"
                       alt=""
                       aria-hidden="true"
+                      width={512}
+                      height={512}
+                      loading="lazy"
+                      decoding="async"
                       className="h-full w-full object-contain"
                     />
                   </a>

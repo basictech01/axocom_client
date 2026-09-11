@@ -2,6 +2,13 @@ import { Button } from "~/features/hackathon/components/ui/button";
 import { Card, CardContent } from "~/features/hackathon/components/ui/card";
 import { AlertCircle, Home } from "lucide-react";
 import { useLocation } from "~/features/hackathon/lib/router";
+import { buildHackathonNoIndexMeta } from "~/features/hackathon/lib/seo";
+
+export const meta = () =>
+  buildHackathonNoIndexMeta(
+    "Page Not Found | UKIS Hackathon",
+    "The requested UKIS Hackathon page could not be found.",
+  );
 
 export default function NotFound() {
   const [, setLocation] = useLocation();

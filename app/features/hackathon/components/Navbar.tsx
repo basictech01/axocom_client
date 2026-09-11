@@ -59,8 +59,8 @@ export default function Navbar() {
             src="/hackathon/logo.png"
             alt="Uttarakhand Innovation & Solutions Hackathon"
             className="h-10 sm:h-12 lg:h-14 w-auto max-w-[200px] sm:max-w-[260px] lg:max-w-[320px] object-contain object-left transition-transform duration-200 group-hover:scale-[1.02]"
-            width={320}
-            height={56}
+            width={2127}
+            height={1299}
           />
         </Link>
 

@@ -6,6 +6,13 @@ import { toast } from "sonner";
 import { useAuth } from "~/contexts/auth-context";
 import { LOGIN_MUTATION } from "~/features/auth/services";
 import { useLocation } from "~/features/hackathon/lib/router";
+import { buildHackathonNoIndexMeta } from "~/features/hackathon/lib/seo";
+
+export const meta = () =>
+  buildHackathonNoIndexMeta(
+    "UKIS Hackathon Admin Sign In",
+    "Private sign-in for UKIS Hackathon administrators.",
+  );
 
 export default function AdminSignIn() {
   const [, setLocation] = useLocation();

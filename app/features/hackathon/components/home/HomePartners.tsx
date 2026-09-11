@@ -31,6 +31,9 @@ export default function HomePartners() {
                     src={partner.logo}
                     alt={partner.logoIncludesName ? partner.name : ""}
                     aria-hidden={partner.logoIncludesName ? undefined : true}
+                    width={partner.logoWidth}
+                    height={partner.logoHeight}
+                    decoding="async"
                     className={
                       partner.logoIncludesName
                         ? "h-7 w-auto max-w-[5rem] shrink-0 object-contain sm:h-[39px] sm:max-w-[7rem]"
