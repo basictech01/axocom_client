@@ -2,32 +2,93 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.axocom.in/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
   </url>
   <url>
     <loc>https://www.axocom.in/DevbhoomiAISummit</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://www.axocom.in/UKISHackathon</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
   </url>
   <url>
     <loc>https://www.axocom.in/nprweek2026</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.axocom.in/election-management</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.axocom.in/careers</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.axocom.in/UKISHackathon</loc>
+    <lastmod>2026-08-27</lastmod>
+  </url>
+  <url>
+    <loc>https://www.axocom.in/UKISHackathon/problems</loc>
+    <lastmod>2026-08-27</lastmod>
+  </url>
+  <url>
+    <loc>https://www.axocom.in/UKISHackathon/problems/P-001</loc>
+    <lastmod>2026-08-27</lastmod>
+  </url>
+  <url>
+    <loc>https://www.axocom.in/UKISHackathon/problems/P-002</loc>
+    <lastmod>2026-08-27</lastmod>
+  </url>
+  <url>
+    <loc>https://www.axocom.in/UKISHackathon/problems/P-003</loc>
+    <lastmod>2026-08-27</lastmod>
+  </url>
+  <url>
+    <loc>https://www.axocom.in/UKISHackathon/problems/P-004</loc>
+    <lastmod>2026-08-27</lastmod>
+  </url>
+  <url>
+    <loc>https://www.axocom.in/UKISHackathon/problems/P-005</loc>
+    <lastmod>2026-08-27</lastmod>
+  </url>
+  <url>
+    <loc>https://www.axocom.in/UKISHackathon/problems/P-006</loc>
+    <lastmod>2026-08-27</lastmod>
+  </url>
+  <url>
+    <loc>https://www.axocom.in/UKISHackathon/problems/P-007</loc>
+    <lastmod>2026-08-27</lastmod>
+  </url>
+  <url>
+    <loc>https://www.axocom.in/UKISHackathon/problems/P-008</loc>
+    <lastmod>2026-08-27</lastmod>
+  </url>
+  <url>
+    <loc>https://www.axocom.in/UKISHackathon/problems/P-009</loc>
+    <lastmod>2026-08-27</lastmod>
+  </url>
+  <url>
+    <loc>https://www.axocom.in/UKISHackathon/problems/P-010</loc>
+    <lastmod>2026-08-27</lastmod>
+  </url>
+  <url>
+    <loc>https://www.axocom.in/UKISHackathon/problems/P-011</loc>
+    <lastmod>2026-08-27</lastmod>
+  </url>
+  <url>
+    <loc>https://www.axocom.in/UKISHackathon/problems/P-012</loc>
+    <lastmod>2026-08-27</lastmod>
+  </url>
+  <url>
+    <loc>https://www.axocom.in/UKISHackathon/solutions</loc>
+    <lastmod>2026-08-27</lastmod>
+  </url>
+  <url>
+    <loc>https://www.axocom.in/UKISHackathon/mentors</loc>
+    <lastmod>2026-08-27</lastmod>
+  </url>
+  <url>
+    <loc>https://www.axocom.in/UKISHackathon/register/solution</loc>
+    <lastmod>2026-08-27</lastmod>
+  </url>
+  <url>
+    <loc>https://www.axocom.in/UKISHackathon/register/mentor</loc>
+    <lastmod>2026-08-27</lastmod>
+  </url>
+  <url>
+    <loc>https://www.axocom.in/UKISHackathon/terms-and-conditions</loc>
+    <lastmod>2026-08-27</lastmod>
   </url>
 </urlset>

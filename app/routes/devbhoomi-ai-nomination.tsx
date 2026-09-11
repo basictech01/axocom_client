@@ -1,6 +1,11 @@
 import { useState, type FormEvent } from "react";
 import { ArrowLeft, Award, Check, ShieldCheck, Sparkles, Trophy } from "lucide-react";
 import { buildSeoLinks, buildSeoMeta } from "~/lib/seo";
+import { apolloClient } from "~/lib/api";
+import { REGISTER_NOMINATION_MUTATION } from "~/features/summit/services";
+import { formatPaise, calculateGst, formatGstRate } from "~/features/summit/lib/money";
+import { useRazorpayCheckout } from "~/features/summit/hooks/useRazorpayCheckout";
+import { REGISTRATION_TYPE } from "~/features/summit/types";
 
 const seo = {
   title: "Awards Nomination | Devbhoomi AI Summit 2026",
@@ -30,6 +35,7 @@ const nominationPlans = [
   {
     name: "Standard Nomination",
     price: "₹9,999",
+    amount: 9999,
     icon: ShieldCheck,
     features: [
       "One award category",
@@ -42,6 +48,7 @@ const nominationPlans = [
   {
     name: "Premium Nomination",
     price: "₹19,999",
+    amount: 19999,
     icon: Award,
     featured: true,
     features: [
@@ -57,6 +64,7 @@ const nominationPlans = [
   {
     name: "Platinum Nomination",
     price: "₹34,999",
+    amount: 34999,
     icon: Trophy,
     features: [
       "One award category",
@@ -88,25 +96,32 @@ export default function DevbhoomiAINomination() {
   const [form, setForm] = useState(initialForm);
   const [sending, setSending] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [registrationId, setRegistrationId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const checkout = useRazorpayCheckout();
+  // Mirrors the server calculation; the server recomputes it on submit and its
+  // figure is the one charged.
+  const gst = calculateGst(selectedPlanDetails.amount, 1);
 
   const updateField = (field: keyof typeof initialForm, value: string) => {
     setForm((current) => ({ ...current, [field]: value }));
   };
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (sending) return;
-
-    setSending(true);
-    setError(null);
-
+  /**
+   * Notifies the summit inbox. Best-effort only: the nomination is already
+   * persisted by the time this runs, so a failure here must not fail the flow.
+   */
+  const notifyByEmail = async (id: string) => {
     try {
-      const response = await fetch("https://formsubmit.co/ajax/sponsorship@axocom.in", {
+      await fetch("https://formsubmit.co/ajax/sponsorship@axocom.in", {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify({
+          registration_id: id,
           nomination_plan: `${selectedPlan} - ${selectedPlanDetails.price} + GST`,
+          subtotal: formatPaise(gst.subtotalAmount),
+          gst: `${formatGstRate(gst.gstRateBps)} - ${formatPaise(gst.gstAmount)}`,
+          total_price: formatPaise(gst.totalAmount),
           nominee_name: form.nomineeName,
           organisation: form.organisation,
           designation: form.designation,
@@ -118,11 +133,48 @@ export default function DevbhoomiAINomination() {
           _template: "table",
         }),
       });
-
-      if (!response.ok) throw new Error("Request failed");
-      setSubmitted(true);
     } catch {
-      setError("We could not submit your nomination. Please email sponsorship@axocom.in directly.");
+      // Swallowed on purpose - the record is safe in the database.
+    }
+  };
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (sending) return;
+
+    setSending(true);
+    setError(null);
+
+    try {
+      const response = await apolloClient.mutate({
+        mutation: REGISTER_NOMINATION_MUTATION,
+        variables: {
+          input: {
+            nomineeName: form.nomineeName,
+            organisation: form.organisation,
+            designation: form.designation,
+            email: form.email,
+            phone: form.phone,
+            website: form.website || null,
+            achievements: form.achievements,
+            planName: selectedPlanDetails.name,
+            contactConsent: true,
+          },
+        },
+      });
+
+      const id = response.data?.registerNomination.registrationId;
+      if (!id) throw new Error("Nomination failed");
+
+      await notifyByEmail(id);
+      setRegistrationId(id);
+      setSubmitted(true);
+    } catch (submitError) {
+      const message =
+        submitError instanceof Error && submitError.message
+          ? submitError.message
+          : "We could not submit your nomination. Please email sponsorship@axocom.in directly.";
+      setError(message);
     } finally {
       setSending(false);
     }
@@ -174,6 +226,14 @@ export default function DevbhoomiAINomination() {
         .nomination-form-copy p:last-child { margin:18px 0 0; color:var(--muted); line-height:1.7; }
         .nomination-selected { margin-top:24px; padding:18px; border-left:4px solid #17A9AB; background:#fff; box-shadow:0 8px 24px rgba(44,79,150,.07); }
         .nomination-selected span { display:block; color:var(--muted); font-size:10px; font-weight:700; text-transform:uppercase; }
+        .nomination-selected-detail { margin:7px 0 0; color:var(--muted); font-size:11px; }
+        .nomination-breakdown { display:grid; gap:7px; margin:14px 0 0; padding-top:13px; border-top:1px solid #EDF0F1; }
+        .nomination-breakdown div { display:flex; align-items:baseline; justify-content:space-between; gap:12px; }
+        .nomination-breakdown dt { color:var(--muted); font-size:11px; }
+        .nomination-breakdown dd { margin:0; font-size:12px; font-weight:700; }
+        .nomination-breakdown-total { padding-top:7px; border-top:1px solid #EDF0F1; }
+        .nomination-breakdown-total dt { color:var(--ink)!important; font-weight:700; }
+        .nomination-breakdown-total dd { color:#168D9D; font-size:14px; }
         .nomination-selected strong { display:block; margin-top:5px; color:#168D9D; font-size:15px; }
         .nomination-selected-price { margin:6px 0 0; color:var(--ink); font-size:20px; font-weight:800; }
         .nomination-selected-price small { color:var(--muted); font-size:10px; font-weight:600; }
@@ -195,8 +255,16 @@ export default function DevbhoomiAINomination() {
         .nomination-success-icon { width:64px; height:64px; margin:0 auto; display:grid; place-items:center; border-radius:50%; color:#fff; background:var(--gradient); }
         .nomination-success h2 { margin:22px 0 0; font-size:32px; }
         .nomination-success p { max-width:480px; margin:12px auto 24px; color:var(--muted); line-height:1.7; }
+        .nomination-reference { display:grid; gap:4px; max-width:420px; margin:0 auto 24px!important; padding:14px 16px; border:1px dashed #C9D6D8; border-radius:8px; background:#F7FAFA; font-size:11px; }
+        .nomination-secondary { width:100%; min-height:46px; margin-top:12px; border:1px solid #D6DCDD; border-radius:8px; color:var(--muted); background:#fff; font:inherit; font-size:13px; font-weight:700; cursor:pointer; }
+        .nomination-success .nomination-error { margin:14px auto 0; }
+        .nomination-reference-row { display:grid; gap:4px; margin-top:9px; padding-top:9px; border-top:1px solid #E4EAEB; }
+        .nomination-reference strong { color:var(--ink); font-size:15px; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing:.02em; }
         .nomination-footer { padding:26px 0; border-top:1px solid var(--line); color:var(--muted); background:#fff; font-size:11px; }
-        .nomination-footer-inner { display:flex; justify-content:space-between; gap:20px; }
+        .nomination-footer-inner { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px 20px; }
+        .nomination-footer-links { display:flex; flex-wrap:wrap; gap:6px 18px; }
+        .nomination-footer-links a { color:#227684; font-weight:600; }
+        .nomination-footer-links a:hover { text-decoration:underline; }
         @media (max-width:900px) { .nomination-plans { grid-template-columns:1fr; } .nomination-form-section { grid-template-columns:1fr; } .nomination-form-copy { position:static; } }
         @media (max-width:640px) {
           .nomination-shell { width:min(100% - 32px,1180px); }
@@ -258,7 +326,22 @@ export default function DevbhoomiAINomination() {
             <div className="nomination-selected">
               <span>Selected package</span>
               <strong>{selectedPlan}</strong>
-              <p className="nomination-selected-price">{selectedPlanDetails.price} <small>+ GST</small></p>
+              <p className="nomination-selected-price">{formatPaise(gst.totalAmount)}</p>
+              <p className="nomination-selected-detail">Payable including GST</p>
+              <dl className="nomination-breakdown">
+                <div>
+                  <dt>{selectedPlanDetails.price} nomination fee</dt>
+                  <dd>{formatPaise(gst.subtotalAmount)}</dd>
+                </div>
+                <div>
+                  <dt>GST {formatGstRate(gst.gstRateBps)}</dt>
+                  <dd>{formatPaise(gst.gstAmount)}</dd>
+                </div>
+                <div className="nomination-breakdown-total">
+                  <dt>Total payable</dt>
+                  <dd>{formatPaise(gst.totalAmount)}</dd>
+                </div>
+              </dl>
             </div>
           </div>
 
@@ -266,9 +349,61 @@ export default function DevbhoomiAINomination() {
             {submitted ? (
               <div className="nomination-success">
                 <span className="nomination-success-icon"><Sparkles /></span>
-                <h2>Nomination received</h2>
-                <p>Thank you. The Devbhoomi AI Summit team will review your submission and contact you with the next steps.</p>
-                <button className="nomination-submit" type="button" onClick={() => { setSubmitted(false); setForm(initialForm); }}>Submit another nomination</button>
+                {checkout.stage === "paid" ? (
+                  <>
+                    <h2>Payment received</h2>
+                    <p>Thank you. We will confirm your nomination on your registered email address.</p>
+                  </>
+                ) : (
+                  <>
+                    <h2>Nomination saved</h2>
+                    <p>Your nomination is saved. Complete the payment below to submit it for evaluation.</p>
+                  </>
+                )}
+                {registrationId && (
+                  <p className="nomination-reference">
+                    Nomination reference<strong>{registrationId}</strong>
+                    {checkout.receipt?.razorpayPaymentId ? (
+                      <>
+                        <span className="nomination-reference-row">
+                          Payment ID<strong>{checkout.receipt.razorpayPaymentId}</strong>
+                        </span>
+                        <span className="nomination-reference-row">
+                          Order ID<strong>{checkout.receipt.razorpayOrderId}</strong>
+                        </span>
+                        Keep these for any follow-up or refund request.
+                      </>
+                    ) : (
+                      "Keep this handy for any follow-up or refund request."
+                    )}
+                  </p>
+                )}
+                {checkout.stage !== "paid" && registrationId && (
+                  <button
+                    className="nomination-submit"
+                    type="button"
+                    disabled={checkout.isBusy}
+                    onClick={() => void checkout.start({
+                      registrationType: REGISTRATION_TYPE.NOMINATION,
+                      registrationId,
+                      description: selectedPlanDetails.name,
+                    })}
+                  >
+                    {checkout.stage === "verifying"
+                      ? "Verifying payment..."
+                      : checkout.isBusy
+                        ? "Opening payment..."
+                        : `Pay ${formatPaise(gst.totalAmount)}`}
+                  </button>
+                )}
+                {checkout.error && <p className="nomination-error">{checkout.error}</p>}
+                <button
+                  className="nomination-secondary"
+                  type="button"
+                  onClick={() => { setSubmitted(false); setRegistrationId(null); setForm(initialForm); checkout.reset(); }}
+                >
+                  Submit another nomination
+                </button>
               </div>
             ) : (
               <form className="nomination-form-grid" onSubmit={handleSubmit}>
@@ -323,6 +458,14 @@ export default function DevbhoomiAINomination() {
       <footer className="nomination-footer">
         <div className="nomination-shell nomination-footer-inner">
           <span>© 2026 Devbhoomi AI Summit. All rights reserved.</span>
+          <nav className="nomination-footer-links" aria-label="Policies and support">
+            <a href="/refund-request">Get help</a>
+            <a href="/refund-status">Track a request</a>
+            <a href="/refund-policy">Refund policy</a>
+            <a href="/terms-and-conditions">Terms</a>
+            <a href="/privacy-policy">Privacy</a>
+            <a href="/support">Support</a>
+          </nav>
           <span>Questions? sponsorship@axocom.in</span>
         </div>
       </footer>

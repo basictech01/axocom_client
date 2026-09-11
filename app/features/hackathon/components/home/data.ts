@@ -3,11 +3,11 @@
 import { MENTORS } from "~/features/hackathon/lib/mentors";
 
 export const HERO = {
-  eyebrow: "Uttarakhand Innovation & Solutions Hackathon",
+  eyebrow: "UKIS 2026: Uttarakhand Innovation & Solutions Hackathon",
   headlineLead: "Not just a hackathon.",
   headlineAccent: "A journey.",
   support:
-    "A state-wide innovation series bringing builders from across the world together to solve real-world problems — from Uttarakhand and beyond.",
+    "Registration is open for students, developers and working professionals. Join UKIS 2026 online and on-ground, either solo or in one team of 2–4, to solve real-world problems from Uttarakhand.",
   meta: [
     { label: "Format", value: "Online and on-ground" },
     { label: "Cities", value: "Dehradun · Roorkee · Rudrapur" },
@@ -21,12 +21,16 @@ export const PARTNERS = [
     role: "Hiring & Mentorship Partner",
     logo: "/paceLogo.png",
     logoIncludesName: true,
+    logoWidth: 509,
+    logoHeight: 250,
   },
   {
     name: "AxoCom",
     role: "Media Partner",
     logo: "/axocomLogo.png",
     logoIncludesName: false,
+    logoWidth: 490,
+    logoHeight: 509,
   },
 ] as const;
 
@@ -34,7 +38,7 @@ export const WHAT_UKIS = {
   eyebrow: "About the series",
   title: "What UKIS Is",
   body: [
-    "UKIS surfaces real-world problems and invites builders from across the world to work on them — backed by mentors and hands-on support at every stage.",
+    "UKIS 2026 is the Uttarakhand Innovation & Solutions Hackathon, organised by Axolotl Emprise LLP. It brings builders from India and beyond together to develop AI, GovTech and civic-innovation solutions for published real-world problems, with mentors and hands-on support at every stage.",
     "The strongest solutions move beyond the hackathon toward pilots, implementation, incubation, and funding. In doing so, UKIS becomes the bridge between industry, problem solvers, and government.",
   ],
   principles: [
@@ -93,18 +97,24 @@ export const PARTICIPANTS = [
     description: "Learn by building real solutions for state challenges alongside peers and mentors.",
     note: "Intended photo: students collaborating around a laptop at a UKIS workshop",
     image: "/hackathon/prop10.webp",
+    imageWidth: 1086,
+    imageHeight: 1448,
   },
   {
     category: "Developers",
     description: "Ship prototypes that address published problems and grow through expert feedback.",
     note: "Intended photo: developer presenting a working prototype on stage",
     image: "/hackathon/prop8.webp",
+    imageWidth: 941,
+    imageHeight: 1672,
   },
   {
     category: "Working professionals",
     description: "Apply industry experience to Uttarakhand’s real-world problems and mentor others.",
     note: "Intended photo: mixed group of professionals in discussion with a mentor",
     image: "/hackathon/prop9.webp",
+    imageWidth: 1086,
+    imageHeight: 1448,
   },
 ] as const;
 
@@ -113,18 +123,24 @@ export const LEADERSHIP = [
     name: "Lt Gen (Retd) Gurmit Singh",
     role: "Hon'ble Governor, Uttarakhand",
     image: "/images/governor_Gen_Gurmit_Singh.jpeg",
+    imageWidth: 1024,
+    imageHeight: 1280,
     linkedin: "https://www.linkedin.com/in/ltgengurmit/",
   },
   {
     name: "Shri Pushkar Singh Dhami",
     role: "Hon'ble Chief Minister, Uttarakhand",
     image: "/images/cm_pushkar_singh_dhami.jpg",
+    imageWidth: 960,
+    imageHeight: 1280,
     linkedin: "https://www.linkedin.com/in/pushkar-singh-dhami-986b66260/",
   },
   {
     name: "Shri Pradeep Batra",
     role: "IT Minister & Good Governance, Uttarakhand",
     image: "/images/summitDeligate/shri_pradeep_batra_it_minister_govt_uttarakhand.jpg",
+    imageWidth: 462,
+    imageHeight: 477,
   },
 ] as const;
 
@@ -251,6 +267,8 @@ export const SPEAKERS = MENTORS.map((mentor) => ({
   organisation: mentor.organization,
   initials: mentor.initials,
   image: mentor.image ?? "",
+  imageWidth: mentor.imageWidth,
+  imageHeight: mentor.imageHeight,
   linkedin: mentor.linkedinUrl ?? "",
 }));
 

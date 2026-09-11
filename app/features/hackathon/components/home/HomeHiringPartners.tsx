@@ -35,7 +35,10 @@ export default function HomeHiringPartners() {
                   <img
                     src={partner.logo}
                     alt={partner.name}
+                    width={partner.logoWidth}
+                    height={partner.logoHeight}
                     loading="lazy"
+                    decoding="async"
                     className="max-h-full max-w-[75%] object-contain"
                   />
                 </div>

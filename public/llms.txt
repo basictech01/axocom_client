@@ -6,7 +6,7 @@
 
 - [AxoCom](https://www.axocom.in/): Company overview, services, media technology, and partnership information.
 - [DevBhoomi AI Summit 2026](https://www.axocom.in/DevbhoomiAISummit): Invitation-only policy and innovation summit in Dehradun focused on AI for Uttarakhand governance and public systems.
-- [Uttarakhand Innovation & Solutions Hackathon](https://www.axocom.in/UKISHackathon): State-wide innovation series for students, developers, and professionals solving real problems in Uttarakhand.
+- [UKIS Hackathon 2026](https://www.axocom.in/UKISHackathon): Uttarakhand Innovation & Solutions Hackathon 2026. Registration is open. People may participate solo or in teams of two, three, or four, and each person may participate only once. Axolotl Emprise LLP is the sole organiser.
 - [National PR Week 2026](https://www.axocom.in/nprweek2026): Public relations week with sessions, government knowledge partners, collaborators, and certificate information.
 - [Election Management Services](https://www.axocom.in/election-management): AI-powered election management, campaign strategy, voter intelligence, media operations, political branding, and war-room execution.
 - [Careers & Internships](https://www.axocom.in/careers): Internship roles across research, strategy, creative production, client service, account management, media, technology, and AI campaign work.
@@ -19,3 +19,37 @@
 - LinkedIn: https://www.linkedin.com/company/axocom-tech-x-media/
 - Instagram: https://www.instagram.com/axocommedia/
 - YouTube: https://www.youtube.com/@AxoComTechXMedia
+
+## UKIS Hackathon 2026
+
+- Edition: UKIS 2026 (Uttarakhand Innovation & Solutions Hackathon 2026)
+- Registration status: Open
+- Organiser: Axolotl Emprise LLP
+- Participation: Solo or teams of 2–4 people
+- Entry rule: Each person may participate only once
+- Published problem statements: P-001 through P-012
+
+### Explore and Register
+
+- [UKIS Hackathon 2026 homepage](https://www.axocom.in/UKISHackathon)
+- [All UKIS 2026 problem statements](https://www.axocom.in/UKISHackathon/problems)
+- [UKIS 2026 solutions](https://www.axocom.in/UKISHackathon/solutions)
+- [UKIS 2026 mentors](https://www.axocom.in/UKISHackathon/mentors)
+- [Register for UKIS Hackathon 2026](https://www.axocom.in/UKISHackathon/register/solution)
+- [Apply as a UKIS 2026 mentor](https://www.axocom.in/UKISHackathon/register/mentor)
+- [UKIS 2026 rules, eligibility, and team size](https://www.axocom.in/UKISHackathon/terms-and-conditions)
+
+### Problem Statements
+
+- [P-001: AI-Powered Government Knowledge Repository](https://www.axocom.in/UKISHackathon/problems/P-001)
+- [P-002: AI-Assisted DPR and RFP Generation](https://www.axocom.in/UKISHackathon/problems/P-002)
+- [P-003: AI-Driven Integrated Beneficiary Data Governance](https://www.axocom.in/UKISHackathon/problems/P-003)
+- [P-004: AI Civic Cleanliness and Encroachment Monitoring](https://www.axocom.in/UKISHackathon/problems/P-004)
+- [P-005: AI Traffic, Parking and Congestion Intelligence](https://www.axocom.in/UKISHackathon/problems/P-005)
+- [P-006: AI Public Infrastructure Hazard Monitoring](https://www.axocom.in/UKISHackathon/problems/P-006)
+- [P-007: Drone Analytics for Crowd and Event Safety](https://www.axocom.in/UKISHackathon/problems/P-007)
+- [P-008: Drone-Based Disaster and Infrastructure Assessment](https://www.axocom.in/UKISHackathon/problems/P-008)
+- [P-009: AI Forest Health and Fire Intelligence](https://www.axocom.in/UKISHackathon/problems/P-009)
+- [P-010: AI Wildlife and Human-Conflict Intelligence](https://www.axocom.in/UKISHackathon/problems/P-010)
+- [P-011: AI Mountain Disaster Early-Warning Intelligence](https://www.axocom.in/UKISHackathon/problems/P-011)
+- [P-012: AI Geospatial Intelligence for Urban Planning](https://www.axocom.in/UKISHackathon/problems/P-012)

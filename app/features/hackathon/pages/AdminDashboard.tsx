@@ -2,11 +2,11 @@ import { useState, useEffect } from "react";
 import { useApolloClient } from "@apollo/client/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLocation } from "~/features/hackathon/lib/router";
-import { 
-  FileText, 
-  Users, 
-  LogOut, 
-  Search, 
+import {
+  FileText,
+  Users,
+  LogOut,
+  Search,
   CheckCircle2,
   XCircle,
   Clock,
@@ -15,10 +15,14 @@ import {
   Loader2,
   Sun,
   Moon,
+  Ticket,
+  Award,
+  ReceiptText,
 } from "lucide-react";
 import { toast } from "sonner";
 import { useTheme } from "~/features/hackathon/contexts/ThemeContext";
 import { useAuth } from "~/contexts/auth-context";
+import { buildHackathonNoIndexMeta } from "~/features/hackathon/lib/seo";
 import {
   ADMIN_MENTOR_APPLICATIONS_QUERY,
   ADMIN_SOLUTION_SUBMISSIONS_QUERY,
@@ -30,8 +34,25 @@ import type {
   ReviewStatus,
   SolutionSubmission,
 } from "~/features/hackathon/types";
+import { SummitRegistrationsPanel } from "~/features/summit/components/SummitRegistrationsPanel";
+import { RefundRequestsPanel } from "~/features/summit/components/RefundRequestsPanel";
+import { REGISTRATION_TYPE } from "~/features/summit/types";
+
+export const meta = () =>
+  buildHackathonNoIndexMeta(
+    "UKIS Hackathon Administration",
+    "Private administration area for UKIS Hackathon submissions and mentor applications.",
+  );
 
 type AdminItem = SolutionSubmission | MentorApplication;
+
+/**
+ * Hackathon review tabs share one data shape and one accept/reject flow; the
+ * summit tabs are payment and ticket driven, so they live in their own panels.
+ */
+type AdminTab = "solutions" | "mentors" | "delegate" | "nominations" | "refunds";
+
+const HACKATHON_TABS: AdminTab[] = ["solutions", "mentors"];
 
 function isSolutionSubmission(item: AdminItem): item is SolutionSubmission {
   return "solutionTitle" in item;
@@ -42,7 +63,7 @@ export default function AdminDashboard() {
   const { logout } = useAuth();
   const [, setLocation] = useLocation();
   const { theme, toggleTheme } = useTheme();
-  const [activeTab, setActiveTab] = useState<'solutions' | 'mentors'>('solutions');
+  const [activeTab, setActiveTab] = useState<AdminTab>('solutions');
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState<AdminItem[]>([]);
   const [selectedItem, setSelectedItem] = useState<AdminItem | null>(null);
@@ -60,7 +81,12 @@ export default function AdminDashboard() {
   const [statusFilter, setStatusFilter] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState("");
 
+  const isHackathonTab = HACKATHON_TABS.includes(activeTab);
+
   const fetchData = async (pageOverride?: number) => {
+    // Summit tabs own their fetching inside their panels.
+    if (!isHackathonTab) return;
+
     const pageToLoad = pageOverride ?? page;
     setIsLoading(true);
     try {
@@ -172,8 +198,8 @@ export default function AdminDashboard() {
             src="/hackathon/logo.png"
             alt="Uttarakhand Innovation & Solutions Hackathon"
             className="w-full h-auto max-h-20 object-contain object-left"
-            width={220}
-            height={80}
+            width={2127}
+            height={1299}
           />
         </div>
         
@@ -195,6 +221,37 @@ export default function AdminDashboard() {
           >
             <Users className="w-4 h-4" />
             Mentors
+          </button>
+
+          <p className="px-4 pt-5 pb-1 text-[10px] font-bold uppercase tracking-wider text-muted-foreground/70">
+            Devbhoomi AI Summit
+          </p>
+          <button
+            onClick={() => { setActiveTab('delegate'); setStatusFilter(""); setSelectedItem(null); }}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors ${
+              activeTab === 'delegate' ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:bg-secondary hover:text-foreground'
+            }`}
+          >
+            <Ticket className="w-4 h-4" />
+            Delegate Passes
+          </button>
+          <button
+            onClick={() => { setActiveTab('nominations'); setStatusFilter(""); setSelectedItem(null); }}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors ${
+              activeTab === 'nominations' ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:bg-secondary hover:text-foreground'
+            }`}
+          >
+            <Award className="w-4 h-4" />
+            Nominations
+          </button>
+          <button
+            onClick={() => { setActiveTab('refunds'); setStatusFilter(""); setSelectedItem(null); }}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors ${
+              activeTab === 'refunds' ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:bg-secondary hover:text-foreground'
+            }`}
+          >
+            <ReceiptText className="w-4 h-4" />
+            User Queries
           </button>
         </nav>
 
@@ -220,6 +277,15 @@ export default function AdminDashboard() {
 
       {/* Main Content */}
       <main className="flex-1 flex flex-col min-w-0">
+        {activeTab === 'delegate' || activeTab === 'nominations' ? (
+          <SummitRegistrationsPanel
+            kind={activeTab === 'delegate' ? REGISTRATION_TYPE.DELEGATE_PASS : REGISTRATION_TYPE.NOMINATION}
+            onUnauthorized={handleSignOut}
+          />
+        ) : activeTab === 'refunds' ? (
+          <RefundRequestsPanel onUnauthorized={handleSignOut} />
+        ) : (
+          <>
         <header className="h-16 border-b border-border bg-card/50 backdrop-blur-sm flex items-center justify-between px-6 sticky top-0 z-10">
           <h2 className="font-display font-bold text-lg text-foreground capitalize">
             {activeTab} Submissions
@@ -298,7 +364,7 @@ export default function AdminDashboard() {
                     {isSolutionSubmission(item) ? item.solutionTitle : item.fullName}
                   </h3>
                   <p className="text-xs text-muted-foreground mb-4">
-                    {isSolutionSubmission(item) ? `by ${item.fullName}` : item.currentRole}
+                    {isSolutionSubmission(item) ? `Primary contact: ${item.fullName}` : item.currentRole}
                   </p>
                   
                   <div className="flex items-center justify-between text-[10px] text-muted-foreground pt-3 border-t border-border/50">
@@ -335,6 +401,8 @@ export default function AdminDashboard() {
             </>
           )}
         </div>
+          </>
+        )}
       </main>
 
       {/* Details Drawer / Modal */}
@@ -380,7 +448,9 @@ export default function AdminDashboard() {
                   {/* Content Sections */}
                   <div className="grid grid-cols-2 gap-6">
                     <div>
-                      <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">Applicant</h4>
+                      <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">
+                        {isSolutionSubmission(selectedItem) ? "Participant / Team Lead" : "Applicant"}
+                      </h4>
                       <p className="text-foreground font-medium">{selectedItem.fullName}</p>
                     </div>
                     <div>

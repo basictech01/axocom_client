@@ -11,7 +11,11 @@ import { problems } from "~/features/hackathon/lib/data";
 import { getProblemOwner } from "~/features/hackathon/lib/problem-owners";
 import { ProblemOwner } from "~/features/hackathon/components/ProblemOwner";
 import { useScrollReveal } from "~/features/hackathon/hooks/useScrollReveal";
+import { PARTICIPATION_RULE_SUMMARY } from "~/features/hackathon/lib/participation";
+import { buildProblemsSeoMeta } from "~/features/hackathon/lib/seo";
 import { PUBLIC_SOLUTIONS_QUERY } from "~/features/hackathon/services";
+
+export const meta = buildProblemsSeoMeta;
 
 export default function Problems() {
   const [search, setSearch] = useState("");
@@ -33,7 +37,7 @@ export default function Problems() {
               variables: { problemCode: problem.id, page: 1, limit: 1 },
               fetchPolicy: "network-only",
             });
-            return [problem.id, data.publicSolutions.pagination.total] as const;
+            return [problem.id, data?.publicSolutions.pagination.total ?? 0] as const;
           }),
         );
         if (!cancelled) {
@@ -77,11 +81,15 @@ export default function Problems() {
           className="mb-12"
         >
           <h1 className="font-display font-bold text-4xl sm:text-5xl text-foreground mb-4">
-            Published <span className="text-brand-accent">Problems</span>
+            UKIS 2026 <span className="text-brand-accent">Problem Statements</span>
           </h1>
           <p className="text-muted-foreground max-w-2xl text-lg">
-            Each problem is a real challenge from an organisation seeking innovative solutions.
-            Register against any problem to become a Solution Owner and official participant.
+            Explore published challenges in civic services, infrastructure, mobility, disaster
+            resilience, forests and governance across Uttarakhand. Registration is open to
+            students, developers and working professionals.
+          </p>
+          <p className="mt-3 max-w-2xl text-sm font-medium leading-relaxed text-foreground">
+            {PARTICIPATION_RULE_SUMMARY}
           </p>
         </motion.div>
 

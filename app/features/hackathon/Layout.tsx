@@ -6,17 +6,15 @@ import { Toaster } from "~/features/hackathon/components/ui/sonner";
 import { TooltipProvider } from "~/features/hackathon/components/ui/tooltip";
 import { ThemeProvider, useTheme } from "~/features/hackathon/contexts/ThemeContext";
 import { HACKATHON_BASE_PATH } from "~/features/hackathon/lib/router";
+import { buildHackathonNoIndexMeta } from "~/features/hackathon/lib/seo";
 import type { Route } from "./+types/Layout";
 import "./index.css";
 
-export const meta: Route.MetaFunction = () => [
-  { title: "Uttarakhand Innovation & Solutions Hackathon" },
-  {
-    name: "description",
-    content:
-      "A state-wide innovation series connecting Uttarakhand's real problems with builders, solutions, and mentors.",
-  },
-];
+export const meta: Route.MetaFunction = () =>
+  buildHackathonNoIndexMeta(
+    "UKIS Hackathon",
+    "UKIS Hackathon route. Public pages provide their own indexable metadata.",
+  );
 
 function HackathonFrame() {
   const { pathname } = useLocation();
