@@ -162,7 +162,7 @@ const speakers: SummitSpeaker[] = [
     officialProfile: "https://sad.uk.gov.in/alok-kumar-pandey/",
   },
   {
-    name: "Tirth Pal Singh",
+    name: "Shri Tirth Pal Singh",
     role: "Additional Director - ITDA",
     image: "/images/tirth_pal_singh.jpeg",
   },
@@ -171,6 +171,12 @@ const speakers: SummitSpeaker[] = [
     role: "CTO and GM AI and Emerging Tech ITDA, Head SeMT",
     image: "/images/rai-shankar-singh2.jpeg",
     linkedin: "https://www.linkedin.com/in/singh-ravishankar/"
+  },
+  {
+    name: "Amit Joshi",
+    role: "General Manager - Cyber Security",
+    image: "/images/amit_joshi.jpeg",
+    linkedin: "https://www.linkedin.com/in/amitjoshi26/",
   },
   {
     name: "Shri Ashish Upadhyaya",
