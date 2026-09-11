@@ -162,7 +162,7 @@ const speakers: SummitSpeaker[] = [
     officialProfile: "https://sad.uk.gov.in/alok-kumar-pandey/",
   },
   {
-    name: "Tirth Pal Singh",
+    name: "Shri Tirth Pal Singh",
     role: "Additional Director - ITDA",
     image: "/images/tirth_pal_singh.jpeg",
   },
