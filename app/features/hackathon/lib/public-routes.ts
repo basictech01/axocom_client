@@ -27,6 +27,12 @@ export const HACKATHON_INDEXABLE_PATHS: readonly string[] = Object.freeze([
   `${HACKATHON_BASE_PATH}/terms-and-conditions`,
 ]);
 
-if (HACKATHON_INDEXABLE_PATHS.length !== 19) {
-  throw new Error("The UKIS public-route registry must contain exactly 19 URLs.");
+// Guards against a non-problem route being added or dropped; problem pages scale with `problems`.
+const HACKATHON_FIXED_PATH_COUNT = 7;
+const expectedPathCount = HACKATHON_FIXED_PATH_COUNT + HACKATHON_PROBLEM_IDS.length;
+
+if (HACKATHON_INDEXABLE_PATHS.length !== expectedPathCount) {
+  throw new Error(
+    `The UKIS public-route registry must contain exactly ${expectedPathCount} URLs.`,
+  );
 }

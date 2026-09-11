@@ -46,6 +46,8 @@ export const HIRING_PARTNERS: HiringPartner[] = [
     name: "Tekclap",
     role: "Hiring Partner",
     logo: "/hackathon/logos/tekclap_logo.jpg",
+    logoWidth: 1024,
+    logoHeight: 1024,
     url: "https://tekclap.com/",
   },
 ];

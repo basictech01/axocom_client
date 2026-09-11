@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { MetaDescriptor } from "react-router";
 import { problems } from "~/features/hackathon/lib/data";
+import { HACKATHON_INDEXABLE_PATHS } from "~/features/hackathon/lib/public-routes";
 import {
   buildHomeSeoMeta,
   buildMentorRegistrationSeoMeta,
@@ -56,8 +57,8 @@ const publicPages = [
 ];
 
 describe("UKIS Hackathon SEO contract", () => {
-  it("defines 19 public pages with unique titles, descriptions, and self-canonicals", () => {
-    expect(publicPages).toHaveLength(19);
+  it("defines every public page with unique titles, descriptions, and self-canonicals", () => {
+    expect(publicPages).toHaveLength(HACKATHON_INDEXABLE_PATHS.length);
 
     const titles = publicPages.map(({ meta }) => titleValue(meta));
     const descriptions = publicPages.map(({ meta }) => descriptorValue(meta, "name", "description"));
