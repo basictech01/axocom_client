@@ -13,6 +13,7 @@ const navLinks = [
   { href: "/problems", label: "Problems" },
   { href: "/solutions", label: "Solutions" },
   { href: "/mentors", label: "Mentors" },
+  { href: "/certificate", label: "Certificate" },
   { href: "/register/mentor", label: "Register Mentor" },
   { href: "/terms-and-conditions", label: "Terms & Conditions" },
 ];

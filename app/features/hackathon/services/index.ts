@@ -7,7 +7,46 @@ import type {
   ReviewStatus,
   SolutionSubmission,
   SubmitSolutionInput,
+  CertificateParticipant,
+  CertificateLookupResult,
+  RegisterCertificateParticipantInput,
 } from "~/features/hackathon/types";
+
+export const REGISTER_CERTIFICATE_PARTICIPANT_MUTATION: TypedDocumentNode<
+  { registerCertificateParticipant: CertificateParticipant },
+  { input: RegisterCertificateParticipantInput }
+> = gql`
+  mutation RegisterCertificateParticipant($input: RegisterCertificateParticipantInput!) {
+    registerCertificateParticipant(input: $input) {
+      id hash fullName institution course city issuedAt
+    }
+  }
+`;
+
+export const CERTIFICATE_LOOKUP_BY_EMAIL_QUERY: TypedDocumentNode<
+  { certificateLookupByEmail: CertificateLookupResult },
+  { email: string }
+> = gql`
+  query CertificateLookupByEmail($email: String!) {
+    certificateLookupByEmail(email: $email) {
+      registered
+      certificate {
+        id hash fullName institution course city issuedAt
+      }
+    }
+  }
+`;
+
+export const CERTIFICATE_BY_HASH_QUERY: TypedDocumentNode<
+  { certificateByHash: CertificateParticipant | null },
+  { hash: string }
+> = gql`
+  query CertificateByHash($hash: String!) {
+    certificateByHash(hash: $hash) {
+      id hash fullName institution course city issuedAt
+    }
+  }
+`;
 
 export const PUBLIC_SOLUTIONS_QUERY: TypedDocumentNode<
   { publicSolutions: { data: PublicSolution[]; pagination: Pagination } },
