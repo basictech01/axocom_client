@@ -21,8 +21,22 @@ export function CertificateArtwork({ participant, preview = false }: Certificate
         <circle cx="28" cy="28" r="6" fill={gold} /><circle cx="972" cy="28" r="6" fill={gold} />
         <circle cx="28" cy="679" r="6" fill={gold} /><circle cx="972" cy="679" r="6" fill={gold} />
 
-        <image href="/itda_without_background.png" x="402" y="65" width="52" height="52" preserveAspectRatio="xMidYMid meet" />
-        <image href="/hackathon/logo.png" x="466" y="65" width="145" height="52" preserveAspectRatio="xMidYMid meet" />
+        <g aria-label="UKIS partner logos">
+          <image href="/hackathon/logo.png" x="65" y="62" width="130" height="58" preserveAspectRatio="xMidYMid meet" />
+          <image href="/itda_without_background.png" x="207" y="65" width="47" height="47" preserveAspectRatio="xMidYMid meet" />
+          <text x="230.5" y="121" textAnchor="middle" fill="#2118b8" fontFamily="Poppins, sans-serif" fontSize="6.5" fontWeight="600" letterSpacing="0.6">ITDA</text>
+          <image href="/images/uttarakhand_government.svg" x="268" y="64" width="49" height="49" preserveAspectRatio="xMidYMid meet" />
+          <text x="292.5" y="121" textAnchor="middle" fill="#c4412d" fontFamily="Poppins, sans-serif" fontSize="5.5" fontWeight="600">UTTARAKHAND GOVT.</text>
+          <image href="/images/logo2.png" x="329" y="67" width="137" height="44" preserveAspectRatio="xMidYMid meet" />
+          <image href="/hackathon/logos/namami-gange.png" x="466" y="64" width="92" height="52" preserveAspectRatio="xMidYMid meet" />
+          <image href="/hackathon/logos/graphic-era.svg" x="570" y="65" width="185" height="52" preserveAspectRatio="xMidYMid meet" />
+          <image href="/hackathon/logos/tbi-geu.png" x="779" y="64" width="53" height="53" preserveAspectRatio="xMidYMid meet" />
+          <text x="840" y="83" fill={navy} fontFamily="Poppins, sans-serif" fontSize="8.5" fontWeight="600">
+            <tspan x="840">Technology</tspan>
+            <tspan x="840" dy="10">Business</tspan>
+            <tspan x="840" dy="10">Incubator</tspan>
+          </text>
+        </g>
 
         <text x="500" y="184" textAnchor="middle" fill={navy} fontFamily="Marcellus, serif" fontSize="46">Certificate of participation</text>
         <text x="500" y="230" textAnchor="middle" fill="#9d792d" fontFamily="Poppins, sans-serif" fontSize="11" fontWeight="500">THIS IS TO CERTIFY THAT</text>

@@ -21,6 +21,28 @@ function loadImage(src: string): Promise<HTMLImageElement> {
   });
 }
 
+function drawImageContained(
+  ctx: CanvasRenderingContext2D,
+  image: HTMLImageElement,
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+) {
+  const naturalWidth = image.naturalWidth || image.width;
+  const naturalHeight = image.naturalHeight || image.height;
+  const scale = Math.min(width / naturalWidth, height / naturalHeight);
+  const drawnWidth = naturalWidth * scale;
+  const drawnHeight = naturalHeight * scale;
+  ctx.drawImage(
+    image,
+    x + (width - drawnWidth) / 2,
+    y + (height - drawnHeight) / 2,
+    drawnWidth,
+    drawnHeight,
+  );
+}
+
 function fitText(
   ctx: CanvasRenderingContext2D,
   text: string,
@@ -107,15 +129,36 @@ async function renderCertificateCanvas(
   const p = (value: number) => value * SCALE;
 
   drawPlaque(ctx);
-  const [itdaLogo, ukisLogo] = await Promise.all([
-    loadImage("/itda_without_background.png"),
+  const [ukisLogo, itdaLogo, uttarakhandLogo, axocomLogo, namamiGangeLogo, graphicEraLogo, tbiLogo] = await Promise.all([
     loadImage("/hackathon/logo.png"),
+    loadImage("/itda_without_background.png"),
+    loadImage("/images/uttarakhand_government.svg"),
+    loadImage("/images/logo2.png"),
+    loadImage("/hackathon/logos/namami-gange.png"),
+    loadImage("/hackathon/logos/graphic-era.svg"),
+    loadImage("/hackathon/logos/tbi-geu.png"),
   ]);
-  ctx.drawImage(itdaLogo, p(402), p(65), p(52), p(52));
-  const ukisWidth = p(145);
-  const ukisNaturalHeight = ukisWidth * (ukisLogo.naturalHeight / ukisLogo.naturalWidth);
-  const ukisHeight = Math.min(p(52), ukisNaturalHeight);
-  ctx.drawImage(ukisLogo, p(466), p(65) + (p(52) - ukisHeight) / 2, ukisWidth, ukisHeight);
+  drawImageContained(ctx, ukisLogo, p(65), p(62), p(130), p(58));
+  drawImageContained(ctx, itdaLogo, p(207), p(65), p(47), p(47));
+  drawImageContained(ctx, uttarakhandLogo, p(268), p(64), p(49), p(49));
+  drawImageContained(ctx, axocomLogo, p(329), p(67), p(137), p(44));
+  drawImageContained(ctx, namamiGangeLogo, p(466), p(64), p(92), p(52));
+  drawImageContained(ctx, graphicEraLogo, p(570), p(65), p(185), p(52));
+  drawImageContained(ctx, tbiLogo, p(779), p(64), p(53), p(53));
+
+  ctx.fillStyle = "#2118b8";
+  ctx.font = `600 ${p(6.5)}px Poppins, sans-serif`;
+  ctx.textAlign = "center";
+  ctx.fillText("ITDA", p(230.5), p(121));
+  ctx.fillStyle = "#c4412d";
+  ctx.font = `600 ${p(5.5)}px Poppins, sans-serif`;
+  ctx.fillText("UTTARAKHAND GOVT.", p(292.5), p(121));
+  ctx.fillStyle = NAVY;
+  ctx.font = `600 ${p(8.5)}px Poppins, sans-serif`;
+  ctx.textAlign = "left";
+  ctx.fillText("Technology", p(840), p(83));
+  ctx.fillText("Business", p(840), p(93));
+  ctx.fillText("Incubator", p(840), p(103));
 
   ctx.textAlign = "center";
   ctx.fillStyle = NAVY;
