@@ -12,10 +12,12 @@ img { display: block; max-width: 100%; }
 .slide-content { position: absolute; inset: 0; padding: 62px 100px 110px; }
 .masthead { display: flex; align-items: center; justify-content: space-between; gap: 70px; height: 112px; }
 .brand-logos { display: flex; align-items: center; gap: 28px; flex-shrink: 0; height: 112px; }
-.brand-mark { width: 208px; height: 112px; flex-shrink: 0; display: grid; place-items: center; }
+.brand-mark { width: 208px; height: 112px; flex-shrink: 0; display: grid; place-items: center; background: #fff; border-radius: 12px; }
 .brand-mark img { width: 208px; height: 112px; object-fit: contain; }
-.institution-logo { width: 112px; height: 112px; object-fit: contain; flex-shrink: 0; }
+.institution-logo { width: 112px; height: 112px; object-fit: contain; flex-shrink: 0; background: #fff; border-radius: 12px; }
 .institution-logo--itda { background: #fff; border-radius: 50%; padding: 6px; }
+.institution-logo--graphic-era { width: 280px; background: #fff; border-radius: 12px; padding: 12px; }
+.institution-logo--tbi { width: 240px; background: #fff; border-radius: 12px; padding: 8px; }
 .eyebrow { font-size: 28px; letter-spacing: .13em; text-transform: uppercase; text-align: right; color: #b1e5ff; }
 .light .eyebrow { color: #315677; }
 .kicker { color: #83e9fc; font-size: 38px; line-height: 1.45; }
