@@ -43,6 +43,7 @@ const CLIENT_ONLY_PATHS = [
   "/login",
   "/UISHackathon",
   "/UKISHackathon/hackathon-proposal-slides",
+  "/UKISHackathon/inauguration",
   "/UKISHackathon/admin",
   "/UKISHackathon/admin/sign-in",
   "/dashboard",
