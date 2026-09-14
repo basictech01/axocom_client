@@ -28,6 +28,8 @@ const brand = () => `<div class="brand-logos">
   <div class="brand-mark">${image("/hackathon/ukis_logo.png", "UKIS Hackathon 2026")}</div>
   ${image("/hackathon/logos/itda.png", "ITDA", "institution-logo institution-logo--itda")}
   ${image("/hackathon/logos/uttarakhand_government.png", "Uttarakhand Government", "institution-logo")}
+  ${image("/hackathon/logos/graphic_era.png", "Graphic Era", "institution-logo institution-logo--graphic-era")}
+  ${image("/hackathon/logos/TBI.png", "Technology Business Incubator, GEU", "institution-logo institution-logo--tbi")}
 </div>`;
 const top = (label: string) => `<header class="masthead">${brand()}<span class="eyebrow">${escape(label)}</span></header>`;
 const title = (eyebrow: string, headline: string, subtitle = "") => `${top(eyebrow)}<div class="section-heading"><h2>${headline}</h2>${subtitle ? `<p>${subtitle}</p>` : ""}</div>`;
