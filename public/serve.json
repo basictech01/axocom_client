@@ -35,6 +35,7 @@
     { "source": "/login", "destination": "/__spa-fallback.html" },
     { "source": "/UISHackathon", "destination": "/__spa-fallback.html" },
     { "source": "/UKISHackathon/hackathon-proposal-slides", "destination": "/__spa-fallback.html" },
+    { "source": "/UKISHackathon/inauguration", "destination": "/__spa-fallback.html" },
     { "source": "/UKISHackathon/admin", "destination": "/__spa-fallback.html" },
     { "source": "/UKISHackathon/admin/sign-in", "destination": "/__spa-fallback.html" },
     { "source": "/dashboard", "destination": "/__spa-fallback.html" },
