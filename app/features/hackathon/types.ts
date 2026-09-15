@@ -74,3 +74,27 @@ export interface ApplyMentorInput {
   profileUrl?: string | null;
   contactConsent: boolean;
 }
+
+export interface CertificateParticipant {
+  id: string;
+  hash: string;
+  fullName: string;
+  institution: string;
+  course: string | null;
+  city: string;
+  issuedAt: string;
+}
+
+export interface CertificateLookupResult {
+  registered: boolean;
+  certificate: CertificateParticipant | null;
+}
+
+export interface RegisterCertificateParticipantInput {
+  fullName: string;
+  email: string;
+  phone: string;
+  institution: string;
+  course?: string | null;
+  city: string;
+}

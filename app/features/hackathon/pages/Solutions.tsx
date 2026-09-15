@@ -6,7 +6,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@apollo/client/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "~/features/hackathon/lib/router";
-import { Search, ArrowRight, Clock, Loader2 } from "lucide-react";
+import { Search, ArrowRight, ChevronDown, ChevronUp, Clock, Loader2 } from "lucide-react";
 import { problems } from "~/features/hackathon/lib/data";
 import { buildSolutionsSeoMeta } from "~/features/hackathon/lib/seo";
 import { useScrollReveal } from "~/features/hackathon/hooks/useScrollReveal";
@@ -16,6 +16,7 @@ export const meta = buildSolutionsSeoMeta;
 
 export default function Solutions() {
   const [search, setSearch] = useState("");
+  const [expandedSolutions, setExpandedSolutions] = useState<Set<string>>(() => new Set());
   const { data, loading: isInitialLoading, error, fetchMore } = useQuery(PUBLIC_SOLUTIONS_QUERY, {
     variables: { limit: 100 },
   });
@@ -72,6 +73,15 @@ export default function Solutions() {
 
   function getProblemTitle(problemId: string) {
     return problems.find((p) => p.id === problemId)?.title || problemId;
+  }
+
+  function toggleSolution(solutionId: string) {
+    setExpandedSolutions((current) => {
+      const next = new Set(current);
+      if (next.has(solutionId)) next.delete(solutionId);
+      else next.add(solutionId);
+      return next;
+    });
   }
 
   const filtered = useMemo(() => {
@@ -146,23 +156,30 @@ export default function Solutions() {
                 </motion.div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {filtered.map((solution, i) => (
-                    <motion.div
-                      key={solution.id}
-                      layout
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={isInView ? { opacity: 1, y: 0 } : {}}
-                      exit={{ opacity: 0, y: -10 }}
-                      transition={{
-                        delay: i * 0.05,
-                        duration: 0.4,
-                        ease: [0.23, 1, 0.32, 1],
-                      }}
-                    >
-                      <motion.div
-                        whileHover={{ y: -2 }}
-                        className="p-5 rounded-2xl bg-card border border-border hover:border-primary/30 transition-all duration-300 h-full"
+                  {filtered.map((solution, i) => {
+                    const isExpanded = expandedSolutions.has(solution.id);
+                    const canExpand = solution.solutionDescription.trim().length > 180;
+                    const descriptionId = `solution-description-${solution.id}`;
+
+                    return (
+                      <motion.article
+                        key={solution.id}
+                        layout
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={isInView ? { opacity: 1, y: 0 } : {}}
+                        exit={{ opacity: 0, y: -10 }}
+                        transition={{
+                          layout: { type: "spring", stiffness: 290, damping: 30 },
+                          opacity: { delay: i * 0.05, duration: 0.35 },
+                          y: { delay: i * 0.05, duration: 0.35 },
+                        }}
+                        className={isExpanded ? "md:col-span-2" : ""}
                       >
+                        <motion.div
+                          layout
+                          whileHover={isExpanded ? undefined : { y: -2 }}
+                          className="flex h-full flex-col rounded-2xl border border-border bg-card p-5 transition-colors duration-300 hover:border-primary/30"
+                        >
                         <div className="flex items-center justify-between mb-3">
                           <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-medium bg-primary/10 text-primary border border-primary/20">
                             {solution.id}
@@ -183,11 +200,28 @@ export default function Solutions() {
                           </span>
                         </Link>
 
-                        <p className="text-sm text-muted-foreground line-clamp-2 mb-4">
-                          {solution.solutionDescription}
-                        </p>
+                          <motion.div layout="position" className="mb-4">
+                            <p
+                              id={descriptionId}
+                              className={`whitespace-pre-line text-sm leading-relaxed text-muted-foreground ${isExpanded ? "" : "line-clamp-2"}`}
+                            >
+                              {solution.solutionDescription}
+                            </p>
+                            {canExpand && (
+                              <button
+                                type="button"
+                                aria-expanded={isExpanded}
+                                aria-controls={descriptionId}
+                                onClick={() => toggleSolution(solution.id)}
+                                className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-primary underline-offset-4 transition-colors hover:text-primary-hover hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                              >
+                                {isExpanded ? "View less" : "Read more"}
+                                {isExpanded ? <ChevronUp className="h-3.5 w-3.5" /> : <ChevronDown className="h-3.5 w-3.5" />}
+                              </button>
+                            )}
+                          </motion.div>
 
-                        <div className="flex items-center justify-between pt-3 border-t border-border">
+                        <div className="mt-auto flex items-center justify-between border-t border-border pt-3">
                           <div className="flex items-center gap-1 text-xs text-muted-foreground">
                             <Clock className="w-3 h-3" />
                             {new Date(solution.createdAt).toLocaleDateString()}
@@ -197,9 +231,10 @@ export default function Solutions() {
                             <span className="text-foreground font-medium">{solution.fullName}</span>
                           </span>
                         </div>
-                      </motion.div>
-                    </motion.div>
-                  ))}
+                        </motion.div>
+                      </motion.article>
+                    );
+                  })}
                 </div>
               )}
             </AnimatePresence>
