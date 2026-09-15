@@ -47,7 +47,8 @@ export default function CertificatePreview() {
           </span>
           <h1 className="mt-5 font-display text-4xl font-bold sm:text-5xl">Certificate design for your approval</h1>
           <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
-            This page uses sample data and does not contact the backend. Review the wording, layout, colours, logos, and signature area before participant certificates go live.
+            Himalayan contours. Glacier blue. A celebration of the people building for Uttarakhand.
+            Review the new UKIS design below; all samples are watermarked and stay in your browser.
           </p>
         </div>
 

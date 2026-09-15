@@ -3,29 +3,21 @@ import { buildHackathonNoIndexMeta } from "~/features/hackathon/lib/seo";
 
 const embeddedProposalSlidesHtml = proposalSlidesHtml
   .replaceAll('src="public/', 'src="/')
-  .replaceAll('url("public/', 'url("/')
-  .replaceAll("Number(location.hash.slice(1))", "Number(window.parent.location.hash.slice(1))")
-  .replace(
-    'if (updateHash) history.replaceState(null, "", `#${current + 1}`);',
-    'if (updateHash) window.parent.history.replaceState(null, "", `#${current + 1}`);',
-  )
-  .replace(
-    'addEventListener("hashchange", () =>',
-    'window.parent.addEventListener("hashchange", () =>',
-  );
+  .replaceAll('url("public/', 'url("/');
 
 export function meta() {
   return buildHackathonNoIndexMeta(
-    "UKIS Hackathon 2026 Proposal",
-    "Private UKIS Hackathon 2026 proposal presentation.",
+    "UKIS Hackathon 2026 Inauguration",
+    "UKIS inauguration: real problems, student talent and an innovation ecosystem for Uttarakhand.",
   );
 }
 
 export default function HackathonProposalSlides() {
   return (
     <iframe
-      title="Uttarakhand Innovation and Solutions Hackathon 2026 proposal"
+      title="Uttarakhand Innovation and Solutions Hackathon 2026 inauguration"
       srcDoc={embeddedProposalSlidesHtml}
+      allowFullScreen
       style={{
         position: "fixed",
         inset: 0,
