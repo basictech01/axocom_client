@@ -2,21 +2,29 @@
  * Register Solution Page - Kinetic Dark design
  * Multi-step animated form with progress indicator
  * Fields: select problem (skipped when arriving from a problem page),
- * solution title, description, prototype URL, owner details, consent
+ * solution title, description, prototype URL, owner details, team, consent
  */
 import { useEffect, useMemo, useState } from "react";
 import { useMutation } from "@apollo/client/react";
 import { useSearchParams } from "react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "~/features/hackathon/lib/router";
-import { ArrowRight, Check, AlertCircle, Loader2 } from "lucide-react";
+import { ArrowRight, Check, AlertCircle, Loader2, User, Users } from "lucide-react";
 import { getProblemById, problems } from "~/features/hackathon/lib/data";
 import { useScrollReveal } from "~/features/hackathon/hooks/useScrollReveal";
 import { toast } from "sonner";
 import { normalizePhone, isValidNormalizedPhone } from "~/features/hackathon/lib/normalize";
 import { WhatsAppCommunityCta } from "~/features/hackathon/components/WhatsAppCommunityCta";
 import RegisterAsideImage from "~/features/hackathon/components/RegisterAsideImage";
-import { PARTICIPATION_RULE_SUMMARY } from "~/features/hackathon/lib/participation";
+import { MAX_TEAM_SIZE, PARTICIPATION_RULE_SUMMARY } from "~/features/hackathon/lib/participation";
+import {
+  hasTeamMemberErrors,
+  normalizeTeamMembers,
+  resizeTeamMembers,
+  validateTeamMembers,
+  type TeamMemberDraft,
+  type TeamMemberErrors,
+} from "~/features/hackathon/lib/team";
 import { buildParticipantRegistrationSeoMeta } from "~/features/hackathon/lib/seo";
 import { SUBMIT_SOLUTION_MUTATION } from "~/features/hackathon/services";
 
@@ -26,8 +34,13 @@ const steps = [
   { id: 1, label: "Problem" },
   { id: 2, label: "Solution" },
   { id: 3, label: "Details" },
-  { id: 4, label: "Consent" },
+  { id: 4, label: "Team" },
+  { id: 5, label: "Consent" },
 ];
+
+const lastStep = steps.length;
+
+const teamSizeOptions = Array.from({ length: MAX_TEAM_SIZE }, (_, i) => i + 1);
 
 export default function RegisterSolution() {
   const [searchParams] = useSearchParams();
@@ -53,10 +66,13 @@ export default function RegisterSolution() {
     ownerName: "",
     ownerEmail: "",
     ownerPhone: "",
+    teamSize: 0,
+    teamMembers: [] as TeamMemberDraft[],
     acceptConsent: false,
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [teamErrors, setTeamErrors] = useState<TeamMemberErrors[]>([]);
 
   useEffect(() => {
     if (preselectedProblem) {
@@ -92,20 +108,43 @@ export default function RegisterSolution() {
       else if (!isValidNormalizedPhone(normalizePhone(formData.ownerPhone))) {
         newErrors.ownerPhone = "Enter a valid 10-digit mobile number";
       }
+    } else if (step === 4) {
+      if (!formData.teamSize) newErrors.teamSize = "Choose whether you are participating solo or as a team";
+      const memberErrors = validateTeamMembers(
+        { email: formData.ownerEmail, phone: formData.ownerPhone },
+        formData.teamMembers,
+      );
+      setTeamErrors(memberErrors);
+      if (hasTeamMemberErrors(memberErrors)) newErrors.teamMembers = "Fix the highlighted teammate details";
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   }
 
+  function setTeamSize(teamSize: number) {
+    setFormData((prev) => ({ ...prev, teamSize, teamMembers: resizeTeamMembers(prev.teamMembers, teamSize) }));
+    setErrors({});
+    setTeamErrors([]);
+  }
+
+  function updateTeamMember(index: number, field: keyof TeamMemberDraft, value: string) {
+    setFormData((prev) => ({
+      ...prev,
+      teamMembers: prev.teamMembers.map((member, i) => (i === index ? { ...member, [field]: value } : member)),
+    }));
+    setTeamErrors((prev) => prev.map((memberErrors, i) => (i === index ? { ...memberErrors, [field]: undefined } : memberErrors)));
+  }
+
   function nextStep() {
     if (validateStep(currentStep)) {
-      setCurrentStep((s) => Math.min(s + 1, 4));
+      setCurrentStep((s) => Math.min(s + 1, lastStep));
     }
   }
 
   function prevStep() {
     setCurrentStep((s) => Math.max(s - 1, minStep));
     setErrors({});
+    setTeamErrors([]);
   }
 
   async function handleSubmit() {
@@ -126,6 +165,7 @@ export default function RegisterSolution() {
             solutionTitle: formData.solutionTitle,
             solutionDescription: formData.description,
             prototypeUrl: formData.prototypeUrl || null,
+            teamMembers: normalizeTeamMembers(formData.teamMembers),
             contactConsent: formData.acceptConsent,
           },
         },
@@ -137,7 +177,7 @@ export default function RegisterSolution() {
       const message = error instanceof Error ? error.message : "Failed to submit solution.";
       if (message.toLowerCase().includes("already exists")) {
         toast.error(
-          "An entry already exists using this email address or mobile number. Each person may participate only once.",
+          "An entry already exists for your email or mobile number, or for one of your teammates. Each person may participate only once, solo or in one team.",
         );
       } else {
         toast.error(message || "Failed to submit solution. Please try again.");
@@ -161,9 +201,11 @@ export default function RegisterSolution() {
             </div>
             <h1 className="font-display font-bold text-3xl text-foreground mb-4">Submission Received</h1>
             <p className="text-muted-foreground text-lg mb-8">
-              Your solo or team entry has been received. Our team will review it before it is
-              published and may contact the primary participant through email or WhatsApp regarding
-              the next steps.
+              Your {formData.teamMembers.length > 0 ? `team entry of ${formData.teamMembers.length + 1}` : "solo entry"} has been
+              received. Our team will review it before it is published and may contact the primary
+              participant through email or WhatsApp regarding the next steps.
+              {formData.teamMembers.length > 0 &&
+                " Every teammate can get their own participation certificate using the email address entered here."}
             </p>
             <Link href="/problems">
               <button className="px-6 py-3 bg-primary text-primary-foreground font-semibold rounded-xl hover:bg-primary-hover transition-all">
@@ -411,6 +453,70 @@ export default function RegisterSolution() {
 
                 {currentStep === 4 && (
                   <div className="space-y-6">
+                    <div>
+                      <h2 className="font-display font-semibold text-xl text-foreground">Your Team</h2>
+                      <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                        Add everyone in your team, including their email. Each person gets their own
+                        certificate, and nobody listed here can enter again, either solo or in another team.
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-foreground mb-2">Team size, including you *</p>
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2" role="radiogroup" aria-label="Team size">
+                        {teamSizeOptions.map((size) => (
+                          <button
+                            key={size}
+                            type="button"
+                            role="radio"
+                            aria-checked={formData.teamSize === size}
+                            onClick={() => setTeamSize(size)}
+                            className={`flex items-center justify-center gap-2 px-3 py-3 rounded-xl border text-sm font-medium transition-all ${
+                              formData.teamSize === size
+                                ? "border-primary bg-primary/5 ring-1 ring-primary/30 text-foreground"
+                                : "border-border text-muted-foreground hover:border-primary/30"
+                            }`}
+                          >
+                            {size === 1 ? <User className="w-4 h-4" /> : <Users className="w-4 h-4" />}
+                            {size === 1 ? "Solo" : `Team of ${size}`}
+                          </button>
+                        ))}
+                      </div>
+                      {errors.teamSize && <p className="mt-2 text-sm text-destructive flex items-center gap-1"><AlertCircle className="w-3 h-3" /> {errors.teamSize}</p>}
+                    </div>
+
+                    {formData.teamMembers.map((member, index) => {
+                      const memberErrors = teamErrors[index] ?? {};
+                      const inputClass = (field: keyof TeamMemberDraft) =>
+                        `w-full px-4 py-3 rounded-xl bg-card border text-foreground outline-none transition-all ${memberErrors[field] ? "border-destructive" : "border-border focus:border-primary/50"}`;
+                      return (
+                        <fieldset key={index} className="space-y-4 rounded-xl border border-border p-4">
+                          <legend className="px-1 text-sm font-semibold text-foreground">Teammate {index + 1}</legend>
+                          <div>
+                            <label htmlFor={`team-${index}-name`} className="text-sm font-medium text-foreground mb-1.5 block">Full Name *</label>
+                            <input id={`team-${index}-name`} type="text" autoComplete="off" value={member.fullName} onChange={(e) => updateTeamMember(index, "fullName", e.target.value)} className={inputClass("fullName")} placeholder="Name as it should appear on the certificate" />
+                            {memberErrors.fullName && <p className="mt-1 text-xs text-destructive">{memberErrors.fullName}</p>}
+                          </div>
+                          <div className="grid gap-4 sm:grid-cols-2">
+                            <div>
+                              <label htmlFor={`team-${index}-email`} className="text-sm font-medium text-foreground mb-1.5 block">Email *</label>
+                              <input id={`team-${index}-email`} type="email" autoComplete="off" value={member.email} onChange={(e) => updateTeamMember(index, "email", e.target.value)} className={inputClass("email")} placeholder="teammate@email.com" />
+                              {memberErrors.email && <p className="mt-1 text-xs text-destructive">{memberErrors.email}</p>}
+                            </div>
+                            <div>
+                              <label htmlFor={`team-${index}-phone`} className="text-sm font-medium text-foreground mb-1.5 block">Phone / WhatsApp *</label>
+                              <input id={`team-${index}-phone`} type="tel" autoComplete="off" value={member.phone} onChange={(e) => updateTeamMember(index, "phone", e.target.value)} className={inputClass("phone")} placeholder="+91 98765 43210" />
+                              {memberErrors.phone && <p className="mt-1 text-xs text-destructive">{memberErrors.phone}</p>}
+                            </div>
+                          </div>
+                        </fieldset>
+                      );
+                    })}
+                    {errors.teamMembers && <p className="text-sm text-destructive flex items-center gap-1"><AlertCircle className="w-3 h-3" /> {errors.teamMembers}</p>}
+                  </div>
+                )}
+
+                {currentStep === lastStep && (
+                  <div className="space-y-6">
                     <h2 className="font-display font-semibold text-xl text-foreground">Final Consent</h2>
                     <div className="p-4 rounded-xl bg-primary/5 border border-primary/20 space-y-4">
                       <label className="flex gap-3 cursor-pointer group">
@@ -423,10 +529,11 @@ export default function RegisterSolution() {
                           />
                         </div>
                         <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">
-                          I confirm that I am participating solo or as the primary contact for one
-                          team of 2, 3, or 4 people; every participant in this entry will participate
-                          only once. I also consent to be contacted through email or WhatsApp
-                          regarding this submission. *
+                          {formData.teamMembers.length > 0
+                            ? `I confirm that I am the primary contact for this team of ${formData.teamMembers.length + 1}, that I have listed every member with their permission, and that none of us has entered solo or in another team.`
+                            : "I confirm that I am participating solo and have not entered in any team."}{" "}
+                          I also consent to be contacted through email or WhatsApp regarding this
+                          submission. *
                         </span>
                       </label>
                     </div>
@@ -442,7 +549,7 @@ export default function RegisterSolution() {
                   >
                     Back
                   </button>
-                  {currentStep < 4 ? (
+                  {currentStep < lastStep ? (
                     <button
                       onClick={nextStep}
                       className="px-6 py-2.5 bg-primary text-primary-foreground font-semibold rounded-xl flex items-center gap-2 hover:opacity-90 transition-all"

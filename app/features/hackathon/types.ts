@@ -31,9 +31,16 @@ export interface PublicMentor {
   status: ReviewStatus;
 }
 
+export interface SolutionTeamMember {
+  fullName: string;
+  email: string;
+  phone: string;
+}
+
 export interface SolutionSubmission extends PublicSolution {
   email: string;
   phone: string;
+  teamMembers: SolutionTeamMember[];
   contactConsentAt: string;
   adminNote: string | null;
   reviewedAt: string | null;
@@ -59,6 +66,8 @@ export interface SubmitSolutionInput {
   solutionTitle: string;
   solutionDescription: string;
   prototypeUrl?: string | null;
+  /** Teammates other than the person submitting; empty for solo entries. */
+  teamMembers: SolutionTeamMember[];
   contactConsent: boolean;
 }
 
@@ -91,6 +100,37 @@ export interface CertificateLookupResult {
 }
 
 export interface RegisterCertificateParticipantInput {
+  fullName: string;
+  email: string;
+  phone: string;
+  institution: string;
+  course?: string | null;
+  city: string;
+}
+
+export interface CertificateTeamMember {
+  id: string;
+  fullName: string;
+  /** Masked by the server, e.g. "as•••@gmail.com". */
+  emailHint: string;
+  certificate: CertificateParticipant | null;
+}
+
+export interface CertificateTeam {
+  solutionTitle: string;
+  problemCode: string;
+  leadName: string;
+  leadCertificate: CertificateParticipant | null;
+  members: CertificateTeamMember[];
+  maxMembers: number;
+}
+
+export interface CertificateTeamLeadInput {
+  leadEmail: string;
+  leadPhone: string;
+}
+
+export interface AddCertificateTeamMemberInput extends CertificateTeamLeadInput {
   fullName: string;
   email: string;
   phone: string;

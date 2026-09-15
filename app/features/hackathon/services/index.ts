@@ -10,6 +10,10 @@ import type {
   CertificateParticipant,
   CertificateLookupResult,
   RegisterCertificateParticipantInput,
+  CertificateTeam,
+  CertificateTeamLeadInput,
+  CertificateTeamMember,
+  AddCertificateTeamMemberInput,
 } from "~/features/hackathon/types";
 
 export const REGISTER_CERTIFICATE_PARTICIPANT_MUTATION: TypedDocumentNode<
@@ -44,6 +48,45 @@ export const CERTIFICATE_BY_HASH_QUERY: TypedDocumentNode<
   query CertificateByHash($hash: String!) {
     certificateByHash(hash: $hash) {
       id hash fullName institution course city issuedAt
+    }
+  }
+`;
+
+const CERTIFICATE_TEAM_MEMBER_FIELDS = `
+  id fullName emailHint
+  certificate { id hash fullName institution course city issuedAt }
+`;
+
+export const CERTIFICATE_TEAM_BY_LEAD_QUERY: TypedDocumentNode<
+  { certificateTeamByLead: CertificateTeam },
+  { input: CertificateTeamLeadInput }
+> = gql`
+  query CertificateTeamByLead($input: CertificateTeamLeadInput!) {
+    certificateTeamByLead(input: $input) {
+      solutionTitle problemCode leadName maxMembers
+      leadCertificate { id hash fullName institution course city issuedAt }
+      members { ${CERTIFICATE_TEAM_MEMBER_FIELDS} }
+    }
+  }
+`;
+
+export const ADD_CERTIFICATE_TEAM_MEMBER_MUTATION: TypedDocumentNode<
+  { addCertificateTeamMember: CertificateTeamMember },
+  { input: AddCertificateTeamMemberInput }
+> = gql`
+  mutation AddCertificateTeamMember($input: AddCertificateTeamMemberInput!) {
+    addCertificateTeamMember(input: $input) { ${CERTIFICATE_TEAM_MEMBER_FIELDS} }
+  }
+`;
+
+export const PUBLIC_SOLUTION_COUNTS_QUERY: TypedDocumentNode<
+  { publicSolutionCounts: { problemCode: string; acceptedSolutions: number }[] },
+  Record<string, never>
+> = gql`
+  query PublicSolutionCounts {
+    publicSolutionCounts {
+      problemCode
+      acceptedSolutions
     }
   }
 `;
@@ -121,6 +164,11 @@ export const ADMIN_SOLUTION_SUBMISSIONS_QUERY: TypedDocumentNode<
         fullName
         email
         phone
+        teamMembers {
+          fullName
+          email
+          phone
+        }
         problemCode
         solutionTitle
         solutionDescription

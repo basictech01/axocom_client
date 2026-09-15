@@ -6,6 +6,19 @@ export function isCertificateRegistrationOpen(now = new Date()): boolean {
 
 export const CERTIFICATE_DEADLINE_LABEL = "15 September 2026 at 4:00 PM IST";
 
+/**
+ * Team entries originally collected only the team lead's details, so teammates
+ * could not get certificates. This later window lets verified team leads add
+ * teammates, and lets registered teammates generate their own certificates.
+ */
+export const TEAMMATE_CERTIFICATE_DEADLINE = new Date("2026-09-23T16:00:00+05:30");
+
+export const TEAMMATE_CERTIFICATE_DEADLINE_LABEL = "23 September 2026 at 4:00 PM IST";
+
+export function isTeammateCertificateWindowOpen(now = new Date()): boolean {
+  return now.getTime() < TEAMMATE_CERTIFICATE_DEADLINE.getTime();
+}
+
 export function certificatePath(hash: string): string {
   return `/certificate/${encodeURIComponent(hash)}`;
 }
@@ -34,6 +47,8 @@ export function isCertificateApiUnavailable(error: unknown): boolean {
     message.includes("registercertificateparticipant") ||
     message.includes("certificatebyemail") ||
     message.includes("certificatelookupbyemail") ||
-    message.includes("certificatebyhash")
+    message.includes("certificatebyhash") ||
+    message.includes("certificateteambylead") ||
+    message.includes("addcertificateteammember")
   );
 }

@@ -27,6 +27,7 @@ export default [
         route("register/mentor", "features/hackathon/pages/RegisterMentor.tsx"),
         route("certificate", "features/hackathon/pages/CertificatePortal.tsx"),
         route("certificate/register", "features/hackathon/pages/CertificateRegistration.tsx"),
+        route("certificate/team", "features/hackathon/pages/CertificateTeam.tsx"),
         route("certificate/preview", "features/hackathon/pages/CertificatePreview.tsx"),
         route("certificate/:hash", "features/hackathon/pages/CertificateView.tsx"),
         route("solutions", "features/hackathon/pages/Solutions.tsx"),

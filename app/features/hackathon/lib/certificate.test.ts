@@ -5,6 +5,7 @@ import {
   formatCertificateDate,
   isCertificateRegistrationOpen,
   isCertificateApiUnavailable,
+  isTeammateCertificateWindowOpen,
   normalizeCertificateEmail,
 } from "./certificate";
 import { certificateFileName } from "./download-certificate";
@@ -14,6 +15,13 @@ describe("certificate registration rules", () => {
     expect(isCertificateRegistrationOpen(new Date("2026-09-15T15:59:59+05:30"))).toBe(true);
     expect(isCertificateRegistrationOpen(new Date("2026-09-15T16:00:00+05:30"))).toBe(false);
     expect(CERTIFICATE_REGISTRATION_DEADLINE.toISOString()).toBe("2026-09-15T10:30:00.000Z");
+  });
+
+  it("keeps the teammate window open after individual registration closes", () => {
+    const afterIndividualCutoff = new Date("2026-09-16T12:00:00+05:30");
+    expect(isCertificateRegistrationOpen(afterIndividualCutoff)).toBe(false);
+    expect(isTeammateCertificateWindowOpen(afterIndividualCutoff)).toBe(true);
+    expect(isTeammateCertificateWindowOpen(new Date("2026-09-23T16:00:00+05:30"))).toBe(false);
   });
 
   it("normalizes lookup emails", () => {

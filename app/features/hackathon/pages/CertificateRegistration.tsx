@@ -4,7 +4,7 @@ import { Award, Building2, CheckCircle2, Clock3, Loader2, Mail, MapPin, Phone, U
 import { toast } from "sonner";
 import { Button } from "~/features/hackathon/components/ui/button";
 import { Link, useLocation } from "~/features/hackathon/lib/router";
-import { CERTIFICATE_DEADLINE_LABEL, certificatePath, isCertificateApiUnavailable, isCertificateRegistrationOpen, normalizeCertificateEmail } from "~/features/hackathon/lib/certificate";
+import { CERTIFICATE_DEADLINE_LABEL, TEAMMATE_CERTIFICATE_DEADLINE_LABEL, certificatePath, isCertificateApiUnavailable, isCertificateRegistrationOpen, isTeammateCertificateWindowOpen, normalizeCertificateEmail } from "~/features/hackathon/lib/certificate";
 import { normalizePhone, isValidNormalizedPhone } from "~/features/hackathon/lib/normalize";
 import { buildHackathonNoIndexMeta } from "~/features/hackathon/lib/seo";
 import { REGISTER_CERTIFICATE_PARTICIPANT_MUTATION } from "~/features/hackathon/services";
@@ -18,7 +18,9 @@ export default function CertificateRegistration() {
   const [form, setForm] = useState(initialForm);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [registerParticipant, { loading }] = useMutation(REGISTER_CERTIFICATE_PARTICIPANT_MUTATION);
-  const registrationOpen = isCertificateRegistrationOpen();
+  // After the main deadline, only teammates listed on a team entry can still register; the server checks which one you are.
+  const teammatesOnly = !isCertificateRegistrationOpen() && isTeammateCertificateWindowOpen();
+  const registrationOpen = isCertificateRegistrationOpen() || teammatesOnly;
 
   function update(field: keyof typeof form, value: string) {
     setForm((current) => ({ ...current, [field]: value }));
@@ -38,7 +40,7 @@ export default function CertificateRegistration() {
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
-    if (!isCertificateRegistrationOpen()) {
+    if (!isCertificateRegistrationOpen() && !isTeammateCertificateWindowOpen()) {
       toast.error("Certificate registration has closed.");
       return;
     }
@@ -58,7 +60,9 @@ export default function CertificateRegistration() {
     } catch (error) {
       const message = error instanceof Error ? error.message : "Registration failed. Please try again.";
       toast.error(
-        message.toLowerCase().includes("not registered")
+        message.toLowerCase().includes("closed")
+          ? "Registration has closed for solo participants and team leads. Only teammates listed on a team entry can register now."
+          : message.toLowerCase().includes("not registered")
           ? "You are not registered. Please register first to get a participation certificate."
           : message.toLowerCase().includes("do not match")
             ? "Your email or mobile number does not match your hackathon registration."
@@ -88,7 +92,9 @@ export default function CertificateRegistration() {
     <div className="min-h-screen pt-28 pb-20">
       <div className="container max-w-3xl">
         <div className="text-center"><span className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-sm font-semibold text-primary"><Award size={17} /> Certificate of Participation</span><h1 className="mt-5 font-display text-4xl font-bold sm:text-5xl">Add your participant details</h1><p className="mx-auto mt-4 max-w-2xl text-muted-foreground">Use accurate details. Your name will appear exactly as entered and the email will be used to retrieve your certificate later.</p></div>
-        <div className="mt-8 flex items-start gap-3 rounded-2xl border border-primary/20 bg-primary/5 p-4 text-sm"><Clock3 className="mt-0.5 shrink-0 text-primary" size={18} /><p><strong>Form closes:</strong> {CERTIFICATE_DEADLINE_LABEL}</p></div>
+        <div className="mt-8 flex items-start gap-3 rounded-2xl border border-primary/20 bg-primary/5 p-4 text-sm"><Clock3 className="mt-0.5 shrink-0 text-primary" size={18} /><p>{teammatesOnly
+          ? <><strong>Teammates only, until {TEAMMATE_CERTIFICATE_DEADLINE_LABEL}.</strong> Use the email and mobile your team lead entered for you. Team leads can create teammates' certificates from <Link href="/certificate/team" className="font-semibold text-primary hover:underline">Team certificates</Link>.</>
+          : <><strong>Form closes:</strong> {CERTIFICATE_DEADLINE_LABEL}</>}</p></div>
         <form onSubmit={handleSubmit} className="mt-7 rounded-3xl border border-border bg-card p-6 shadow-xl shadow-primary/5 sm:p-9">
           <div className="grid gap-6 sm:grid-cols-2">
             {fields.map(({ key, label, placeholder, icon: Icon, type, required }) => (

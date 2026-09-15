@@ -195,7 +195,7 @@ export default function AdminDashboard() {
       <aside className="w-64 border-r border-border bg-card hidden md:flex flex-col">
         <div className="p-4 border-b border-border">
           <img
-            src="/hackathon/logo.png"
+            src="/hackathon/logo-400.webp"
             alt="Uttarakhand Innovation & Solutions Hackathon"
             className="w-full h-auto max-h-20 object-contain object-left"
             width={2127}
@@ -461,6 +461,22 @@ export default function AdminDashboard() {
                       <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">Phone</h4>
                       <p className="text-foreground">{selectedItem.phone || 'N/A'}</p>
                     </div>
+                    {isSolutionSubmission(selectedItem) && (
+                      <div className="col-span-2">
+                        <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">
+                          Team ({selectedItem.teamMembers.length + 1} {selectedItem.teamMembers.length ? "people" : "person, solo"})
+                        </h4>
+                        {selectedItem.teamMembers.length > 0 ? (
+                          <ul className="space-y-1 text-sm text-foreground">
+                            {selectedItem.teamMembers.map((member) => (
+                              <li key={member.email}>{member.fullName} · {member.email} · {member.phone}</li>
+                            ))}
+                          </ul>
+                        ) : (
+                          <p className="text-sm text-muted-foreground">No teammates recorded</p>
+                        )}
+                      </div>
+                    )}
                     {activeTab === 'solutions' ? (
                       <div>
                         <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">Problem Code</h4>

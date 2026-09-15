@@ -2,8 +2,8 @@
  * Problems Page - Kinetic Dark design
  * Lists all published problems with search and live accepted-solution counts
  */
-import { useEffect, useMemo, useState } from "react";
-import { useApolloClient } from "@apollo/client/react";
+import { useMemo, useState } from "react";
+import { useQuery } from "@apollo/client/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "~/features/hackathon/lib/router";
 import { Search, ArrowRight, Loader2 } from "lucide-react";
@@ -13,50 +13,19 @@ import { ProblemOwner } from "~/features/hackathon/components/ProblemOwner";
 import { useScrollReveal } from "~/features/hackathon/hooks/useScrollReveal";
 import { PARTICIPATION_RULE_SUMMARY } from "~/features/hackathon/lib/participation";
 import { buildProblemsSeoMeta } from "~/features/hackathon/lib/seo";
-import { PUBLIC_SOLUTIONS_QUERY } from "~/features/hackathon/services";
+import { PUBLIC_SOLUTION_COUNTS_QUERY } from "~/features/hackathon/services";
 
 export const meta = buildProblemsSeoMeta;
 
 export default function Problems() {
   const [search, setSearch] = useState("");
-  const [solutionCounts, setSolutionCounts] = useState<Record<string, number>>({});
-  const [countsLoading, setCountsLoading] = useState(true);
-  const client = useApolloClient();
   const { ref, isInView } = useScrollReveal(0.05);
-
-  useEffect(() => {
-    let cancelled = false;
-
-    const loadCounts = async () => {
-      setCountsLoading(true);
-      try {
-        const results = await Promise.all(
-          problems.map(async (problem) => {
-            const { data } = await client.query({
-              query: PUBLIC_SOLUTIONS_QUERY,
-              variables: { problemCode: problem.id, page: 1, limit: 1 },
-              fetchPolicy: "network-only",
-            });
-            return [problem.id, data?.publicSolutions.pagination.total ?? 0] as const;
-          }),
-        );
-        if (!cancelled) {
-          setSolutionCounts(Object.fromEntries(results));
-        }
-      } catch {
-        if (!cancelled) {
-          setSolutionCounts({});
-        }
-      } finally {
-        if (!cancelled) setCountsLoading(false);
-      }
-    };
-
-    void loadCounts();
-    return () => {
-      cancelled = true;
-    };
-  }, [client]);
+  // One request for every problem's count; failures simply show zero.
+  const { data: countsData, loading: countsLoading } = useQuery(PUBLIC_SOLUTION_COUNTS_QUERY);
+  const solutionCounts = useMemo<Record<string, number>>(
+    () => Object.fromEntries((countsData?.publicSolutionCounts ?? []).map((c) => [c.problemCode, c.acceptedSolutions])),
+    [countsData],
+  );
 
   const filtered = useMemo(() => {
     return problems.filter((p) => {

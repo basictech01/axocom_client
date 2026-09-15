@@ -180,7 +180,7 @@ export const ORG_SECTIONS = [
       "A possible route to test a strong solution under a separately agreed pilot",
     ],
     /** Set to a public path when ready, e.g. "/hackathon/challenge-sponsors.webp" */
-    image: "/hackathon/pt5.png",
+    image: "/hackathon/pt5.webp",
     imageLabel: "Challenge sponsor session or problem showcase",
   },
   {
@@ -217,7 +217,7 @@ export const ORG_SECTIONS = [
       "Structured showcases and interview coordination",
       "Opportunities to mentor teams or sponsor relevant challenges",
     ],
-    image: "/hackathon/pt6.png",
+    image: "/hackathon/pt6.webp",
     imageLabel: "Mentor interview or hiring showcase moment",
   },
   {
@@ -256,7 +256,7 @@ export const ORG_SECTIONS = [
       "Structured showcases and interview coordination",
       "Opportunities to mentor teams or sponsor relevant challenges",
     ],
-    image: "/hackathon/pt7.png",
+    image: "/hackathon/pt7.webp",
     imageLabel: "Uttarakhand builders presenting or demo day",
   },
 ] as const;

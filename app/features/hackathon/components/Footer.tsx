@@ -53,11 +53,11 @@ export default function Footer() {
           <div>
             <Link href="/" className="inline-block mb-4">
               <img
-                src="/hackathon/logo.png"
+                src="/hackathon/logo-400.webp"
                 alt="Uttarakhand Innovation & Solutions Hackathon"
                 className={`h-12 w-auto max-w-[240px] object-contain object-left ${theme === "light" ? "brightness-0" : ""}`}
-                width={2127}
-                height={1299}
+                width={400}
+                height={245}
               />
             </Link>
             <p className="text-sm text-muted-foreground max-w-xs">

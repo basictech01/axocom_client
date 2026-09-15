@@ -57,11 +57,11 @@ export default function Navbar() {
             </span>
           </span>
           <img
-            src="/hackathon/logo.png"
+            src="/hackathon/logo-400.webp"
             alt="Uttarakhand Innovation & Solutions Hackathon"
             className="h-10 sm:h-12 lg:h-14 w-auto max-w-[200px] sm:max-w-[260px] lg:max-w-[320px] object-contain object-left transition-transform duration-200 group-hover:scale-[1.02]"
-            width={2127}
-            height={1299}
+            width={400}
+            height={245}
           />
         </Link>
 

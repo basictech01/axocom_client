@@ -94,7 +94,7 @@ export function CertificateSvg({
       <text x="782" y="587" fill={c.paper} fillOpacity="0.8" fontSize="10">Built for Devbhoomi.</text>
 
       {/* Event identity is separate from the supporting partner strip. */}
-      <image href="/hackathon/logo.png" x="56" y="32" width="157" height="99" preserveAspectRatio="xMidYMid meet" />
+      <image href="/hackathon/logo-800.webp" x="56" y="32" width="157" height="99" preserveAspectRatio="xMidYMid meet" />
       <line x1="237" y1="54" x2="237" y2="111" stroke={c.line} strokeWidth="0.8" />
       <text x="261" y="72" fill={c.navy} fontSize="11" fontWeight="600" letterSpacing="0.5">
         <tspan x="261">UTTARAKHAND INNOVATION</tspan>

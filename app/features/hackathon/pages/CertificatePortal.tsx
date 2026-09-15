@@ -1,13 +1,15 @@
 import { useState } from "react";
 import { useLazyQuery } from "@apollo/client/react";
-import { AlertCircle, ArrowRight, Award, CalendarClock, CheckCircle2, Eye, Loader2, Mail, Search } from "lucide-react";
+import { AlertCircle, ArrowRight, Award, CalendarClock, CheckCircle2, Eye, Loader2, Mail, Search, Users } from "lucide-react";
 import { Button } from "~/features/hackathon/components/ui/button";
 import { Link, useLocation } from "~/features/hackathon/lib/router";
 import {
   CERTIFICATE_DEADLINE_LABEL,
+  TEAMMATE_CERTIFICATE_DEADLINE_LABEL,
   certificatePath,
   isCertificateRegistrationOpen,
   isCertificateApiUnavailable,
+  isTeammateCertificateWindowOpen,
   normalizeCertificateEmail,
 } from "~/features/hackathon/lib/certificate";
 import { buildHackathonNoIndexMeta } from "~/features/hackathon/lib/seo";
@@ -26,6 +28,8 @@ export default function CertificatePortal() {
     fetchPolicy: "network-only",
   });
   const registrationOpen = isCertificateRegistrationOpen();
+  const teammateWindowOpen = isTeammateCertificateWindowOpen();
+  const teammatesOnly = !registrationOpen && teammateWindowOpen;
 
   async function handleLookup(event: React.FormEvent) {
     event.preventDefault();
@@ -48,7 +52,9 @@ export default function CertificatePortal() {
       }
       if (!result.certificate) {
         setLookupMessage({
-          text: "Your hackathon registration is confirmed, but your certificate has not been generated yet. Use ‘Register now’ to create it.",
+          text: teammateWindowOpen
+            ? "Your registration is confirmed, but your certificate hasn't been created yet. Create it with ‘Register now’, or ask your team lead to create it from ‘Team certificates’ below."
+            : "Your registration is confirmed, but your certificate was not created before registration closed.",
           success: true,
         });
         return;
@@ -81,18 +87,23 @@ export default function CertificatePortal() {
           <div className="mt-12 grid gap-6 lg:grid-cols-[0.85fr_1.15fr]">
             <section className="rounded-3xl border border-border bg-card p-7 sm:p-9">
               <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary"><CalendarClock /></div>
-              <h2 className="mt-6 font-display text-2xl font-bold text-foreground">{registrationOpen ? "Register for your certificate" : "Registration has closed"}</h2>
+              <h2 className="mt-6 font-display text-2xl font-bold text-foreground">
+                {registrationOpen ? "Register for your certificate" : teammatesOnly ? "Teammates can still register" : "Registration has closed"}
+              </h2>
               <p className="mt-3 leading-relaxed text-muted-foreground">
                 {registrationOpen
                   ? "Add your participant details before the deadline. Your certificate will be created instantly with a private, shareable link."
-                  : `New certificate registrations closed on ${CERTIFICATE_DEADLINE_LABEL}. Existing certificates remain available.`}
+                  : teammatesOnly
+                    ? `Registration closed on ${CERTIFICATE_DEADLINE_LABEL} for solo participants and team leads. If your team lead listed you as a teammate, you can still create your own certificate.`
+                    : `New certificate registrations closed on ${CERTIFICATE_DEADLINE_LABEL}. Existing certificates remain available.`}
               </p>
               <div className="mt-6 rounded-xl border border-border bg-muted/50 p-4 text-sm text-muted-foreground">
-                <strong className="text-foreground">Registration deadline</strong><br />{CERTIFICATE_DEADLINE_LABEL}
+                <strong className="text-foreground">{teammatesOnly ? "Teammate deadline" : "Registration deadline"}</strong><br />
+                {teammatesOnly ? TEAMMATE_CERTIFICATE_DEADLINE_LABEL : CERTIFICATE_DEADLINE_LABEL}
               </div>
-              {registrationOpen && (
+              {(registrationOpen || teammatesOnly) && (
                 <Button asChild size="lg" className="mt-7 w-full rounded-xl">
-                  <Link href="/certificate/register">Register now <ArrowRight /></Link>
+                  <Link href="/certificate/register">{teammatesOnly ? "Register as a teammate" : "Register now"} <ArrowRight /></Link>
                 </Button>
               )}
             </section>
@@ -130,6 +141,20 @@ export default function CertificatePortal() {
               <p className="mt-5 text-center text-xs leading-relaxed text-muted-foreground">Your email is used only to locate your registration. Your shareable page does not display it.</p>
             </section>
           </div>
+          {teammateWindowOpen && (
+            <section className="mt-6 flex flex-col gap-5 rounded-3xl border border-border bg-card p-7 sm:flex-row sm:items-center sm:p-9">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary"><Users /></div>
+              <div className="flex-1">
+                <h2 className="font-display text-2xl font-bold text-foreground">Registered a team? Get certificates for your teammates</h2>
+                <p className="mt-2 leading-relaxed text-muted-foreground">
+                  If you submitted your team's registration, confirm with your registered email and mobile, then create a certificate for each teammate. Open until {TEAMMATE_CERTIFICATE_DEADLINE_LABEL}.
+                </p>
+              </div>
+              <Button asChild size="lg" variant="outline" className="rounded-xl">
+                <Link href="/certificate/team">Team certificates <ArrowRight /></Link>
+              </Button>
+            </section>
+          )}
           <div className="mt-7 text-center">
             <Button asChild variant="outline" size="lg" className="rounded-xl">
               <Link href="/certificate/preview"><Eye /> Preview certificate design</Link>

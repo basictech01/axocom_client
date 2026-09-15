@@ -45,9 +45,9 @@ export const HIRING_PARTNERS: HiringPartner[] = [
     id: "hiring-tekclap",
     name: "Tekclap",
     role: "Hiring Partner",
-    logo: "/hackathon/logos/tekclap_logo.jpg",
-    logoWidth: 1024,
-    logoHeight: 1024,
+    logo: "/hackathon/logos/tekclap_logo.webp",
+    logoWidth: 512,
+    logoHeight: 512,
     url: "https://tekclap.com/",
   },
 ];
