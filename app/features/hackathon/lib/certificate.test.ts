@@ -12,13 +12,13 @@ import { certificateFileName } from "./download-certificate";
 
 describe("certificate registration rules", () => {
   it("stays open until the precise IST cutoff", () => {
-    expect(isCertificateRegistrationOpen(new Date("2026-09-15T15:59:59+05:30"))).toBe(true);
-    expect(isCertificateRegistrationOpen(new Date("2026-09-15T16:00:00+05:30"))).toBe(false);
-    expect(CERTIFICATE_REGISTRATION_DEADLINE.toISOString()).toBe("2026-09-15T10:30:00.000Z");
+    expect(isCertificateRegistrationOpen(new Date("2026-09-18T23:59:58+05:30"))).toBe(true);
+    expect(isCertificateRegistrationOpen(new Date("2026-09-18T23:59:59+05:30"))).toBe(false);
+    expect(CERTIFICATE_REGISTRATION_DEADLINE.toISOString()).toBe("2026-09-18T18:29:59.000Z");
   });
 
   it("keeps the teammate window open after individual registration closes", () => {
-    const afterIndividualCutoff = new Date("2026-09-16T12:00:00+05:30");
+    const afterIndividualCutoff = new Date("2026-09-19T12:00:00+05:30");
     expect(isCertificateRegistrationOpen(afterIndividualCutoff)).toBe(false);
     expect(isTeammateCertificateWindowOpen(afterIndividualCutoff)).toBe(true);
     expect(isTeammateCertificateWindowOpen(new Date("2026-09-23T16:00:00+05:30"))).toBe(false);
@@ -54,7 +54,7 @@ describe("certificateFileName", () => {
     institution: "Example University",
     course: null,
     city: "Dehradun",
-    issuedAt: "2026-09-15T10:30:00.000Z",
+    issuedAt: "2026-09-18T18:29:59.000Z",
   };
 
   it("uses the unique certificate id and ends with the participant name", () => {

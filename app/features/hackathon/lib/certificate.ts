@@ -1,10 +1,10 @@
-export const CERTIFICATE_REGISTRATION_DEADLINE = new Date("2026-09-15T16:00:00+05:30");
+export const CERTIFICATE_REGISTRATION_DEADLINE = new Date("2026-09-18T23:59:59+05:30");
 
 export function isCertificateRegistrationOpen(now = new Date()): boolean {
   return now.getTime() < CERTIFICATE_REGISTRATION_DEADLINE.getTime();
 }
 
-export const CERTIFICATE_DEADLINE_LABEL = "15 September 2026 at 4:00 PM IST";
+export const CERTIFICATE_DEADLINE_LABEL = "18 September 2026 at 11:59 PM IST";
 
 /**
  * Team entries originally collected only the team lead's details, so teammates

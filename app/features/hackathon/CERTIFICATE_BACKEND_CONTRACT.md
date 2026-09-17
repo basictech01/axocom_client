@@ -40,7 +40,7 @@ type Mutation {
 
 ## Required server rules
 
-- Reject `registerCertificateParticipant` at or after `2026-09-15T16:00:00+05:30`. The server check is authoritative; the browser check is only for user experience.
+- Reject `registerCertificateParticipant` at or after `2026-09-18T23:59:59+05:30`. The server check is authoritative; the browser check is only for user experience.
 - Treat `hackathon_solution_submissions` as the registration source of truth. Reject certificate creation unless the normalized email exists there and the submitted mobile number matches the registration record. Use the registered full name on the certificate.
 - Normalize email with `trim().toLowerCase()` and mobile numbers to their canonical ten-digit representation before lookup and storage.
 - Enforce unique indexes on normalized email, normalized phone, and `hash`.
@@ -96,7 +96,7 @@ type Mutation { addCertificateTeamMember(input: AddCertificateTeamMemberInput!):
 - **Team lead verification.** Team queries and mutations need the lead's registered email *and* mobile. A teammate's email gets `NOT_TEAM_LEAD`.
 - **Teammates are final.** A lead can add teammates until the team has 4 people, but cannot edit or remove them. Adding to a team locks the submission row, so concurrent adds cannot exceed the limit.
 - **Registered teammates.** When a teammate was listed at registration, `addCertificateTeamMember` must use their registered email and mobile, and the certificate uses their registered name.
-- **Deadlines.** Solo participants and leads keep the original cutoff (`2026-09-15T16:00:00+05:30`). Teammate certificates, whether created by a lead or by the teammate through `registerCertificateParticipant`, close at `2026-09-23T16:00:00+05:30`.
+- **Deadlines.** Solo participants and leads keep the original cutoff (`2026-09-18T23:59:59+05:30`). Teammate certificates, whether created by a lead or by the teammate through `registerCertificateParticipant`, close at `2026-09-23T16:00:00+05:30`.
 - `emailHint` is masked (`as•••@gmail.com`); teammate contact details are never returned by public queries.
 
 Deploy the backend and apply `005_hackathon_team_members.sql` **before** deploying this frontend: the registration form sends `teamMembers`, which an older API rejects.
