@@ -75,6 +75,9 @@ export default function Footer() {
               <Link href="/solutions" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                 Accepted Solutions
               </Link>
+              <Link href="/solutions#check-status" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                Check Solution Status
+              </Link>
               <Link href="/mentors" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                 Mentors
               </Link>

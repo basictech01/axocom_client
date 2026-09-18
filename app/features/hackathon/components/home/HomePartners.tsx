@@ -20,7 +20,7 @@ export default function HomePartners() {
           className="mx-auto max-w-5xl rounded-xl border border-primary/20 bg-white/95 px-4 py-3.5 shadow-[0_18px_45px_rgba(5,88,212,0.16)] backdrop-blur-md sm:px-8 sm:py-4 dark:border-white/10 dark:bg-[#12263F]/95 dark:shadow-[0_18px_48px_rgba(0,0,0,0.3)]"
         >
           <p className="ukis-eyebrow mb-2.5 text-center !text-primary dark:!text-brand-himalayan-cyan">In Association With</p>
-          <ul className="mx-auto grid max-w-xl grid-cols-2 divide-x divide-border dark:divide-white/15">
+          <ul className="mx-auto grid max-w-3xl grid-cols-3 divide-x divide-border dark:divide-white/15">
             {PARTNERS.map((partner) => (
               <li
                 key={partner.name}

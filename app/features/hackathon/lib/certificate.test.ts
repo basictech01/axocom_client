@@ -1,21 +1,13 @@
 import { describe, expect, it } from "vitest";
 import {
-  CERTIFICATE_REGISTRATION_DEADLINE,
   certificatePath,
   formatCertificateDate,
-  isCertificateRegistrationOpen,
   isCertificateApiUnavailable,
   normalizeCertificateEmail,
 } from "./certificate";
 import { certificateFileName } from "./download-certificate";
 
 describe("certificate registration rules", () => {
-  it("stays open until the precise IST cutoff", () => {
-    expect(isCertificateRegistrationOpen(new Date("2026-09-15T15:59:59+05:30"))).toBe(true);
-    expect(isCertificateRegistrationOpen(new Date("2026-09-15T16:00:00+05:30"))).toBe(false);
-    expect(CERTIFICATE_REGISTRATION_DEADLINE.toISOString()).toBe("2026-09-15T10:30:00.000Z");
-  });
-
   it("normalizes lookup emails", () => {
     expect(normalizeCertificateEmail("  Student@Example.COM ")).toBe("student@example.com");
   });

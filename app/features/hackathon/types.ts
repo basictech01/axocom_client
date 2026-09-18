@@ -41,6 +41,52 @@ export interface SolutionSubmission extends PublicSolution {
   updatedAt: string;
 }
 
+export interface SolutionStatus {
+  id: string;
+  problemCode: string;
+  solutionTitle: string;
+  status: ReviewStatus;
+  reviewedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface SolutionTeamMember {
+  id: string;
+  fullName: string;
+  email: string;
+  phone: string;
+  createdAt: string;
+}
+
+export interface TeamLeaderDashboard {
+  accessToken: string;
+  id: string;
+  fullName: string;
+  email: string;
+  phone: string;
+  problemCode: string;
+  solutionTitle: string;
+  solutionDescription: string;
+  prototypeUrl: string | null;
+  status: ReviewStatus;
+  createdAt: string;
+  updatedAt: string;
+  members: SolutionTeamMember[];
+}
+
+export interface SolutionTeamMemberInput {
+  fullName: string;
+  email: string;
+  phone: string;
+}
+
+export interface UpdateTeamSolutionInput {
+  solutionTitle: string;
+  solutionDescription: string;
+  prototypeUrl?: string | null;
+}
+
 export interface MentorApplication extends PublicMentor {
   email: string;
   phone: string;
@@ -79,22 +125,13 @@ export interface CertificateParticipant {
   id: string;
   hash: string;
   fullName: string;
-  institution: string;
+  institution: string | null;
   course: string | null;
-  city: string;
+  city: string | null;
   issuedAt: string;
 }
 
 export interface CertificateLookupResult {
   registered: boolean;
   certificate: CertificateParticipant | null;
-}
-
-export interface RegisterCertificateParticipantInput {
-  fullName: string;
-  email: string;
-  phone: string;
-  institution: string;
-  course?: string | null;
-  city: string;
 }

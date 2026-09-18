@@ -1,6 +1,6 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { Link } from "~/features/hackathon/lib/router";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, CalendarDays } from "lucide-react";
 import { HERO } from "./data";
 
 export default function HomeHero() {
@@ -47,6 +47,14 @@ export default function HomeHero() {
             <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-md mb-8">
               {HERO.support}
             </p>
+
+            <div className="flex items-center gap-3 mb-8 text-foreground">
+              <CalendarDays className="h-5 w-5 shrink-0 text-primary" aria-hidden />
+              <p className="text-sm leading-snug">
+                <span className="font-semibold">{HERO.schedule.label}</span>
+                <span className="text-muted-foreground"> · {HERO.schedule.value}</span>
+              </p>
+            </div>
 
             <div className="flex flex-col sm:flex-row gap-3 mb-10">
               <Link href="/problems">

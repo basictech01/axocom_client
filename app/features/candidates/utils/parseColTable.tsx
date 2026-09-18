@@ -74,11 +74,8 @@ export function parseColTable(
     .filter((k) => k.startsWith("col_"))
     .sort((a, b) => Number(a.split("_")[1]) - Number(b.split("_")[1]));
 
-  const headers = colKeys
-    .map((k) => headerRow[k] ?? "")
-    .filter((h) => h !== "");
-
-  const activeKeys = colKeys.slice(0, headers.length);
+  const activeKeys = colKeys.filter((k) => (headerRow[k] ?? "").trim() !== "");
+  const headers = activeKeys.map((k) => headerRow[k] ?? "");
 
   const dataRows = rawData.slice(1);
   const rows: ColTableRow[] = dataRows.map((row) => ({

@@ -8,6 +8,10 @@ export const HERO = {
   headlineAccent: "A journey.",
   support:
     "Registration is open for students, developers and working professionals. Join UKIS 2026 online and on-ground, either solo or in one team of 2–4, to solve real-world problems from Uttarakhand.",
+  schedule: {
+    label: "90-day hackathon",
+    value: "15 September – 14 December 2026",
+  },
   meta: [
     { label: "Format", value: "Online and on-ground" },
     { label: "Cities", value: "Dehradun · Roorkee · Rudrapur" },
@@ -31,6 +35,14 @@ export const PARTNERS = [
     logoIncludesName: false,
     logoWidth: 490,
     logoHeight: 509,
+  },
+  {
+    name: "Graphic Era",
+    role: "Venue Partner",
+    logo: "/hackathon/logos/graphic-era.svg",
+    logoIncludesName: true,
+    logoWidth: 436,
+    logoHeight: 107,
   },
 ] as const;
 
