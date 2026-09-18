@@ -46,6 +46,7 @@ const CLIENT_ONLY_PATHS = [
   "/UKISHackathon/inauguration",
   "/UKISHackathon/admin",
   "/UKISHackathon/admin/sign-in",
+  "/UKISHackathon/team",
   "/UKISHackathon/certificate",
   "/UKISHackathon/certificate/register",
   "/UKISHackathon/certificate/preview",

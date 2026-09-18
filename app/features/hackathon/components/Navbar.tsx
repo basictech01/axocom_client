@@ -5,7 +5,7 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "~/features/hackathon/lib/router";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Sun, Moon } from "lucide-react";
+import { Menu, X, Sun, Moon, UsersRound } from "lucide-react";
 import { useTheme } from "~/features/hackathon/contexts/ThemeContext";
 
 const navLinks = [
@@ -90,14 +90,14 @@ export default function Navbar() {
           >
             {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
           </button>
-          <Link href="/problems">
+          <Link href="/team">
             <motion.button
               type="button"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.97 }}
               className="relative px-5 py-2.5 bg-primary text-primary-foreground font-semibold text-sm rounded-lg hover:bg-primary-hover transition-colors overflow-hidden"
             >
-              <span className="relative z-10">Explore Problems</span>
+              <span className="relative z-10 flex items-center gap-2"><UsersRound size={17} /> Team Dashboard</span>
             </motion.button>
           </Link>
         </div>
@@ -152,6 +152,18 @@ export default function Navbar() {
                   </Link>
                 </motion.div>
               ))}
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: navLinks.length * 0.04, duration: 0.2 }}
+                className="mt-2"
+              >
+                <Link href="/team">
+                  <span className="flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground">
+                    <UsersRound size={17} /> Team Dashboard
+                  </span>
+                </Link>
+              </motion.div>
             </div>
           </motion.div>
         )}

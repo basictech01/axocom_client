@@ -11,6 +11,7 @@ import { problems } from "~/features/hackathon/lib/data";
 import { buildSolutionsSeoMeta } from "~/features/hackathon/lib/seo";
 import { useScrollReveal } from "~/features/hackathon/hooks/useScrollReveal";
 import { PUBLIC_SOLUTIONS_QUERY } from "~/features/hackathon/services";
+import SolutionStatusLookup from "~/features/hackathon/components/SolutionStatusLookup";
 
 export const meta = buildSolutionsSeoMeta;
 
@@ -113,6 +114,22 @@ export default function Solutions() {
           <p className="text-muted-foreground max-w-2xl text-lg">
             Browse accepted hackathon projects addressing UKIS 2026 problem statements from
             Uttarakhand. Entries from solo participants and teams are reviewed before publication.
+          </p>
+        </motion.div>
+
+        <SolutionStatusLookup />
+
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.15 }}
+          className="mb-6"
+        >
+          <h2 className="font-display font-bold text-2xl sm:text-3xl text-foreground">
+            Accepted <span className="text-brand-accent">Solutions</span>
+          </h2>
+          <p className="mt-2 text-muted-foreground max-w-2xl">
+            The list below shows solutions that have been reviewed and accepted.
           </p>
         </motion.div>
 

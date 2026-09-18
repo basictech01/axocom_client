@@ -6,28 +6,22 @@ import type {
   PublicSolution,
   ReviewStatus,
   SolutionSubmission,
+  SolutionStatus,
+  SolutionTeamMember,
+  SolutionTeamMemberInput,
+  TeamLeaderDashboard,
+  UpdateTeamSolutionInput,
   SubmitSolutionInput,
   CertificateParticipant,
   CertificateLookupResult,
-  RegisterCertificateParticipantInput,
 } from "~/features/hackathon/types";
 
-export const REGISTER_CERTIFICATE_PARTICIPANT_MUTATION: TypedDocumentNode<
-  { registerCertificateParticipant: CertificateParticipant },
-  { input: RegisterCertificateParticipantInput }
-> = gql`
-  mutation RegisterCertificateParticipant($input: RegisterCertificateParticipantInput!) {
-    registerCertificateParticipant(input: $input) {
-      id hash fullName institution course city issuedAt
-    }
-  }
-`;
-
-export const CERTIFICATE_LOOKUP_BY_EMAIL_QUERY: TypedDocumentNode<
+// A mutation because the backend issues the certificate on first lookup.
+export const CERTIFICATE_LOOKUP_BY_EMAIL_MUTATION: TypedDocumentNode<
   { certificateLookupByEmail: CertificateLookupResult },
   { email: string }
 > = gql`
-  query CertificateLookupByEmail($email: String!) {
+  mutation CertificateLookupByEmail($email: String!) {
     certificateLookupByEmail(email: $email) {
       registered
       certificate {
@@ -75,13 +69,90 @@ export const PUBLIC_SOLUTIONS_QUERY: TypedDocumentNode<
 `;
 
 export const SUBMIT_SOLUTION_MUTATION: TypedDocumentNode<
-  { submitSolution: { submissionId: string; status: string } },
+  { submitSolution: { submissionId: string; status: string; accessToken: string } },
   { input: SubmitSolutionInput }
 > = gql`
   mutation SubmitSolution($input: SubmitSolutionInput!) {
     submitSolution(input: $input) {
       submissionId
       status
+      accessToken
+    }
+  }
+`;
+
+export const SOLUTION_STATUS_QUERY: TypedDocumentNode<
+  { solutionStatus: SolutionStatus | null },
+  { contact: string }
+> = gql`
+  query SolutionStatus($contact: String!) {
+    solutionStatus(contact: $contact) {
+      id
+      problemCode
+      solutionTitle
+      status
+      reviewedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+
+const TEAM_LEADER_DASHBOARD_FIELDS = `
+  accessToken
+  id
+  fullName
+  email
+  phone
+  problemCode
+  solutionTitle
+  solutionDescription
+  prototypeUrl
+  status
+  createdAt
+  updatedAt
+  members { id fullName email phone createdAt }
+`;
+
+// A mutation because signing in mints a scoped dashboard access token.
+export const OPEN_TEAM_LEADER_DASHBOARD_MUTATION: TypedDocumentNode<
+  { openTeamLeaderDashboard: TeamLeaderDashboard },
+  { email: string; phone: string }
+> = gql`
+  mutation OpenTeamLeaderDashboard($email: String!, $phone: String!) {
+    openTeamLeaderDashboard(email: $email, phone: $phone) {
+      ${TEAM_LEADER_DASHBOARD_FIELDS}
+    }
+  }
+`;
+
+export const TEAM_DASHBOARD_QUERY: TypedDocumentNode<
+  { teamDashboard: TeamLeaderDashboard | null },
+  { accessToken: string }
+> = gql`
+  query TeamDashboard($accessToken: String!) {
+    teamDashboard(accessToken: $accessToken) {
+      ${TEAM_LEADER_DASHBOARD_FIELDS}
+    }
+  }
+`;
+
+export const UPDATE_TEAM_SOLUTION_MUTATION: TypedDocumentNode<
+  { updateTeamSolution: boolean },
+  { accessToken: string; input: UpdateTeamSolutionInput }
+> = gql`
+  mutation UpdateTeamSolution($accessToken: String!, $input: UpdateTeamSolutionInput!) {
+    updateTeamSolution(accessToken: $accessToken, input: $input)
+  }
+`;
+
+export const ADD_SOLUTION_TEAM_MEMBER_MUTATION: TypedDocumentNode<
+  { addSolutionTeamMember: SolutionTeamMember },
+  { accessToken: string; input: SolutionTeamMemberInput }
+> = gql`
+  mutation AddSolutionTeamMember($accessToken: String!, $input: SolutionTeamMemberInput!) {
+    addSolutionTeamMember(accessToken: $accessToken, input: $input) {
+      id fullName email phone createdAt
     }
   }
 `;

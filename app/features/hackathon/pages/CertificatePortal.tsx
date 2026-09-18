@@ -1,31 +1,26 @@
 import { useState } from "react";
-import { useLazyQuery } from "@apollo/client/react";
-import { AlertCircle, ArrowRight, Award, CalendarClock, CheckCircle2, Eye, Loader2, Mail, Search } from "lucide-react";
+import { useMutation } from "@apollo/client/react";
+import { AlertCircle, Award, Eye, Loader2, Mail } from "lucide-react";
 import { Button } from "~/features/hackathon/components/ui/button";
 import { Link, useLocation } from "~/features/hackathon/lib/router";
 import {
-  CERTIFICATE_DEADLINE_LABEL,
   certificatePath,
-  isCertificateRegistrationOpen,
   isCertificateApiUnavailable,
   normalizeCertificateEmail,
 } from "~/features/hackathon/lib/certificate";
 import { buildHackathonNoIndexMeta } from "~/features/hackathon/lib/seo";
-import { CERTIFICATE_LOOKUP_BY_EMAIL_QUERY } from "~/features/hackathon/services";
+import { CERTIFICATE_LOOKUP_BY_EMAIL_MUTATION } from "~/features/hackathon/services";
 
 export const meta = () => buildHackathonNoIndexMeta(
   "Get your UKIS 2026 Participation Certificate",
-  "Register for or retrieve your UKIS Hackathon 2026 certificate of participation.",
+  "Retrieve your UKIS Hackathon 2026 certificate of participation using your registered email.",
 );
 
 export default function CertificatePortal() {
   const [, navigate] = useLocation();
   const [email, setEmail] = useState("");
   const [lookupMessage, setLookupMessage] = useState<{ text: string; success: boolean } | null>(null);
-  const [findCertificate, { loading }] = useLazyQuery(CERTIFICATE_LOOKUP_BY_EMAIL_QUERY, {
-    fetchPolicy: "network-only",
-  });
-  const registrationOpen = isCertificateRegistrationOpen();
+  const [findCertificate, { loading }] = useMutation(CERTIFICATE_LOOKUP_BY_EMAIL_MUTATION);
 
   async function handleLookup(event: React.FormEvent) {
     event.preventDefault();
@@ -41,15 +36,15 @@ export default function CertificatePortal() {
       const result = data?.certificateLookupByEmail;
       if (!result?.registered) {
         setLookupMessage({
-          text: "You are not registered. Please register first to get a participation certificate.",
+          text: "No accepted hackathon registration matches this email address. Certificates are issued once a submission has been accepted.",
           success: false,
         });
         return;
       }
       if (!result.certificate) {
         setLookupMessage({
-          text: "Your hackathon registration is confirmed, but your certificate has not been generated yet. Use ‘Register now’ to create it.",
-          success: true,
+          text: "We could not generate your certificate right now. Please try again.",
+          success: false,
         });
         return;
       }
@@ -78,29 +73,11 @@ export default function CertificatePortal() {
             </p>
           </div>
 
-          <div className="mt-12 grid gap-6 lg:grid-cols-[0.85fr_1.15fr]">
-            <section className="rounded-3xl border border-border bg-card p-7 sm:p-9">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary"><CalendarClock /></div>
-              <h2 className="mt-6 font-display text-2xl font-bold text-foreground">{registrationOpen ? "Register for your certificate" : "Registration has closed"}</h2>
-              <p className="mt-3 leading-relaxed text-muted-foreground">
-                {registrationOpen
-                  ? "Add your participant details before the deadline. Your certificate will be created instantly with a private, shareable link."
-                  : `New certificate registrations closed on ${CERTIFICATE_DEADLINE_LABEL}. Existing certificates remain available.`}
-              </p>
-              <div className="mt-6 rounded-xl border border-border bg-muted/50 p-4 text-sm text-muted-foreground">
-                <strong className="text-foreground">Registration deadline</strong><br />{CERTIFICATE_DEADLINE_LABEL}
-              </div>
-              {registrationOpen && (
-                <Button asChild size="lg" className="mt-7 w-full rounded-xl">
-                  <Link href="/certificate/register">Register now <ArrowRight /></Link>
-                </Button>
-              )}
-            </section>
-
+          <div className="mx-auto mt-12 max-w-xl">
             <section className="rounded-3xl border border-primary/20 bg-card p-7 shadow-xl shadow-primary/5 sm:p-9">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary text-primary-foreground"><Search /></div>
-              <h2 className="mt-6 font-display text-2xl font-bold text-foreground">Already registered?</h2>
-              <p className="mt-3 text-muted-foreground">Enter the same email address you used during registration to open your certificate.</p>
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary text-primary-foreground"><Award /></div>
+              <h2 className="mt-6 font-display text-2xl font-bold text-foreground">Get your certificate</h2>
+              <p className="mt-3 text-muted-foreground">Enter the email address.</p>
               <form onSubmit={handleLookup} className="mt-7 space-y-4">
                 <label htmlFor="certificate-email" className="block text-sm font-semibold text-foreground">Registered email address</label>
                 <div className="relative">
@@ -120,9 +97,7 @@ export default function CertificatePortal() {
                         : "border-destructive/30 bg-destructive/10 text-destructive"
                     }`}
                   >
-                    {lookupMessage.success
-                      ? <CheckCircle2 className="mt-0.5 shrink-0" size={17} />
-                      : <AlertCircle className="mt-0.5 shrink-0" size={17} />}
+                    <AlertCircle className="mt-0.5 shrink-0" size={17} />
                     <span>{lookupMessage.text}</span>
                   </div>
                 )}

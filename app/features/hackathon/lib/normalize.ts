@@ -34,6 +34,6 @@ export function normalizePhone(phone: string | null | undefined): string | null 
 }
 
 /** True when a provided phone normalizes to a usable 10-digit Indian mobile key. */
-export function isValidNormalizedPhone(normalized: string | null): boolean {
+export function isValidNormalizedPhone(normalized: string | null): normalized is string {
   return normalized != null && /^\d{10}$/.test(normalized);
 }

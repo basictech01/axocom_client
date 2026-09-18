@@ -9,16 +9,21 @@ import { useMutation } from "@apollo/client/react";
 import { useSearchParams } from "react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "~/features/hackathon/lib/router";
-import { ArrowRight, Check, AlertCircle, Loader2 } from "lucide-react";
+import { ArrowRight, Check, AlertCircle, Loader2, Plus, Trash2, UsersRound } from "lucide-react";
 import { getProblemById, problems } from "~/features/hackathon/lib/data";
 import { useScrollReveal } from "~/features/hackathon/hooks/useScrollReveal";
 import { toast } from "sonner";
-import { normalizePhone, isValidNormalizedPhone } from "~/features/hackathon/lib/normalize";
+import { normalizeEmail, normalizePhone, isValidNormalizedPhone } from "~/features/hackathon/lib/normalize";
+import { MAX_TEAM_SIZE } from "~/features/hackathon/lib/participation";
 import { WhatsAppCommunityCta } from "~/features/hackathon/components/WhatsAppCommunityCta";
 import RegisterAsideImage from "~/features/hackathon/components/RegisterAsideImage";
 import { PARTICIPATION_RULE_SUMMARY } from "~/features/hackathon/lib/participation";
 import { buildParticipantRegistrationSeoMeta } from "~/features/hackathon/lib/seo";
-import { SUBMIT_SOLUTION_MUTATION } from "~/features/hackathon/services";
+import {
+  ADD_SOLUTION_TEAM_MEMBER_MUTATION,
+  SUBMIT_SOLUTION_MUTATION,
+} from "~/features/hackathon/services";
+import type { SolutionTeamMemberInput } from "~/features/hackathon/types";
 
 export const meta = buildParticipantRegistrationSeoMeta;
 
@@ -40,6 +45,7 @@ export default function RegisterSolution() {
   const minStep = hasPreselectedProblem ? 2 : 1;
 
   const [submitSolution] = useMutation(SUBMIT_SOLUTION_MUTATION);
+  const [addTeamMember] = useMutation(ADD_SOLUTION_TEAM_MEMBER_MUTATION);
   const [currentStep, setCurrentStep] = useState(minStep);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -55,6 +61,7 @@ export default function RegisterSolution() {
     ownerPhone: "",
     acceptConsent: false,
   });
+  const [teamMembers, setTeamMembers] = useState<SolutionTeamMemberInput[]>([]);
 
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -92,6 +99,16 @@ export default function RegisterSolution() {
       else if (!isValidNormalizedPhone(normalizePhone(formData.ownerPhone))) {
         newErrors.ownerPhone = "Enter a valid 10-digit mobile number";
       }
+      teamMembers.forEach((member, index) => {
+        const prefix = `member-${index}`;
+        if (!member.fullName.trim()) newErrors[`${prefix}-fullName`] = "Full name is required";
+        if (!member.email.trim()) newErrors[`${prefix}-email`] = "Email is required";
+        else if (!/\S+@\S+\.\S+/.test(member.email)) newErrors[`${prefix}-email`] = "Invalid email format";
+        if (!member.phone.trim()) newErrors[`${prefix}-phone`] = "Mobile number is required";
+        else if (!isValidNormalizedPhone(normalizePhone(member.phone))) {
+          newErrors[`${prefix}-phone`] = "Enter a valid 10-digit mobile number";
+        }
+      });
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -116,12 +133,14 @@ export default function RegisterSolution() {
 
     setIsSubmitting(true);
     try {
-      await submitSolution({
+      const leaderEmail = normalizeEmail(formData.ownerEmail);
+      const leaderPhone = normalizePhone(formData.ownerPhone) ?? "";
+      const { data } = await submitSolution({
         variables: {
           input: {
-            fullName: formData.ownerName,
-            email: formData.ownerEmail,
-            phone: formData.ownerPhone,
+            fullName: formData.ownerName.trim(),
+            email: leaderEmail,
+            phone: leaderPhone,
             problemCode: formData.problemId,
             solutionTitle: formData.solutionTitle,
             solutionDescription: formData.description,
@@ -130,9 +149,36 @@ export default function RegisterSolution() {
           },
         },
       });
+      const accessToken = data?.submitSolution.accessToken;
+      if (!accessToken) throw new Error("Team access could not be created. Please open the team dashboard.");
+
+      const failedMembers: string[] = [];
+      for (const member of teamMembers) {
+        try {
+          await addTeamMember({
+            variables: {
+              accessToken,
+              input: {
+                fullName: member.fullName.trim(),
+                email: normalizeEmail(member.email),
+                phone: normalizePhone(member.phone) ?? "",
+              },
+            },
+          });
+        } catch (error) {
+          const reason = error instanceof Error ? error.message : "could not be added";
+          failedMembers.push(`${member.fullName.trim()} (${reason})`);
+        }
+      }
 
       setIsSubmitted(true);
-      toast.success("Solution registered successfully!");
+      if (failedMembers.length > 0) {
+        toast.warning(
+          `Solution registered, but these team members were not added: ${failedMembers.join("; ")}. You can add them from the team dashboard.`,
+        );
+      } else {
+        toast.success("Solution and team registered successfully!");
+      }
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : "Failed to submit solution.";
       if (message.toLowerCase().includes("already exists")) {
@@ -165,11 +211,18 @@ export default function RegisterSolution() {
               published and may contact the primary participant through email or WhatsApp regarding
               the next steps.
             </p>
-            <Link href="/problems">
-              <button className="px-6 py-3 bg-primary text-primary-foreground font-semibold rounded-xl hover:bg-primary-hover transition-all">
-                Back to Problems
-              </button>
-            </Link>
+            <div className="flex flex-col justify-center gap-3 sm:flex-row">
+              <Link href="/team">
+                <button className="w-full px-6 py-3 bg-primary text-primary-foreground font-semibold rounded-xl hover:bg-primary-hover transition-all">
+                  Open team dashboard
+                </button>
+              </Link>
+              <Link href="/problems">
+                <button className="w-full px-6 py-3 border border-border bg-secondary text-foreground font-semibold rounded-xl hover:bg-accent transition-all">
+                  Back to Problems
+                </button>
+              </Link>
+            </div>
           </motion.div>
           <WhatsAppCommunityCta delay={0.2} />
         </div>
@@ -366,8 +419,8 @@ export default function RegisterSolution() {
                         Participant / Team Lead Details
                       </h2>
                       <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                        If this is a team entry, the team lead should complete this form as the
-                        primary contact for the team of 2, 3, or 4 people.
+                        If this is a team entry, enter the team lead as the primary contact, then
+                        add up to {MAX_TEAM_SIZE - 1} more team members below.
                       </p>
                     </div>
                     <div>
@@ -406,6 +459,85 @@ export default function RegisterSolution() {
                       />
                       {errors.ownerPhone && <p className="mt-1 text-xs text-destructive">{errors.ownerPhone}</p>}
                     </div>
+                    <div className="border-t border-border pt-5">
+                      <div className="flex items-center justify-between gap-4">
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <UsersRound className="text-primary" size={20} />
+                            <h3 className="font-display font-semibold text-foreground">Team members</h3>
+                          </div>
+                          <p className="mt-1 text-sm text-muted-foreground">Optional, up to {MAX_TEAM_SIZE - 1} additional members.</p>
+                        </div>
+                        {teamMembers.length < MAX_TEAM_SIZE - 1 && (
+                          <button
+                            type="button"
+                            onClick={() => setTeamMembers((members) => [
+                              ...members,
+                              { fullName: "", email: "", phone: "" },
+                            ])}
+                            className="flex shrink-0 items-center gap-2 rounded-lg border border-primary/30 px-3 py-2 text-sm font-semibold text-primary transition-colors hover:bg-primary/10"
+                          >
+                            <Plus size={16} /> Add member
+                          </button>
+                        )}
+                      </div>
+                      <div className="mt-4 space-y-4">
+                        {teamMembers.map((member, index) => {
+                          const prefix = `member-${index}`;
+                          return (
+                            <div key={index} className="rounded-xl border border-border bg-secondary/30 p-4">
+                              <div className="mb-3 flex items-center justify-between">
+                                <p className="text-sm font-semibold text-foreground">Member {index + 1}</p>
+                                <button
+                                  type="button"
+                                  aria-label={`Remove member ${index + 1}`}
+                                  title="Remove member"
+                                  onClick={() => setTeamMembers((members) => members.filter((_, memberIndex) => memberIndex !== index))}
+                                  className="rounded-md p-2 text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
+                                >
+                                  <Trash2 size={17} />
+                                </button>
+                              </div>
+                              <div className="grid gap-3 sm:grid-cols-2">
+                                <div className="sm:col-span-2">
+                                  <input
+                                    aria-label={`Member ${index + 1} full name`}
+                                    value={member.fullName}
+                                    onChange={(event) => setTeamMembers((members) => members.map((item, memberIndex) => memberIndex === index ? { ...item, fullName: event.target.value } : item))}
+                                    className={`w-full rounded-lg border bg-card px-4 py-3 text-foreground outline-none transition-all ${errors[`${prefix}-fullName`] ? "border-destructive" : "border-border focus:border-primary/50"}`}
+                                    placeholder="Full name"
+                                  />
+                                  {errors[`${prefix}-fullName`] && <p className="mt-1 text-xs text-destructive">{errors[`${prefix}-fullName`]}</p>}
+                                </div>
+                                <div>
+                                  <input
+                                    aria-label={`Member ${index + 1} email`}
+                                    type="email"
+                                    value={member.email}
+                                    onChange={(event) => setTeamMembers((members) => members.map((item, memberIndex) => memberIndex === index ? { ...item, email: event.target.value } : item))}
+                                    className={`w-full rounded-lg border bg-card px-4 py-3 text-foreground outline-none transition-all ${errors[`${prefix}-email`] ? "border-destructive" : "border-border focus:border-primary/50"}`}
+                                    placeholder="Email address"
+                                  />
+                                  {errors[`${prefix}-email`] && <p className="mt-1 text-xs text-destructive">{errors[`${prefix}-email`]}</p>}
+                                </div>
+                                <div>
+                                  <input
+                                    aria-label={`Member ${index + 1} mobile number`}
+                                    type="tel"
+                                    inputMode="numeric"
+                                    value={member.phone}
+                                    onChange={(event) => setTeamMembers((members) => members.map((item, memberIndex) => memberIndex === index ? { ...item, phone: event.target.value } : item))}
+                                    className={`w-full rounded-lg border bg-card px-4 py-3 text-foreground outline-none transition-all ${errors[`${prefix}-phone`] ? "border-destructive" : "border-border focus:border-primary/50"}`}
+                                    placeholder="10-digit mobile number"
+                                  />
+                                  {errors[`${prefix}-phone`] && <p className="mt-1 text-xs text-destructive">{errors[`${prefix}-phone`]}</p>}
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
                   </div>
                 )}
 
@@ -424,7 +556,7 @@ export default function RegisterSolution() {
                         </div>
                         <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">
                           I confirm that I am participating solo or as the primary contact for one
-                          team of 2, 3, or 4 people; every participant in this entry will participate
+                          team of at most {MAX_TEAM_SIZE} people; every participant in this entry will participate
                           only once. I also consent to be contacted through email or WhatsApp
                           regarding this submission. *
                         </span>

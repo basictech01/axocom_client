@@ -1,11 +1,3 @@
-export const CERTIFICATE_REGISTRATION_DEADLINE = new Date("2026-09-15T16:00:00+05:30");
-
-export function isCertificateRegistrationOpen(now = new Date()): boolean {
-  return now.getTime() < CERTIFICATE_REGISTRATION_DEADLINE.getTime();
-}
-
-export const CERTIFICATE_DEADLINE_LABEL = "15 September 2026 at 4:00 PM IST";
-
 export function certificatePath(hash: string): string {
   return `/certificate/${encodeURIComponent(hash)}`;
 }
