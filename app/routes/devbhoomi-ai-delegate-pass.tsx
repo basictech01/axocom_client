@@ -40,8 +40,8 @@ export const links = () => [
 ];
 
 const delegatePasses = [
-  { name: "Startup Pass", audience: "Startups", price: 1499, icon: Rocket, note: "For founders and startup team members.", requiresStartupDetails: true },
-  { name: "Professional Pass", audience: "Professionals", price: 2999, icon: BriefcaseBusiness, note: "For independent professionals and specialists." },
+  { name: "Startup Pass", audience: "Startups", price: 1499, icon: Rocket, note: "For founders and startup team members.", requiresStartupDetails: true, soldOut: true },
+  { name: "Professional Pass", audience: "Professionals", price: 2999, icon: BriefcaseBusiness, note: "For independent professionals and specialists.", soldOut: true },
   { name: "Delegate Pass", audience: "Delegates", price: 7500, icon: Building2, note: "For delegates and institutional representatives.", featured: true },
   { name: "Executive Pass", audience: "Executives", price: 14999, icon: Star, note: "For senior leaders and decision-makers." },
   { name: "VIP Pass", audience: "VIP", price: 24999, icon: Crown, note: "For distinguished guests and leaders." },
@@ -50,6 +50,8 @@ const delegatePasses = [
 const formatPrice = (price: number) => `₹${price.toLocaleString("en-IN")}`;
 
 const MIN_STARTUP_DETAILS = 20;
+
+const availablePasses = delegatePasses.filter((pass) => !pass.soldOut);
 
 const initialForm = {
   name: "",
@@ -63,7 +65,7 @@ const initialForm = {
 };
 
 export default function DevbhoomiAIDelegatePass() {
-  const [selectedPass, setSelectedPass] = useState(delegatePasses[1].name);
+  const [selectedPass, setSelectedPass] = useState(availablePasses[0].name);
   const [form, setForm] = useState(initialForm);
   const [sending, setSending] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -71,7 +73,7 @@ export default function DevbhoomiAIDelegatePass() {
   const [error, setError] = useState<string | null>(null);
   const checkout = useRazorpayCheckout();
 
-  const selected = delegatePasses.find((pass) => pass.name === selectedPass) ?? delegatePasses[1];
+  const selected = availablePasses.find((pass) => pass.name === selectedPass) ?? availablePasses[0];
   const quantity = Number(form.quantity);
   const totalPrice = selected.price * quantity;
   // Mirrors the server calculation so the visitor sees what will be charged
@@ -190,6 +192,12 @@ export default function DevbhoomiAIDelegatePass() {
         .delegate-pass-icon { width:44px; height:44px; display:grid; place-items:center; border-radius:8px; color:#168D9D; background:#EFF9F8; }
         .delegate-pass-icon svg { width:23px; height:23px; }
         .delegate-popular { padding:5px 7px; border-radius:5px; color:#fff; background:#2D7DBB; font-size:8px; font-weight:800; text-transform:uppercase; }
+        .delegate-soldout-tag { padding:5px 7px; border-radius:5px; color:#fff; background:#8A1C15; font-size:8px; font-weight:800; text-transform:uppercase; }
+        .delegate-pass.is-soldout { background:#F4F6F6; box-shadow:none; }
+        .delegate-pass.is-soldout .delegate-pass-icon { color:#8E979B; background:#E8ECED; }
+        .delegate-pass.is-soldout h2, .delegate-pass.is-soldout .delegate-price { color:#8E979B; }
+        .delegate-pass.is-soldout .delegate-price { text-decoration:line-through; }
+        .delegate-pass.is-soldout .delegate-price small { text-decoration:none; }
         .delegate-pass h2 { margin:18px 0 0; font-size:16px; }
         .delegate-audience { margin:5px 0 0; color:var(--muted); font-size:11px; font-weight:600; text-transform:uppercase; }
         .delegate-price { margin:16px 0 0; color:#168D9D; font-size:26px; font-weight:800; }
@@ -281,15 +289,17 @@ export default function DevbhoomiAIDelegatePass() {
           {delegatePasses.map((pass) => {
             const Icon = pass.icon;
             return (
-              <article className="delegate-pass" key={pass.name}>
+              <article className={pass.soldOut ? "delegate-pass is-soldout" : "delegate-pass"} key={pass.name}>
                 <div className="delegate-pass-top">
                   <span className="delegate-pass-icon" aria-hidden="true"><Icon /></span>
-                  {pass.featured && <span className="delegate-popular">Popular</span>}
+                  {pass.soldOut
+                    ? <span className="delegate-soldout-tag">Sold out</span>
+                    : pass.featured && <span className="delegate-popular">Popular</span>}
                 </div>
                 <h2>{pass.name}</h2>
                 <p className="delegate-audience">{pass.audience}</p>
                 <p className="delegate-price">{formatPrice(pass.price)}<small>per delegate + GST</small></p>
-                <p className="delegate-pass-note">{pass.note}</p>
+                <p className="delegate-pass-note">{pass.soldOut ? "This pass is sold out. Please choose another pass." : pass.note}</p>
               </article>
             );
           })}
@@ -388,7 +398,9 @@ export default function DevbhoomiAIDelegatePass() {
                   <label htmlFor="delegate-pass">Select pass</label>
                   <select id="delegate-pass" value={selectedPass} onChange={(event) => setSelectedPass(event.target.value)}>
                     {delegatePasses.map((pass) => (
-                      <option key={pass.name} value={pass.name}>{pass.name} · {formatPrice(pass.price)} + GST</option>
+                      <option key={pass.name} value={pass.name} disabled={pass.soldOut}>
+                        {pass.name} · {formatPrice(pass.price)} + GST{pass.soldOut ? " · Sold out" : ""}
+                      </option>
                     ))}
                   </select>
                 </div>
