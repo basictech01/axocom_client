@@ -11,6 +11,10 @@ export interface ProblemOwner {
  */
 export const problemOwners = {
   ...governmentDepartments,
+  "survey-of-india": {
+    name: "Survey of India, Department of Science & Technology, Government of India",
+    url: "https://surveyofindia.gov.in/",
+  },
 } as const satisfies Record<string, ProblemOwner>;
 
 export type ProblemOwnerId = keyof typeof problemOwners;

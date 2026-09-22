@@ -31,6 +31,7 @@ When adding a problem:
 | P-012 Geospatial Urban Planning | Town and Country Planning Department |
 | P-013 Citizen-First Apuni Sarkar UI/UX Redesign | Information Technology Development Agency (I.T.D.A) |
 | P-014 Social Media Trends & Automated Public Communication | Information and Public Relations Department (nodal agency) |
+| P-015 Standardisation of Indian Place Names from Spoken Audio | Survey of India, Department of Science & Technology, Government of India |
 
 ## Uttarakhand department directory
 
