@@ -13,6 +13,7 @@ export const allowedProblemCodes = [
   'P-012',
   'P-013',
   'P-014',
+  'P-015',
 ] as const;
 
 export type ProblemCode = typeof allowedProblemCodes[number];

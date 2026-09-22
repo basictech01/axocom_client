@@ -411,7 +411,44 @@ export const problems: Problem[] = [
   "difficulty": "Advanced",
   "publishedAt": "2026-09-09",
   "solutionCount": 0
-}
+},
+  {
+    id: "P-015",
+    title: "AI Standardisation of Indian Place Names from Spoken Audio",
+    theme: "One Authoritative Name, Spelling and Pronunciation for Every Indian Place",
+    category: "Speech AI & Linguistic Standardisation",
+    problemOwnerId: "survey-of-india",
+    description:
+      "Survey of India is the national authority that fixes the official spelling and pronunciation of every place name used on maps, gazetteers and government records. Today the same village, town, river or peak is written in several conflicting ways in both Hindi and English, because names are transcribed by ear across different dialects, accents and regional languages with no consistent phonetic reference. Build a system that listens to multiple audio recordings of different speakers pronouncing the same place name and produces a single consensus record: one standardised Devanagari (Hindi) spelling, one Roman (English) spelling and an IPA phonetic transcription. The system must reconcile variation across speakers rather than simply picking the clearest recording, and it is a decision-support tool for Survey of India officers, not an auto-publisher.",
+    capabilities: [
+      "Ingest multiple audio recordings of the same place name from different speakers and align them to a single name entity",
+      "Reconcile speaker variation into one consensus output instead of selecting the single clearest recording",
+      "Produce a standardised Devanagari spelling with correct handling of nukta, anusvara, chandrabindu, halant and retroflex or aspirated distinctions",
+      "Produce a Roman spelling using a consistent, documented romanisation scheme, with a clear explanation wherever an established historical form departs from that scheme",
+      "Produce an IPA phonetic transcription showing exactly how the name should be pronounced",
+      "Remain robust to strong accents, background noise, poor recording quality and speakers who genuinely disagree",
+      "Handle sparse evidence for remote locations and names borrowed from non-Hindi regional languages",
+      "Preserve genuine regional pronunciation variants as linked alternates rather than erasing them",
+      "Attach a confidence score, the competing spellings considered and the supporting evidence to every recommendation",
+      "Give officers a review workspace to replay source clips, compare against existing records, edit any field and approve the final entry with a full audit trail",
+    ],
+    applications: [
+      "Standardise place-name spellings for official maps, gazetteers, signage and revenue documents",
+      "Resolve conflicting Hindi and English spellings already present in government records",
+      "Supply a national pronunciation reference to navigation apps, screen readers, text-to-speech and public announcement systems",
+      "Support field surveyors capturing names for newly recorded or renamed locations",
+    ],
+    outcomes: [
+      "A single authoritative record per place name covering Devanagari spelling, Roman spelling and IPA pronunciation",
+      "Consistent, explainable romanisation with documented exceptions for established historical forms",
+      "Faster officer review through confidence scores, ranked alternatives and replayable source evidence",
+      "Preserved regional pronunciation variants linked to the standardised entry",
+      "A complete audit trail in which nothing is published without Survey of India officer approval",
+    ],
+    difficulty: "Advanced",
+    publishedAt: "2026-09-22",
+    solutionCount: 0,
+  },
 ];
 
 export function getProblemById(id: string): Problem | undefined {
