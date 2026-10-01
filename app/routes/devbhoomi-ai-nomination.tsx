@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from "react";
-import { ArrowLeft, Award, Check, ShieldCheck, Sparkles, Trophy } from "lucide-react";
+import { ArrowLeft, Award, Check, Sparkles, Trophy } from "lucide-react";
 import { buildSeoLinks, buildSeoMeta } from "~/lib/seo";
 import { apolloClient } from "~/lib/api";
 import { REGISTER_NOMINATION_MUTATION } from "~/features/summit/services";
@@ -10,7 +10,7 @@ import { REGISTRATION_TYPE } from "~/features/summit/types";
 const seo = {
   title: "Awards Nomination | Devbhoomi AI Summit 2026",
   description:
-    "Submit an award nomination for Devbhoomi AI Summit 2026. Choose Standard, Premium, or Platinum nomination.",
+    "Submit an award nomination for Devbhoomi AI Summit 2026. Choose Premium or Platinum nomination.",
   path: "/DevbhoomiAISummit/nomination",
   image: "/images/devbhoomi-ai/summit-logo.png",
   imageAlt: "Devbhoomi AI Summit 2026 Awards Nomination",
@@ -32,19 +32,6 @@ export const links = () => [
 ];
 
 const nominationPlans = [
-  {
-    name: "Standard Nomination",
-    price: "₹9,999",
-    amount: 9999,
-    icon: ShieldCheck,
-    features: [
-      "One award category",
-      "Digital nomination certificate",
-      "Jury evaluation",
-      "Finalist consideration",
-      "Winner announcement on official platforms",
-    ],
-  },
   {
     name: "Premium Nomination",
     price: "₹19,999",
@@ -91,8 +78,8 @@ const initialForm = {
 };
 
 export default function DevbhoomiAINomination() {
-  const [selectedPlan, setSelectedPlan] = useState(nominationPlans[1].name);
-  const selectedPlanDetails = nominationPlans.find((plan) => plan.name === selectedPlan) ?? nominationPlans[1];
+  const [selectedPlan, setSelectedPlan] = useState(nominationPlans[0].name);
+  const selectedPlanDetails = nominationPlans.find((plan) => plan.name === selectedPlan) ?? nominationPlans[0];
   const [form, setForm] = useState(initialForm);
   const [sending, setSending] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -208,7 +195,7 @@ export default function DevbhoomiAINomination() {
         .nomination-hero h1 span { background:var(--gradient); color:transparent; background-clip:text; -webkit-background-clip:text; }
         .nomination-hero-copy { max-width:680px; margin:22px 0 0; color:var(--muted); font-size:17px; line-height:1.75; }
         .nomination-main { position:relative; z-index:2; margin-top:-54px; padding-bottom:88px; }
-        .nomination-plans { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+        .nomination-plans { display:grid; grid-template-columns:repeat(2,1fr); gap:18px; }
         .nomination-plan { min-height:100%; padding:28px; display:grid; grid-template-rows:58px 52px 44px 1fr; align-content:stretch; text-align:left; border:1px solid var(--line); border-radius:8px; background:#fff; box-shadow:0 12px 34px rgba(44,79,150,.08); }
         .nomination-plan-top { height:58px; display:flex; align-items:center; justify-content:space-between; gap:16px; }
         .nomination-plan-icon { width:48px; height:48px; display:grid; place-items:center; border-radius:8px; color:#168D9D; background:#EFF9F8; }
