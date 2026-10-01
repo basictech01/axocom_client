@@ -3,6 +3,7 @@
   "rewrites": [
     { "source": "/", "destination": "/index.html" },
     { "source": "/DevbhoomiAISummit", "destination": "/DevbhoomiAISummit/index.html" },
+    { "source": "/DevbhoomiAISummit/nomination", "destination": "/DevbhoomiAISummit/nomination/index.html" },
     { "source": "/DevbhoomiAISummit/delegate-pass", "destination": "/DevbhoomiAISummit/delegate-pass/index.html" },
     { "source": "/nprweek2026", "destination": "/nprweek2026/index.html" },
     { "source": "/election-management", "destination": "/election-management/index.html" },
