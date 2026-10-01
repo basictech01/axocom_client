@@ -12,6 +12,7 @@ const HACKATHON_LAST_MODIFIED = "2026-08-27";
 const OTHER_PRERENDER_PATHS = [
   "/",
   "/DevbhoomiAISummit",
+  "/DevbhoomiAISummit/nomination",
   "/DevbhoomiAISummit/delegate-pass",
   "/nprweek2026",
   "/election-management",

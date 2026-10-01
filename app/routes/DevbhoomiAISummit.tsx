@@ -747,6 +747,9 @@ const DevbhoomiAISummit: React.FC = () => {
               <a className="summit-btn summit-btn-outline" href="/DevbhoomiAISummit/delegate-pass">
                 Register as Delegate
               </a>
+              <a className="summit-btn summit-btn-outline" href="/DevbhoomiAISummit/nomination">
+                Submit Award Nomination
+              </a>
             </div>
             <div className="summit-event-meta">
               <span><span className="material-symbols-rounded">calendar_month</span>October 9, 2026</span>
