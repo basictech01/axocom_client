@@ -47,7 +47,7 @@ import {
 const seo = {
   title: "Devbhoomi AI Summit 2026",
   description:
-    "Devbhoomi AI Summit 2026 - Uttarakhand's flagship leadership forum on Artificial Intelligence, on 9 October 2026 at Hyatt Centric, Dehradun. An initiative of ITDA, Government of Uttarakhand.",
+    "Devbhoomi AI Summit 2026 has been postponed. The new date and venue will be announced once confirmed. Uttarakhand's flagship leadership forum on Artificial Intelligence, an initiative of ITDA, Government of Uttarakhand.",
   path: "/DevbhoomiAISummit",
   image: "/images/devbhoomi-ai/summit-logo.png",
   imageAlt: "Devbhoomi AI Summit 2026 - Building an AI-Native Uttarakhand",
@@ -55,7 +55,7 @@ const seo = {
     "Devbhoomi AI Summit 2026",
     "Uttarakhand AI Summit",
     "AI governance",
-    "Hyatt Centric Dehradun event",
+    "Devbhoomi AI Summit postponed",
     "ITDA Uttarakhand",
   ],
 };
@@ -74,21 +74,6 @@ export const links = () => [
     href: "https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,500,0,0&display=swap",
   },
 ];
-
-const localBusinessSchema = {
-  "@context": "https://schema.org",
-  "@type": "LocalBusiness",
-  name: "Hyatt Centric Rajpur Road Dehradun",
-  telephone: "+91-135-614-1234",
-  address: {
-    "@type": "PostalAddress",
-    streetAddress: "152 / 3-4, Jakhan, Rajpur Road",
-    addressLocality: "Dehradun",
-    addressRegion: "Uttarakhand",
-    postalCode: "248001",
-    addressCountry: "IN",
-  },
-};
 
 const themes = [
   { icon: Church, title: "Pilgrim Safety", copy: "AI for Char Dham Yatra and crowd management." },
@@ -409,6 +394,9 @@ const DevbhoomiAISummit: React.FC = () => {
           content:""; position:absolute; left:0; right:100%; bottom:-8px; height:2px; background:var(--gradient); transition:.2s ease;
         }
         .summit-nav-links a:hover::after { right:0; }
+        .summit-postponement { padding:20px 0; background:#FFF4D6; color:#513C08; border-bottom:1px solid #E7C875; }
+        .summit-postponement strong { display:block; font-size:18px; line-height:1.4; letter-spacing:0; }
+        .summit-postponement p { margin:6px 0 0; font-size:14px; line-height:1.65; }
         .summit-hero {
           min-height:clamp(560px,36.35vw,727px); position:relative; display:flex; align-items:center;
           background:
@@ -439,7 +427,7 @@ const DevbhoomiAISummit: React.FC = () => {
           background:var(--gradient); color:transparent; background-clip:text; -webkit-background-clip:text;
         }
         .summit-actions { margin-top:30px; display:flex; flex-wrap:wrap; gap:14px; }
-        .summit-event-meta { margin-top:26px; display:flex; flex-wrap:wrap; gap:18px; color:#444; font-size:13px; font-weight:600; }
+        .summit-event-meta { width:min(100%,calc(100vw - 48px)); margin-top:26px; display:flex; flex-wrap:wrap; gap:18px; color:#444; font-size:13px; font-weight:600; }
         .summit-event-meta span { display:flex; align-items:center; gap:8px; }
         .summit-event-meta .material-symbols-rounded { color:var(--teal); font-size:19px; }
         .summit-about-grid { display:grid; grid-template-columns:.8fr 1.2fr; gap:72px; align-items:start; }
@@ -694,12 +682,10 @@ const DevbhoomiAISummit: React.FC = () => {
               path: seo.path,
               image: seo.image,
               startDate: "2026-10-09T09:00:00+05:30",
-              endDate: "2026-10-09T18:00:00+05:30",
-              locationName: "Hyatt Centric Rajpur Road Dehradun",
-              locationAddress:
-                "152 / 3-4, Jakhan, Rajpur Road, Dehradun, Uttarakhand 248001, India",
+              eventStatus: "https://schema.org/EventPostponed",
+              locationName: "Venue to be announced",
+              locationAddress: "Venue to be announced",
             }),
-            localBusinessSchema,
           ]),
         }}
       />
@@ -725,6 +711,13 @@ const DevbhoomiAISummit: React.FC = () => {
           </div>
         </div>
       </nav>
+
+      <aside className="summit-postponement" role="status" aria-label="Summit postponement notice">
+        <div className="summit-shell">
+          <strong>Devbhoomi AI Summit 2026 has been postponed.</strong>
+          <p>The new date and venue will be announced once confirmed. Thank you for your understanding.</p>
+        </div>
+      </aside>
 
       <header id="top" className="summit-hero">
         <div className="summit-shell summit-hero-grid">
@@ -752,8 +745,8 @@ const DevbhoomiAISummit: React.FC = () => {
               </a>
             </div>
             <div className="summit-event-meta">
-              <span><span className="material-symbols-rounded">calendar_month</span>October 9, 2026</span>
-              <span><span className="material-symbols-rounded">location_on</span>Hyatt Centric, Dehradun</span>
+              <span><span className="material-symbols-rounded">calendar_month</span>New date to be announced</span>
+              <span><span className="material-symbols-rounded">location_on</span>Venue to be announced</span>
             </div>
           </div>
         </div>
@@ -893,14 +886,13 @@ const DevbhoomiAISummit: React.FC = () => {
             </a>
             <div className="summit-card summit-contact-card">
               <BrandIcon icon={CalendarDays} />
-              <div><h3>October 9, 2026</h3><p>A full day of keynotes, showcases and collaboration.</p></div>
+              <div><h3>New date to be announced</h3><p>The revised summit date will be announced once confirmed.</p></div>
             </div>
             <div id="venue" className="summit-card summit-contact-card">
               <BrandIcon icon={MapPin} />
               <div>
-                <h3>Hyatt Centric, Dehradun</h3>
-                <p>152/3-4, Rajpur Road, Jakhan, Dehradun, Uttarakhand 248001</p>
-                <p><a href="https://maps.app.goo.gl/i33gWViTrEYK4bXHA" target="_blank" rel="noopener noreferrer" style={{ color: "#128F9D", fontWeight: 700 }}>View on Google Maps</a></p>
+                <h3>Venue to be announced</h3>
+                <p>The revised summit venue will be announced once confirmed.</p>
               </div>
             </div>
           </div>
